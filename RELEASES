@@ -1,0 +1,103 @@
+Public Releases of Query2XML
+============================
+Version: $Id$
+
+
+v0.6.0
+------
+Release date: 2006-04-23
+Release notes:
+This release includes all changes recommeded during the PEPr voting process.
+Major changes:
+- asterisk shortcut that expands to all columns in the result set;
+  the tutorial was updated to document this feature and a new
+  case study (case 07) was added to provide a good example
+- implementation of ISO/IEC 9075-14:2005 for mapping SQL identifiers to
+  XML names; the tutorial was updates to document this feature and
+  a new case study (case 08) was added to provide lots of examples
+- new complex attribute specifications (from my own wish list)
+
+Minor changes:
+- simplification of the inner workings of the methods _hasDOMChild()
+  and _getDOMChild()
+- using foreach($array as $key => $value) instead of
+  while(list($key, $value) = each($array))
+- now comes with 168 unit tests
+
+v0.5.1
+------
+Release date: 2006-03-17
+Release notes:
+This release includes a couple of minor changes:
+- all lines now have a maximum length of 85 characters
+- no () with require_once
+- always using {} with code blocks
+- no silencing of any calls using @
+- using /* ... */ for all multi-line comments
+- enhanced documentation for private methods
+- code enhancements inside XML_Query2XML::getXML()
+
+v0.5.0
+------
+Release date: 2006-03-14
+Release notes:
+This release includes a couple of major changes:
+- full MDB2 support
+- all new exception handling: just three different
+  exceptions that all extend XML_Query2XML_Exception.
+- now comes with 99 PHPUnit2 unit tests
+- every exception that is thrown or bubbles up is
+  documented in the API-docs; the tutorial has a
+  new "Exception Handling" section.
+This release implements all recommendations made by
+PEAR developers during a first proposal.
+
+Minor changes include:
+- using ' instead of " where-ever possible
+- as PHP5 uses references for objects by default & (such as
+  in =&) is now only used where necessary.
+- the tutorial now renders just fine in all common browsers
+
+v0.4.0
+------
+Release date: 2006-02-28
+Release notes:
+This release includes one major change:
+- Public methods will now only throw exceptions that extend PEAR_Exception.
+  No PEAR errors or special XML will be returned anymore.
+  Therefore the public method XML_Query2XML::factory() now
+  only knows one argument.
+
+v0.3.0
+------
+Release date: 2006-02-25
+Release notes:
+This release includes two major changes:
+- XML_Query2XML now uses PHP5's DOM XML extension. Therefore
+  DomDocument, DomNode, etc are now used in favor of XML_Query2XML_XMLElement.
+  XML_Query2XML does not come with XML_Query2XML_XMLElement anymore!
+- Back to the roots! XML_Query2XML concentrates on its core features and
+  therefore drops the functionality of generating an XML schema from XML data.
+
+Minor changes:
+- reduction of unit tests (fewer public methods to test): 20
+- complete review of the tutorial and the API documentation
+- changes of testCases.sh: schema validation is not supported
+  anymore
+
+
+v0.2.0
+------
+Release date: 2006-02-08
+Release notes:
+The first public release v0.2.0 is available! 
+Just download the package and run `pear install <package_file>'.
+Alternatively you can also directly run
+`pear install http://query2xml.sourceforge.net/releases/XML_Query2XML-0.2.0.tgz'. 
+
+This release includes 
+- in-depth documentation: tutorials and API documentation
+- 6 case studies: from very simple to highly complex scenarios
+- 104 unit tests for PHPUnit
+- minor bug fixes
+- development was moved to sourceforge's CVS server

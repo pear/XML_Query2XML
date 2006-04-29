@@ -1,0 +1,8 @@
+Feb 11 17:27:19 Query2XML [info] QUERY: SELECT
+         *
+     FROM
+         customer c
+         LEFT JOIN sale s ON c.customerid = s.customer_id
+         LEFT JOIN album al ON s.album_id = al.albumid
+         LEFT JOIN artist ar ON al.artist_id = ar.artistid
+Feb 11 17:27:19 Query2XML [info] DONE

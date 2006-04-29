@@ -1,0 +1,90 @@
+Query2XML
+=========
+Version: $Id$
+
+1. Overview
+2. Contents of this package
+3. Testing
+4. About the author
+5. Copyright Notice
+
+
+1. Overview
+-----------
+Query2XML allows you to transform the records retrieved with
+one or more SQL SELECT queries into XML data. Very simple to
+highly complex transformations are supported. Is was written
+with performance in mind and can handel large amounts of data.
+
+Another thing you will find useful is Query2XML's capabilities
+of Profiling and Performance Tuning.
+
+
+2. Contents of this package
+---------------------------
++---cases ............... Case studies; will be installed in $PHP_PEAR_DOC_DIR
+¦   +---case01 .......... Case 01: simple SELECT with getFlatXML
+¦   +---case02 .......... Case 02: LEFT JOIN
+¦   +---case03 .......... Case 03: Two SELECTs instead of a LEFT JOIN
+¦   +---case04 .......... Case 04: Case 03 with all the bells and whistles
+¦   +---case05 .......... Case 05: three LEFT JOINs
+|   +---case06 .......... Case 06: BIG join over 10 tables
+|   +---case07 .......... Case 07: Case 03 revisited: Simplifications with
+|   |                     Asterisk Shortcuts
+|   +---case08 .......... Case 08: Case 06 revisited: Making use of Mappers
++---XML ................. CONTAINS THE ACTUAL Query2XML.php that
+|                         will be installed in $PHP_PEAR_INSTALL_DIR/XML/
++---tests ............... contains 168 unit tests and a special test script
+                          named testCases.sh; all will be installed in
+                          $PHP_PEAR_TEST_DIR/XML_Query2XML/tests. Please
+                          see 3. Testing.
+
+
+3. Testing
+----------
+After installation $PHP_PEAR_TEST_DIR/XML_Query2XML/tests will contain
+the following files:
+- Query2XMLTest.php ...... 142 unit tests for the class XML_Query2XML
+- ISO9075MapperTest.php .. 26 unit tests fot the class
+                           XML_Query2XML_ISO9075Mapper
+- testCases.sh ........... special test script; see below
+- Query2XML_Tests.sql .... The SQL DDL required to run Query2XMLTest.php
+                           and testCases.sh
+
+Query2XMLTest.php can be run like this:
+``phpunit Query2XMLTest.php''
+For complex test cases, an MD5 hash will be generated for all the
+XML data. Such a test will fail if the generated MD5 hash does not
+match the MD5 hash defined in the test case. To find out what really
+went wrong, use testCases.sh.
+
+To get Query2XMLTest.php working, you will have to change the
+the default DSN mysql://root@localhost/Query2XML_Tests within the file.
+
+ISO9075MapperTest.php can be run like this:
+``phpunit ISO9075MapperTest.php''
+
+testCases.sh is a very useful bash script that will compare the
+generated XML data with the test cases in $PHP_PEAR_DOC_DIR.
+Run it from the directory $PHP_PEAR_TEST_DIR/XML_Query2XML/tests:
+./testCases.sh
+
+
+4. About the author
+-------------------
+Please see http://www.lukasfeiler.com or write to lukas.feiler@lukasfeiler.com.
+
+
+5. Copyright Notice
+-------------------
+Copyright 2006 by Empowered Media
+
+LICENSE:
+This source file is subject to version 2.1 of the LGPL
+that is bundled with this package in the file LICENSE.
+
+COPYRIGHT:
+Empowered Media
+http://www.empoweredmedia.com
+481 Eighth Avenue Suite 1530
+New York, NY 10001

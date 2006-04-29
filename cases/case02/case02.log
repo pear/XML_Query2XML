@@ -1,0 +1,6 @@
+Feb 11 16:14:49 Query2XML [info] QUERY: SELECT
+        *
+     FROM
+        artist
+        LEFT JOIN album ON album.artist_id = artist.artistid
+Feb 11 16:14:49 Query2XML [info] DONE

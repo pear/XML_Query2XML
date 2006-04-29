@@ -1,0 +1,9 @@
+FROM_DB FROM_CACHE CACHED AVG_DURATION DURATION_SUM SQL
+1       0          false  0.0056409835 0.0056409835 SELECT
+        *
+     FROM
+        artist
+        LEFT JOIN album ON album.artist_id = artist.artistid
+
+TOTAL_DURATION: 0.06843900680542
+DB_DURATION:    0.015194892883301

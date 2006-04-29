@@ -1,0 +1,75 @@
+Query2XML Installation
+======================
+Version: $Id$
+
+
+Requirements
+------------
+- PHP5: XML_Query2XML heavily uses the new exception handling and
+  object orientation features. 
+- PHP5's DOM XML extension (which is complied in to PHP5 by default) 
+- PEAR DB or PEAR MDB2
+
+The following packages are optional: 
+- PEAR Log 
+- PEAR XML_Beautifier: very handy to format the XML data returned
+  by DomDocument->saveXML().
+- PEAR I18N_UnicodeString: this is only required if you want to use
+  XML_Query2XML's ability to map SQL identifiers to XML names in
+  accordance with ISO/IEC 9075-14:2005.
+
+
+Installation
+------------
+- Just run `pear install XML_Query2XML'.
+- You might have to run `pear config-set preferred_state beta' first. 
+
+This will create the following files:
+$PHP_PEAR_INSTALL_DIR/XML/Query2XML.php
+$PHP_PEAR_INSTALL_DIR/XML/Query2XML/ISO9075Mapper.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XMLTest.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/ISO9075MapperTest.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/testCases.sh
+$PHP_PEAR_DOC_DIR/XML_Query2XML/ChangeLog
+$PHP_PEAR_DOC_DIR/XML_Query2XML/INSTALL
+$PHP_PEAR_DOC_DIR/XML_Query2XML/LICENSE
+$PHP_PEAR_DOC_DIR/XML_Query2XML/README
+$PHP_PEAR_DOC_DIR/XML_Query2XML/RELEASES
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case01/case01.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case01/case01.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case02/case02.log
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case02/case02.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case02/case02.profile
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case02/case02.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case02/case02_debug.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case03/case03.log
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case03/case03.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case03/case03.profile
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case03/case03.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case03/case03_debug.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case04/case04.log
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case04/case04.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case04/case04.profile
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case04/case04.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case04/case04_debug.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case05/case05.log
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case05/case05.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case05/case05.profile
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case05/case05.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case05/case05_debug.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case06/case06.log
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case06/case06.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case06/case06.profile
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case06/case06.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case06/case06_debug.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case07/case07.log
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case07/case07.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case07/case07.profile
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case07/case07.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case07/case07_debug.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08.log
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08.php
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08.profile
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08.xml
+$PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08_debug.php
