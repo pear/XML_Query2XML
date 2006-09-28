@@ -129,10 +129,16 @@ class XML_Query2XML
     */
     private function __construct($db)
     {        
-        if ($db instanceof DB_common) {
+        if (
+            class_exists('DB_common') &&
+            $db instanceof DB_common
+        ) {
             $this->_isMDB2 = false;
             $this->_db = $db;
-        } elseif ($db instanceof MDB2_Driver_Common) {
+        } elseif (
+            class_exists('MDB2_Driver_Common') &&
+            $db instanceof MDB2_Driver_Common
+        ) {
             $this->_isMDB2 = true;
             $this->_db = $db;
         } elseif (PEAR::isError($db)) {
