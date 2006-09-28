@@ -5,8 +5,9 @@ Version: $Id$
 1. Overview
 2. Contents of this package
 3. Testing
-4. About the author
-5. Copyright Notice
+4. ChangeLog
+5. About the author
+6. Copyright Notice
 
 
 1. Overview
@@ -70,12 +71,21 @@ Run it from the directory $PHP_PEAR_TEST_DIR/XML_Query2XML/tests:
 ./testCases.sh
 
 
-4. About the author
+4. ChangeLog
+------------
+Beginning with v0.6.0 the development of XML_Query2XML was moved from sourceforge.net
+to cvs.php.net. Therefore you will find two ChangeLog files:
+
+ChangeLog-until-v0.6.0 ....... ChangeLog entries from cvs.sourceforge.net
+                               (until v0.6.0)
+ChangeLog .................... ChangeLog entries from cvs.php.net
+
+5. About the author
 -------------------
 Please see http://www.lukasfeiler.com or write to lukas.feiler@lukasfeiler.com.
 
 
-5. Copyright Notice
+6. Copyright Notice
 -------------------
 Copyright 2006 by Empowered Media
 
