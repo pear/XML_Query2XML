@@ -28,26 +28,19 @@ Major features:
   </maintainer>
  </maintainers>
  <release>
-  <version>0.6.0</version>
-  <date>2006-04-23</date>
+  <version>0.6.1</version>
+  <date>2006-09-28</date>
   <license>LGPL</license>
   <state>beta</state>
-  <notes>This release includes all changes recommeded during the PEPr voting process.
-Major changes:
-- asterisk shortcut that expands to all columns in the result set;
-  the tutorial was updated to document this feature and a new
-  case study (case 07) was added to provide a good example
-- implementation of ISO/IEC 9075-14:2005 for mapping SQL identifiers to
-  XML names; the tutorial was updates to document this feature and
-  a new case study (case 08) was added to provide lots of examples
-- new complex attribute specifications (from my own wish list)
+  <notes>This release fixes a minor bug with PHP5 prior to 5.1.0.
+Thanks a lot to Christophe Laratte &lt;christophe dot laratte at openflyers dot org&gt;
+for reporting this!
 
-Minor changes:
-- simplification of the inner workings of the methods _hasDOMChild()
-  and _getDOMChild()
-- using foreach($array as $key => $value) instead of
-  while(list($key, $value) = each($array))
-- now comes with 168 unit tests
+Bug fixes:
+- Fixed Bug #8799 "DB/common.php required": compatibility fix for
+  PHP5 &lt; 5.1.0: added class_exists() calls before using instanceof
+  operator in XML_Query2XML constructor;
+  see also: http://bugs.php.net/bug.php?id=29736
   </notes>
   <deps>
    <dep type="php" rel="ge" version="5.0.0"/>
@@ -73,6 +66,7 @@ Minor changes:
    <file role="doc" baseinstalldir="/" name="LICENSE"/>
    <file role="doc" baseinstalldir="/" name="INSTALL"/>
    <file role="doc" baseinstalldir="/" name="ChangeLog"/>
+   <file role="doc" baseinstalldir="/" name="ChangeLog-until-v0.6.0"/>
    <file role="doc" baseinstalldir="/" name="cases/case01/case01.php"/>
    <file role="doc" baseinstalldir="/" name="cases/case01/case01.xml"/>
    <file role="doc" baseinstalldir="/" name="cases/case02/case02.log"/>
@@ -208,26 +202,19 @@ Minor changes include:
     </notes>
    </release>
    <release>
-    <version>0.6.0</version>
-    <date>2006-04-23</date>
+    <version>0.6.1</version>
+    <date>2006-09-28</date>
     <license>LGPL</license>
     <state>beta</state>
-    <notes>This release includes all changes recommeded during the PEPr voting process.
-Major changes:
-- asterisk shortcut that expands to all columns in the result set;
-  the tutorial was updated to document this feature and a new
-  case study (case 07) was added to provide a good example
-- implementation of ISO/IEC 9075-14:2005 for mapping SQL identifiers to
-  XML names; the tutorial was updates to document this feature and
-  a new case study (case 08) was added to provide lots of examples
-- new complex attribute specifications (from my own wish list)
+    <notes>This release fixes a minor bug with PHP5 prior to 5.1.0.
+Thanks a lot to Christophe Laratte &lt;christophe dot laratte at openflyers dot org&gt;
+for reporting this!
 
-Minor changes:
-- simplification of the inner workings of the methods _hasDOMChild()
-  and _getDOMChild()
-- using foreach($array as $key => $value) instead of
-  while(list($key, $value) = each($array))
-- now comes with 168 unit tests
+Bug fixes:
+- Fixed Bug #8799 "DB/common.php required": compatibility fix for
+  PHP5 &lt; 5.1.0: added class_exists() calls before using instanceof
+  operator in XML_Query2XML constructor;
+  see also: http://bugs.php.net/bug.php?id=29736
     </notes>
    </release>
  </changelog>

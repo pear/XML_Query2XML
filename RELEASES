@@ -3,6 +3,20 @@ Public Releases of Query2XML
 Version: $Id$
 
 
+v0.6.1
+------
+Release date: 2006-09-28
+Release notes:
+This release fixes a minor bug with PHP5 prior to 5.1.0.
+Thanks a lot to Christophe Laratte <christophe dot laratte at openflyers dot org>;
+for reporting this!
+
+Bug fixes:
+- Fixed Bug #8799 "DB/common.php required": compatibility fix for
+  PHP5 &lt; 5.1.0: added class_exists() calls before using instanceof
+  operator in XML_Query2XML constructor;
+  see also: http://bugs.php.net/bug.php?id=29736
+
 v0.6.0
 ------
 Release date: 2006-04-23
