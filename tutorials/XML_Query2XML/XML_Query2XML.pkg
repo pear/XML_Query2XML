@@ -39,7 +39,9 @@
       <emphasis>PHP5's DOM XML extension (which is complied in to PHP5 by default)</emphasis>
      </listitem>
      <listitem>
-      <emphasis>{@link http://pear.php.net/package/DB PEAR DB}</emphasis> or <emphasis>{@link http://pear.php.net/package/MDB2 PEAR MDB2}</emphasis>
+      <emphasis>{@link http://pear.php.net/package/DB PEAR DB}</emphasis>, 
+      <emphasis>{@link http://pear.php.net/package/MDB2 PEAR MDB2}</emphasis> or
+      <emphasis>{@link http://adodb.sourceforge.net ADOdb}</emphasis>.
      </listitem>
     </itemizedlist>
     The following packages are optional:
@@ -68,8 +70,9 @@
   <para>
    This is the factory method that will return a new instance of {@link XML_Query2XML}.
    The argument passed to the factory method can be an instance of
-   {@link http://pear.php.net/package/DB PEAR DB} or
-   {@link http://pear.php.net/package/MDB2 PEAR MDB2}.
+   {@link http://pear.php.net/package/DB PEAR DB}, 
+   {@link http://pear.php.net/package/MDB2 PEAR MDB2} or
+   {@link http://adodb.sourceforge.net ADOdb}.
   </para>
   <para>
    Using MDB2 with XML_Query2XML works like this:
@@ -81,6 +84,8 @@ $mdb2 = MDB2::factory('mysql://root@localhost/Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($mdb2);
    ]]>
    </programlisting>
+  </para>
+  <para>
    The same thing with PEAR DB looks like that:
    <programlisting role="php">
    <![CDATA[
@@ -90,8 +95,29 @@ $db = DB::connect('mysql://root@localhost/Query2XML_Tests')
 $query2xml = XML_Query2XML::factory($db);
    ]]>
    </programlisting>
-   MDB2 can be considered more advanced than DB. But use whichever you like - XML_Query2XML works
-   with both of them. For the sake of simplicity all the examples will use PEAR DB.
+  </para>
+  <para>
+   And again the same thing with ADOdb:
+   <programlisting role="php">
+   <![CDATA[
+require_once('XML/Query2XML.php');
+require_once('adodb/adodb.inc.php');
+//require_once('adodb/adodb-exceptions.inc.php');
+//require_once('adodb/adodb-pear.inc.php');
+$adodb = ADONewConnection('mysql');
+$adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
+$query2xml =& XML_Query2XML::factory($adodb);
+   ]]>
+   </programlisting>
+   Note that XML_Query2XML works with ADOdb with the default error handling (no additional include file),
+   error handling using exceptions (adodb-exceptions.inc.php) and error handling using PEAR_Error
+   (adodb-pear.inc.php).
+  </para>
+  <para>
+   I would recommend using MDB2 as it can be considered more advanced than DB
+   and much better designed and documented than ADOdb.
+   But use whichever you like - XML_Query2XML works with all of them.
+   For the sake of simplicity all the examples will use PEAR DB.
   </para>
  </refsect1>
  
