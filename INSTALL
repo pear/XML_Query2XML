@@ -8,7 +8,7 @@ Requirements
 - PHP5: XML_Query2XML heavily uses the new exception handling and
   object orientation features. 
 - PHP5's DOM XML extension (which is complied in to PHP5 by default) 
-- PEAR DB or PEAR MDB2
+- PEAR DB, PEAR MDB2 or ADOdb
 
 The following packages are optional: 
 - PEAR Log 
@@ -29,6 +29,11 @@ $PHP_PEAR_INSTALL_DIR/XML/Query2XML.php
 $PHP_PEAR_INSTALL_DIR/XML/Query2XML/ISO9075Mapper.php
 $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql
 $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XMLTest.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XMLTestADOdb.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XMLTestADOdbException.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XMLTestADOdbPEAR.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XMLTestDB.php
+$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XMLTestMDB2.php
 $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/ISO9075MapperTest.php
 $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/testCases.sh
 $PHP_PEAR_DOC_DIR/XML_Query2XML/ChangeLog

@@ -45,22 +45,32 @@ of Profiling and Performance Tuning.
 ----------
 After installation $PHP_PEAR_TEST_DIR/XML_Query2XML/tests will contain
 the following files:
-- Query2XMLTest.php ...... 142 unit tests for the class XML_Query2XML
-- ISO9075MapperTest.php .. 26 unit tests fot the class
-                           XML_Query2XML_ISO9075Mapper
+- Query2XMLTest.php ................. 3 unit tests that do not require
+                                      any database abstraction layer to
+                                      be present
+- Query2XMLTestDB.php ............... 68 unit tests that require PEAR DB
+- Query2XMLTestMDB2.php ............. 71 unit tests that require PEAR MDB2
+- Query2XMLTestADOdb.php ............ 70 unit tests that require ADOdb
+- Query2XMLTestADOdbPEAR.php ........ 70 unit tests that require ADOdb which
+                                      is using PEAR_Error for error handling
+- Query2XMLTestADOdbException.php ... 70 unit tests that require ADOdb which
+                                      is using exceptions for error handling
+- ISO9075MapperTest.php ............. 26 unit tests fot the class
+                                      XML_Query2XML_ISO9075Mapper
 - testCases.sh ........... special test script; see below
 - Query2XML_Tests.sql .... The SQL DDL required to run Query2XMLTest.php
                            and testCases.sh
 
-Query2XMLTest.php can be run like this:
+*.php test files can be run like this:
 ``phpunit Query2XMLTest.php''
 For complex test cases, an MD5 hash will be generated for all the
 XML data. Such a test will fail if the generated MD5 hash does not
 match the MD5 hash defined in the test case. To find out what really
 went wrong, use testCases.sh.
 
-To get Query2XMLTest.php working, you will have to change the
-the default DSN mysql://root@localhost/Query2XML_Tests within the file.
+To get Query2XMLTestDB.php, Query2XMLTestMDB2.php or Query2XMLTestADOdb*.php
+working, you will have to change the the default DSN
+mysql://root@localhost/Query2XML_Tests within the files.
 
 ISO9075MapperTest.php can be run like this:
 ``phpunit ISO9075MapperTest.php''
