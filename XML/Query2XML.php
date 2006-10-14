@@ -133,27 +133,45 @@ class XML_Query2XML
             class_exists('DB_common') &&
             $db instanceof DB_common
         ) {
-            $this->_isMDB2 = false;
+            $this->_dbLayer = 'DB';
             $this->_db = $db;
         } elseif (
             class_exists('MDB2_Driver_Common') &&
             $db instanceof MDB2_Driver_Common
         ) {
-            $this->_isMDB2 = true;
+            $this->_dbLayer = 'MDB2';
+            $this->_db = $db;
+        } elseif (
+            class_exists('ADOConnection') &&
+            $db instanceof ADOConnection
+        ) {    
+            $this->_dbLayer = 'ADOdb';
+            if (!$db->IsConnected()) {
+                //unit test: Query2XMLTestADOdb::testFactoryNotConnectedException()
+                throw new XML_Query2XML_DBException(
+                    'ADOConnection instance was not connected'
+                );
+            }
             $this->_db = $db;
         } elseif (PEAR::isError($db)) {
+            //unit test: Query2XMLTest::testFactoryDBErrorException()
             throw new XML_Query2XML_DBException(
                 'Could not connect to database: ' . $db->toString()
             );
         } else {
+            //unit test: Query2XMLTest::testFactoryWrongArumentTypeException()
             throw new XML_Query2XML_ConfigException(
                 'Argument passed to the XML_Query2XML constructor is not an '
-                . 'instance of DB_common or MDB2_Driver_Common.'
+                . 'instance of DB_common, MDB2_Driver_Common or ADOConnection.'
             );
         }
         
-        if ($this->_isMDB2) {
+        if ($this->_dbLayer == 'MDB2') {
             $fetchModeError = $this->_db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+        } elseif ($this->_dbLayer == 'ADOdb') {
+            //SetFetchMode only returns the previous fetch mode
+            $this->_db->SetFetchMode(ADODB_FETCH_ASSOC);
+            $fetchModeError = null;
         } else {
             $fetchModeError = $this->_db->setFetchMode(DB_FETCHMODE_ASSOC);
         }
@@ -561,8 +579,9 @@ class XML_Query2XML
                 * only check if $mapper == true (that is not '', false, etc)
                 *
                 * unit tests:
-                *  test_getNestedXMLRecordMapperNotCallableException()
-                *  test_getNestedXMLRecordMapperNotCallableException2()
+                *  test_mapSQLIdentifierToXMLNameNotCallableException()
+                *  test_mapSQLIdentifierToXMLNameNotCallableException2()
+                *  test_mapSQLIdentifierToXMLNameNotCallableException3()
                 */
                 throw new XML_Query2XML_ConfigException(
                     'The method/function "' . $callableName . '" specified in the '
@@ -644,7 +663,6 @@ class XML_Query2XML
                         self::_setDOMAttribute($tag, $attributeName, $attributeValue);
                     }
                 } else {
-                    //only simple element specifications are allowed for attributes!
                     //unit test: test_getNestedXMLRecordInvalidAttributeException()
                     throw new XML_Query2XML_ConfigException(
                         'The attribute "'
@@ -1069,7 +1087,7 @@ class XML_Query2XML
                         );
                     }
                 } else {
-                    //unit test: applySqlOptionsToRecordWrongDataTypeException()
+                    //unit test: test_applySqlOptionsToRecordWrongDataTypeException()
                     throw new XML_Query2XML_ConfigException(
                         'The configuration option "data" is not an array.',
                         'sql'
@@ -1109,7 +1127,8 @@ class XML_Query2XML
                         if (!array_key_exists($merge_selective[$ii], $record)) {
                             /* Selected field does not exist in the parent record
                             * (passed as argumnet $record)
-                            * unit test:test_applySqlOptionsToRecordMergeException1()
+                            * unit test:
+                            *  test_applySqlOptionsToRecordMergeException1()
                             */
                             throw new XML_Query2XML_ConfigException(
                                 'The column "' . $merge_selective[$ii] . '" '
@@ -1133,7 +1152,7 @@ class XML_Query2XML
                             /* Selected field does not exist in the parent record
                             *  (passed as argumnet $record)
                             *  unit test:
-                            *  test_applySqlOptionsToRecordMergeException2()
+                            *   test_applySqlOptionsToRecordMergeException2()
                             */
                             throw new XML_Query2XML_ConfigException(
                                 'The column "' . $merge_selective[$ii] . '" '
@@ -1387,28 +1406,84 @@ class XML_Query2XML
     * @throws XML_Query2XML_ConfigException  Thrown if $sql is neither a string nor
     *                   an array with at least the element 'query'.
     * @param mixed $sql The SQL query to prepare (and the data to execute it with).
-    * @return mixed An instance of DB_result or MDB2_Result as it is returned by
-    *                   $this->_db->query() or $this->_db->execute().
+    * @return mixed An instance of DB_result or MDB2_Result or ADORecordSet as it
+    *                   is returned by $this->_db->query() or $this->_db->execute().
+    *                   Note that DB_result, MDB2_Result and ADORecordSet all
+    *                   support the fetchRow() method.
     */
     private function _prepareAndExecute($sql)
     {
         if (is_string($sql)) {
+            /*
+            * SIMPLE QUERY
+            */
+            
             $query =& $sql;
-            $result = $this->_db->query($query);
+            if ($this->_dbLayer == 'ADOdb' && class_exists('ADODB_Exception')) {
+                try {
+                    $result = $this->_db->query($query);
+                } catch (ADODB_Exception $e) {
+                    //unit test: Query2XMLTestADOdbException::
+                    // test_prepareAndExecuteSimpleQueryDBException()
+                    throw new XML_Query2XML_DBException(
+                        'Could not run the following SQL query: '
+                        . $query .  '; '
+                        . $e->getMessage()
+                    );
+                }
+            } else {
+                $result = $this->_db->query($query);
+            }
+                
             if (PEAR::isError($result)) {
-                //unit test: test_prepareAndExecuteSimpleQueryDBException()
+                //DB & MDB2 return PEAR_Error on failure
+                
+                //unit test: Query2XMLTestDB/Query2XMLTestMDB2::
+                // test_prepareAndExecuteSimpleQueryDBException()
                 throw new XML_Query2XML_DBException(
                     'Could not run the following SQL query: '
                     . $query .  '; '
                     . $result->toString()
                 );
+            } elseif ($result === false) {
+                //ADOdb returns false on failure
+                
+                //unit test: Query2XMLTestADOdb::
+                // test_prepareAndExecuteSimpleQueryDBException()
+                throw new XML_Query2XML_DBException(
+                    'Could not run the following SQL query: '
+                    . $query
+                );
             }
         } elseif (is_array($sql) && isset($sql['query'])) {
+            /*
+            * PREPARE & EXECUTE
+            */
+            
             $query =& $sql['query'];
             if (isset($this->_preparedQueries[$query])) {
                 $queryHandle = $this->_preparedQueries[$query];
             } else {
-                $queryHandle = $this->_db->prepare($query);
+                /*
+                * PREPARE
+                */
+                if ($this->_dbLayer == 'ADOdb' && class_exists('ADODB_Exception')) {
+                    try {
+                        $queryHandle = $this->_db->prepare($query);
+                    } catch (ADODB_Exception $e) {
+                        /* No unit test for this exception as the mysql driver of ADOdb
+                        *  never throws an exception.
+                        */
+                        throw new XML_Query2XML_DBException(
+                            'Could not prepare the following SQL query: '
+                            . $query .  '; '
+                            . $e->getMessage()
+                        );
+                    }
+                } else {
+                    $queryHandle = $this->_db->prepare($query);
+                }
+                
                 if (PEAR::isError($queryHandle)) {
                     /* No unit test for this exception as the mysql driver of DB
                     *  never returns a PEAR error from prepare().
@@ -1430,12 +1505,42 @@ class XML_Query2XML
                 }
                 $this->_preparedQueries[$query] =& $queryHandle;
             }
-            if ($this->_isMDB2) {
-                //$this->_db is MDB2
+            
+            /*
+            * EXECUTE
+            */
+            if ($this->_dbLayer == 'MDB2') {
                 if (isset($sql['data'])) {
                     $result = $queryHandle->execute($sql['data']);
                 } else {
                     $result = $queryHandle->execute();
+                }
+            } elseif ($this->_dbLayer == 'ADOdb') {
+                if (class_exists('ADODB_Exception')) {
+                    try {
+                        if (isset($sql['data'])) {
+                            $result = $this->_db->execute($queryHandle, $sql['data']);
+                        } else {
+                            $result = $this->_db->execute($queryHandle);
+                        }
+                    } catch (ADODB_Exception $e) {
+                        //unit test: Query2XMLTestADOdbException::
+                        // test_prepareAndExecuteExecuteQueryDBException()
+                        throw new XML_Query2XML_DBException(
+                            'Could not execute the following SQL query: '
+                            . $query .  '; '
+                            . $e->getMessage()
+                        );
+                    }
+                } else {
+                    if (isset($sql['data'])) {
+                        $result = $this->_db->execute($queryHandle, $sql['data']);
+                    } else {
+                        $result = $this->_db->execute($queryHandle);
+                    }
+                    if ($result === false && function_exists('ADODB_Pear_Error')) {
+                        $result = ADODB_Pear_Error();
+                    }
                 }
             } else {
                 //$this->_db is DB
@@ -1448,12 +1553,21 @@ class XML_Query2XML
             
             if (PEAR::isError($result)) {
                 /* unit test:
-                *  test_prepareAndExecuteExecuteQueryDBException()
+                *   test_prepareAndExecuteExecuteQueryDBException()
                 */
                 throw new XML_Query2XML_DBException(
                     'Could not execute the following SQL query: '
                     . $query . '; '
                     . $result->toString()
+                );
+            } elseif ($result === false) {
+                /* unit test:
+                *   test_prepareAndExecuteExecuteQueryDBException()
+                */
+                throw new XML_Query2XML_DBException(
+                    'Could not execute the following SQL query; '
+                    . 'false was returned: '
+                    . $query
                 );
             }
         } elseif (!is_array($sql)) {
