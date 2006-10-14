@@ -3,6 +3,27 @@ Public Releases of Query2XML
 Version: $Id$
 
 
+v0.7.0
+------
+Release date: 2006-10-14
+Release notes:
+This release adds support for ADOdb (adodb.sf.net).
+ADOdb can be used with different error handling mechanisms:
+- default: methods return false on failure; these errors
+  will be caught by XML_Query2XML and an XML_Query2XML_DBException
+  will be thrown
+- PEAR_Error: methods return PEAR_Error on failure (or false
+  and require ADODB_Pear_Error() to be called);
+  XML_Query2XML will catch these errors and throw an
+  XML_Query2XML_DBException that contains the information provided
+  by the PEAR_Error instance.
+- exceptions: if an ADODB_Exception is thrown by ADOdb
+  XML_Query2XML will catch it and throw an XML_Query2XML_DBException
+
+This means that no matter which error handling mechanism is used within
+ADOdb, XML_Query2XML will behave the same. It will throw an
+XML_Query2XML_DBException in case of a database error.
+
 v0.6.1
 ------
 Release date: 2006-09-28

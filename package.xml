@@ -32,7 +32,7 @@ Major features:
   <date>2006-10-14</date>
   <license>LGPL</license>
   <state>beta</state>
-  <notes>This release adds support for ADOdb.
+  <notes>This release adds support for ADOdb (adodb.sf.net).
 ADOdb can be used with different error handling mechanisms:
 - default: methods return false on failure; these errors
   will be caught by XML_Query2XML and an XML_Query2XML_DBException
@@ -271,7 +271,7 @@ Bug fixes:
     <date>2006-10-14</date>
     <license>LGPL</license>
     <state>beta</state>
-    <notes>This release adds support for ADOdb.
+    <notes>This release adds support for ADOdb (adodb.sf.net).
 ADOdb can be used with different error handling mechanisms:
 - default: methods return false on failure; these errors
   will be caught by XML_Query2XML and an XML_Query2XML_DBException
