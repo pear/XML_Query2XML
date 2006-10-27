@@ -235,7 +235,6 @@ class XML_Query2XML_ISO9075Mapper
     *
     * @throws XML_Query2XML_ISO9075Mapper_Exception If a malformed UTF-8 string
     *                                               was passed as argument.
-    * @author John Downey <jdowney@gmail.com>
     * @param  string $string A string containing Unicode values encoded in UTF-8
     * @return array The array of Unicode values.
     */
