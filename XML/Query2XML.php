@@ -1352,29 +1352,6 @@ class XML_Query2XML
         return $this->_recordCache[$query];
     }
     
-    /**Private method to execute an SQL query and return the DB_result
-    * or MDB2_Result.
-    *
-    * For the different ways to specify $sql please see
-    * {@link XML_Query2XML::_prepareAndExecute()} which is directly
-    * called by _runSQLQuery().
-    *
-    * @throws XML_Query2XML_DBException  This exception will bubble up
-    *                   if it is thrown by _prepareAndExecute().
-    * @throws XML_Query2XML_ConfigException  This exception will bubble up
-    *                   if it is thrown by _prepareAndExecute().
-    * @param mixed $sql The SQL query as a string or an array.
-    * @return mixed An instance of DB_result or MDB2_Result as it is
-    *                   returned by _prepareAndExecute().
-    */
-    private function _runSQLQuery($sql)
-    {
-        $this->_debugStartQuery($sql);
-        $result = $this->_prepareAndExecute($sql);
-        $this->_debugStopQuery($sql);
-        return $result;
-    }
-    
     /**Private method to prepare and execute an SQL query.
     * $sql can be defined as one of the following:
     * <code>
@@ -1565,9 +1542,9 @@ class XML_Query2XML
                 *   test_prepareAndExecuteExecuteQueryDBException()
                 */
                 throw new XML_Query2XML_DBException(
-                    'Could not execute the following SQL query; '
-                    . 'false was returned: '
+                    'Could not execute the following SQL query: '
                     . $query
+                    . ' (false was returned)'
                 );
             }
         } elseif (!is_array($sql)) {
