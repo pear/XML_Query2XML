@@ -621,6 +621,10 @@ artistid  name                birth_year  albumid album_title     album_publishe
     <refsect3 id="{@id asterisk_shortcut}">
      <title>Using the Asterisk Shortcut</title>
      <para>
+      The asterisk shortcut only works with {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
+      (and {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications}).
+     </para>
+     <para>
       In some scenarios you will just want to use all columns found in the result set
       for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}.
       This is where the asterisk shortcut can come in very handy. An element specification that
@@ -859,7 +863,7 @@ print $dom->saveXML();
       </programlisting>
      </para>
      <para>
-      If we wanted to include all columns in the XML output but "genre" we could use a little trick:
+      If we wanted to include all columns in the XML output except "genre" we could use a little trick:
       <programlisting role="php">
       <![CDATA[
 <?php
@@ -909,6 +913,32 @@ print $dom->saveXML();
 </favorite_artists>
       ]]>
       </programlisting>
+      The exact same result could of course also be achieved using the "condition" option:
+      <programlisting role="php">
+      <![CDATA[
+<?php
+require_once('XML/Query2XML.php');
+require_once('DB.php');
+$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+  "SELECT * FROM artist",
+  array(
+    'rootTag' => 'favorite_artists',
+    'idColumn' => 'artistid',
+    'rowTag' => 'artist',
+    'elements' => array(
+        '*' => '*',
+        'genre' => array(
+            'condition' => 'false'
+        )
+    )
+  )
+);
+header('Content-Type: application/xml');
+print $dom->saveXML();
+?>
+      ]]>
+      </programlisting>
      </para>
      <para>
       One final note on the asterisk shortcut: if you explicitly specify a tag name (an array element key) it has to contain an asterisk. The following code
@@ -955,7 +985,7 @@ print $dom->saveXML();
 )
       ]]>
       </programlisting>
-      just makes no sense and therfore "*" is treated as a regular name of column - which does not exist in this case!
+      just makes no sense and therfore "*" is treated as a regular column name - which does not exist in this case!
       The exception's message would read: The column "*" used in the option "elements" does not exist in the result set.
      </para>
     </refsect3>
@@ -1243,7 +1273,11 @@ print $dom->saveXML();
    <refsect3 id="{@id asterisk_shortcut}">
     <title>Using the Asterisk Shortcut</title>
     <para>
-     Everything said about using the
+     The asterisk shortcut only works with {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications}
+     (and {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}).
+    </para>
+    <para>
+     Everything said about
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.asterisk_shortcut Using the Asterisk Shortcut with simple element specifications}
      applies here to!
      The simplest example of using the asterisk shortcut with the attributes option is as follows:
