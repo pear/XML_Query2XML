@@ -49,34 +49,6 @@ Major features:
    <file role="php" baseinstalldir="/" name="XML/Query2XML/ISO9075Mapper.php">
     <replace type="package-info" from="@package_version@" to="version"/>
    </file>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTest.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestDB.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestMDB2.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestADOdb.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestADOdbException.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestADOdbPEAR.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="/" name="tests/ISO9075MapperTest.php">
-    <replace type="package-info" from="@package_version@" to="version"/>
-   </file>
-   <file role="test" baseinstalldir="/" name="tests/ISO9075MapperTest.php"/>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTest.php"/>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestADOdb.php"/>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestADOdbException.php"/>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestADOdbPEAR.php"/>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestDB.php"/>
-   <file role="test" baseinstalldir="/" name="tests/Query2XMLTestMDB2.php"/>
    <file role="test" baseinstalldir="/" name="tests/Query2XML_Tests.dm2"/>
    <file role="test" baseinstalldir="/" name="tests/Query2XML_Tests.jpg"/>
    <file role="test" baseinstalldir="/" name="tests/Query2XML_Tests.sql"/>
