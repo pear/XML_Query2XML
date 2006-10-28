@@ -154,12 +154,12 @@ class XML_Query2XML
             }
             $this->_db = $db;
         } elseif (PEAR::isError($db)) {
-            //unit test: Query2XMLTest::testFactoryDBErrorException()
+            // unit tests: factory/throwDBException.phpt
             throw new XML_Query2XML_DBException(
                 'Could not connect to database: ' . $db->toString()
             );
         } else {
-            //unit test: Query2XMLTest::testFactoryWrongArumentTypeException()
+            //unit test: NoDBLayer/factory/throwConfigException.phpt
             throw new XML_Query2XML_ConfigException(
                 'Argument passed to the XML_Query2XML constructor is not an '
                 . 'instance of DB_common, MDB2_Driver_Common or ADOConnection.'
@@ -229,6 +229,7 @@ class XML_Query2XML
     */
     public function enableDebugLog($log)
     {
+        //unit tests: enableDebugLog/enableDebugLog.phpt
         $this->_debugLogger = $log;
         $this->_debug = true;
     }
@@ -237,6 +238,7 @@ class XML_Query2XML
     */
     public function disableDebugLog()
     {
+        //unit test: disableDebugLog/disableDebugLog.phpt
         $this->_debug = false;
     }
     
@@ -244,6 +246,7 @@ class XML_Query2XML
     */
     public function startProfiling()
     {
+        //unit tests: startProfile/startProfile.phpt
         $this->_profile = array(
             'queries'    => array(),
             'start'      => microtime(1),
@@ -259,6 +262,7 @@ class XML_Query2XML
     */
     public function stopProfiling()
     {
+        //unit test: stopProfile/stopProfile.phpt
         $this->_profiling = false;
         if (isset($this->_profile['start']) && $this->_profile['stop'] == 0) {
             $this->_profile['stop'] = microtime(1);
@@ -274,6 +278,7 @@ class XML_Query2XML
     */
     public function getRawProfile()
     {
+        //unit test: getRawProfile/getRawProfile.phpt
         $this->stopProfiling();
         return $this->_profile;
     }
@@ -283,6 +288,7 @@ class XML_Query2XML
     */
     public function getProfile()
     {
+        //unit test: getProfile/getProfile.phpt
         $this->stopProfiling();
         if (count($this->_profile) === 0) {
             return '';
@@ -336,6 +342,7 @@ class XML_Query2XML
     */
     public function clearProfile()
     {
+        //unit test: clearProfile/clearProfile.phpt
         $this->stopProfiling();
         $this->_profile = array();
     }
@@ -374,6 +381,12 @@ class XML_Query2XML
     */
     public function getFlatXML($sql, $rootTagName = 'root', $rowTagName = 'row')
     {
+        /*
+        * unit tests:
+        *  getFlatXML/simpleSelect.phpt
+        *  getFlatXML/throwDBException.phpt
+        *  getFlatXML/case01.phpt
+        */
         $dom = self::_createDomDocument();
         $rootTag = self::_addNewDOMChild($dom, $rootTagName);
         $records = $this->_getAllRecords($sql);
@@ -409,6 +422,28 @@ class XML_Query2XML
     */
     public function getXML($sql, $options)
     {
+        /*
+        * unit tests:
+        *  getXML/case0[2-8].phpt
+        *  getXML/complexElementSpecification_conditionOption[1-2].phpt
+        *  getXML/conditionPrefix_element_phpCode.phpt
+        *  getXML/conditionPrefix_element_staticText.phpt
+        *  getXML/conditionPrefix_element_columnName.phpt
+        *  getXML/conditionPrefix_attribute_phpCode.phpt
+        *  getXML/conditionPrefix_attribute_staticText.phpt
+        *  getXML/conditionPrefix_attribute_columnName.phpt
+        *  getXML/conditionPrefix_value_phpCode.phpt
+        *  getXML/conditionPrefix_value_staticText.phpt
+        *  getXML/conditionPrefix_value_columnName.phpt
+        *  getXML/asteriskShortcut_elements[1-6].phpt
+        *  getXML/asteriskShortcut_attributes[1.6].phpt
+        *  getXML/complexAttributeSpecification_valuePrefixes.phpt
+        *  getXML/complexAttributeSpecification_conditionOption.phpt
+        *  getXML/complexAttributeSpecification_complexQuerySpecification.phpt
+        *  getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+        *  getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+        */
+        
         //the default root tag name is 'root'
         if (isset($options['rootTag'])) {
             $rootTagName = $options['rootTag'];
@@ -536,7 +571,10 @@ class XML_Query2XML
     {
         //check $options for the essential settings first:
         if (!isset($options['idColumn'])) {
-            //unit test: test_getNestedXMLRecordIdColumnMissingException()
+            /*
+            * unit test: _getNestedXMLRecord/
+            *  throwConfigException_idcolumnOptionMissing.phpt
+            */
             throw new XML_Query2XML_ConfigException(
                 'The configuration option "idColumn" is missing.'
             );
@@ -544,7 +582,10 @@ class XML_Query2XML
         if (!isset($options['elements'])) {
             $options['elements'] = array();
         } elseif (!is_array($options['elements'])) {
-            //unit test: test_getNestedXMLRecordElementsTypeException()
+            /*
+            * unit test: _getNestedXMLRecord/
+            *  throwConfigException_elementsOptionWrongType.phpt
+            */
             throw new XML_Query2XML_ConfigException(
                 'The configuration option "elements" is not an array.'
             );
@@ -553,7 +594,10 @@ class XML_Query2XML
         if (!isset($options['attributes'])) {
             $options['attributes'] = array();
         } elseif (!is_array($options['attributes'])) {
-            //unit test: test_getNestedXMLRecordAttributesTypeException()
+            /*
+            * unit test: _getNestedXMLRecord/
+            *  throwConfigException_attributesOptionWrongType.phpt
+            */
             throw new XML_Query2XML_ConfigException(
                 'The configuration option "attributes" is not an array.'
             );
@@ -578,10 +622,11 @@ class XML_Query2XML
                 /*
                 * only check if $mapper == true (that is not '', false, etc)
                 *
-                * unit tests:
-                *  test_mapSQLIdentifierToXMLNameNotCallableException()
-                *  test_mapSQLIdentifierToXMLNameNotCallableException2()
-                *  test_mapSQLIdentifierToXMLNameNotCallableException3()
+                * unit tests: _getNestedXMLRecord/
+                *  throwConfigException_mapperNotCallableStaticMethod1.phpt
+                *  throwConfigException_mapperNotCallableStaticMethod2.phpt
+                *  throwConfigException_mapperNotCallableNonstaticMethod.phpt
+                *  throwConfigException_mapperNotCallableFunction.phpt
                 */
                 throw new XML_Query2XML_ConfigException(
                     'The method/function "' . $callableName . '" specified in the '
@@ -639,7 +684,10 @@ class XML_Query2XML
             try {
                 $attributes = self::_expandShortcuts($attributes, $record, $mapper);
             } catch (XML_Query2XML_ConfigException $e) {
-                //unit test: test_processComplexElementSpecificationRETHROW()
+                /*
+                * unit test: _processComplexElementSpecification/
+                *  rethrowConfigException.phpt
+                */
                 $e->addConfigParents('attributes');
                 throw $e;
             }
@@ -663,7 +711,10 @@ class XML_Query2XML
                         self::_setDOMAttribute($tag, $attributeName, $attributeValue);
                     }
                 } else {
-                    //unit test: test_getNestedXMLRecordInvalidAttributeException()
+                    /*
+                    * unit test: _getNestedXMLRecord/
+                    *  throwConfigException_attributeSpecWrongType.phpt
+                    */
                     throw new XML_Query2XML_ConfigException(
                         'The attribute "'
                         . $attributeName
@@ -680,7 +731,10 @@ class XML_Query2XML
             try {
                 $elements = self::_expandShortcuts($elements, $record, $mapper);
             } catch (XML_Query2XML_ConfigException $e) {
-                //unit test: test_processComplexElementSpecificationRETHROW()
+                /*
+                * unit test: _processComplexElementSpecification/
+                *  rethrowConfigException.phpt
+                */
                 $e->addConfigParents('elements');
                 throw $e;
             }
@@ -828,7 +882,8 @@ class XML_Query2XML
                     /*
                     * This will also catch XML_Query2XML_ISO9075Mapper_Exception
                     * if $mapper was "XML_Query2XML_ISO9075Mapper::map".
-                    * unit test: test_mapSQLIdentifierToXMLNameNotMappable()
+                    * unit test:
+                    *  _mapSQLIdentifierToXMLName/throwXMLException.phpt
                     */
                     throw new XML_Query2XML_XMLException(
                         'Could not map "' . $sqlIdentifier
@@ -922,7 +977,10 @@ class XML_Query2XML
                 );
             }
         } catch (XML_Query2XML_ConfigException $e) {
-            //unit test: test_processComplexElementSpecificationRETHROW()
+            /*
+            * unit test: _processComplexElementSpecification/
+            *  rethrowConfigException.phpt
+            */
             $e->addConfigParents(
                 array('elements', $tagName)
             );
@@ -963,8 +1021,8 @@ class XML_Query2XML
         if (!isset($options['value'])) {
             /*
             * the option "value" is mandatory
-            * unit test:
-            *  test_processComplexAttributeSpecificationMissingValueException()
+            * unit test: _processComplexElementSpecification/
+            *  throwConfigException_valueOptionMissing.phpt
             */
             throw new XML_Query2XML_ConfigException(
                 'The option "value" is missing from the complex attribute '
@@ -1045,8 +1103,9 @@ class XML_Query2XML
             if (isset($options['sql_options']['merge_selective'])) {
                 $merge_selective = $options['sql_options']['merge_selective'];
                 if (!is_array($merge_selective)) {
-                    /* unit test:
-                    *  test_applySqlOptionsToRecordMergeSelectiveTypeException
+                    /*
+                    * unit test: _processComplexElementSpecification/
+                    *  throwConfigException_mergeselectiveOptionWrongType.phpt
                     */
                     throw new XML_Query2XML_ConfigException(
                         'The configuration option "merge_selective" is '
@@ -1064,12 +1123,18 @@ class XML_Query2XML
             if (isset($sql['query'])) {
                 eval('$sql[\'query\'] = "' . $sql['query'] . '";');
             } elseif (!is_array($sql)) {
-                //unit test: test_applySqlOptionsToRecordWrongQueryTypeException()
+                /*
+                * unit test: _applySqlOptionsToRecord/
+                *  throwConfigException_sqlOptionWrongType.phpt
+                */
                 throw new XML_Query2XML_ConfigException(
                     'The configuration option "sql" is not an array or a string.'
                 );
             } else {
-                //unit test: test_applySqlOptionsToRecordMissingQueryException()
+                /*
+                * unit test: _applySqlOptionsToRecord/
+                *  throwConfigException_queryOptionMissing.phpt
+                */
                 throw new XML_Query2XML_ConfigException(
                     'The configuration option "query" is missing.',
                     'sql'
@@ -1087,7 +1152,10 @@ class XML_Query2XML
                         );
                     }
                 } else {
-                    //unit test: test_applySqlOptionsToRecordWrongDataTypeException()
+                    /*
+                    * unit test: _applySqlOptionsToRecord/
+                    *  throwConfigException_dataOptionWrongType.phpt
+                    */
                     throw new XML_Query2XML_ConfigException(
                         'The configuration option "data" is not an array.',
                         'sql'
@@ -1127,8 +1195,8 @@ class XML_Query2XML
                         if (!array_key_exists($merge_selective[$ii], $record)) {
                             /* Selected field does not exist in the parent record
                             * (passed as argumnet $record)
-                            * unit test:
-                            *  test_applySqlOptionsToRecordMergeException1()
+                            * unit test: _applySqlOptionsToRecord/
+                            *  throwConfigException_mergeMasterTrue.phpt
                             */
                             throw new XML_Query2XML_ConfigException(
                                 'The column "' . $merge_selective[$ii] . '" '
@@ -1151,8 +1219,8 @@ class XML_Query2XML
                         if (!array_key_exists($merge_selective[$ii], $record)) {
                             /* Selected field does not exist in the parent record
                             *  (passed as argumnet $record)
-                            *  unit test:
-                            *   test_applySqlOptionsToRecordMergeException2()
+                            *  unit test: _applySqlOptionsToRecord/
+                            *   throwConfigException_mergeMasterFalse.phpt
                             */
                             throw new XML_Query2XML_ConfigException(
                                 'The column "' . $merge_selective[$ii] . '" '
@@ -1213,7 +1281,12 @@ class XML_Query2XML
             if (array_key_exists($columnStr, $record)) {
                 $ret = $record[$columnStr];
             } else {
-                //unit test: test_applyColumnStringToRecordException()
+                /*
+                * unit test:
+                *  _applyColumnStringToRecord/throwConfigException_element1.phpt
+                *  _applyColumnStringToRecord/throwConfigException_element2.phpt
+                *  _applyColumnStringToRecord/throwConfigException_idcolumn.phpt
+                */
                 throw new XML_Query2XML_ConfigException(
                     'The column "' . $columnStr . '" used in the option '
                     . '"' . $optionName . '" does not exist in the result set.',
@@ -1400,8 +1473,8 @@ class XML_Query2XML
                 try {
                     $result = $this->_db->query($query);
                 } catch (ADODB_Exception $e) {
-                    //unit test: Query2XMLTestADOdbException::
-                    // test_prepareAndExecuteSimpleQueryDBException()
+                    //unit test: ADOdbException/
+                    // _prepareAndExecute/throwDBException_simpleQuery.phpt
                     throw new XML_Query2XML_DBException(
                         'Could not run the following SQL query: '
                         . $query .  '; '
@@ -1415,8 +1488,11 @@ class XML_Query2XML
             if (PEAR::isError($result)) {
                 //DB & MDB2 return PEAR_Error on failure
                 
-                //unit test: Query2XMLTestDB/Query2XMLTestMDB2::
-                // test_prepareAndExecuteSimpleQueryDBException()
+                /*
+                * unit tests:
+                *  DB/_prepareAndExecute/throwDBException_simpleQuery.phpt
+                *  MDB2/_prepareAndExecute/throwDBException_simpleQuery.phpt
+                */
                 throw new XML_Query2XML_DBException(
                     'Could not run the following SQL query: '
                     . $query .  '; '
@@ -1425,8 +1501,10 @@ class XML_Query2XML
             } elseif ($result === false) {
                 //ADOdb returns false on failure
                 
-                //unit test: Query2XMLTestADOdb::
-                // test_prepareAndExecuteSimpleQueryDBException()
+                /*
+                * unit test: ADOdbDefault/
+                *  _prepareAndExecute/throwDBException_simpleQuery.phpt
+                */
                 throw new XML_Query2XML_DBException(
                     'Could not run the following SQL query: '
                     . $query
@@ -1501,8 +1579,10 @@ class XML_Query2XML
                             $result = $this->_db->execute($queryHandle);
                         }
                     } catch (ADODB_Exception $e) {
-                        //unit test: Query2XMLTestADOdbException::
-                        // test_prepareAndExecuteExecuteQueryDBException()
+                        /*
+                        * unit test: ADOdbException/
+                        *  _prepareAndExecute/throwDBException_complexQuery.phpt
+                        */
                         throw new XML_Query2XML_DBException(
                             'Could not execute the following SQL query: '
                             . $query .  '; '
@@ -1530,7 +1610,7 @@ class XML_Query2XML
             
             if (PEAR::isError($result)) {
                 /* unit test:
-                *   test_prepareAndExecuteExecuteQueryDBException()
+                *   _prepareAndExecute/throwDBException_complexQuery.phpt
                 */
                 throw new XML_Query2XML_DBException(
                     'Could not execute the following SQL query: '
@@ -1539,7 +1619,7 @@ class XML_Query2XML
                 );
             } elseif ($result === false) {
                 /* unit test:
-                *   test_prepareAndExecuteExecuteQueryDBException()
+                *   _prepareAndExecute/throwDBException_complexQuery.phpt
                 */
                 throw new XML_Query2XML_DBException(
                     'Could not execute the following SQL query: '
@@ -1790,7 +1870,14 @@ class XML_Query2XML
         try {
             $element = $dom->createElement($name);
         } catch(DOMException $e) {
-            //unit test: test_createDOMElementException()
+            /*
+            * unit tests:
+            *  _createDOMElement/throwXMLException_elementInvalid1.phpt
+            *  _createDOMElement/throwXMLException_elementInvalid2.phpt
+            *  _createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
+            *  _createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
+            *  _createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
+            */
             throw new XML_Query2XML_XMLException(
                 '"' . $name . '" is an invalid XML element name: '
                 . $e->getMessage(),
