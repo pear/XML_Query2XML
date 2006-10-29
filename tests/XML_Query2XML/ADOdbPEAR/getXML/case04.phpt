@@ -21,7 +21,7 @@ XML_Query2XML::getXML(): Case04
             'elements' => array(
                 'NAME' => 'name',
                 'BIRTH_YEAR' => 'birth_year',
-                'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\"{\$record['birth_year']}\", 2);",
+                'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
                 'BIRTH_PLACE' => 'birth_place',
                 'GENRE' => 'genre',
                 'albums' => array(

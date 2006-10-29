@@ -33,8 +33,8 @@ XML_Query2XML::getXML(): Case05
                     'elements' => array(
                         'saleid',
                         'timestamp',
-                        'date' => "!return substr(\"{\$record['timestamp']}\", 0, strpos(\"{\$record['timestamp']}\", ' '));",
-                        'time' => "!return substr(\"{\$record['timestamp']}\", strpos(\"{\$record['timestamp']}\", ' ') + 1);",
+                        'date' => "!return substr(\$record['timestamp'], 0, strpos(\$record['timestamp'], ' '));",
+                        'time' => "!return substr(\$record['timestamp'], strpos(\$record['timestamp'], ' ') + 1);",
                         'album' => array(
                             'rootTag' => '',
                             'rowTag' => 'album',

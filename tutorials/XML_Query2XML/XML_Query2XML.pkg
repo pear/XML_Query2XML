@@ -3962,7 +3962,7 @@ $dom = $query2xml->getXML(
         'elements' => array(
             'NAME' => 'name',
             'BIRTH_YEAR' => 'birth_year',
-            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\"{\$record['birth_year']}\", 2);",
+            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
             'BIRTH_PLACE' => 'birth_place',
             'GENRE' => 'genre',
             'albums' => array(
@@ -4019,14 +4019,11 @@ print $beautifier->formatString($dom->saveXML());
       <listitem>
        BIRTH_YEAR_TWO_DIGIT was specified as
        <![CDATA[
-       'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\"{\$record['birth_year']}\", 2);",
+       'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
        ]]>
        The prefix '!' tells XML_Query2XML that the following string should be passed to
        {@link http://www.php.net/eval eval()}. Note that the return statement and the
        finishing ';' are necessary (as documented by {@link http://www.php.net/eval eval()}).
-       Also note the way we are referencing to the value of the birth_year column.
-       This syntax is documented in the 
-       {@link http://www.php.net/manual/en/language.types.string.php#language.types.string.parsing.complex PHP Manual}.
       </listitem>
       <listitem>
        the ARTIST tag now has two attributes: they are specified in an array using the
@@ -4144,7 +4141,7 @@ $dom = $query2xml->getXML(
         'elements' => array(
             'NAME' => 'name',
             'BIRTH_YEAR' => 'birth_year',
-            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\"{\$record['birth_year']}\", 2);",
+            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
             'BIRTH_PLACE' => 'birth_place',
             'GENRE' => 'genre',
             'albums' => array(
@@ -4276,8 +4273,8 @@ $dom = $query2xml->getXML(
                 'elements' => array(
                     'saleid',
                     'timestamp',
-                    'date' => "!return substr(\"{\$record['timestamp']}\", 0, strpos(\"{\$record['timestamp']}\", ' '));",
-                    'time' => "!return substr(\"{\$record['timestamp']}\", strpos(\"{\$record['timestamp']}\", ' ') + 1);",
+                    'date' => "!return substr(\$record['timestamp'], 0, strpos(\$record['timestamp'], ' '));",
+                    'time' => "!return substr(\$record['timestamp'], strpos(\$record['timestamp'], ' ') + 1);",
                     'album' => array(
                         'rootTag' => '',
                         'rowTag' => 'album',
@@ -4839,8 +4836,8 @@ $dom = $query2xml->getXML(
                 'elements' => array(
                     'saleid',
                     'timestamp',
-                    'date' => "!return substr(\"{\$record['timestamp']}\", 0, strpos(\"{\$record['timestamp']}\", ' '));",
-                    'time' => "!return substr(\"{\$record['timestamp']}\", strpos(\"{\$record['timestamp']}\", ' ') + 1);",
+                    'date' => "!return substr(\$record['timestamp'], 0, strpos(\$record['timestamp'], ' '));",
+                    'time' => "!return substr(\$record['timestamp'], strpos(\$record['timestamp'], ' ') + 1);",
                     'album' => array(
                         'rootTag' => '',
                         'rowTag' => 'album',
