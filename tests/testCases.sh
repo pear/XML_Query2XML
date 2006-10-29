@@ -2,7 +2,7 @@
 
 #
 # Name: testCases.sh
-# Version: $Id: testCases.sh,v 1.1 2006-04-29 07:03:55 lukasfeiler Exp $
+# Version: $Id: testCases.sh,v 1.2 2006-10-29 12:09:41 lukasfeiler Exp $
 #
 
 printUsage()
@@ -14,21 +14,18 @@ printUsage()
     echo " -u BASE_URL          The URL of the cases directory; default" >&2
     echo "                      is http://localhost/Query2XML/cases" >&2
     echo " -L CASES_LOCATION    The path to all case directories; default" >&2
-    echo "                      is ../../../docs/XML_Query2XML/cases." >&2
+    echo "                      is ../cases." >&2
     echo "" >&2
-    echo "This script tests all six cases by running all of them and" >&2
+    echo "This script tests all eight cases by running all of them and" >&2
     echo "comparing their output to the XML files in the specified" >&2
     echo 'case directory. $BASE_URL/case$i/case$i.php is requested for' >&2
     echo "this purpose." >&2
-    echo "The advantage of this script over the unit tests is that the" >&2
-    echo "expected and the actual result are diffed and you can inspect" >&2
-    echo "the files yourself." >&2
 }
 
 CASE_COUNT=8
 FIRST_CASE=1
 BASE_URL="http://localhost/Query2XML/cases"
-CASES_LOCATION="../../../docs/XML_Query2XML/cases"
+CASES_LOCATION="../cases"
 while getopts ":Cf:c:u:L:" opt; do
     case $opt in
         C ) CLEANUP=true ;;
@@ -57,7 +54,7 @@ if [ "$CLEANUP" = "true" ] ; then
     echo OK
 fi
 
-if [ "`find . -name 'case[0-9]*.*'`" != "" ] ; then
+if [ "`find . -maxdepth 1 -name 'case[0-9]*.*'`" != "" ] ; then
   echo "The following old case[0-9]*.* files need to be removed first:"
   find . -name 'case[0-9]*.*'
   exit 1
