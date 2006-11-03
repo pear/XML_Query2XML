@@ -1,18 +1,985 @@
+2006-11-03 19:39  lukasfeiler
+
+	* RELEASES (1.4): documented v0.8.0
+
+2006-11-03 19:27  lukasfeiler
+
+	* INSTALL (1.4): added new files to list of installed files
+
+2006-11-03 19:22  lukasfeiler
+
+	* package.xml (1.9): getting ready for v0.8.0
+
+2006-11-03 19:22  lukasfeiler
+
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.6): documented a
+	  migration strategy to v0.8.0
+
+2006-11-03 16:58  lukasfeiler
+
+	* cases/: case04/case04.php (1.3), case04/case04_debug.php (1.3),
+	  case05/case05.php (1.3), case05/case05_debug.php (1.2),
+	  case06/case06.php (1.2), case06/case06_debug.php (1.2),
+	  case08/case08.php (1.2), case08/case08_debug.php (1.2): changes
+	  for new # prefix and modified condition option
+
+2006-11-03 16:54  lukasfeiler
+
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.5): documented #
+	  prefix and modified condition option
+
+2006-11-03 16:53  lukasfeiler
+
+	* tests/: XML_Query2XML/settings.php (1.2),
+	  XML_Query2XML/ADOdbDefault/db_init.php (1.2),
+	  XML_Query2XML/ADOdbDefault/skipif.php (1.2),
+	  XML_Query2XML/ADOdbDefault/skipif_XML_Beautifier.php (1.2),
+	  XML_Query2XML/ADOdbException/db_init.php (1.2),
+	  XML_Query2XML/ADOdbException/skipif.php (1.2),
+	  XML_Query2XML/ADOdbException/skipif_XML_Beautifier.php (1.2),
+	  XML_Query2XML/ADOdbPEAR/db_init.php (1.2),
+	  XML_Query2XML/ADOdbPEAR/skipif.php (1.2),
+	  XML_Query2XML/ADOdbPEAR/skipif_XML_Beautifier.php (1.2),
+	  XML_Query2XML/DB/db_init.php (1.2), XML_Query2XML/DB/skipif.php
+	  (1.2), XML_Query2XML/DB/skipif_XML_Beautifier.php (1.2),
+	  XML_Query2XML/MDB2/db_init.php (1.2),
+	  XML_Query2XML/MDB2/skipif.php (1.2),
+	  XML_Query2XML/MDB2/skipif_XML_Beautifier.php (1.2),
+	  XML_Query2XML_ISO9075Mapper/skipif.php (1.2): added page-level
+	  docblock to all unit test include files
+
+2006-11-03 16:37  lukasfeiler
+
+	* tests/XML_Query2XML/:
+	  ADOdbDefault/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.2), ADOdbDefault/getXML/conditionPrefix_attribute_phpCode.phpt
+	  (1.2), ADOdbDefault/getXML/conditionPrefix_element_phpCode.phpt
+	  (1.2), ADOdbDefault/getXML/conditionPrefix_value_phpCode.phpt
+	  (1.2),
+	  ADOdbException/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.2),
+	  ADOdbException/getXML/conditionPrefix_attribute_phpCode.phpt
+	  (1.2), ADOdbException/getXML/conditionPrefix_element_phpCode.phpt
+	  (1.2), ADOdbException/getXML/conditionPrefix_value_phpCode.phpt
+	  (1.2),
+	  ADOdbPEAR/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.2), ADOdbPEAR/getXML/conditionPrefix_attribute_phpCode.phpt
+	  (1.2), ADOdbPEAR/getXML/conditionPrefix_element_phpCode.phpt
+	  (1.2), ADOdbPEAR/getXML/conditionPrefix_value_phpCode.phpt (1.2),
+	  DB/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.2), DB/getXML/conditionPrefix_attribute_phpCode.phpt (1.2),
+	  DB/getXML/conditionPrefix_element_phpCode.phpt (1.2),
+	  DB/getXML/conditionPrefix_value_phpCode.phpt (1.2),
+	  MDB2/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.2), MDB2/getXML/conditionPrefix_attribute_phpCode.phpt (1.2),
+	  MDB2/getXML/conditionPrefix_element_phpCode.phpt (1.2),
+	  MDB2/getXML/conditionPrefix_value_phpCode.phpt (1.2): removed
+	  tests for old "!" prefix
+
+2006-11-03 16:33  lukasfeiler
+
+	* tests/XML_Query2XML/:
+	  ADOdbDefault/_applyColumnStringToRecord/callbacks.phpt (1.1),
+	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_callback_function1.phpt
+	  (1.1),
+	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_callback_function2.phpt
+	  (1.1),
+	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_callback_method1.phpt
+	  (1.1),
+	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_callback_method2.phpt
+	  (1.1),
+	  ADOdbDefault/_processComplexElementSpecification/condition_function.phpt
+	  (1.1),
+	  ADOdbDefault/_processComplexElementSpecification/condition_staticMethod.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/conditionPrefix_attribute_callback.phpt
+	  (1.1), ADOdbDefault/getXML/conditionPrefix_element_callback.phpt
+	  (1.1), ADOdbDefault/getXML/conditionPrefix_value_callback.phpt
+	  (1.1), ADOdbException/_applyColumnStringToRecord/callbacks.phpt
+	  (1.1),
+	  ADOdbException/_applyColumnStringToRecord/throwConfigException_callback_function1.phpt
+	  (1.1),
+	  ADOdbException/_applyColumnStringToRecord/throwConfigException_callback_function2.phpt
+	  (1.1),
+	  ADOdbException/_applyColumnStringToRecord/throwConfigException_callback_method1.phpt
+	  (1.1),
+	  ADOdbException/_applyColumnStringToRecord/throwConfigException_callback_method2.phpt
+	  (1.1),
+	  ADOdbException/_processComplexElementSpecification/condition_function.phpt
+	  (1.1),
+	  ADOdbException/_processComplexElementSpecification/condition_staticMethod.phpt
+	  (1.1),
+	  ADOdbException/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_attribute_callback.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_element_callback.phpt
+	  (1.1), ADOdbException/getXML/conditionPrefix_value_callback.phpt
+	  (1.1), ADOdbPEAR/_applyColumnStringToRecord/callbacks.phpt (1.1),
+	  ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_callback_function1.phpt
+	  (1.1),
+	  ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_callback_function2.phpt
+	  (1.1),
+	  ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_callback_method1.phpt
+	  (1.1),
+	  ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_callback_method2.phpt
+	  (1.1),
+	  ADOdbPEAR/_processComplexElementSpecification/condition_function.phpt
+	  (1.1),
+	  ADOdbPEAR/_processComplexElementSpecification/condition_staticMethod.phpt
+	  (1.1),
+	  ADOdbPEAR/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
+	  (1.1), ADOdbPEAR/getXML/conditionPrefix_attribute_callback.phpt
+	  (1.1), ADOdbPEAR/getXML/conditionPrefix_element_callback.phpt
+	  (1.1), ADOdbPEAR/getXML/conditionPrefix_value_callback.phpt
+	  (1.1), DB/_applyColumnStringToRecord/callbacks.phpt (1.1),
+	  DB/_applyColumnStringToRecord/throwConfigException_callback_function1.phpt
+	  (1.1),
+	  DB/_applyColumnStringToRecord/throwConfigException_callback_function2.phpt
+	  (1.1),
+	  DB/_applyColumnStringToRecord/throwConfigException_callback_method1.phpt
+	  (1.1),
+	  DB/_applyColumnStringToRecord/throwConfigException_callback_method2.phpt
+	  (1.1),
+	  DB/_processComplexElementSpecification/condition_function.phpt
+	  (1.1),
+	  DB/_processComplexElementSpecification/condition_staticMethod.phpt
+	  (1.1),
+	  DB/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
+	  (1.1), DB/getXML/conditionPrefix_attribute_callback.phpt (1.1),
+	  DB/getXML/conditionPrefix_element_callback.phpt (1.1),
+	  DB/getXML/conditionPrefix_value_callback.phpt (1.1),
+	  MDB2/_applyColumnStringToRecord/callbacks.phpt (1.1),
+	  MDB2/_applyColumnStringToRecord/throwConfigException_callback_function1.phpt
+	  (1.1),
+	  MDB2/_applyColumnStringToRecord/throwConfigException_callback_function2.phpt
+	  (1.1),
+	  MDB2/_applyColumnStringToRecord/throwConfigException_callback_method1.phpt
+	  (1.1),
+	  MDB2/_applyColumnStringToRecord/throwConfigException_callback_method2.phpt
+	  (1.1),
+	  MDB2/_processComplexElementSpecification/condition_function.phpt
+	  (1.1),
+	  MDB2/_processComplexElementSpecification/condition_staticMethod.phpt
+	  (1.1),
+	  MDB2/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
+	  (1.1), MDB2/getXML/conditionPrefix_attribute_callback.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_element_callback.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_value_callback.phpt (1.1): new tests
+	  for callback prefix and modified condition option
+
+2006-11-03 16:24  lukasfeiler
+
+	* tests/XML_Query2XML/:
+	  ADOdbDefault/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes2.phpt
+	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes3.phpt
+	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes4.phpt
+	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes6.phpt
+	  (1.2), ADOdbDefault/getXML/asteriskShortcut_elements2.phpt (1.2),
+	  ADOdbDefault/getXML/asteriskShortcut_elements3.phpt (1.2),
+	  ADOdbDefault/getXML/asteriskShortcut_elements4.phpt (1.2),
+	  ADOdbDefault/getXML/asteriskShortcut_elements6.phpt (1.2),
+	  ADOdbDefault/getXML/case04.phpt (1.3),
+	  ADOdbDefault/getXML/case05.phpt (1.3),
+	  ADOdbDefault/getXML/case06.phpt (1.2),
+	  ADOdbDefault/getXML/case08.phpt (1.2),
+	  ADOdbDefault/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.2),
+	  ADOdbDefault/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.2),
+	  ADOdbDefault/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.2),
+	  ADOdbDefault/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.2),
+	  ADOdbDefault/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.2),
+	  ADOdbException/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes2.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes3.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes4.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes6.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_elements2.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_elements3.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_elements4.phpt
+	  (1.2), ADOdbException/getXML/asteriskShortcut_elements6.phpt
+	  (1.2), ADOdbException/getXML/case04.phpt (1.3),
+	  ADOdbException/getXML/case05.phpt (1.3),
+	  ADOdbException/getXML/case06.phpt (1.2),
+	  ADOdbException/getXML/case08.phpt (1.2),
+	  ADOdbException/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.2),
+	  ADOdbException/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.2),
+	  ADOdbException/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.2),
+	  ADOdbException/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.2),
+	  ADOdbException/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.2),
+	  ADOdbPEAR/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.2), ADOdbPEAR/getXML/asteriskShortcut_attributes2.phpt (1.2),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes3.phpt (1.2),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes4.phpt (1.2),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes6.phpt (1.2),
+	  ADOdbPEAR/getXML/asteriskShortcut_elements2.phpt (1.2),
+	  ADOdbPEAR/getXML/asteriskShortcut_elements3.phpt (1.2),
+	  ADOdbPEAR/getXML/asteriskShortcut_elements4.phpt (1.2),
+	  ADOdbPEAR/getXML/asteriskShortcut_elements6.phpt (1.2),
+	  ADOdbPEAR/getXML/case04.phpt (1.3), ADOdbPEAR/getXML/case05.phpt
+	  (1.3), ADOdbPEAR/getXML/case06.phpt (1.2),
+	  ADOdbPEAR/getXML/case08.phpt (1.2),
+	  ADOdbPEAR/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.2),
+	  ADOdbPEAR/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.2),
+	  ADOdbPEAR/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.2),
+	  ADOdbPEAR/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.2),
+	  ADOdbPEAR/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.2),
+	  DB/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.2), DB/getXML/asteriskShortcut_attributes2.phpt (1.2),
+	  DB/getXML/asteriskShortcut_attributes3.phpt (1.2),
+	  DB/getXML/asteriskShortcut_attributes4.phpt (1.2),
+	  DB/getXML/asteriskShortcut_attributes6.phpt (1.2),
+	  DB/getXML/asteriskShortcut_elements2.phpt (1.2),
+	  DB/getXML/asteriskShortcut_elements3.phpt (1.2),
+	  DB/getXML/asteriskShortcut_elements4.phpt (1.2),
+	  DB/getXML/asteriskShortcut_elements6.phpt (1.2),
+	  DB/getXML/case04.phpt (1.3), DB/getXML/case05.phpt (1.3),
+	  DB/getXML/case06.phpt (1.2), DB/getXML/case08.phpt (1.2),
+	  DB/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.2),
+	  DB/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.2), DB/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.2),
+	  DB/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.2),
+	  DB/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.2),
+	  MDB2/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.2), MDB2/getXML/asteriskShortcut_attributes2.phpt (1.2),
+	  MDB2/getXML/asteriskShortcut_attributes3.phpt (1.2),
+	  MDB2/getXML/asteriskShortcut_attributes4.phpt (1.2),
+	  MDB2/getXML/asteriskShortcut_attributes6.phpt (1.2),
+	  MDB2/getXML/asteriskShortcut_elements2.phpt (1.2),
+	  MDB2/getXML/asteriskShortcut_elements3.phpt (1.2),
+	  MDB2/getXML/asteriskShortcut_elements4.phpt (1.2),
+	  MDB2/getXML/asteriskShortcut_elements6.phpt (1.2),
+	  MDB2/getXML/case04.phpt (1.3), MDB2/getXML/case05.phpt (1.3),
+	  MDB2/getXML/case06.phpt (1.2), MDB2/getXML/case08.phpt (1.2),
+	  MDB2/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.2),
+	  MDB2/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.2),
+	  MDB2/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.2),
+	  MDB2/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.2),
+	  MDB2/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.2): using "#" prefix instead of "!"; "condition" option is now
+	  regular value that needs "#" prefix
+
+2006-11-03 16:22  lukasfeiler
+
+	* XML/Query2XML.php (1.6): no more eval(); "!" prefix was dropped -
+	  "#" prefix was introduced; condition option is now evaluated
+	  using _applyColumnStringToRecord()
+
+2006-10-30 00:23  lukasfeiler
+
+	* cases/case04/case04.php (1.2), cases/case04/case04_debug.php
+	  (1.2), cases/case05/case05.php (1.2),
+	  tests/XML_Query2XML/ADOdbDefault/getXML/case04.phpt (1.2),
+	  tests/XML_Query2XML/ADOdbDefault/getXML/case05.phpt (1.2),
+	  tests/XML_Query2XML/ADOdbException/getXML/case04.phpt (1.2),
+	  tests/XML_Query2XML/ADOdbException/getXML/case05.phpt (1.2),
+	  tests/XML_Query2XML/ADOdbPEAR/getXML/case04.phpt (1.2),
+	  tests/XML_Query2XML/ADOdbPEAR/getXML/case05.phpt (1.2),
+	  tests/XML_Query2XML/DB/getXML/case04.phpt (1.2),
+	  tests/XML_Query2XML/DB/getXML/case05.phpt (1.2),
+	  tests/XML_Query2XML/MDB2/getXML/case04.phpt (1.2),
+	  tests/XML_Query2XML/MDB2/getXML/case05.phpt (1.2),
+	  tutorials/XML_Query2XML/XML_Query2XML.pkg (1.4): simplified
+	  syntax for Case04 and Case05
+
+2006-10-29 13:11  lukasfeiler
+
+	* README (1.4): documented phpt unit tests; references to
+	  testCases.sh removed
+
+2006-10-29 13:09  lukasfeiler
+
+	* tests/testCases.sh (1.2): now not included in the package anymore
+	  - only to be used by developers
+
+2006-10-29 13:08  lukasfeiler
+
+	* package.xml (1.8): migrated to package.xml version 2.0
+
+2006-10-29 00:38  lukasfeiler
+
+	* XML/Query2XML.php (1.5): updated references to phpt unit tests
+
+2006-10-28 02:08  lukasfeiler
+
+	* package.xml (1.7): removed references to old PHPUnit2 test files
+
+2006-10-28 01:21  lukasfeiler
+
+	* XML/Query2XML/ISO9075Mapper.php (1.2): removed old @author tag
+
+2006-10-28 01:20  lukasfeiler
+
+	* package.xml (1.6): getting ready for v0.7.1
+
+2006-10-28 01:20  lukasfeiler
+
+	* XML/Query2XML.php (1.4): removed unneeded _runSQLQuery() and
+	  splified ADOdb exception message
+
+2006-10-28 01:17  lukasfeiler
+
+	* tests/: XML_Query2XML/settings.php (1.1), ISO9075MapperTest.php
+	  (1.2), Query2XMLTest.php (1.3), Query2XMLTestADOdb.php (1.2),
+	  Query2XMLTestADOdbException.php (1.2), Query2XMLTestADOdbPEAR.php
+	  (1.2), Query2XMLTestDB.php (1.2), Query2XMLTestMDB2.php (1.2):
+	  migrated from PHPUnit2 to phpt
+
+2006-10-28 01:13  lukasfeiler
+
+	* tests/: XML_Query2XML/ADOdbPEAR/db_init.php (1.1),
+	  XML_Query2XML/ADOdbPEAR/skipif.php (1.1),
+	  XML_Query2XML/ADOdbPEAR/skipif_XML_Beautifier.php (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_element1.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_element2.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_elementInvalid1.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_elementInvalid2.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_mapSQLIdentifierToXMLName/throwXMLException.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_prepareAndExecute/throwDBException_complexQuery.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_prepareAndExecute/throwDBException_simpleQuery.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_processComplexElementSpecification/rethrowConfigException.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/clearProfiling/clearProfiling.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/disableDebugLog/disableDebugLog.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/enableDebugLog/enableDebugLog.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/factory/throwDBException.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/getFlatXML/case01.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getFlatXML/simpleSelect.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getFlatXML/throwDBException.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getProfile/getProfile.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getRawProfile/getRawProfile.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_attributes1.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_attributes2.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_attributes3.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_attributes4.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_attributes5.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_attributes6.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_elements1.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_elements2.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_elements3.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_elements4.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_elements5.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/asteriskShortcut_elements6.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/getXML/case02.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/case03.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/case04.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/case05.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/case06.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/case07.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/case08.phpt (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_attribute_columnName.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_attribute_phpCode.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_attribute_staticText.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_element_columnName.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_element_phpCode.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_element_staticText.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_value_columnName.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_value_phpCode.phpt
+	  (1.1),
+	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_value_staticText.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/getXML/throwDBException.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/startProfiling/startProfiling.phpt
+	  (1.1), XML_Query2XML/ADOdbPEAR/stopProfiling/stopProfiling.phpt
+	  (1.1), XML_Query2XML/NoDBLayer/factory/throwConfigException.phpt
+	  (1.1), XML_Query2XML/NoDBLayer/factory/throwDBException.phpt
+	  (1.1), XML_Query2XML_ISO9075Mapper/skipif.php (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/_X_UC.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/_x.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/at.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/colon.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/curlyBraceClose.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/curlyBraceOpen.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/equalSign.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/greaterThan.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/invalidNameStartChars.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/invalidNametChars.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/lessThan.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/poundSign.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/semicolon.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/space.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/startWith_XML_UC.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/startWith_xml.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/throwException1.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/throwException2.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/throwException3.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/unmodified1.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/unmodified2.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/validNameChars.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/validNameStartChars.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/validSpecialChars1.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/validSpecialChars2.phpt (1.1),
+	  XML_Query2XML_ISO9075Mapper/map/variousChars.phpt (1.1): migrated
+	  from PHPUnit2 to phpt
+
+2006-10-28 01:09  lukasfeiler
+
+	* tests/XML_Query2XML/: ADOdbDefault/db_init.php (1.1),
+	  ADOdbDefault/skipif.php (1.1),
+	  ADOdbDefault/skipif_XML_Beautifier.php (1.1),
+	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_element1.phpt
+	  (1.1),
+	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_element2.phpt
+	  (1.1),
+	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
+	  (1.1),
+	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
+	  (1.1),
+	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
+	  (1.1),
+	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
+	  (1.1),
+	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
+	  (1.1),
+	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
+	  (1.1),
+	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
+	  (1.1),
+	  ADOdbDefault/_createDOMElement/throwXMLException_elementInvalid1.phpt
+	  (1.1),
+	  ADOdbDefault/_createDOMElement/throwXMLException_elementInvalid2.phpt
+	  (1.1),
+	  ADOdbDefault/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
+	  (1.1),
+	  ADOdbDefault/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
+	  (1.1),
+	  ADOdbDefault/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
+	  (1.1),
+	  ADOdbDefault/_mapSQLIdentifierToXMLName/throwXMLException.phpt
+	  (1.1),
+	  ADOdbDefault/_prepareAndExecute/throwDBException_complexQuery.phpt
+	  (1.1),
+	  ADOdbDefault/_prepareAndExecute/throwDBException_simpleQuery.phpt
+	  (1.1),
+	  ADOdbDefault/_processComplexElementSpecification/rethrowConfigException.phpt
+	  (1.1),
+	  ADOdbDefault/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.1), ADOdbDefault/clearProfiling/clearProfiling.phpt (1.1),
+	  ADOdbDefault/disableDebugLog/disableDebugLog.phpt (1.1),
+	  ADOdbDefault/enableDebugLog/enableDebugLog.phpt (1.1),
+	  ADOdbDefault/factory/throwDBException.phpt (1.1),
+	  ADOdbDefault/getFlatXML/case01.phpt (1.1),
+	  ADOdbDefault/getFlatXML/simpleSelect.phpt (1.1),
+	  ADOdbDefault/getFlatXML/throwDBException.phpt (1.1),
+	  ADOdbDefault/getProfile/getProfile.phpt (1.1),
+	  ADOdbDefault/getRawProfile/getRawProfile.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes1.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes2.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes3.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes4.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes5.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes6.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_elements1.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_elements2.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_elements3.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_elements4.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_elements5.phpt (1.1),
+	  ADOdbDefault/getXML/asteriskShortcut_elements6.phpt (1.1),
+	  ADOdbDefault/getXML/case02.phpt (1.1),
+	  ADOdbDefault/getXML/case03.phpt (1.1),
+	  ADOdbDefault/getXML/case04.phpt (1.1),
+	  ADOdbDefault/getXML/case05.phpt (1.1),
+	  ADOdbDefault/getXML/case06.phpt (1.1),
+	  ADOdbDefault/getXML/case07.phpt (1.1),
+	  ADOdbDefault/getXML/case08.phpt (1.1),
+	  ADOdbDefault/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/conditionPrefix_attribute_columnName.phpt
+	  (1.1), ADOdbDefault/getXML/conditionPrefix_attribute_phpCode.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/conditionPrefix_attribute_staticText.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/conditionPrefix_element_columnName.phpt
+	  (1.1), ADOdbDefault/getXML/conditionPrefix_element_phpCode.phpt
+	  (1.1),
+	  ADOdbDefault/getXML/conditionPrefix_element_staticText.phpt
+	  (1.1), ADOdbDefault/getXML/conditionPrefix_value_columnName.phpt
+	  (1.1), ADOdbDefault/getXML/conditionPrefix_value_phpCode.phpt
+	  (1.1), ADOdbDefault/getXML/conditionPrefix_value_staticText.phpt
+	  (1.1), ADOdbDefault/getXML/throwDBException.phpt (1.1),
+	  ADOdbDefault/startProfiling/startProfiling.phpt (1.1),
+	  ADOdbDefault/stopProfiling/stopProfiling.phpt (1.1),
+	  ADOdbException/db_init.php (1.1), ADOdbException/skipif.php
+	  (1.1), ADOdbException/skipif_XML_Beautifier.php (1.1),
+	  ADOdbException/_applyColumnStringToRecord/throwConfigException_element1.phpt
+	  (1.1),
+	  ADOdbException/_applyColumnStringToRecord/throwConfigException_element2.phpt
+	  (1.1),
+	  ADOdbException/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
+	  (1.1),
+	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
+	  (1.1),
+	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
+	  (1.1),
+	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
+	  (1.1),
+	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
+	  (1.1),
+	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
+	  (1.1),
+	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
+	  (1.1),
+	  ADOdbException/_createDOMElement/throwXMLException_elementInvalid1.phpt
+	  (1.1),
+	  ADOdbException/_createDOMElement/throwXMLException_elementInvalid2.phpt
+	  (1.1),
+	  ADOdbException/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
+	  (1.1),
+	  ADOdbException/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
+	  (1.1),
+	  ADOdbException/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
+	  (1.1),
+	  ADOdbException/_mapSQLIdentifierToXMLName/throwXMLException.phpt
+	  (1.1),
+	  ADOdbException/_prepareAndExecute/throwDBException_complexQuery.phpt
+	  (1.1),
+	  ADOdbException/_prepareAndExecute/throwDBException_simpleQuery.phpt
+	  (1.1),
+	  ADOdbException/_processComplexElementSpecification/rethrowConfigException.phpt
+	  (1.1),
+	  ADOdbException/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.1), ADOdbException/clearProfiling/clearProfiling.phpt (1.1),
+	  ADOdbException/disableDebugLog/disableDebugLog.phpt (1.1),
+	  ADOdbException/enableDebugLog/enableDebugLog.phpt (1.1),
+	  ADOdbException/factory/throwDBException.phpt (1.1),
+	  ADOdbException/getFlatXML/case01.phpt (1.1),
+	  ADOdbException/getFlatXML/simpleSelect.phpt (1.1),
+	  ADOdbException/getFlatXML/throwDBException.phpt (1.1),
+	  ADOdbException/getProfile/getProfile.phpt (1.1),
+	  ADOdbException/getRawProfile/getRawProfile.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_attributes1.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_attributes2.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_attributes3.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_attributes4.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_attributes5.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_attributes6.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_elements1.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_elements2.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_elements3.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_elements4.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_elements5.phpt (1.1),
+	  ADOdbException/getXML/asteriskShortcut_elements6.phpt (1.1),
+	  ADOdbException/getXML/case02.phpt (1.1),
+	  ADOdbException/getXML/case03.phpt (1.1),
+	  ADOdbException/getXML/case04.phpt (1.1),
+	  ADOdbException/getXML/case05.phpt (1.1),
+	  ADOdbException/getXML/case06.phpt (1.1),
+	  ADOdbException/getXML/case07.phpt (1.1),
+	  ADOdbException/getXML/case08.phpt (1.1),
+	  ADOdbException/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
+	  (1.1),
+	  ADOdbException/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.1),
+	  ADOdbException/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.1),
+	  ADOdbException/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.1),
+	  ADOdbException/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.1),
+	  ADOdbException/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.1),
+	  ADOdbException/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_attribute_columnName.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_attribute_phpCode.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_attribute_staticText.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_element_columnName.phpt
+	  (1.1), ADOdbException/getXML/conditionPrefix_element_phpCode.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_element_staticText.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_value_columnName.phpt
+	  (1.1), ADOdbException/getXML/conditionPrefix_value_phpCode.phpt
+	  (1.1),
+	  ADOdbException/getXML/conditionPrefix_value_staticText.phpt
+	  (1.1), ADOdbException/getXML/throwDBException.phpt (1.1),
+	  ADOdbException/startProfiling/startProfiling.phpt (1.1),
+	  ADOdbException/stopProfiling/stopProfiling.phpt (1.1): migrated
+	  from PHPUnit2 to phpt
+
+2006-10-28 01:04  lukasfeiler
+
+	* tests/XML_Query2XML/:
+	  MDB2/_applyColumnStringToRecord/throwConfigException_element1.phpt
+	  (1.1),
+	  MDB2/_applyColumnStringToRecord/throwConfigException_element2.phpt
+	  (1.1),
+	  MDB2/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
+	  (1.1),
+	  MDB2/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
+	  (1.1),
+	  MDB2/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
+	  (1.1),
+	  MDB2/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
+	  (1.1),
+	  MDB2/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
+	  (1.1),
+	  MDB2/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
+	  (1.1),
+	  MDB2/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
+	  (1.1),
+	  MDB2/_createDOMElement/throwXMLException_elementInvalid1.phpt
+	  (1.1),
+	  MDB2/_createDOMElement/throwXMLException_elementInvalid2.phpt
+	  (1.1),
+	  MDB2/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
+	  (1.1),
+	  MDB2/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
+	  (1.1),
+	  MDB2/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
+	  (1.1), MDB2/_mapSQLIdentifierToXMLName/throwXMLException.phpt
+	  (1.1), MDB2/_prepareAndExecute/throwDBException_complexQuery.phpt
+	  (1.1), MDB2/_prepareAndExecute/throwDBException_simpleQuery.phpt
+	  (1.1),
+	  MDB2/_processComplexElementSpecification/rethrowConfigException.phpt
+	  (1.1),
+	  MDB2/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.1), MDB2/clearProfiling/clearProfiling.phpt (1.1),
+	  MDB2/disableDebugLog/disableDebugLog.phpt (1.1),
+	  MDB2/enableDebugLog/enableDebugLog.phpt (1.1),
+	  MDB2/factory/throwDBException.phpt (1.1),
+	  MDB2/getFlatXML/case01.phpt (1.1),
+	  MDB2/getFlatXML/simpleSelect.phpt (1.1),
+	  MDB2/getFlatXML/throwDBException.phpt (1.1),
+	  MDB2/getProfile/getProfile.phpt (1.1),
+	  MDB2/getRawProfile/getRawProfile.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_attributes1.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_attributes2.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_attributes3.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_attributes4.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_attributes5.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_attributes6.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_elements1.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_elements2.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_elements3.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_elements4.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_elements5.phpt (1.1),
+	  MDB2/getXML/asteriskShortcut_elements6.phpt (1.1),
+	  MDB2/getXML/case02.phpt (1.1), MDB2/getXML/case03.phpt (1.1),
+	  MDB2/getXML/case04.phpt (1.1), MDB2/getXML/case05.phpt (1.1),
+	  MDB2/getXML/case06.phpt (1.1), MDB2/getXML/case07.phpt (1.1),
+	  MDB2/getXML/case08.phpt (1.1),
+	  MDB2/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
+	  (1.1),
+	  MDB2/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.1),
+	  MDB2/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.1),
+	  MDB2/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.1),
+	  MDB2/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.1),
+	  MDB2/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.1),
+	  MDB2/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.1), MDB2/getXML/conditionPrefix_attribute_columnName.phpt
+	  (1.1), MDB2/getXML/conditionPrefix_attribute_phpCode.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_attribute_staticText.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_element_columnName.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_element_phpCode.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_element_staticText.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_value_columnName.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_value_phpCode.phpt (1.1),
+	  MDB2/getXML/conditionPrefix_value_staticText.phpt (1.1),
+	  MDB2/getXML/throwDBException.phpt (1.1),
+	  MDB2/startProfiling/startProfiling.phpt (1.1),
+	  MDB2/stopProfiling/stopProfiling.phpt (1.1), MDB2/db_init.php
+	  (1.1), MDB2/skipif.php (1.1), MDB2/skipif_XML_Beautifier.php
+	  (1.1),
+	  DB/_applyColumnStringToRecord/throwConfigException_element1.phpt
+	  (1.1),
+	  DB/_applyColumnStringToRecord/throwConfigException_element2.phpt
+	  (1.1),
+	  DB/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
+	  (1.1),
+	  DB/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
+	  (1.1),
+	  DB/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
+	  (1.1),
+	  DB/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
+	  (1.1),
+	  DB/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
+	  (1.1),
+	  DB/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
+	  (1.1),
+	  DB/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
+	  (1.1),
+	  DB/_createDOMElement/throwXMLException_elementInvalid1.phpt
+	  (1.1),
+	  DB/_createDOMElement/throwXMLException_elementInvalid2.phpt
+	  (1.1),
+	  DB/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
+	  (1.1),
+	  DB/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
+	  (1.1),
+	  DB/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
+	  (1.1), DB/_mapSQLIdentifierToXMLName/throwXMLException.phpt
+	  (1.1), DB/_prepareAndExecute/throwDBException_complexQuery.phpt
+	  (1.1), DB/_prepareAndExecute/throwDBException_simpleQuery.phpt
+	  (1.1),
+	  DB/_processComplexElementSpecification/rethrowConfigException.phpt
+	  (1.1),
+	  DB/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
+	  (1.1), DB/clearProfiling/clearProfiling.phpt (1.1),
+	  DB/disableDebugLog/disableDebugLog.phpt (1.1),
+	  DB/enableDebugLog/enableDebugLog.phpt (1.1),
+	  DB/factory/throwDBException.phpt (1.1), DB/getFlatXML/case01.phpt
+	  (1.1), DB/getFlatXML/simpleSelect.phpt (1.1),
+	  DB/getFlatXML/throwDBException.phpt (1.1),
+	  DB/getProfile/getProfile.phpt (1.1),
+	  DB/getRawProfile/getRawProfile.phpt (1.1),
+	  DB/getXML/asteriskShortcut_attributes1.phpt (1.1),
+	  DB/getXML/asteriskShortcut_attributes2.phpt (1.1),
+	  DB/getXML/asteriskShortcut_attributes3.phpt (1.1),
+	  DB/getXML/asteriskShortcut_attributes4.phpt (1.1),
+	  DB/getXML/asteriskShortcut_attributes5.phpt (1.1),
+	  DB/getXML/asteriskShortcut_attributes6.phpt (1.1),
+	  DB/getXML/asteriskShortcut_elements1.phpt (1.1),
+	  DB/getXML/asteriskShortcut_elements2.phpt (1.1),
+	  DB/getXML/asteriskShortcut_elements3.phpt (1.1),
+	  DB/getXML/asteriskShortcut_elements4.phpt (1.1),
+	  DB/getXML/asteriskShortcut_elements5.phpt (1.1),
+	  DB/getXML/asteriskShortcut_elements6.phpt (1.1),
+	  DB/getXML/case02.phpt (1.1), DB/getXML/case03.phpt (1.1),
+	  DB/getXML/case04.phpt (1.1), DB/getXML/case05.phpt (1.1),
+	  DB/getXML/case06.phpt (1.1), DB/getXML/case07.phpt (1.1),
+	  DB/getXML/case08.phpt (1.1),
+	  DB/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
+	  (1.1),
+	  DB/getXML/complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt
+	  (1.1),
+	  DB/getXML/complexAttributeSpecification_conditionOption.phpt
+	  (1.1),
+	  DB/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
+	  (1.1), DB/getXML/complexAttributeSpecification_valuePrefixes.phpt
+	  (1.1),
+	  DB/getXML/complexElementSpecification_conditionOption1.phpt
+	  (1.1),
+	  DB/getXML/complexElementSpecification_conditionOption2.phpt
+	  (1.1), DB/getXML/conditionPrefix_attribute_columnName.phpt (1.1),
+	  DB/getXML/conditionPrefix_attribute_phpCode.phpt (1.1),
+	  DB/getXML/conditionPrefix_attribute_staticText.phpt (1.1),
+	  DB/getXML/conditionPrefix_element_columnName.phpt (1.1),
+	  DB/getXML/conditionPrefix_element_phpCode.phpt (1.1),
+	  DB/getXML/conditionPrefix_element_staticText.phpt (1.1),
+	  DB/getXML/conditionPrefix_value_columnName.phpt (1.1),
+	  DB/getXML/conditionPrefix_value_phpCode.phpt (1.1),
+	  DB/getXML/conditionPrefix_value_staticText.phpt (1.1),
+	  DB/getXML/throwDBException.phpt (1.1),
+	  DB/startProfiling/startProfiling.phpt (1.1),
+	  DB/stopProfiling/stopProfiling.phpt (1.1), DB/db_init.php (1.1),
+	  DB/skipif.php (1.1), DB/skipif_XML_Beautifier.php (1.1): migrated
+	  from PHPUnit2 to phpt
+
+2006-10-28 00:10  lukasfeiler
+
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.3): some
+	  clarifications and one additional demonstration of the asterisk
+	  shortcut
+
+2006-10-14 21:38  tag RELEASE_0_7_0
+
+2006-10-14 21:38  lukasfeiler
+
+	* ChangeLog (1.3, RELEASE_0_7_0): updated ChangeLog by running
+	  cvs2cl.pl -rtT
+
 2006-10-14 21:33  lukasfeiler
 
-	* RELEASES (1.3), package.xml (1.5): ready for 0.7.0
+	* RELEASES (1.3), package.xml (1.5) (utags: RELEASE_0_7_0): ready
+	  for 0.7.0
 
 2006-10-14 21:29  lukasfeiler
 
-	* INSTALL (1.3), README (1.3): documented the new unit tests
-	  Query2XMLTestDB.php, Query2XMLTestMDB2.php,
+	* INSTALL (1.3), README (1.3) (utags: RELEASE_0_7_0): documented
+	  the new unit tests Query2XMLTestDB.php, Query2XMLTestMDB2.php,
 	  Query2XMLTestADOdb.php, Query2XMLTestADOdbPEAR.php and
 	  Query2XMLTestADOdbException.php
 
 2006-10-14 21:28  lukasfeiler
 
-	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.2): ADOdb support
-	  documented
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.2, RELEASE_0_7_0):
+	  ADOdb support documented
 
 2006-10-14 21:25  lukasfeiler
 
@@ -20,17 +987,18 @@
 
 2006-10-14 20:36  lukasfeiler
 
-	* XML/Query2XML.php (1.3): added support for the database
-	  abstraction library ADOdb
+	* XML/Query2XML.php (1.3, RELEASE_0_7_0): added support for the
+	  database abstraction library ADOdb
 
 2006-10-14 20:17  lukasfeiler
 
 	* tests/: Query2XMLTest.php (1.2), Query2XMLTestADOdb.php (1.1),
 	  Query2XMLTestADOdbException.php (1.1), Query2XMLTestADOdbPEAR.php
-	  (1.1), Query2XMLTestDB.php (1.1), Query2XMLTestMDB2.php (1.1):
-	  now using separate test files for DB, MDB2, ADOdb with default
-	  error handling, ADOdb with exceptions, ADOdb with PEAR and tests
-	  that don't require any database abstraction layer
+	  (1.1), Query2XMLTestDB.php (1.1), Query2XMLTestMDB2.php (1.1)
+	  (utags: RELEASE_0_7_0): now using separate test files for DB,
+	  MDB2, ADOdb with default error handling, ADOdb with exceptions,
+	  ADOdb with PEAR and tests that don't require any database
+	  abstraction layer
 
 2006-09-28 12:24  tag RELEASE_0_6_1
 
@@ -55,8 +1023,9 @@
 
 2006-09-28 12:05  lukasfeiler
 
-	* ChangeLog-until-v0.6.0 (1.1, RELEASE_0_6_1): ChangeLog entries
-	  prior to v0.6.0 which was developed at sourceforge
+	* ChangeLog-until-v0.6.0 (1.1, RELEASE_0_7_0, RELEASE_0_6_1):
+	  ChangeLog entries prior to v0.6.0 which was developed at
+	  sourceforge
 
 2006-09-28 11:19  lukasfeiler
 
@@ -66,52 +1035,55 @@
 
 2006-04-29 09:03  lukasfeiler
 
-	* ChangeLog (1.1), INSTALL (1.1), LICENSE (1.1, RELEASE_0_6_1),
-	  README (1.1), RELEASES (1.1), package.xml (1.1),
+	* ChangeLog (1.1), INSTALL (1.1), LICENSE (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), README (1.1), RELEASES (1.1), package.xml (1.1),
 	  XML/Query2XML.php (1.1), XML/Query2XML/ISO9075Mapper.php (1.1,
-	  RELEASE_0_6_1), cases/case01/case01.php (1.1, RELEASE_0_6_1),
-	  cases/case01/case01.xml (1.1, RELEASE_0_6_1),
-	  cases/case02/case02.log (1.1, RELEASE_0_6_1),
-	  cases/case02/case02.php (1.1, RELEASE_0_6_1),
-	  cases/case02/case02.profile (1.1, RELEASE_0_6_1),
-	  cases/case02/case02.xml (1.1, RELEASE_0_6_1),
-	  cases/case02/case02_debug.php (1.1, RELEASE_0_6_1),
-	  cases/case03/case03.log (1.1, RELEASE_0_6_1),
-	  cases/case03/case03.php (1.1, RELEASE_0_6_1),
-	  cases/case03/case03.profile (1.1, RELEASE_0_6_1),
-	  cases/case03/case03.xml (1.1, RELEASE_0_6_1),
-	  cases/case03/case03_debug.php (1.1, RELEASE_0_6_1),
-	  cases/case04/case04.log (1.1, RELEASE_0_6_1),
-	  cases/case04/case04.php (1.1, RELEASE_0_6_1),
-	  cases/case04/case04.profile (1.1, RELEASE_0_6_1),
-	  cases/case04/case04.xml (1.1, RELEASE_0_6_1),
-	  cases/case04/case04_debug.php (1.1, RELEASE_0_6_1),
-	  cases/case05/case05.log (1.1, RELEASE_0_6_1),
-	  cases/case05/case05.php (1.1, RELEASE_0_6_1),
-	  cases/case05/case05.profile (1.1, RELEASE_0_6_1),
-	  cases/case05/case05.xml (1.1, RELEASE_0_6_1),
-	  cases/case05/case05_debug.php (1.1, RELEASE_0_6_1),
-	  cases/case06/case06.log (1.1, RELEASE_0_6_1),
-	  cases/case06/case06.php (1.1, RELEASE_0_6_1),
-	  cases/case06/case06.profile (1.1, RELEASE_0_6_1),
-	  cases/case06/case06.xml (1.1, RELEASE_0_6_1),
-	  cases/case06/case06_debug.php (1.1, RELEASE_0_6_1),
-	  cases/case07/case07.log (1.1, RELEASE_0_6_1),
-	  cases/case07/case07.php (1.1, RELEASE_0_6_1),
-	  cases/case07/case07.profile (1.1, RELEASE_0_6_1),
-	  cases/case07/case07.xml (1.1, RELEASE_0_6_1),
-	  cases/case07/case07_debug.php (1.1, RELEASE_0_6_1),
-	  cases/case08/case08.log (1.1, RELEASE_0_6_1),
-	  cases/case08/case08.php (1.1, RELEASE_0_6_1),
-	  cases/case08/case08.profile (1.1, RELEASE_0_6_1),
-	  cases/case08/case08.xml (1.1, RELEASE_0_6_1),
-	  cases/case08/case08_debug.php (1.1, RELEASE_0_6_1),
-	  tests/ISO9075MapperTest.php (1.1, RELEASE_0_6_1),
-	  tests/Query2XMLTest.php (1.1, RELEASE_0_6_1),
-	  tests/Query2XML_Tests.dm2 (1.1, RELEASE_0_6_1),
-	  tests/Query2XML_Tests.jpg (1.1, RELEASE_0_6_1),
-	  tests/Query2XML_Tests.sql (1.1, RELEASE_0_6_1),
-	  tests/testCases.sh (1.1, RELEASE_0_6_1),
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case01/case01.php (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case01/case01.xml (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case02/case02.log (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case02/case02.php (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case02/case02.profile (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case02/case02.xml (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case02/case02_debug.php
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case03/case03.log
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case03/case03.php
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case03/case03.profile
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case03/case03.xml
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1),
+	  cases/case03/case03_debug.php (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case04/case04.log (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case04/case04.php (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case04/case04.profile (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case04/case04.xml (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case04/case04_debug.php (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case05/case05.log (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case05/case05.php (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case05/case05.profile (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case05/case05.xml (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case05/case05_debug.php
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case06/case06.log
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case06/case06.php
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case06/case06.profile
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), cases/case06/case06.xml
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1),
+	  cases/case06/case06_debug.php (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case07/case07.log (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case07/case07.php (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case07/case07.profile (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case07/case07.xml (1.1, RELEASE_0_7_0,
+	  RELEASE_0_6_1), cases/case07/case07_debug.php (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case08/case08.log (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case08/case08.php (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case08/case08.profile (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case08/case08.xml (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case08/case08_debug.php
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), tests/ISO9075MapperTest.php
+	  (1.1, RELEASE_0_7_0, RELEASE_0_6_1), tests/Query2XMLTest.php
+	  (1.1, RELEASE_0_6_1), tests/Query2XML_Tests.dm2 (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), tests/Query2XML_Tests.jpg (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), tests/Query2XML_Tests.sql (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), tests/testCases.sh (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1),
 	  tutorials/XML_Query2XML/XML_Query2XML.pkg (1.1, RELEASE_0_6_1):
 	  all files for XML_Query2XML
 
