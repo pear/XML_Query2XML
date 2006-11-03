@@ -26,8 +26,8 @@ $dom = $query2xml->getXML(
                 'elements' => array(
                     'saleid',
                     'timestamp',
-                    'date' => "!return substr(\$record['timestamp'], 0, strpos(\$record['timestamp'], ' '));",
-                    'time' => "!return substr(\$record['timestamp'], strpos(\$record['timestamp'], ' ') + 1);",
+                    'date' => '#Callbacks::getFirstWord()',
+                    'time' => '#Callbacks::getSecondWord()',
                     'album' => array(
                         'rootTag' => '',
                         'rowTag' => 'album',
@@ -66,4 +66,17 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 require_once('XML/Beautifier.php');
 $beautifier = new XML_Beautifier();
 print $beautifier->formatString($dom->saveXML());
+
+class Callbacks
+{
+    function getFirstWord($record)
+    {
+        return substr($record['timestamp'], 0, strpos($record['timestamp'], ' '));
+    }
+    
+    function getSecondWord($record)
+    {
+        return substr($record['timestamp'], strpos($record['timestamp'], ' ') + 1);
+    }
+}
 ?>

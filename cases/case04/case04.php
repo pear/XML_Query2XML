@@ -14,7 +14,7 @@ $dom = $query2xml->getXML(
         'elements' => array(
             'NAME' => 'name',
             'BIRTH_YEAR' => 'birth_year',
-            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
+            'BIRTH_YEAR_TWO_DIGIT' => "#firstTwoChars()",
             'BIRTH_PLACE' => 'birth_place',
             'GENRE' => 'genre',
             'albums' => array(
@@ -55,4 +55,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 require_once('XML/Beautifier.php');
 $beautifier = new XML_Beautifier();
 print $beautifier->formatString($dom->saveXML());
+
+function firstTwoChars($record)
+{
+    return substr($record['birth_year'], 2);
+}
 ?>

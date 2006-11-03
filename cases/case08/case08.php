@@ -111,7 +111,7 @@ $dom = $query2xml->getXML(
             'address' => array(
                 'elements' => array(
                     'country',
-                    'state' => '!return Helper::getStatePostalCode($record["state"]);',
+                    'state' => '#Helper::getStatePostalCode()',
                     'city',
                     'street',
                     'phone'
@@ -177,7 +177,7 @@ $dom = $query2xml->getXML(
                                         'elements' => array(
                                             'title',
                                             'published_year',
-                                            'comment' => '?!return Helper::summarize($record["comment"], 12);',
+                                            'comment' => '?#Helper::summarizeComment(12)',
                                             'artist' => array(
                                                 'idColumn' => 'artistid',
                                                 'mapper' => 'mapArtist',
@@ -239,10 +239,11 @@ class Helper
             
     /**Translates a US state name into its two-letter postal code.
     * If the translation fails, $state is returned unchanged
-    * @param $state The state's name
+    * @param $record The record
     */
-    public static function getStatePostalCode($state)
+    public static function getStatePostalCode($record)
     {
+        $state = $record["state"];
         $s = str_replace("  ", " ", trim(strtoupper($state)));
         if (isset(self::$statePostalCodes[$s])) {
             return self::$statePostalCodes[$s];
@@ -257,6 +258,12 @@ class Helper
             $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
         }
         return $str;
+    }
+    
+    
+    function summarizeComment($record, $limit)
+    {
+        return self::summarize($record["comment"], $limit);
     }
 }
 ?>

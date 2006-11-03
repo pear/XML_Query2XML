@@ -22,7 +22,7 @@ $dom = $query2xml->getXML(
         'elements' => array(
             'NAME' => 'name',
             'BIRTH_YEAR' => 'birth_year',
-            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
+            'BIRTH_YEAR_TWO_DIGIT' => "#firstTwoChars()",
             'BIRTH_PLACE' => 'birth_place',
             'GENRE' => 'genre',
             'albums' => array(
@@ -67,4 +67,9 @@ print $beautifier->formatString($dom->saveXML());
 require_once('File.php');
 $fp = new File();
 $fp->write('case04.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
+
+function firstTwoChars($record)
+{
+    return substr($record['birth_year'], 2);
+}
 ?>
