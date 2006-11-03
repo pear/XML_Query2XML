@@ -62,6 +62,50 @@
   </para>
  </refsect1>
  
+ <refsect1 id="{@id migration}">
+  <title>Migrating to v0.8.0</title>
+  <para>
+  	The release 0.8.0 of XML_Query2XML is not backward compatible!
+  	Due to security considerations XML_Query2XML does not use the
+  	native function eval() anymore. Therefore
+  	<itemizedlist>
+     <listitem>
+      the "!" prefix is not supported anymore; this affects
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}, 
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value},
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn},
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes} and
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification Complex Query Specifications}
+     </listitem>
+     <listitem>
+      the behaviour of {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_condition} was changed
+     </listitem>
+     <listitem>
+      the new callback prefix "#" was added (use it instead of the "!" prefix)
+     </listitem>
+    </itemizedlist>
+  </para>
+  <para>
+    Proposed migration strategy:
+    <itemizedlist>
+     <listitem>
+      Wherever you currently use the "!" prefix, use the new callback prefix "#" instead.
+      The first argument passed to the callback function/method is always the current record ($record).
+      You can supply additional static arguments by placing them within the braces, e.g.
+      'MyClass:myMethod(arg2, arg3)' will result in MyClass:myMethod() being called with the current
+      record as the first, the string 'arg2' as the second and 'arg3' as the third argument. In
+      most cases you will want to put whatever code you used after the "!" prefix into a
+      separate function or static method. That function/method is what you call using the callback prefix "#".
+     </listitem>
+     <listitem>
+      The migration for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_condition} works
+      similarly. Move the PHP code into a separate function/method and call it using the callback
+      prefix "#".
+     </listitem>
+    </itemizedlist>
+  </para>
+ </refsect1>
+ 
  <refsect1 id="{@id query2xml_factory}">
   <title>XML_Query2XML::factory()</title>
   <para>
