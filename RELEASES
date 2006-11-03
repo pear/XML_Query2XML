@@ -3,6 +3,24 @@ Public Releases of Query2XML
 Version: $Id$
 
 
+v0.8.0
+------
+Release date: 2006-11-04
+Release notes: This release is *NOT BACKWARD COMPATIBLE*.
+I'm sorry for the BC break, but due to security considerations XML_Query2XML
+does not use the native function eval() anymore. Therefore
+- the "!" prefix is not supported anymore
+- the behaviour of the "condition" option was changed
+- the new callback prefix "#" was added (use it instead of the "!" prefix)
+
+A migration strategy is documented at
+http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#migration
+
+Also:
+- unit tests were migrated from PHPUnit2 to phpt
+- XML_Query2XML now comes with 433 unit tests
+- migrated from package.xml version 1.0 to version 2.0
+
 v0.7.0
 ------
 Release date: 2006-10-14
