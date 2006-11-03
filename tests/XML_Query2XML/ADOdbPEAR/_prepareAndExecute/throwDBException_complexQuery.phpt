@@ -42,8 +42,8 @@ XML_Query2XML::_prepareAndExecute(): check for XML_Query2XML_DBException - Compl
             )
         );
     } catch (XML_Query2XML_DBException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 75);
+        echo get_class($e);
     }
 ?>
 --EXPECT--
-XML_Query2XML_DBException: Could not execute the following SQL query: SELECT * FROM non_existing_table
+XML_Query2XML_DBException
