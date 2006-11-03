@@ -1,4 +1,24 @@
 <?php
+/**This is included from unit tests to skip the test if XML_Beautifier
+* is not available.
+*
+* LICENSE:
+* This source file is subject to version 2.1 of the LGPL
+* that is bundled with this package in the file LICENSE.
+*
+* COPYRIGHT:
+* Empowered Media
+* http://www.empoweredmedia.com
+* 481 Eighth Avenue Suite 1530
+* New York, NY 10001
+*
+* @copyright Empowered Media 2006
+* @license http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+* @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
+* @package XML_Query2XML
+* @version $Id$
+*/
+
 if (!@include_once 'XML/Beautifier.php') {
     print 'skip could not find XML/Beautifier.php';
 }
