@@ -289,7 +289,7 @@ array(
       If you use both, the array key and the array value to specify an element, the array value can be of the following types:
       <itemizedlist>
        <listitem>
-        <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '!'.
+        <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
         If the column does not exist, an {@link XML_Query2XML_ConfigException} will be thrown.
        </listitem>
        <listitem>
@@ -297,15 +297,19 @@ array(
         interpreted as static text.
        </listitem>
        <listitem>
-        <emphasis>PHP CODE with a ! prefix</emphasis>: if the value is preceeded by an exclamation mark ('!'), it
-        is interpreted as PHP code to be {@link http://www.php.net/eval eval()}'d. This means that
-        you have to use a return statement and finish with a semi colon (';').
+        <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
+        is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
+        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        as an associative array. You can also pass additional string arguments to the callback function by specifing
+        them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
+        called with the current record as the first and '12' as the second argument. If you do not want
+        to pass additional arguments to the callback function, the opening and closing brace are optional.
        </listitem>
       </itemizedlist>
       All three types can be combined with the <emphasis>CONDITIONAL prefix ?</emphasis>:
       if the value is preceeded by a question mark ('?'), the whole element will be skipped
       if the value equals (==) an empty string. The CONDITIONAL prefix can be combined with all types:
-      if you do this you have to write the CONDITIONAL prefix first e.g. '?!', '?:' or '?COLUMN_NAME'.
+      if you do this you have to write the CONDITIONAL prefix first e.g. '?#', '?:' or '?COLUMN_NAME'.
     <para>
     </para>
       The same syntax can be use for
@@ -395,22 +399,35 @@ $dom = $query2xml->getXML(
         'albumid',
         'title',
         'published_year',
-        'published_century' => "!return floor(\$record['published_year']/100);",
+        'published_century' => "#Utils::getPublishedYearCentury()",
         'comment' => '?comment',
         'static' => ':some static text',
-        'genre' => "?!return trim(\$record['genre']);"
+        'genre' => "?#Utils::trimGenre"
     )
   )
 );
 header('Content-Type: application/xml');
 print $dom->saveXML();
+
+class Utils
+{
+    function trimGenre($record)
+    {
+        return trim($record['genre']);
+    }
+    
+    function getPublishedYearCentury($record)
+    {
+        return floor($record['published_year']/100);
+    }
+}
 ?>
       ]]>
       </programlisting>
       The resulting XML data looks like this:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <albums>
   <album>
     <albumid>1</albumid>
@@ -1000,7 +1017,7 @@ print $dom->saveXML();
     of the following types:
     <itemizedlist>
      <listitem>
-      <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '!'.
+      <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
       If the column does not exist, an {@link XML_Query2XML_ConfigException} will be thrown.
       The current record (not the one of the parent level) will be used.
      </listitem>
@@ -1009,9 +1026,13 @@ print $dom->saveXML();
       interpreted as static text.
      </listitem>
      <listitem>
-      <emphasis>PHP CODE with a ! prefix</emphasis>: if the value is preceeded by an exclamation mark ('!'), it
-      is interpreted as PHP code to be {@link http://www.php.net/eval eval()}'d. This means that
-      you have to use a return statement and finish with a semi colon (';').
+      <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
+        is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
+        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        as an associative array. You can also pass additional string arguments to the callback function by specifing
+        them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
+        called with the current record as the first and '12' as the second argument. If you do not want
+        to pass additional arguments to the callback function, the opening and closing brace are optional.
      </listitem>
     </itemizedlist>
     The same syntax (with the additional '?' prefix) can be use for
@@ -2193,7 +2214,7 @@ print $dom->saveXML();
     The value of the XML element. The specification can be of the following types:
      <itemizedlist>
       <listitem>
-       <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '!'.
+       <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
        If the column does not exist, an {@link XML_Query2XML_ConfigException} will be thrown.
       </listitem>
       <listitem>
@@ -2201,18 +2222,19 @@ print $dom->saveXML();
        interpreted as static text.
       </listitem>
       <listitem>
-       <emphasis>PHP CODE with a ! prefix</emphasis>: if the value is preceeded by an exclamation mark ('!'), it
-       is interpreted as PHP code to be {@link http://www.php.net/eval eval()}'d. This means that
-       you have to use a return statement and finish with a semi colon (';').
-       A note on security: the ! prefix is - like all other prefixes - evaluated before looking at the rest;
-       therefore is no possible to store something like the string "!file_get_contents('/etc/passwd')"
-       in the database and execute that via XML_Query2XML.
+       <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
+        is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
+        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        as an associative array. You can also pass additional string arguments to the callback function by specifing
+        them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
+        called with the current record as the first and '12' as the second argument. If you do not want
+        to pass additional arguments to the callback function, the opening and closing brace are optional.
       </listitem>
      </itemizedlist>
      All three types can be combined with the <emphasis>CONDITIONAL prefix ?</emphasis>:
      if the value is preceeded by a question mark ('?'), the whole element will be skipped
      if the value equals (==) an empty string. The CONDITIONAL prefix can be combined with all types:
-     if you do this you have to write the CONDITIONAL prefix first e.g. '?!', '?:' or '?COLUMN_NAME'.
+     if you do this you have to write the CONDITIONAL prefix first e.g. '?#', '?:' or '?COLUMN_NAME'.
      
      The same syntax can be use for
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications},
@@ -2250,7 +2272,7 @@ $dom = $query2xml->getXML(
         'title',
         'published_year',
         'published_century' => array(
-            'value' => "!return floor(\$record['published_year']/100);",
+            'value' => "#Utils::getPublishedYearCentury()",
             'attributes' => array(
                 'digitCount' => ':2'
             )
@@ -2262,13 +2284,26 @@ $dom = $query2xml->getXML(
             )
         ),
         'genre' => array(
-            'value' => "?!return trim(\$record['genre']);"
+            'value' => "?#Utils::trimGenre()"
         )
     )
   )
 );
 header('Content-Type: application/xml');
 print $dom->saveXML();
+
+class Utils
+{
+    function trimGenre($record)
+    {
+        return trim($record['genre']);
+    }
+    
+    function getPublishedYearCentury($record)
+    {
+        return floor($record['published_year']/100);
+    }
+}
 ?>
      ]]>
      </programlisting>
@@ -2310,52 +2345,92 @@ print $dom->saveXML();
   <refsect2 id="{@id options_condition}">
    <title>$options['condition']</title>
    <para>
-    If the PHP code you specify with this option evaluates to false, the element will be skipped.
-    The corresponding lines of code in {@link XML_Query2XML::_getNestedXMLRecord()} look like this:
-    <programlisting role="php">
-    <![CDATA[
-if (!eval('return ' . $options['condition'] . ';')) {
-    //skip this element
-}
-    ]]>
-    </programlisting>
-    Therefore you must not prefix the condition with "return " or prepend a semicolon. This options provides
-    a similar function as the "?" prefix for column specifications - see 
+    This option allows you to specify a condition for the element to be included.
+    The string assigned to the condition option can be of the following types:
+      <itemizedlist>
+       <listitem>
+        <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
+        If the column does not exist, an {@link XML_Query2XML_ConfigException} will be thrown.
+        Remember that the string '0' or '' will both evaluate to false which
+        means that the element would be skipped. Note: in most cases you will be much
+        better off changing your WHERE clause than using this type of condition.
+       </listitem>
+       <listitem>
+        <emphasis>STATIC TEXT with a : prefix</emphasis>: if the value is preceeded by a colon (':'), it is
+        interpreted as static text. Remember that the string '0' or '' will both evaluate to false which
+        means that the element would be skipped.
+       </listitem>
+       <listitem>
+        <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
+        is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
+        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        as an associative array. You can also pass additional string arguments to the callback function by specifing
+        them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
+        called with the current record as the first and '12' as the second argument. If you do not want
+        to pass additional arguments to the callback function, the opening and closing brace are optional.
+       </listitem>
+      </itemizedlist>
+    
+    This option provides a similar function as the "?" prefix for column specifications - see 
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications},
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications} and {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value}.
-    The difference is that $options['condition'] is much more powerful! You can easyly call an external function to do
-    highly compelx validation if you like. Here goes a little example:
+    The difference is that $options['condition'] is more powerful: you can call any external function you like
+    to determin whether the element shall be included.
+    Here goes a little example:
     <programlisting role="php">
     <![CDATA[
 <?php
+if (isset($_REQUEST['includeCondition'])) {
+    $includeCondition = ($_REQUEST['includeCondition'] == '1');
+} else {
+    $includeCondition = false;
+}
 require_once('XML/Query2XML.php');
 require_once('DB.php');
 $query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(
-  "SELECT
-    *
-   FROM
-    album al",
-  array(
-    'rootTag' => 'albums',
-    'idColumn' => 'albumid',
-    'rowTag' => 'album',
-    'condition' => "isSpecialYear(\$record['published_year'])",
-    'elements' => array(
-        'albumid',
-        'title',
-        'published_year'
+$dom =& $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist
+        LEFT JOIN album ON album.artist_id = artist.artistid",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'artistid',
+            'name',
+            'birth_year',
+            'birth_place',
+            'genre',
+            'albums' => array(
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'condition' => '#isSpecialPublishedYear()',
+                'elements' => array(
+                    'albumid',
+                    'title',
+                    'published_year',
+                    'comment' => array(
+                        'value' => 'comment',
+                        'condition' => ':' . ($includeCondition ? '1' : '0')
+                    )
+                )
+            )
+        )
     )
-  )
 );
 header('Content-Type: application/xml');
 print $dom->saveXML();
 
 /**Returns whether $year is 1970 or 1972.
 */
-function isSpecialYear($year)
+function isSpecialPublishedYear($record)
 {
-    return $year == 1970 || $year == 1972;
+    //do some highly complex calculations ...
+    return $record['published_year'] == 1970 || $record['published_year'] == 1972;
 }
 ?>
     ]]>
@@ -2363,24 +2438,50 @@ function isSpecialYear($year)
     The resulting XML data is:
     <programlisting role="tutorial">
     <![CDATA[
-<?xml version="1.0"?>
-<albums>
-  <album>
-    <albumid>2</albumid>
-    <title>Curtis</title>
-    <published_year>1970</published_year>
-  </album>
-  <album>
-    <albumid>3</albumid>
-    <title>Shaft</title>
-    <published_year>1972</published_year>
-  </album>
-</albums>
+<?xml version="1.0" encoding="UTF-8"?>
+<music_library>
+  <artist>
+    <artistid>1</artistid>
+    <name>Curtis Mayfield</name>
+    <birth_year>1920</birth_year>
+    <birth_place>Chicago</birth_place>
+    <genre>Soul</genre>
+    <albums>
+      <album>
+        <albumid>2</albumid>
+        <title>Curtis</title>
+        <published_year>1970</published_year>
+      </album>
+    </albums>
+  </artist>
+  <artist>
+    <artistid>2</artistid>
+    <name>Isaac Hayes</name>
+    <birth_year>1942</birth_year>
+    <birth_place>Tennessee</birth_place>
+    <genre>Soul</genre>
+    <albums>
+      <album>
+        <albumid>3</albumid>
+        <title>Shaft</title>
+        <published_year>1972</published_year>
+      </album>
+    </albums>
+  </artist>
+  <artist>
+    <artistid>3</artistid>
+    <name>Ray Charles</name>
+    <birth_year>1930</birth_year>
+    <birth_place>Mississippi</birth_place>
+    <genre>Country and Soul</genre>
+    <albums />
+  </artist>
+</music_library>
     ]]>
     </programlisting>
    </para>
    <para>
-    Keep in mind that (if present) {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql} will
+    Note that (if present) {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql} will
     get processed *before* evaluating the condition. This allows you to wirte code
     like the following:
     <programlisting role="php">
@@ -2409,7 +2510,7 @@ $dom = $query2xml->getXML(
                 ),
                 'query' => "SELECT * FROM album WHERE artist_id = ?",
             ),
-            'condition' => '$record["published_year"] > 1980',
+            'condition' => '#isGT1980()',
             'elements' => array(
                 'title',
                 'published_year'
@@ -2420,11 +2521,16 @@ $dom = $query2xml->getXML(
 );
 header('Content-Type: application/xml');
 print $dom->saveXML();
+
+function isGT1980($record)
+{
+    return $record['published_year'] > 1980;
+}
 ?>
     ]]>
     </programlisting>
     "published_year" is a column of the table album but as the "sql" option is processed before evaluating
-    "condition" everything works just fine:
+    the "condition" option everything works just fine:
     <programlisting role="tutorial">
     <![CDATA[
 <?xml version="1.0"?>
@@ -2494,9 +2600,10 @@ print $dom->saveXML();
    <refsect3 id="{@id simplequeryspecification}">
     <title>Simple Query Specification</title>
     <para>
-     Here is a simple example similar to {@tutorial XML_Query2XML.pkg#casestudies.case03}:
+     Since v0.8.0 a simple query specifications are purely static strings (in most cases
+     you will want to use a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification}):
      <programlisting role="php">
-    <![CDATA[
+     <![CDATA[
 <?php
 require_once('XML/Query2XML.php');
 require_once('DB.php');
@@ -2505,7 +2612,9 @@ $dom = $query2xml->getXML(
     "SELECT
         *
      FROM
-        artist",
+        artist
+     WHERE
+        artistid = 1",
     array(
         'rootTag' => 'music_library',
         'rowTag' => 'artist',
@@ -2517,7 +2626,7 @@ $dom = $query2xml->getXML(
             'birth_place',
             'genre',
             'albums' => array(
-                'sql' => "SELECT * FROM album WHERE artist_id = '{\$record['artistid']}'",
+                'sql' => 'SELECT * FROM album WHERE artist_id = 1',
                 'rootTag' => 'albums',
                 'rowTag' => 'album',
                 'idColumn' => 'albumid',
@@ -2537,18 +2646,6 @@ print $dom->saveXML();
 ?>
      ]]>
     </programlisting>
-     Note how we used the artist ID of the current record: we surrounded {\$record['artistid']} by single
-     quotes to prevent SQL errors in case of null values. Only use this syntax if the column (artistid in this case)
-     is numeric. Otherwise you will create a SQL injection vulnerability. The expression itself is to be evaluated
-     using {@link http://www.php.net/eval eval()} within the private method {@link XML_Query2XML::_applySqlOptionsToRecord()};
-     therefore we quote the dollar sign of the array $record. This syntax is documented in the 
-     {@link http://www.php.net/manual/en/language.types.string.php#language.types.string.parsing.complex PHP Manual}.
-     The eval statement looks like this:
-     <programlisting role="php">
-    <![CDATA[
-eval("\$sql = \"{$options['sql']}\";");
-     ]]>
-     </programlisting>
     </para>
     <para>
      To understand how $options['sql'] really works, some knowledge of XML_Query2XML's internals might be helpful:
@@ -2578,7 +2675,7 @@ eval("\$sql = \"{$options['sql']}\";");
       <emphasis>$options['sql']['data']</emphasis>: an indexed array of values. The specification can be of the following types:
       <itemizedlist>
        <listitem>
-        <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':', '!' or '?'.
+        <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
         If the column does not exist, an {@link XML_Query2XML_ConfigException} will be thrown. Note
         that the parent record will be used! This is quite logic as this SQL statement has not been executed yet :)
        </listitem>
@@ -2587,9 +2684,13 @@ eval("\$sql = \"{$options['sql']}\";");
         interpreted as static text.
        </listitem>
        <listitem>
-        <emphasis>PHP CODE with a ! prefix</emphasis>: if the value is preceeded by an exclamation mark ('!'), it
-        is interpreted as PHP code to be {@link http://www.php.net/eval eval()}'d. This means that
-        you have to use a return statement and finish with a semi colon (';').
+        <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
+        is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
+        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        as an associative array. You can also pass additional string arguments to the callback function by specifing
+        them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
+        called with the current record as the first and '12' as the second argument. If you do not want
+        to pass additional arguments to the callback function, the opening and closing brace are optional.
        </listitem>
       </itemizedlist>
       The same syntax (with the additional '?' prefix) can be use for
@@ -2601,17 +2702,13 @@ eval("\$sql = \"{$options['sql']}\";");
       <emphasis>Note:</emphasis> $options['sql']['data'] is optional!
      </listitem>
      <listitem>
-      <emphasis>$options['sql']['query']</emphasis>: the SQL query as a string. This is evaluated at run time just like the
-      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification}:
-      <programlisting role="php">
-      <![CDATA[
-eval("\$query = \"{$options['sql']['query']}\";");
-      ]]>
-      </programlisting>
-      But use this feature with care as it can result in SQL Injection vulnerabilities.
+      <emphasis>$options['sql']['query']</emphasis>: the SQL query as a string that contains a placeholder
+      for each element of $options['sql']['data'].
      </listitem>
     </itemizedlist>
     Here is a simple example similar to {@tutorial XML_Query2XML.pkg#casestudies.case03}:
+    </para>
+    <para>
      <programlisting role="php">
     <![CDATA[
 <?php
@@ -3962,7 +4059,7 @@ $dom = $query2xml->getXML(
         'elements' => array(
             'NAME' => 'name',
             'BIRTH_YEAR' => 'birth_year',
-            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
+            'BIRTH_YEAR_TWO_DIGIT' => "#firstTwoChars()",
             'BIRTH_PLACE' => 'birth_place',
             'GENRE' => 'genre',
             'albums' => array(
@@ -4003,6 +4100,11 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 require_once('XML/Beautifier.php');
 $beautifier = new XML_Beautifier();
 print $beautifier->formatString($dom->saveXML());
+
+function firstTwoChars($record)
+{
+    return substr($record['birth_year'], 2);
+}
 ?>
      ]]>
      </programlisting>
@@ -4019,11 +4121,11 @@ print $beautifier->formatString($dom->saveXML());
       <listitem>
        BIRTH_YEAR_TWO_DIGIT was specified as
        <![CDATA[
-       'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
+       'BIRTH_YEAR_TWO_DIGIT' => "#firstTwoChars()",
        ]]>
-       The prefix '!' tells XML_Query2XML that the following string should be passed to
-       {@link http://www.php.net/eval eval()}. Note that the return statement and the
-       finishing ';' are necessary (as documented by {@link http://www.php.net/eval eval()}).
+       The prefix '#' tells XML_Query2XML that the following string is a function to call.
+       The current record is passed as argument to that function. firstTwoChars in our case
+       returns the first two characters of the string stored in $record['birth_year'].
       </listitem>
       <listitem>
        the ARTIST tag now has two attributes: they are specified in an array using the
@@ -4273,8 +4375,8 @@ $dom = $query2xml->getXML(
                 'elements' => array(
                     'saleid',
                     'timestamp',
-                    'date' => "!return substr(\$record['timestamp'], 0, strpos(\$record['timestamp'], ' '));",
-                    'time' => "!return substr(\$record['timestamp'], strpos(\$record['timestamp'], ' ') + 1);",
+                    'date' => '#Callbacks::getFirstWord()',
+                    'time' => '#Callbacks::getSecondWord()',
                     'album' => array(
                         'rootTag' => '',
                         'rowTag' => 'album',
@@ -4313,6 +4415,19 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 require_once('XML/Beautifier.php');
 $beautifier = new XML_Beautifier();
 print $beautifier->formatString($dom->saveXML());
+
+class Callbacks
+{
+    function getFirstWord($record)
+    {
+        return substr($record['timestamp'], 0, strpos($record['timestamp'], ' '));
+    }
+    
+    function getSecondWord($record)
+    {
+        return substr($record['timestamp'], strpos($record['timestamp'], ' ') + 1);
+    }
+}
 ?>
      ]]>
      </programlisting>
@@ -5038,7 +5153,7 @@ $dom = $query2xml->getXML(
             'address' => array(
                 'elements' => array(
                     'country',
-                    'state' => '!return Helper::getStatePostalCode($record["state"]);',
+                    'state' => '#Helper::getStatePostalCode()',
                     'city',
                     'street',
                     'phone'
@@ -5099,7 +5214,7 @@ $dom = $query2xml->getXML(
                                         'elements' => array(
                                             'title',
                                             'published_year',
-                                            'comment' => '?!return Helper::summarize($record["comment"], 12);',
+                                            'comment' => '?#Helper::summarizeComment(12)',
                                             'artist' => array(
                                                 'idColumn' => 'artistid',
                                                 'attributes' => array(
@@ -5160,10 +5275,11 @@ class Helper
             
     /**Translates a US state name into its two-letter postal code.
     * If the translation fails, $state is returned unchanged
-    * @param $state The state's name
+    * @param $record The record
     */
-    public static function getStatePostalCode($state)
+    public static function getStatePostalCode($record)
     {
+        $state = $record["state"];
         $s = str_replace("  ", " ", trim(strtoupper($state)));
         if (isset(self::$statePostalCodes[$s])) {
             return self::$statePostalCodes[$s];
@@ -5179,11 +5295,24 @@ class Helper
         }
         return $str;
     }
+    
+    function summarizeComment($record, $limit)
+    {
+        return self::summarize($record["comment"], $limit);
+    }
 }
 ?>
      ]]>
      </programlisting>
-     We use a static class called Helper here.
+     We use a static class called Helper here. Note how Helper::summarizeComment() is called with a second argument.
+     The current record is always passed as first argument to the callback function. So we specify the "comment"
+     element as
+     <programlisting role="php">
+     <![CDATA[
+     'comment' => '?#Helper::summarizeComment(12)',
+     ]]>
+     </programlisting>
+     which means that the string '12' will be passed as second argument to Helper::summarizeComment().
      </para>
     </refsect3>
     <refsect3 id="{@id case06_xml}">
@@ -6494,7 +6623,7 @@ $dom = $query2xml->getXML(
             'address' => array(
                 'elements' => array(
                     'country',
-                    'state' => '!return Helper::getStatePostalCode($record["state"]);',
+                    'state' => '#Helper::getStatePostalCode()',
                     'city',
                     'street',
                     'phone'
@@ -6560,7 +6689,7 @@ $dom = $query2xml->getXML(
                                         'elements' => array(
                                             'title',
                                             'published_year',
-                                            'comment' => '?!return Helper::summarize($record["comment"], 12);',
+                                            'comment' => '?#Helper::summarizeComment(12)',
                                             'artist' => array(
                                                 'idColumn' => 'artistid',
                                                 'mapper' => 'mapArtist',
@@ -6622,10 +6751,11 @@ class Helper
             
     /**Translates a US state name into its two-letter postal code.
     * If the translation fails, $state is returned unchanged
-    * @param $state The state's name
+    * @param $record The record
     */
-    public static function getStatePostalCode($state)
+    public static function getStatePostalCode($record)
     {
+        $state = $record["state"];
         $s = str_replace("  ", " ", trim(strtoupper($state)));
         if (isset(self::$statePostalCodes[$s])) {
             return self::$statePostalCodes[$s];
@@ -6640,6 +6770,12 @@ class Helper
             $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
         }
         return $str;
+    }
+    
+    
+    function summarizeComment($record, $limit)
+    {
+        return self::summarize($record["comment"], $limit);
     }
 }
 ?>
