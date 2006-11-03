@@ -24,7 +24,7 @@ XML_Query2XML::getXML(): complex element specification with "condition" option #
                 'birth_place',
                 'genre',
                 'albums' => array(
-                    'condition' => '$record["albumid"] != 1',
+                    'condition' => '#albumIdUnequalOne',
                     'rootTag' => 'albums',
                     'rowTag' => 'album',
                     'idColumn' => 'albumid',
@@ -39,6 +39,11 @@ XML_Query2XML::getXML(): complex element specification with "condition" option #
         )
     );
     print $dom->saveXML();
+    
+    function albumIdUnequalOne($record)
+    {
+        return $record["albumid"] != 1;
+    }
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

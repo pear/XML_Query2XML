@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): complex attribute specification with simple query speci
         "SELECT
             *
          FROM
-            artist",
+            artist
+         WHERE
+            artistid = 1",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',
@@ -20,11 +22,11 @@ XML_Query2XML::getXML(): complex attribute specification with simple query speci
                 'name',
                 'firstAlbumTitle' => array(
                     'value' => 'title',
-                    'sql' => 'SELECT * FROM album WHERE artist_id = {$record["artistid"]}'
+                    'sql' => 'SELECT * FROM album WHERE artist_id = 1'
                 ),
                 'firstAlbumYear' => array(
                     'value' => 'published_year',
-                    'sql' => 'SELECT * FROM album WHERE artist_id = {$record["artistid"]}'
+                    'sql' => 'SELECT * FROM album WHERE artist_id = 1'
                 )
             )
         )
@@ -33,4 +35,4 @@ XML_Query2XML::getXML(): complex attribute specification with simple query speci
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>
-<music_library><artist name="Curtis Mayfield" firstAlbumTitle="New World Order" firstAlbumYear="1990"/><artist name="Isaac Hayes" firstAlbumTitle="Shaft" firstAlbumYear="1972"/><artist name="Ray Charles"/></music_library>
+<music_library><artist name="Curtis Mayfield" firstAlbumTitle="New World Order" firstAlbumYear="1990"/></music_library>

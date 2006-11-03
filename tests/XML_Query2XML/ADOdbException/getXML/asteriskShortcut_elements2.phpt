@@ -20,11 +20,16 @@ XML_Query2XML::getXML(): asterisk shortcut with elements - as placeholder
                 '*' => '*',
                 'TAG1_*' => ':STATIC_VALUE',
                 'TAG2_*' => ':VALUE_*',
-                'TAG3_*' => '!return "--" . $record["*"] . "--";'
+                'TAG3_*' => '#someManipulation(*)'
             )
         )
     );
     print $dom->saveXML();
+    
+    function someManipulation($record, $columnName)
+    {
+        return "--" . $record[$columnName] . "--";
+    }
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

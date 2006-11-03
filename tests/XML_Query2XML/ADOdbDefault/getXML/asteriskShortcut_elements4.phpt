@@ -19,12 +19,17 @@ XML_Query2XML::getXML(): asterisk shortcut with elements - overwriting with comp
             'elements' => array(
                 '*' => '*',
                 'genre' => array(
-                    'value' => '!return strtoupper($record["genre"]);'
+                    'value' => '#genre2upper()'
                 )
             )
         )
     );
     print $dom->saveXML();
+    
+    function genre2upper($record)
+    {
+        return strtoupper($record['genre']);
+    }
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

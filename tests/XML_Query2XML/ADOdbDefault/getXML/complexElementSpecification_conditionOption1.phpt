@@ -17,7 +17,7 @@ XML_Query2XML::getXML(): complex element specification with "condition" option #
             'rootTag' => 'music_library',
             'rowTag' => 'artist',
             'idColumn' => 'artistid',
-            'condition' => '$record["artistid"] != 3',
+            'condition' => '#artistIdUnequalThree()',
             'elements' => array(
                 'artistid',
                 'name',
@@ -39,6 +39,11 @@ XML_Query2XML::getXML(): complex element specification with "condition" option #
         )
     );
     print $dom->saveXML();
+    
+    function artistIdUnequalThree($record)
+    {
+        return $record["artistid"] != 3;
+    }
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

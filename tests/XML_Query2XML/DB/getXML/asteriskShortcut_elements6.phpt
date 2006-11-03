@@ -19,12 +19,17 @@ XML_Query2XML::getXML(): asterisk shortcut with elements - supressing single ele
             'elements' => array(
                 '*' => '*',
                 'genre' => array(
-                    'condition' => 'false'
+                    'condition' => '#returnFalse'
                 )
             )
         )
     );
     print $dom->saveXML();
+    
+    function returnFalse()
+    {
+        return false;
+    }
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

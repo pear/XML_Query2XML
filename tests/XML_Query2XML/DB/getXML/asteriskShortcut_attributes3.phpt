@@ -18,11 +18,16 @@ XML_Query2XML::getXML(): asterisk shortcut with attributes - overwriting with si
             'idColumn' => 'artistid',
             'attributes' => array(
                 '*' => '*',
-                'genre' => '!return strtoupper($record["genre"]);'
+                'genre' => '#genre2upper()'
             )
         )
     );
     print $dom->saveXML();
+    
+    function genre2upper($record)
+    {
+        return strtoupper($record['genre']);
+    }
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

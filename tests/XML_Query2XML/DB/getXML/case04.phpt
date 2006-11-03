@@ -21,7 +21,7 @@ XML_Query2XML::getXML(): Case04
             'elements' => array(
                 'NAME' => 'name',
                 'BIRTH_YEAR' => 'birth_year',
-                'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
+                'BIRTH_YEAR_TWO_DIGIT' => "#firstTwoChars()",
                 'BIRTH_PLACE' => 'birth_place',
                 'GENRE' => 'genre',
                 'albums' => array(
@@ -60,6 +60,11 @@ XML_Query2XML::getXML(): Case04
     
     $beautifier = new XML_Beautifier();
     print $beautifier->formatString($dom->saveXML());
+    
+    function firstTwoChars($record)
+    {
+        return substr($record['birth_year'], 2);
+    }
 ?>
 --EXPECT--
 <MUSIC_LIBRARY>

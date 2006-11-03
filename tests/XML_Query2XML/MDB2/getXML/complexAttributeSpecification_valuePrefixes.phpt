@@ -24,16 +24,16 @@ XML_Query2XML::getXML(): complex attribute specification with value prefixes
                     'value' => '?:'
                 ),
                 'six' => array(
-                    'value' => '!return 2 * 3;'
+                    'value' => '#multiply(2, 3)'
                 ),
                 'hide2' => array(
-                    'value' => '?!return "";'
+                    'value' => '?#getEmptyString'
                 ),
                 'artistid' => array(
                     'value' => 'artistid'
                 ),
                 'genre' => array(
-                    'value' => '!return strtoupper($record["genre"]);'
+                    'value' => '#str2upper(genre)'
                 ),
                 'birth_year' => array(
                     'value' => '?birth_year'
@@ -42,6 +42,21 @@ XML_Query2XML::getXML(): complex attribute specification with value prefixes
         )
     );
     print $dom->saveXML();
+    
+    function str2upper($record, $columnName)
+    {
+        return strtoupper($record[$columnName]);
+    }
+    
+    function multiply($record, $a, $b)
+    {
+        return $a * $b;
+    }
+    
+    function getEmptyString()
+    {
+        return '';
+    }
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

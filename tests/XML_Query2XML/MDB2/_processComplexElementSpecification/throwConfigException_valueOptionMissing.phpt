@@ -20,13 +20,18 @@ XML_Query2XML::_processComplexElementSpecification(): check for XML_Query2XML_Co
                 'attributes' => array(
                     '*' => '*',
                     'genre' => array(
-                        'condition' => '$record["genre"] == "Soul"',
+                        'condition' => '#genreEqualsSoul()',
                     )
                 )
             )
         );
     } catch (XML_Query2XML_ConfigException $e) {
         echo get_class($e) . ': ' . $e->getMessage();
+    }
+    
+    function genreEqualsSoul($record)
+    {
+        return $record["genre"] == "Soul";
     }
 ?>
 --EXPECT--
