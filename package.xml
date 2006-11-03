@@ -29,8 +29,7 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2006-10-28</date>
- <time>02:09:14</time>
+ <date>2006-11-04</date>
  <version>
   <release>0.8.0</release>
   <api>0.8.0</api>
@@ -1043,7 +1042,7 @@ XML_Query2XML_DBException in case of a database error.
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2006-10-26</date>
+   <date>2006-11-04</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>This release is *NOT BACKWARD COMPATIBLE*.
 I'm sorry for the BC break, but due to security considerations XML_Query2XML
