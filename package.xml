@@ -20,7 +20,7 @@ Major features:
 7. provides profiling features
 8. in-depth documentation: tutorials and API documentation
 9. Eight case studies: from very simple to highly complex scenarios
-10. 378 unit tests for PHPUnit2
+10. 433 phpt unit tests
  
  </description>
  <lead>
@@ -32,18 +32,29 @@ Major features:
  <date>2006-10-28</date>
  <time>02:09:14</time>
  <version>
-  <release>0.7.1</release>
-  <api>0.7.1</api>
+  <release>0.8.0</release>
+  <api>0.8.0</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>This is a minor release.
- - unit tests were migrated from PHPUnit2 to phpt
- - moved to package.xml version 2.0
-  
+ <notes>This release is *NOT BACKWARD COMPATIBLE*.
+I'm sorry for the BC break, but due to security considerations XML_Query2XML
+does not use the native function eval() anymore. Therefore
+- the "!" prefix is not supported anymore
+- the behaviour of the "condition" option was changed
+- the new callback prefix "#" was added (use it instead of the "!" prefix)
+
+A migration strategy is documented at
+http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#migration
+
+Also:
+- unit tests were migrated from PHPUnit2 to phpt
+- XML_Query2XML now comes with 433 unit tests
+- migrated from package.xml version 1.0 to version 2.0
+
  </notes>
  <contents>
   <dir name="/">
@@ -149,20 +160,20 @@ Major features:
        <file baseinstalldir="/" name="case07.phpt" role="test" />
        <file baseinstalldir="/" name="case08.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt" role="test" />
+       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getXML -->
@@ -173,6 +184,11 @@ Major features:
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/stopProfiling -->
       <dir name="_applyColumnStringToRecord">
+       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -210,6 +226,8 @@ Major features:
        <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_prepareAndExecute -->
       <dir name="_processComplexElementSpecification">
+       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
+       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_processComplexElementSpecification -->
@@ -262,20 +280,20 @@ Major features:
        <file baseinstalldir="/" name="case07.phpt" role="test" />
        <file baseinstalldir="/" name="case08.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt" role="test" />
+       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/getXML -->
@@ -286,6 +304,11 @@ Major features:
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/stopProfiling -->
       <dir name="_applyColumnStringToRecord">
+       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -323,6 +346,8 @@ Major features:
        <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/_prepareAndExecute -->
       <dir name="_processComplexElementSpecification">
+       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
+       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/_processComplexElementSpecification -->
@@ -375,20 +400,20 @@ Major features:
        <file baseinstalldir="/" name="case07.phpt" role="test" />
        <file baseinstalldir="/" name="case08.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt" role="test" />
+       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getXML -->
@@ -399,6 +424,11 @@ Major features:
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/stopProfiling -->
       <dir name="_applyColumnStringToRecord">
+       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -436,6 +466,8 @@ Major features:
        <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_prepareAndExecute -->
       <dir name="_processComplexElementSpecification">
+       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
+       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_processComplexElementSpecification -->
@@ -488,20 +520,20 @@ Major features:
        <file baseinstalldir="/" name="case07.phpt" role="test" />
        <file baseinstalldir="/" name="case08.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt" role="test" />
+       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/getXML -->
@@ -512,6 +544,11 @@ Major features:
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/stopProfiling -->
       <dir name="_applyColumnStringToRecord">
+       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -549,6 +586,8 @@ Major features:
        <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/_prepareAndExecute -->
       <dir name="_processComplexElementSpecification">
+       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
+       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/_processComplexElementSpecification -->
@@ -601,20 +640,20 @@ Major features:
        <file baseinstalldir="/" name="case07.phpt" role="test" />
        <file baseinstalldir="/" name="case08.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valuePHPCode.phpt" role="test" />
+       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_phpCode.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/getXML -->
@@ -625,6 +664,11 @@ Major features:
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/stopProfiling -->
       <dir name="_applyColumnStringToRecord">
+       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -662,6 +706,8 @@ Major features:
        <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/_prepareAndExecute -->
       <dir name="_processComplexElementSpecification">
+       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
+       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/_processComplexElementSpecification -->
@@ -990,8 +1036,8 @@ XML_Query2XML_DBException in case of a database error.
   </release>
   <release>
    <version>
-    <release>0.7.1</release>
-    <api>0.7.1</api>
+    <release>0.8.0</release>
+    <api>0.8.0</api>
    </version>
    <stability>
     <release>beta</release>
@@ -999,10 +1045,21 @@ XML_Query2XML_DBException in case of a database error.
    </stability>
    <date>2006-10-26</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This is a minor release.
- - unit tests were migrated from PHPUnit2 to phpt
- - moved to package.xml version 2.0
-    
+   <notes>This release is *NOT BACKWARD COMPATIBLE*.
+I'm sorry for the BC break, but due to security considerations XML_Query2XML
+does not use the native function eval() anymore. Therefore
+- the "!" prefix is not supported anymore
+- the behaviour of the "condition" option was changed
+- the new callback prefix "#" was added (use it instead of the "!" prefix)
+
+A migration strategy is documented at
+http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#migration
+
+Also:
+- unit tests were migrated from PHPUnit2 to phpt
+- XML_Query2XML now comes with 433 unit tests
+- migrated from package.xml version 1.0 to version 2.0
+
    </notes>
   </release>
  </changelog>
