@@ -671,7 +671,12 @@ class XML_Query2XML
                 }
             }
             if (isset($options['condition'])) {
-                if (!eval('return ' . $options['condition'] . ';')) {
+                $continue = $this->_applyColumnStringToRecord(
+                    $options['condition'],
+                    $record,
+                    'condition'
+                );
+                if (!$continue) {
                     //this element is to be skipped
                     return false;
                 }
@@ -1013,11 +1018,17 @@ class XML_Query2XML
         &$options, $tag)
     {
         if (isset($options['condition'])) {
-            if (!eval('return ' . $options['condition'] . ';')) {
-                //this attribute is to be skipped
+            $continue = $this->_applyColumnStringToRecord(
+                $options['condition'],
+                $record,
+                'condition'
+            );
+            if (!$continue) {
+                //this element is to be skipped
                 return;
             }
         }
+        
         if (!isset($options['value'])) {
             /*
             * the option "value" is mandatory
@@ -1117,12 +1128,10 @@ class XML_Query2XML
         }
 
         if (is_string($options['sql'])) {
-            eval('$sql = "' . $options['sql'] . '";');
+            $sql = $options['sql'];
         } else {
             $sql = $options['sql'];
-            if (isset($sql['query'])) {
-                eval('$sql[\'query\'] = "' . $sql['query'] . '";');
-            } elseif (!is_array($sql)) {
+            if (!is_array($sql)) {
                 /*
                 * unit test: _applySqlOptionsToRecord/
                 *  throwConfigException_sqlOptionWrongType.phpt
@@ -1130,7 +1139,7 @@ class XML_Query2XML
                 throw new XML_Query2XML_ConfigException(
                     'The configuration option "sql" is not an array or a string.'
                 );
-            } else {
+            } elseif (!isset($sql['query'])) {
                 /*
                 * unit test: _applySqlOptionsToRecord/
                 *  throwConfigException_queryOptionMissing.phpt
@@ -1257,8 +1266,8 @@ class XML_Query2XML
     *               does not exist (and $columnStr has no special prefix).
     * @param string $columnStr  One of the following: if prefixed by ':' it means
     *               that $columnStr will be returned as is (the prefix removed of
-    *               course); if prefixed by '!' $columnStr is passed to the
-    *               native method eval(); in any other case, $columnStr must
+    *               course); if prefixed by '#' $columnStr is passed to the
+    *               native method call_user_func(); in any other case, $columnStr must
     *               be a valid column name or XML_Query2XML_ConfigException
     *               will be thrown.
     * @return mixed The resulting value.
@@ -1275,8 +1284,44 @@ class XML_Query2XML
             if ($ret === false) {
                 $ret = '';
             }
-        } elseif (strpos($columnStr, '!') === 0) {
-            $ret = eval(substr($columnStr, 1));
+        } elseif (strpos($columnStr, '#') === 0) {
+            $args = array($record);
+            $callback = substr($columnStr, 1);
+            $braceOpen = strpos($columnStr, '(');
+            if ($braceOpen !== false) {
+                $braceClose = strpos($columnStr, ')');
+                if ($braceOpen + 1 < $braceClose) {
+                    $argsString = substr(
+                        $callback, $braceOpen, $braceClose - $braceOpen - 1
+                    );
+                    $args = array_merge(
+                        $args,
+                        explode(',', str_replace(', ', ',', $argsString))
+                    );
+                }
+                if ($braceOpen < $braceClose) {
+                    $callback = substr($callback, 0, $braceOpen - 1);
+                }
+            }
+            if (strpos($callback, '::') !== false) {
+                $callback = split('::', $callback);
+            }
+            if (is_callable($callback, false, $callableName)) {
+                $ret = call_user_func_array($callback, $args);
+            } else {
+                /*
+                * unit tests: _applyColumnStringToRecord/
+                *  throwConfigException_callback_function1.phpt
+                *  throwConfigException_callback_function2.phpt
+                *  throwConfigException_callback_method1.phpt
+                *  throwConfigException_callback_method2.phpt
+                */
+                throw new XML_Query2XML_ConfigException(
+                    'The method/function "' . $callableName . '" specified in the '
+                    . 'configuration option "' . $optionName . '" is not callable.',
+                    $parentOptionName
+                );
+            }
         } else {
             if (array_key_exists($columnStr, $record)) {
                 $ret = $record[$columnStr];
