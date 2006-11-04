@@ -5,7 +5,7 @@ Version: $Id$
 
 v0.8.0
 ------
-Release date: 2006-11-03
+Release date: 2006-11-04
 Release notes: This release is *NOT BACKWARD COMPATIBLE*.
 I'm sorry for the BC break, but due to security considerations XML_Query2XML
 does not use the native function eval() anymore. Therefore
