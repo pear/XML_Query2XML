@@ -2122,7 +2122,7 @@ class XML_Query2XML
         }
         for ($i = 0; $i < count($children); $i++) {
             if (
-                isset($children[$i]->tagName)
+                $children[$i]->nodeType == XML_ELEMENT_NODE
                 &&
                 strpos($children[$i]->tagName, '__') === 0
             ) {
