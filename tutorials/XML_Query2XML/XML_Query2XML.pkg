@@ -63,7 +63,7 @@
  </refsect1>
  
  <refsect1 id="{@id migration}">
-  <title>Migrating to v0.8.0</title>
+  <title>Migrating from v0.6.x and v0.7.x to v1.x.x</title>
   <para>
   	The release 0.8.0 of XML_Query2XML is not backward compatible!
   	Due to security considerations XML_Query2XML does not use the
