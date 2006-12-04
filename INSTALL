@@ -23,7 +23,6 @@ The following packages are optional:
 Installation
 ------------
 - Just run `pear install XML_Query2XML'.
-- You might have to run `pear config-set preferred_state beta' first. 
 
 This will install the following files:
 $PHP_PEAR_INSTALL_DIR/XML/Query2XML.php
@@ -597,4 +596,3 @@ $PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08.php
 $PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08.profile
 $PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08.xml
 $PHP_PEAR_DOC_DIR/XML_Query2XML/cases/case08/case08_debug.php
-
