@@ -14,6 +14,9 @@ a bug fix but just a matter of clean code. The patch
 was anonymously submitted via the project's sourceforge site
 (Note: pear.php.net should be used instead).
 
+If you are upgrading from v0.6.x or v0.7.x, please read
+http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#migration
+
 v0.8.0
 ------
 Release date: 2006-11-04
