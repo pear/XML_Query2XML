@@ -30,7 +30,7 @@ require_once 'PEAR.php';
 /**Create XML data from SQL queries.
 *
 * XML_Query2XML heavily uses exceptions and therefore requires PHP5.
-* PEAR DB or PEAR MDB2 is also required.
+* PEAR DB, PEAR MDB2 or ADOdb is also required.
 * The two most important public methods this class provides are:
 *
 * <b>{@link XML_Query2XML::getFlatXML()}</b>
@@ -63,8 +63,8 @@ require_once 'PEAR.php';
 */
 class XML_Query2XML
 {
-    /**An instance of PEAR DB or PEAR MDB2
-	* @var mixed A subclass of DB_common or MDB2_Driver_Common.
+    /**An instance of PEAR DB, PEAR MDB2 or ADOdb
+	* @var mixed A subclass of DB_common, MDB2_Driver_Common or ADOConnection.
 	*/
     private $_db;
     
@@ -76,7 +76,8 @@ class XML_Query2XML
     private $_recordCache = array();
     
     /**An associative array used to store query handles returned by
-    * DB_common::prepare() or MDB2_Driver_Common::prepare().
+    * DB_common::prepare(), MDB2_Driver_Common::prepare() or
+    * ADOConnection::prepare().
     * @var array An associative array; the query string is used as the array key.
     */
     private $_preparedQueries = array();
@@ -115,17 +116,13 @@ class XML_Query2XML
     */
     private $_profile = array();
     
-    /**Whether a MDB2 or DB abstraction layer is used.
-    * @var boolean True if MDB2 is used.
-    * @see _db
-    */
-    private $_isMDB2 = false;
-    
     /**Constructor
     * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
     * @throws XML_Query2XML_ConfigException If $db is not an instance of a child
-    *                                       class of DB_common or MDB2_Driver_Common.
-    * @param mixed $db                      An instance of PEAR DB or PEAR MDB2
+    *                                       class of DB_common, MDB2_Driver_Common
+    *                                       or ADOConnection.
+    * @param mixed $db                      An instance of PEAR DB, PEAR MDB2 or
+    *                                       ADOdb
     */
     private function __construct($db)
     {        
@@ -184,7 +181,7 @@ class XML_Query2XML
     }
     
     /**Factory method.
-    * As first argument pass an instance of PEAR DB or PEAR MDB2:
+    * As first argument pass an instance of PEAR DB, PEAR MDB2 or ADOdb:
     * <code>
     * require_once('XML/Query2XML.php');
     * require_once('DB.php');
@@ -200,11 +197,20 @@ class XML_Query2XML
     *   MDB2::factory('mysql://root@localhost/Query2XML_Tests')
     * );
     * </code>
+    * 
+    * <code>
+    * require_once('XML/Query2XML.php');
+    * require_once('adodb/adodb.inc.php');
+    * $adodb = ADONewConnection('mysql');
+    * $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
+    * $query2xml =& XML_Query2XML::factory($adodb);
+    * </code>
     *
     * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
     * @throws XML_Query2XML_ConfigException If $db is not an instance of a child
-    *                                       class of DB_common or MDB2_Driver_Common.
-    * @param mixed $db                      An instance of PEAR DB or PEAR MDB2
+    *                                       class of DB_common, MDB2_Driver_Common or
+    *                                       ADOConnection.
+    * @param mixed $db                      An instance of PEAR DB, PEAR MDB2 or ADOdb.
     * @return XML_Query2XML                 A new instance of XML_Query2XML
     */
     public static function factory($db)
@@ -1370,8 +1376,8 @@ class XML_Query2XML
     *                   if it is thrown by _prepareAndExecute().
     * @throws XML_Query2XML_ConfigException  This exception will bubble up
     *                   if it is thrown by _prepareAndExecute(). It will also be
-    *                   thrown if DB_result::fetchRow() or MDB2_Result::fetchRow()
-    *                   return an error.
+    *                   thrown if DB_result::fetchRow(), MDB2_Result::fetchRow()
+    *                   or ADORecordSet::fetchRow() return an error.
     * @param mixed $sql The SQL query as a string or an array.
     * @return mixed A single record as an associative array or null if the
     *               query did not return any records.
@@ -1398,8 +1404,8 @@ class XML_Query2XML
     *                   if it is thrown by _prepareAndExecute().
     * @throws XML_Query2XML_ConfigException  This exception will bubble up
     *                   if it is thrown by _prepareAndExecute(). It will also be
-    *                   thrown if DB_result::fetchRow() or MDB2_Result::fetchRow()
-    *                   return an error.
+    *                   thrown if DB_result::fetchRow(), MDB2_Result::fetchRow()
+    *                   or ADORecordSet::fetchRow() return an error.
     * @param mixed $sql The SQL query as a string or an array.
     * @return array An array of records. Each record itself will be an
     *                   associative array.
@@ -1501,7 +1507,7 @@ class XML_Query2XML
     * @throws XML_Query2XML_ConfigException  Thrown if $sql is neither a string nor
     *                   an array with at least the element 'query'.
     * @param mixed $sql The SQL query to prepare (and the data to execute it with).
-    * @return mixed An instance of DB_result or MDB2_Result or ADORecordSet as it
+    * @return mixed An instance of DB_result, MDB2_Result or ADORecordSet as it
     *                   is returned by $this->_db->query() or $this->_db->execute().
     *                   Note that DB_result, MDB2_Result and ADORecordSet all
     *                   support the fetchRow() method.
