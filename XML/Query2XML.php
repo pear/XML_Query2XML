@@ -735,7 +735,11 @@ class XML_Query2XML
                 }
             }
             if (isset($options['value'])) {
-                self::_appendTextChildNode($tag, $parsedValue);
+                if ($parsedValue instanceof DomNode || is_array($parsedValue)) {
+                    self::_addDOMChildren($tag, $parsedValue, true);
+                } else {
+                    self::_appendTextChildNode($tag, $parsedValue);
+                }
             }
             
             //add child elements
@@ -769,7 +773,11 @@ class XML_Query2XML
                         'elements'
                     );
                     if ($this->_evaluateCondtion($tagValue, $column)) {
-                        self::_addNewDOMChild($tag, $tagName, $tagValue);
+                        if ($tagValue instanceof DomNode || is_array($tagValue)) {
+                            self::_addDOMChildren($tag, $tagValue, true);
+                        } else {
+                            self::_addNewDOMChild($tag, $tagName, $tagValue);
+                        }
                     }
                 }
             }
@@ -1290,6 +1298,29 @@ class XML_Query2XML
             if ($ret === false) {
                 $ret = '';
             }
+        } elseif (strpos($columnStr, '&') === 0) {
+            $columnName = substr($columnStr, 1);
+            if (!array_key_exists($columnName, $record)) {
+                throw new XML_Query2XML_ConfigException(
+                    'The column "' . $columnName . '" used in the option '
+                    . '"' . $optionName . '" does not exist in the result set.',
+                    $parentOptionName
+                );
+            }
+            
+            if (strlen($record[$columnName])) {
+                $doc = new DOMDocument();
+                if (!@$doc->loadXML($record[$columnName])) {
+                    throw new XML_Query2XML_XMLException(
+                        'The column "' . $columnName . '" used in the option '
+                        . '"' . $optionName . '" does not contain valid xml '
+                        . 'data: "' . $record[$columnName] . '"'
+                    );
+                }
+                $ret = $doc->documentElement;
+            } else {
+                $ret = '';
+            }
         } elseif (strpos($columnStr, '#') === 0) {
             $args = array($record);
             $callback = substr($columnStr, 1);
@@ -1497,7 +1528,7 @@ class XML_Query2XML
     * );
     * </code>
     * Note: when passed to this method, the values in the data array must already be
-    * interpreted in terms of the '!' and ':' prefix. This is done by
+    * interpreted in terms of the '#' and ':' prefix. This is done by
     * _applySqlOptionsToRecord() which calls _applyColumnStringToRecord() for
     * every element in the data array.
     *
@@ -1954,6 +1985,16 @@ class XML_Query2XML
     */
     private static function _appendTextChildNode(DomNode $element, $value)
     {
+        if (is_object($value) || is_array($value)) {
+            /*
+            * Objects and arrays cannot be cast
+            * to a string without an error.
+            */
+            throw new XML_Query2XML_XMLException(
+                'A value of the type ' . gettype($value) .
+                ' cannot be used for a text node'
+            );
+        }
         $dom = $element->ownerDocument;
         try {
             $element->appendChild($dom->createTextNode(self::_utf8encode($value)));
@@ -2074,19 +2115,28 @@ class XML_Query2XML
     *                         just a single DomNode instance.
     *                         Boolean values of false are always ignored.
     */
-    private static function _addDOMChildren(DomNode $base, $children)
+    private static function _addDOMChildren(DomNode $base, $children, $import = false)
     {
         if ($children === false) {
             //don't do anything
             return;
         } elseif ($children instanceof DomNode) {
             //$children is a single complex child
+            if ($import) {
+                $children = $base->ownerDocument->importNode($children, true);
+            }
             $base->appendChild($children);
         } elseif (is_array($children) && count($children) > 0) {
             for ($i = 0; $i < count($children); $i++) {
                 if ($children[$i] === false) {
                     //don't do anything
                 } elseif ($children[$i] instanceof DomNode) {
+                    if ($import) {
+                        $children[$i] = $base->ownerDocument->importNode(
+                            $children[$i],
+                            true
+                        );
+                    }
                     $base->appendChild($children[$i]);
                 } else {
                     //this should never happen
