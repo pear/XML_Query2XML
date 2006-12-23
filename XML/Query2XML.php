@@ -1290,35 +1290,19 @@ class XML_Query2XML
         $parentOptionName = '')
     {
         if (strpos($columnStr, '?') === 0) {
+            //the ? prefix is handled by _evaluateCondtion()
+            $columnStr = substr($columnStr, 1);
+        }
+        
+        $unserialize = false;
+        if (strpos($columnStr, '&') === 0) {
+            $unserialize = true;
             $columnStr = substr($columnStr, 1);
         }
         
         if (strpos($columnStr, ':') === 0) {
             $ret = substr($columnStr, 1);
             if ($ret === false) {
-                $ret = '';
-            }
-        } elseif (strpos($columnStr, '&') === 0) {
-            $columnName = substr($columnStr, 1);
-            if (!array_key_exists($columnName, $record)) {
-                throw new XML_Query2XML_ConfigException(
-                    'The column "' . $columnName . '" used in the option '
-                    . '"' . $optionName . '" does not exist in the result set.',
-                    $parentOptionName
-                );
-            }
-            
-            if (strlen($record[$columnName])) {
-                $doc = new DOMDocument();
-                if (!@$doc->loadXML($record[$columnName])) {
-                    throw new XML_Query2XML_XMLException(
-                        'The column "' . $columnName . '" used in the option '
-                        . '"' . $optionName . '" does not contain valid xml '
-                        . 'data: "' . $record[$columnName] . '"'
-                    );
-                }
-                $ret = $doc->documentElement;
-            } else {
                 $ret = '';
             }
         } elseif (strpos($columnStr, '#') === 0) {
@@ -1375,6 +1359,19 @@ class XML_Query2XML
                     $parentOptionName
                 );
                 
+            }
+        }
+        
+        if ($unserialize) {
+            if (strlen($ret)) {
+                $doc = new DOMDocument();
+                if (!@$doc->loadXML($ret)) {
+                    throw new XML_Query2XML_XMLException(
+                        'Could not unserialize the following XML data: '
+                        . $ret
+                    );
+                }
+                $ret = $doc->documentElement;
             }
         }
         return $ret;
