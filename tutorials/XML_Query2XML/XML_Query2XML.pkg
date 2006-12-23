@@ -47,13 +47,6 @@
     The following packages are optional:
     <itemizedlist>
      <listitem>
-      <emphasis>{@link http://pear.php.net/package/Log PEAR Log}</emphasis>
-     </listitem>
-     <listitem>
-      <emphasis>{@link http://pear.php.net/package/XML_Beautifier PEAR XML_Beautifier}</emphasis>: very
-      handy to format the XML data returned by DomDocument->saveXML().
-     </listitem>
-     <listitem>
       <emphasis>{@link http://pear.php.net/package/I18N_UnicodeString PEAR I18N_UnicodeString}</emphasis>:
       this is only required if you want to use XML_Query2XML's ability to 
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_mapper.9075mapping map SQL identifiers to XML names in accordance with ISO/IEC 9075-14:2005}.
@@ -122,10 +115,12 @@
    Using MDB2 with XML_Query2XML works like this:
    <programlisting role="php">
    <![CDATA[
-require_once('XML/Query2XML.php');
-require_once('MDB2.php');
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
 $mdb2 = MDB2::factory('mysql://root@localhost/Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($mdb2);
+?>
    ]]>
    </programlisting>
   </para>
@@ -133,10 +128,12 @@ $query2xml = XML_Query2XML::factory($mdb2);
    The same thing with PEAR DB looks like that:
    <programlisting role="php">
    <![CDATA[
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$db = DB::connect('mysql://root@localhost/Query2XML_Tests')
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'DB.php';
+$db = DB::connect('mysql://root@localhost/Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($db);
+?>
    ]]>
    </programlisting>
   </para>
@@ -144,13 +141,15 @@ $query2xml = XML_Query2XML::factory($db);
    And again the same thing with ADOdb:
    <programlisting role="php">
    <![CDATA[
-require_once('XML/Query2XML.php');
-require_once('adodb/adodb.inc.php');
-//require_once('adodb/adodb-exceptions.inc.php');
-//require_once('adodb/adodb-pear.inc.php');
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'adodb/adodb.inc.php';
+//require_once 'adodb/adodb-exceptions.inc.php';
+//require_once 'adodb/adodb-pear.inc.php';
 $adodb = ADONewConnection('mysql');
 $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
 $query2xml =& XML_Query2XML::factory($adodb);
+?>
    ]]>
    </programlisting>
    Note that XML_Query2XML works with ADOdb with the default error handling (no additional include file),
@@ -198,14 +197,19 @@ $query2xml =& XML_Query2XML::factory($adodb);
     or a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification}.
    </para>
    <para>
-    Here is an example of a simple query specification:
+    Here is an example of a simple query specification (<emphasis>WARNING:</emphasis> to prevent SQL injection
+    vulerabilities you should use a complex query specification when dealing with non-static queries like this one):
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
-$artistid = $_REQUEST['artistid'] * 1;
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+if (isset($_REQUEST['artistid']) && is_numeric($_REQUEST['artistid'])) {
+    $artistid =  $_REQUEST['artistid'];
+} else {
+    $artistid = 1;
+}
 $dom = $query2xml->getXML(
   "SELECT * FROM artist WHERE artistid = $artistid",
   array(
@@ -220,22 +224,23 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
     </programlisting>
     With simple query specifications you have to prevent SQL injection yourself. Here I ensured
-    that $artistid is an integer by multipling it by 1.
+    that $artistid is numeric by calling is_numeric().
    </para>
    <para>
     Next we use a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification}
-    and prevent SQL injections by using DB's or MDB2's prepare() and execute() methods.
+    and prevent SQL injections by using MDB2's/DB's/ADOdb's prepare() and execute() methods.
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $artistid = $_REQUEST['artistid'];
 $dom = $query2xml->getXML(
   array(
@@ -256,14 +261,15 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
     </programlisting>
-    The resulting XML data is identical in both cases:
+    The resulting XML data is identical in both cases (given that artistid was submitted as 1):
     <programlisting role="tutorial">
     <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artist>
   <artist>
     <name>Curtis Mayfield</name>
@@ -370,9 +376,9 @@ array(
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -387,6 +393,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -394,7 +401,7 @@ print $dom->saveXML();
       This results in the following XML data:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist>
     <name>Curtis Mayfield</name>
@@ -424,9 +431,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT
     *
@@ -451,6 +458,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 
 class Utils
@@ -487,7 +495,7 @@ class Utils
     <title>Curtis</title>
     <published_year>1970</published_year>
     <published_century>19</published_century>
-    <comment>that man&apos;s got somthin&apos; to say</comment>
+    <comment>that man's got somthin' to say</comment>
     <static>some static text</static>
     <genre>Soul</genre>
   </album>
@@ -496,7 +504,7 @@ class Utils
     <title>Shaft</title>
     <published_year>1972</published_year>
     <published_century>19</published_century>
-    <comment>he&apos;s the man</comment>
+    <comment>he's the man</comment>
     <static>some static text</static>
     <genre>Soul</genre>
   </album>
@@ -523,9 +531,9 @@ class Utils
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -545,6 +553,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -552,7 +561,7 @@ print $dom->saveXML();
       This results in the following XML data:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist>
     <name type="full_name">Curtis Mayfield</name>
@@ -578,9 +587,9 @@ print $dom->saveXML();
        <programlisting role="php">
        <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT * FROM artist LEFT JOIN album ON album.artist_id = artist.artistid",
     array(
@@ -603,6 +612,7 @@ $dom = $query2xml->getXML(
     )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -610,7 +620,7 @@ print $dom->saveXML();
       This results in the following XML data:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <music_library>
   <artist>
     <artistid>1</artistid>
@@ -694,9 +704,9 @@ artistid  name                birth_year  albumid album_title     album_publishe
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -709,6 +719,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -716,7 +727,7 @@ print $dom->saveXML();
       As the result set contains the column artistid, name, birth_year, birth_place and genre the XML data will look like this:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist>
     <artistid>1</artistid>
@@ -768,9 +779,9 @@ print $dom->saveXML();
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -783,6 +794,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -790,7 +802,7 @@ print $dom->saveXML();
       The above code would result in the following data:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist>
     <TAG_artistid>--1--</TAG_artistid>
@@ -825,9 +837,9 @@ print $dom->saveXML();
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -841,6 +853,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -848,7 +861,7 @@ print $dom->saveXML();
       The resulting XML data looks like this:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist>
     <artistid>1</artistid>
@@ -900,9 +913,9 @@ print $dom->saveXML();
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -918,6 +931,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -928,9 +942,9 @@ print $dom->saveXML();
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -944,6 +958,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -951,7 +966,7 @@ print $dom->saveXML();
       In the resulting XML data the column "genre" is missing because we used the CONDITIONAL prefix '?' in combination with a static empty text:
       <programlisting role="tutorial">
       <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist>
     <artistid>1</artistid>
@@ -978,9 +993,9 @@ print $dom->saveXML();
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -996,6 +1011,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -1007,9 +1023,9 @@ print $dom->saveXML();
       <programlisting role="php">
       <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1022,6 +1038,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
@@ -1114,9 +1131,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1132,6 +1149,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1139,7 +1157,7 @@ print $dom->saveXML();
      This results in the following XML data:
      <programlisting role="tutorial">
      <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist name="Curtis Mayfield" birth_year="1920" music_genre="Soul"/>
   <artist name="Isaac Hayes" birth_year="1942" music_genre="Soul"/>
@@ -1191,9 +1209,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1211,6 +1229,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1218,7 +1237,7 @@ print $dom->saveXML();
      This results in the following XML data:
      <programlisting role="tutorial">
      <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist birth_year="1920" bornBefore1940="true" name="Curtis Mayfield" />
   <artist birth_year="1942" name="Isaac Hayes" />
@@ -1236,9 +1255,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1261,6 +1280,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1268,7 +1288,7 @@ print $dom->saveXML();
      This results in the following XML data:
      <programlisting role="tutorial">
      <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist birth_year="1920" firstAlbumTitle="Curtis" name="Curtis Mayfield" />
   <artist birth_year="1942" firstAlbumTitle="Shaft" name="Isaac Hayes" />
@@ -1289,9 +1309,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1318,6 +1338,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1325,7 +1346,7 @@ print $dom->saveXML();
      This results in the following XML data:
      <programlisting role="tutorial">
      <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist birth_year="1920" firstAlbum="Curtis (Soul)" name="Curtis Mayfield" />
   <artist birth_year="1942" firstAlbum="Shaft (Soul)" name="Isaac Hayes" />
@@ -1349,9 +1370,9 @@ print $dom->saveXML();
      <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1364,6 +1385,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -1371,7 +1393,7 @@ print $dom->saveXML();
     This produces this XML data:
     <programlisting role="tutorial">
     <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist artistid="1" birth_place="Chicago" birth_year="1920" genre="Soul" name="Curtis Mayfield" />
   <artist artistid="2" birth_place="Tennessee" birth_year="1942" genre="Soul" name="Isaac Hayes" />
@@ -1393,9 +1415,9 @@ print $dom->saveXML();
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1410,6 +1432,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -1417,7 +1440,7 @@ print $dom->saveXML();
     'rowTag' was set to 'artist' therefore the resulting XML data is:
     <programlisting role="tutorial">
     <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
   <artist>
     <name>Curtis Mayfield</name>
@@ -1443,9 +1466,9 @@ print $dom->saveXML();
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -1478,6 +1501,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -1491,9 +1515,9 @@ print $dom->saveXML();
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1513,6 +1537,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -1600,10 +1625,10 @@ class SomeMapper
     }
 }
 
-require_once('XML/Query2XML.php');
-require_once('XML/Query2XML/ISO9075Mapper.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(           //
   "SELECT * FROM artist",            //
   array(                             //
@@ -1707,10 +1732,10 @@ print $dom->saveXML();                      //
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('XML/Query2XML/ISO9075Mapper.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1724,6 +1749,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1739,10 +1765,10 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('XML/Query2XML/ISO9075Mapper.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1761,6 +1787,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1780,9 +1807,9 @@ class UppercaseMapper
     }
 }
 
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -1802,6 +1829,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1856,9 +1884,9 @@ class MyMappers
     }
 }
 
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -1891,6 +1919,7 @@ $dom = $query2xml->getXML(
     )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1908,9 +1937,9 @@ class MyMappers
     }
 }
 
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -1943,6 +1972,7 @@ $dom = $query2xml->getXML(
     )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -1969,7 +1999,7 @@ print $dom->saveXML();
         <albumid>2</albumid>
         <title>Curtis</title>
         <published_year>1970</published_year>
-        <comment>that man&apos;s got somthin&apos; to say</comment>
+        <comment>that man's got somthin' to say</comment>
       </album>
     </albums>
   </artist>
@@ -1984,7 +2014,7 @@ print $dom->saveXML();
         <albumid>3</albumid>
         <title>Shaft</title>
         <published_year>1972</published_year>
-        <comment>he&apos;s the man</comment>
+        <comment>he's the man</comment>
       </album>
     </albums>
   </artist>
@@ -2015,9 +2045,9 @@ print $dom->saveXML();
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -2032,6 +2062,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -2039,7 +2070,7 @@ print $dom->saveXML();
     'rootTag' was set to 'favorite_artists'. The resulting XML data therefore is:
     <programlisting role="tutorial">
     <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
     <artist>
         <name>Curtis Mayfield</name>
@@ -2065,9 +2096,9 @@ print $dom->saveXML();
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -2100,6 +2131,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -2116,9 +2148,9 @@ print $dom->saveXML();
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -2150,6 +2182,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -2175,7 +2208,7 @@ print $dom->saveXML();
       <albumid>2</albumid>
       <title>Curtis</title>
       <published_year>1970</published_year>
-      <comment>that man&apos;s got somthin&apos; to say</comment>
+      <comment>that man's got somthin' to say</comment>
     </album>
   </artist>
   <artist>
@@ -2188,7 +2221,7 @@ print $dom->saveXML();
       <albumid>3</albumid>
       <title>Shaft</title>
       <published_year>1972</published_year>
-      <comment>he&apos;s the man</comment>
+      <comment>he's the man</comment>
     </album>
   </artist>
   <artist>
@@ -2210,9 +2243,9 @@ print $dom->saveXML();
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -2245,6 +2278,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
     ]]>
@@ -2296,9 +2330,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT
     *
@@ -2334,6 +2368,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 
 class Utils
@@ -2354,7 +2389,7 @@ class Utils
      The resulting XML data looks like this:
      <programlisting role="tutorial">
      <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <albums>
   <album>
     <albumid>1</albumid>
@@ -2369,7 +2404,7 @@ class Utils
     <title>Curtis</title>
     <published_year>1970</published_year>
     <published_century digitCount="2">19</published_century>
-    <comment type="short text">that man&apos;s got somthin&apos; to say</comment>
+    <comment type="short text">that man's got somthin' to say</comment>
     <genre>Soul</genre>
   </album>
   <album>
@@ -2377,7 +2412,7 @@ class Utils
     <title>Shaft</title>
     <published_year>1972</published_year>
     <published_century digitCount="2">19</published_century>
-    <comment type="short text">he&apos;s the man</comment>
+    <comment type="short text">he's the man</comment>
     <genre>Soul</genre>
   </album>
 </albums>
@@ -2429,9 +2464,9 @@ if (isset($_REQUEST['includeCondition'])) {
 } else {
     $includeCondition = false;
 }
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom =& $query2xml->getXML(
     "SELECT
         *
@@ -2467,6 +2502,7 @@ $dom =& $query2xml->getXML(
     )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 
 /**Returns whether $year is 1970 or 1972.
@@ -2531,9 +2567,9 @@ function isSpecialPublishedYear($record)
     <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT
     *
@@ -2564,6 +2600,7 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 
 function isGT1980($record)
@@ -2577,7 +2614,7 @@ function isGT1980($record)
     the "condition" option everything works just fine:
     <programlisting role="tutorial">
     <![CDATA[
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <artists>
   <artist>
     <artistid>1</artistid>
@@ -2649,9 +2686,9 @@ function isGT1980($record)
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -2686,6 +2723,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -2756,9 +2794,9 @@ print $dom->saveXML();
      <programlisting role="php">
     <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -2796,6 +2834,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -2868,9 +2907,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -2907,6 +2946,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -2917,9 +2957,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -2953,6 +2993,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -2975,9 +3016,9 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -3014,6 +3055,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
+$dom->formatOutput = true;
 print $dom->saveXML();
 ?>
      ]]>
@@ -3057,10 +3099,10 @@ print $dom->saveXML();
    <programlisting role="php">
    <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
+require_once 'XML/Query2XML.php';
 try {
-    require_once('DB.php');
-    $query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+    require_once 'MDB2.php';
+    $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
     $dom = $query2xml->getXML(
       "SELECT * FROM artist",
       array(
@@ -3107,10 +3149,10 @@ try {
 <programlisting role="php">
    <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
+require_once 'XML/Query2XML.php';
 try {
-    require_once('DB.php');
-    $query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+    require_once 'MDB2.php';
+    $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
     $dom = $query2xml->getXML(
       "SELECT * FROM artist",
       array(
@@ -3144,16 +3186,17 @@ try {
  </refsect1>
  
  <refsect1 id="{@id formatting}">
-  <title>Formatting the XML data using PEAR XML_Beautifier</title>
+  <title>Output formatting</title>
   <para>
-   You will most certainly want to format the XML data returned by DomDocument's saveXML() method. I can absolutely recommend 
-   {@link http://pear.php.net/package/XML_Beautifier PEAR XML_Beautifier}. Here's a little example:
+   Before calling the saveXML() method on your DomDocument instance set its public property
+   {@link http://at.php.net/manual/en/ref.dom.php#dom.class.domdocument.properties formatOutput} to true!
+   Here goes an example:
    <programlisting role="php">
    <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
   array(
@@ -3168,7 +3211,37 @@ $dom = $query2xml->getXML(
   )
 );
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+   ]]>
+   </programlisting>
+  </para>
+  <para>
+   Alternatively you could also use {@link http://pear.php.net/package/XML_Beautifier PEAR XML_Beautifier}.
+   Here goes an example:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+  "SELECT * FROM artist",
+  array(
+    'rootTag' => 'favorite_artist',
+    'idColumn' => 'artistid',
+    'rowTag' => 'artist',
+    'elements' => array(
+        'name',
+        'birth_year',
+        'genre'
+    )
+  )
+);
+header('Content-Type: application/xml');
+print '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
 require_once('XML/Beautifier.php');
 $beautifier = new XML_Beautifier();
@@ -3213,11 +3286,11 @@ print $beautifier->formatString($dom->saveXML());
    <programlisting role="php">
    <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
+require_once 'XML/Query2XML.php';
 $query2xml = XML_Query2XML::factory($db);
 
 //create a new instance of PEAR::Log
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'debug.log', 'XML_Query2XML');
 
 //start debugging
@@ -3274,7 +3347,7 @@ print $dom->saveXML();
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
+require_once 'XML/Query2XML.php';
 $query2xml = XML_Query2XML::factory($db);
 
 //start the profiling as soon as possible
@@ -3285,7 +3358,7 @@ $dom = $query2xml->getXML(...);
 print $dom->saveXML();
 
 //save the profile in a separate file
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('/tmp/query2xml_profile.txt', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
@@ -3442,9 +3515,9 @@ array('start' => microtime(true), 'stop' => 0);
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getFlatXML(
     "SELECT
         *
@@ -3454,11 +3527,9 @@ $dom = $query2xml->getFlatXML(
     'artist');
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>
     ]]>
      </programlisting>
@@ -3514,9 +3585,9 @@ print $beautifier->formatString($dom->saveXML());
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -3549,11 +3620,9 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>
       ]]>
       </programlisting>
@@ -3639,7 +3708,7 @@ artistid  name                birth_year  albumid album_title     album_publishe
         <albumid>2</albumid>
         <title>Curtis</title>
         <published_year>1970</published_year>
-        <comment>that man&apos;s got somthin&apos; to say</comment>
+        <comment>that man's got somthin' to say</comment>
       </album>
     </albums>
   </artist>
@@ -3654,7 +3723,7 @@ artistid  name                birth_year  albumid album_title     album_publishe
         <albumid>3</albumid>
         <title>Shaft</title>
         <published_year>1972</published_year>
-        <comment>he&apos;s the man</comment>
+        <comment>he's the man</comment>
       </album>
     </albums>
   </artist>
@@ -3678,11 +3747,11 @@ artistid  name                birth_year  albumid album_title     album_publishe
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case02.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -3721,13 +3790,11 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case02.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
@@ -3789,9 +3856,9 @@ DB_DURATION:    0.015194892883301
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -3835,11 +3902,9 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>
       ]]>
       </programlisting>
@@ -3893,7 +3958,7 @@ print $beautifier->formatString($dom->saveXML());
         <albumid>2</albumid>
         <title>Curtis</title>
         <published_year>1970</published_year>
-        <comment>that man&apos;s got somthin&apos; to say</comment>
+        <comment>that man's got somthin' to say</comment>
       </album>
     </albums>
   </artist>
@@ -3908,7 +3973,7 @@ print $beautifier->formatString($dom->saveXML());
         <albumid>3</albumid>
         <title>Shaft</title>
         <published_year>1972</published_year>
-        <comment>he&apos;s the man</comment>
+        <comment>he's the man</comment>
       </album>
     </albums>
   </artist>
@@ -3932,11 +3997,11 @@ print $beautifier->formatString($dom->saveXML());
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case03.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -3986,13 +4051,11 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case03.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
@@ -4088,9 +4151,9 @@ DB_DURATION:    0.024358034133911
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -4139,11 +4202,9 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
 function firstTwoChars($record)
 {
@@ -4226,7 +4287,7 @@ function firstTwoChars($record)
     <ALBUM ALBUMID="2">
       <TITLE>Curtis</TITLE>
       <PUBLISHED_YEAR>1970</PUBLISHED_YEAR>
-      <COMMENT>that man&apos;s got somthin&apos; to say</COMMENT>
+      <COMMENT>that man's got somthin' to say</COMMENT>
       <GENRE>Soul</GENRE>
     </ALBUM>
   </ARTIST>
@@ -4239,7 +4300,7 @@ function firstTwoChars($record)
     <ALBUM ALBUMID="3">
       <TITLE>Shaft</TITLE>
       <PUBLISHED_YEAR>1972</PUBLISHED_YEAR>
-      <COMMENT>he&apos;s the man</COMMENT>
+      <COMMENT>he's the man</COMMENT>
       <GENRE>Soul</GENRE>
     </ALBUM>
   </ARTIST>
@@ -4264,11 +4325,11 @@ function firstTwoChars($record)
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case04.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -4323,13 +4384,11 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case04.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
@@ -4392,9 +4451,9 @@ DB_DURATION:    0.026465892791748
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
          *
@@ -4454,11 +4513,9 @@ $root = $dom->firstChild;
 $root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
 class Callbacks
 {
@@ -4960,11 +5017,11 @@ class Callbacks
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case05.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -5030,13 +5087,11 @@ $root = $dom->firstChild;
 $root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case05.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
@@ -5116,9 +5171,9 @@ DB_DURATION:    0.050441980361938
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
          s.*,
@@ -5287,11 +5342,9 @@ $root = $dom->firstChild;
 $root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
 
 
@@ -5439,7 +5492,7 @@ class Helper
               <album albumid="3">
                 <title>Shaft</title>
                 <published_year>1972</published_year>
-                <comment>he&apos;s the man</comment>
+                <comment>he's the man</comment>
                 <artist artistid="2">
                   <name>Isaac Hayes</name>
                   <birth_year>1942</birth_year>
@@ -5458,7 +5511,7 @@ class Helper
               <album albumid="3">
                 <title>Shaft</title>
                 <published_year>1972</published_year>
-                <comment>he&apos;s the man</comment>
+                <comment>he's the man</comment>
                 <artist artistid="2">
                   <name>Isaac Hayes</name>
                   <birth_year>1942</birth_year>
@@ -5520,7 +5573,7 @@ class Helper
               <album albumid="3">
                 <title>Shaft</title>
                 <published_year>1972</published_year>
-                <comment>he&apos;s the man</comment>
+                <comment>he's the man</comment>
                 <artist artistid="2">
                   <name>Isaac Hayes</name>
                   <birth_year>1942</birth_year>
@@ -5539,7 +5592,7 @@ class Helper
               <album albumid="3">
                 <title>Shaft</title>
                 <published_year>1972</published_year>
-                <comment>he&apos;s the man</comment>
+                <comment>he's the man</comment>
                 <artist artistid="2">
                   <name>Isaac Hayes</name>
                   <birth_year>1942</birth_year>
@@ -5582,7 +5635,7 @@ class Helper
               <album albumid="3">
                 <title>Shaft</title>
                 <published_year>1972</published_year>
-                <comment>he&apos;s the man</comment>
+                <comment>he's the man</comment>
                 <artist artistid="2">
                   <name>Isaac Hayes</name>
                   <birth_year>1942</birth_year>
@@ -5881,11 +5934,11 @@ class Helper
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case06.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -6060,13 +6113,11 @@ $root = $dom->firstChild;
 $root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case06.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 
@@ -6269,9 +6320,9 @@ DB_DURATION:    0.1554069519043
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
         *
@@ -6309,11 +6360,9 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>
       ]]>
       </programlisting>
@@ -6349,7 +6398,7 @@ print $beautifier->formatString($dom->saveXML());
         <albumid>2</albumid>
         <title>Curtis</title>
         <published_year>1970</published_year>
-        <comment>that man&apos;s got somthin&apos; to say</comment>
+        <comment>that man's got somthin' to say</comment>
       </album>
     </albums>
   </artist>
@@ -6364,7 +6413,7 @@ print $beautifier->formatString($dom->saveXML());
         <albumid>3</albumid>
         <title>Shaft</title>
         <published_year>1972</published_year>
-        <comment>he&apos;s the man</comment>
+        <comment>he's the man</comment>
       </album>
     </albums>
   </artist>
@@ -6388,11 +6437,11 @@ print $beautifier->formatString($dom->saveXML());
      <programlisting role="php">
      <![CDATA[
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case07.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -6436,13 +6485,11 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case07.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
@@ -6584,10 +6631,10 @@ function mapArtist($str)
 
 $myMappers = new Mappers();
 
-require_once('XML/Query2XML.php');
-require_once('XML/Query2XML/ISO9075Mapper.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
          s.*,
@@ -6763,11 +6810,9 @@ $root = $dom->firstChild;
 $root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
 
 
@@ -6907,7 +6952,7 @@ class Helper
                             <album albumid="3">
                                 <title>Shaft</title>
                                 <published_year>1972</published_year>
-                                <comment>he&apos;s the man</comment>
+                                <comment>he's the man</comment>
                                 <artist artistid="2">
                                     <name>Isaac Hayes</name>
                                     <birthyear>1942</birthyear>
@@ -6926,7 +6971,7 @@ class Helper
                             <album albumid="3">
                                 <title>Shaft</title>
                                 <published_year>1972</published_year>
-                                <comment>he&apos;s the man</comment>
+                                <comment>he's the man</comment>
                                 <artist artistid="2">
                                     <name>Isaac Hayes</name>
                                     <birthyear>1942</birthyear>
@@ -6988,7 +7033,7 @@ class Helper
                             <album albumid="3">
                                 <title>Shaft</title>
                                 <published_year>1972</published_year>
-                                <comment>he&apos;s the man</comment>
+                                <comment>he's the man</comment>
                                 <artist artistid="2">
                                     <name>Isaac Hayes</name>
                                     <birthyear>1942</birthyear>
@@ -7007,7 +7052,7 @@ class Helper
                             <album albumid="3">
                                 <title>Shaft</title>
                                 <published_year>1972</published_year>
-                                <comment>he&apos;s the man</comment>
+                                <comment>he's the man</comment>
                                 <artist artistid="2">
                                     <name>Isaac Hayes</name>
                                     <birthyear>1942</birthyear>
@@ -7050,7 +7095,7 @@ class Helper
                             <album albumid="3">
                                 <title>Shaft</title>
                                 <published_year>1972</published_year>
-                                <comment>he&apos;s the man</comment>
+                                <comment>he's the man</comment>
                                 <artist artistid="2">
                                     <name>Isaac Hayes</name>
                                     <birthyear>1942</birthyear>
@@ -7378,12 +7423,12 @@ function mapArtist($str)
 
 $myMappers = new Mappers();
 
-require_once('XML/Query2XML.php');
-require_once('XML/Query2XML/ISO9075Mapper.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case08.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -7565,13 +7610,11 @@ $root = $dom->firstChild;
 $root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case08.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 
