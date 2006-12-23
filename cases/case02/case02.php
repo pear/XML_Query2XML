@@ -34,9 +34,7 @@ $dom = $query2xml->getXML(
 );
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>

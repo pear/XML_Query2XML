@@ -61,11 +61,9 @@ $root = $dom->firstChild;
 $root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
 
 header('Content-Type: application/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
-$beautifier = new XML_Beautifier();
-print $beautifier->formatString($dom->saveXML());
+$dom->formatOutput = true;
+print $dom->saveXML();
 
 class Callbacks
 {
