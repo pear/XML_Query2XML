@@ -29,24 +29,17 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2006-12-04</date>
+ <date>2006-12-22</date>
  <version>
-  <release>1.0.0</release>
-  <api>1.0.0</api>
+  <release>1.1.0</release>
+  <api>1.1.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>I am very proud to announce the first stable release of XML_Query2XML.
-This release introduces only one minor change. It's not
-a bug fix but just a matter of clean code. The patch
-was anonymously submitted via the project's sourceforge site
-(Note: pear.php.net should be used instead).
-
-If you are upgrading from v0.6.x or v0.7.x, please read
-http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#migration
+ <notes>Second stable release
  </notes>
  <contents>
   <dir name="/">
@@ -125,6 +118,10 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getFlatXML -->
+      <dir name="getGlobalOption">
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getGlobalOption -->
       <dir name="getProfile">
        <file baseinstalldir="/" name="getProfile.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getProfile -->
@@ -168,13 +165,44 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getXML -->
+      <dir name="setGlobalOption">
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/setGlobalOption -->
       <dir name="startProfiling">
        <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/startProfiling -->
       <dir name="stopProfiling">
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/stopProfiling -->
+      <dir name="_addDOMChildren">
+       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_addDOMChildren -->
+      <dir name="_appendTextChildNode">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_appendTextChildNode -->
       <dir name="_applyColumnStringToRecord">
        <file baseinstalldir="/" name="callbacks.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
@@ -184,6 +212,7 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_applyColumnStringToRecord -->
       <dir name="_applySqlOptionsToRecord">
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
@@ -223,9 +252,11 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_processComplexElementSpecification -->
+      <dir name="_setDOMAttribute">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_setDOMAttribute --> 
       <file baseinstalldir="/" name="db_init.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
-      <file baseinstalldir="/" name="skipif_XML_Beautifier.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault -->
      <dir name="ADOdbException">
       <dir name="clearProfiling">
@@ -245,6 +276,10 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/getFlatXML -->
+      <dir name="getGlobalOption">
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbException/getGlobalOption -->
       <dir name="getProfile">
        <file baseinstalldir="/" name="getProfile.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/getProfile -->
@@ -288,13 +323,44 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/getXML -->
+      <dir name="setGlobalOption">
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbException/setGlobalOption -->
       <dir name="startProfiling">
        <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/startProfiling -->
       <dir name="stopProfiling">
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/stopProfiling -->
+      <dir name="_addDOMChildren">
+       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_addDOMChildren -->
+      <dir name="_appendTextChildNode">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_appendTextChildNode -->
       <dir name="_applyColumnStringToRecord">
        <file baseinstalldir="/" name="callbacks.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
@@ -304,6 +370,7 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/_applyColumnStringToRecord -->
       <dir name="_applySqlOptionsToRecord">
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
@@ -343,9 +410,11 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/_processComplexElementSpecification -->
+      <dir name="_setDOMAttribute">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_setDOMAttribute --> 
       <file baseinstalldir="/" name="db_init.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
-      <file baseinstalldir="/" name="skipif_XML_Beautifier.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/ADOdbException -->
      <dir name="ADOdbPEAR">
       <dir name="clearProfiling">
@@ -365,6 +434,10 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getFlatXML -->
+      <dir name="getGlobalOption">
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getGlobalOption -->
       <dir name="getProfile">
        <file baseinstalldir="/" name="getProfile.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getProfile -->
@@ -408,13 +481,44 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getXML -->
+      <dir name="setGlobalOption">
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/setGlobalOption -->
       <dir name="startProfiling">
        <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/startProfiling -->
       <dir name="stopProfiling">
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/stopProfiling -->
+      <dir name="_addDOMChildren">
+       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_addDOMChildren -->
+      <dir name="_appendTextChildNode">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_appendTextChildNode -->
       <dir name="_applyColumnStringToRecord">
        <file baseinstalldir="/" name="callbacks.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
@@ -424,6 +528,7 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_applyColumnStringToRecord -->
       <dir name="_applySqlOptionsToRecord">
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
@@ -463,9 +568,11 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_processComplexElementSpecification -->
+      <dir name="_setDOMAttribute">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_setDOMAttribute --> 
       <file baseinstalldir="/" name="db_init.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
-      <file baseinstalldir="/" name="skipif_XML_Beautifier.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR -->
      <dir name="DB">
       <dir name="clearProfiling">
@@ -485,6 +592,10 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/getFlatXML -->
+      <dir name="getGlobalOption">
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/DB/getGlobalOption -->
       <dir name="getProfile">
        <file baseinstalldir="/" name="getProfile.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/getProfile -->
@@ -528,13 +639,44 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/getXML -->
+      <dir name="setGlobalOption">
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/DB/setGlobalOption -->
       <dir name="startProfiling">
        <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/startProfiling -->
       <dir name="stopProfiling">
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/stopProfiling -->
+      <dir name="_addDOMChildren">
+       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/DB/_addDOMChildren -->
+      <dir name="_appendTextChildNode">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/DB/_appendTextChildNode -->
       <dir name="_applyColumnStringToRecord">
        <file baseinstalldir="/" name="callbacks.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
@@ -544,6 +686,7 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/_applyColumnStringToRecord -->
       <dir name="_applySqlOptionsToRecord">
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
@@ -583,9 +726,11 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/_processComplexElementSpecification -->
+      <dir name="_setDOMAttribute">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/DB/_setDOMAttribute --> 
       <file baseinstalldir="/" name="db_init.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
-      <file baseinstalldir="/" name="skipif_XML_Beautifier.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/DB -->
      <dir name="MDB2">
       <dir name="clearProfiling">
@@ -605,6 +750,10 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/getFlatXML -->
+      <dir name="getGlobalOption">
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/MDB2/getGlobalOption -->
       <dir name="getProfile">
        <file baseinstalldir="/" name="getProfile.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/getProfile -->
@@ -648,13 +797,44 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
+       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/getXML -->
+      <dir name="setGlobalOption">
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
+       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
+       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/MDB2/setGlobalOption -->
       <dir name="startProfiling">
        <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/startProfiling -->
       <dir name="stopProfiling">
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/stopProfiling -->
+      <dir name="_addDOMChildren">
+       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/MDB2/_addDOMChildren -->
+      <dir name="_appendTextChildNode">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/MDB2/_appendTextChildNode -->
       <dir name="_applyColumnStringToRecord">
        <file baseinstalldir="/" name="callbacks.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
@@ -664,6 +844,7 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/_applyColumnStringToRecord -->
       <dir name="_applySqlOptionsToRecord">
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
@@ -703,9 +884,11 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/_processComplexElementSpecification -->
+      <dir name="_setDOMAttribute">
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/MDB2/_setDOMAttribute --> 
       <file baseinstalldir="/" name="db_init.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
-      <file baseinstalldir="/" name="skipif_XML_Beautifier.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/MDB2 -->
      <dir name="NoDBLayer">
       <dir name="factory">
@@ -782,14 +965,6 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
    </package>
    <package>
     <name>MDB2</name>
-    <channel>pear.php.net</channel>
-   </package>
-   <package>
-    <name>Log</name>
-    <channel>pear.php.net</channel>
-   </package>
-   <package>
-    <name>XML_Beautifier</name>
     <channel>pear.php.net</channel>
    </package>
    <package>
@@ -1073,6 +1248,20 @@ was anonymously submitted via the project's sourceforge site
 
 If you are upgrading from v0.6.x or v0.7.x, please read
 http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#migration
+   </notes>
+  </release>
+    <release>
+   <version>
+    <release>1.1.0</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-12-22</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>Second stable release
    </notes>
   </release>
  </changelog>
