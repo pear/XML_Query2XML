@@ -718,6 +718,9 @@ class XML_Query2XML
                         $record,
                         'attributes'
                     );
+                    if (strpos($column, '&') === 0) {
+                        $column = '?' . $column;
+                    }
                     if ($this->_evaluateCondtion($attributeValue, $column)) {
                         self::_setDOMAttribute($tag, $attributeName, $attributeValue);
                     }
@@ -736,9 +739,17 @@ class XML_Query2XML
             }
             if (isset($options['value'])) {
                 if ($parsedValue instanceof DomNode || is_array($parsedValue)) {
+                    /*
+                    * The value returned from _applyColumnStringToRecord() and
+                    * stored in $parsedValue is an instance of DomNode or an
+                    * array of DomNode instances. _addDOMChildren() will handle
+                    * both.
+                    */
                     self::_addDOMChildren($tag, $parsedValue, true);
                 } else {
-                    self::_appendTextChildNode($tag, $parsedValue);
+                    if ($parsedValue !== false && !is_null($parsedValue)) {
+                        self::_appendTextChildNode($tag, $parsedValue);
+                    }
                 }
             }
             
@@ -772,8 +783,17 @@ class XML_Query2XML
                         $record,
                         'elements'
                     );
+                    if (strpos($column, '&') === 0) {
+                        $column = '?' . $column;
+                    }
                     if ($this->_evaluateCondtion($tagValue, $column)) {
                         if ($tagValue instanceof DomNode || is_array($tagValue)) {
+                            /*
+                            * The value returned from _applyColumnStringToRecord() and
+                            * stored in $tagValue is an instance of DomNode or an
+                            * array of DomNode instances. _addDOMChildren() will handle
+                            * both.
+                            */
                             self::_addDOMChildren($tag, $tagValue, true);
                         } else {
                             self::_addNewDOMChild($tag, $tagName, $tagValue);
@@ -1283,7 +1303,10 @@ class XML_Query2XML
     *               course); if prefixed by '#' $columnStr is passed to the
     *               native method call_user_func(); in any other case, $columnStr must
     *               be a valid column name or XML_Query2XML_ConfigException
-    *               will be thrown.
+    *               will be thrown. If the prifix '&' is used (with any other prefix
+    *               or in conjunction with the ':' or '#' prefix, the resulting data
+    *               is expected to be a string holding XML data. If the data cannot
+    *               be unserialized an XML_Query2XML_XMLException will be thrown.
     * @return mixed The resulting value.
     */
     private function _applyColumnStringToRecord($columnStr, &$record, $optionName,
@@ -1296,6 +1319,10 @@ class XML_Query2XML
         
         $unserialize = false;
         if (strpos($columnStr, '&') === 0) {
+            /*
+            * unserialization is performed after processing the
+            * ':' prefix, the '#' prefix or the plain column name
+            */
             $unserialize = true;
             $columnStr = substr($columnStr, 1);
         }
@@ -1363,7 +1390,13 @@ class XML_Query2XML
         }
         
         if ($unserialize) {
+            //the '&' prefix was used
             if (strlen($ret)) {
+                /*
+                * If the XML data is NULL or an empty string
+                * we will not try to unserialize it as loadXML()
+                * would produce an error.
+                */
                 $doc = new DOMDocument();
                 if (!@$doc->loadXML($ret)) {
                     throw new XML_Query2XML_XMLException(
@@ -1371,7 +1404,17 @@ class XML_Query2XML
                         . $ret
                     );
                 }
+                //we return the root DomNode
                 $ret = $doc->documentElement;
+            } else {
+                /*
+                * _evaluateCondtion() will return false for null if the '?'
+                * prefix is used
+                *
+                * if the '?' prefix is not used, no text node will be created
+                * for null
+                */
+                $ret = null;
             }
         }
         return $ret;
@@ -1395,6 +1438,8 @@ class XML_Query2XML
             * $value is null or is a string with a length of zero.
             */
             return !(is_null($value) || (is_string($value) && strlen($value) == 0));
+        } elseif (strpos($spec, '&') === 0) {
+            //return $value instanceof DomNode || is_array($value);
         }
         return true;
     }
@@ -1963,7 +2008,7 @@ class XML_Query2XML
                 $e
             );
         }
-        if ($value !== false) {
+        if ($value !== false && !is_null($value)) {
             self::_appendTextChildNode($element, $value);
         }
         return $element;
@@ -2111,6 +2156,9 @@ class XML_Query2XML
     * @param mixed $children  An array of DomNode instances or
     *                         just a single DomNode instance.
     *                         Boolean values of false are always ignored.
+    * @param boolean $import  Whether importNode() should be called for $children.
+    *                         This is necessary if the instance(s) passed as $children
+    *                         was/were created using a different DomDocument instance.
     */
     private static function _addDOMChildren(DomNode $base, $children, $import = false)
     {
@@ -2123,7 +2171,7 @@ class XML_Query2XML
                 $children = $base->ownerDocument->importNode($children, true);
             }
             $base->appendChild($children);
-        } elseif (is_array($children) && count($children) > 0) {
+        } elseif (is_array($children)) {
             for ($i = 0; $i < count($children); $i++) {
                 if ($children[$i] === false) {
                     //don't do anything
@@ -2150,7 +2198,7 @@ class XML_Query2XML
             throw new XML_Query2XML_XMLException(
                 'argument passed to XML_Query2XML::_addDOMChildren() '
                 . 'is of the wrong type ('
-                . gettype($children[$i])
+                . gettype($children)
                 . ')'
             );
         }
