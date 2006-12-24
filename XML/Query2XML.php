@@ -116,6 +116,14 @@ class XML_Query2XML
     */
     private $_profile = array();
     
+    /**An associative array of global options.
+    * @var array An associative array
+    * @see setGlobalOption()
+    */
+    private $_globalOptions = array(
+        'hidden_container_prefix' => '__'
+    );
+    
     /**Constructor
     * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
     * @throws XML_Query2XML_ConfigException If $db is not an instance of a child
@@ -216,6 +224,66 @@ class XML_Query2XML
     public static function factory($db)
     {
         return new XML_Query2XML($db);
+    }
+    
+    /**Set a global option.
+    * Currently the following global options are available:
+    *
+    * hidden_container_prefix: The prefix to use for container elements that are
+    *   to be removed before the DomDocument before it is returned by
+    *   {@link XML_Query2XML::getXML()}. This has to be a non-empty string.
+    *   The default value is '__'.
+    *
+    * @throws XML_Query2XML_ConfigException If the configuration option
+    *         does not exist or if the value is invalid for that option
+    * @param string $option The name of the option
+    * @param mixed $value The option value
+    */
+    public function setGlobalOption($option, $value)
+    {
+        switch ($option) {
+            case 'hidden_container_prefix':
+                if (is_string($value) && strlen($value) > 0) {
+                    //unit test: setGlobalOption/hidden_container_prefix.phpt
+                    $this->_globalOptions[$option] = $value;
+                } else {
+                    /*
+                    * unit test: setGlobalOption/
+                    * configException_hidden_container_prefix_wrongTypeObject.phpt
+                    * configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
+                    */
+                    throw new XML_Query2XML_ConfigException(
+                        'The value for the hidden_container_prefix option '
+                        . 'has to be a non-empty string'
+                    );
+                }
+                break;
+
+            default:
+                //unit tests: setGlobalOption/configException_noSuchOption.phpt
+                throw new XML_Query2XML_ConfigException(
+                    'No such global option: ' . $option
+                );
+        }
+    }
+    
+    /**Returns the current value for a global option.
+    * See {@link XML_Query2XML::setGlobalOption()} for a list
+    * of available options.
+    *
+    * @throws XML_Query2XML_ConfigException If the option does not exist
+    * @param string $option The name of the option
+    */
+    public function getGlobalOption($option)
+    {
+        if (!isset($this->_globalOptions[$option])) {
+            //unit test: getGlobalOption/configException_noSuchOption.phpt
+            throw new XML_Query2XML_ConfigException(
+                'No such global option: ' . $option
+            );
+        }
+        //unit test: getGlobalOption/hidden_container_prefix.phpt
+        return $this->_globalOptions[$option];
     }
     
     /**Enable the logging of debug messages.
@@ -482,7 +550,10 @@ class XML_Query2XML
         $this->_clearRecordCache();
         $this->_stopDBProfiling();
         
-        self::_removeContainers($dom);
+        self::_removeContainers(
+            $dom,
+            $this->getGlobalOption('hidden_container_prefix')
+        );
         return $dom;
     }
     
@@ -560,6 +631,7 @@ class XML_Query2XML
     *                         - _expandShortcuts()
     * @throws XML_Query2XML_Exception  Bubbles up through this method if thrown by
     *                         - _expandShortcuts()
+    *                         - _applyColumnStringToRecord()
     * @param array $record    An associative array representing a record; column
     *                         names must be used as keys.
     * @param array $options   An array containing the options for this nested 
@@ -719,7 +791,7 @@ class XML_Query2XML
                         'attributes'
                     );
                     if (strpos($column, '&') === 0) {
-                        $column = '?' . $column;
+                        //$column = '?' . $column;
                     }
                     if ($this->_evaluateCondtion($attributeValue, $column)) {
                         self::_setDOMAttribute($tag, $attributeName, $attributeValue);
@@ -784,17 +856,17 @@ class XML_Query2XML
                         'elements'
                     );
                     if (strpos($column, '&') === 0) {
-                        $column = '?' . $column;
+                        //$column = '?' . $column;
                     }
                     if ($this->_evaluateCondtion($tagValue, $column)) {
                         if ($tagValue instanceof DomNode || is_array($tagValue)) {
                             /*
-                            * The value returned from _applyColumnStringToRecord() and
-                            * stored in $tagValue is an instance of DomNode or an
-                            * array of DomNode instances. _addDOMChildren() will handle
-                            * both.
+                            * The value returned from _applyColumnStringToRecord()
+                            * and stored in $tagValue is an instance of DomNode or
+                            * an array of DomNode instances. _addDOMGrandchildren()
+                            * will handle both.
                             */
-                            self::_addDOMChildren($tag, $tagValue, true);
+                            self::_addDOMGrandchildren($tag, $tagValue, $tagName, true);
                         } else {
                             self::_addNewDOMChild($tag, $tagName, $tagValue);
                         }
@@ -990,7 +1062,8 @@ class XML_Query2XML
             /* If rootTag is not set or an empty string: create a
             *  hidden root tag
             */
-            $options['rootTag'] = '__' . $tagName;
+            $options['rootTag'] = $this->getGlobalOption('hidden_container_prefix')
+                                  . $tagName;
         }
         if (!isset($options['rowTag'])) {
             //the row tag defaults to $tagName
@@ -1034,7 +1107,8 @@ class XML_Query2XML
     * with the keys 'value' (mandatory), 'condition', 'sql' and 'sql_options'.
     *
     * @throws XML_Query2XML_XMLException This exception will bubble up
-    *                          if it is thrown by _setDOMAttribute().
+    *                          if it is thrown by _setDOMAttribute() or
+    *                          _applyColumnStringToRecord().
     * @throws XML_Query2XML_DBException  This exception will bubble up
     *                          if it is thrown by _applySqlOptionsToRecord().
     * @throws XML_Query2XML_ConfigException This exception will bubble up
@@ -1298,6 +1372,8 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_ConfigException  Thrown if $record[$columnStr]
     *               does not exist (and $columnStr has no special prefix).
+    * @throws XML_Query2XML_XMLException     Thrown if the '&' prefix was used
+    *               but the data was not unserializeable, i.e. not valid XML data.
     * @param string $columnStr  One of the following: if prefixed by ':' it means
     *               that $columnStr will be returned as is (the prefix removed of
     *               course); if prefixed by '#' $columnStr is passed to the
@@ -1399,6 +1475,10 @@ class XML_Query2XML
                 */
                 $doc = new DOMDocument();
                 if (!@$doc->loadXML($ret)) {
+                    /*
+                    * unit test: _applyColumnStringToRecord/
+                    *  throwXMLException_unserialize.phpt
+                    */
                     throw new XML_Query2XML_XMLException(
                         'Could not unserialize the following XML data: '
                         . $ret
@@ -2020,7 +2100,9 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_XMLException Any lower-level DOMException will be wrapped
     *                 and re-thrown as a XML_Query2XML_XMLException. This will happen
-    *                 if $value cannot be UTF8-encoded for some reason.
+    *                 if $value cannot be UTF8-encoded for some reason. It will also
+    *                 be thrown if $value is an object or an array (and can therefore
+    *                 not be converted into a string).
     * @param DomDocument $dom An instance of DomDocument.
     * @param DomNode $element An instance of DomNode
     * @param string $value The value of the text node.
@@ -2031,10 +2113,13 @@ class XML_Query2XML
             /*
             * Objects and arrays cannot be cast
             * to a string without an error.
+            *
+            * unit test:
+            * _appendTextChildNode/throwXMLException.phpt
             */
             throw new XML_Query2XML_XMLException(
-                'A value of the type ' . gettype($value) .
-                ' cannot be used for a text node'
+                'A value of the type ' . gettype($value)
+                . ' cannot be used for a text node'
             );
         }
         $dom = $element->ownerDocument;
@@ -2056,13 +2141,29 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_XMLException Any lower-level DOMException will be wrapped
     *                 and re-thrown as a XML_Query2XML_XMLException. This will happen
-    *                 if $name is not a valid attribute name.
+    *                 if $name is not a valid attribute name. It will also be thrown
+    *                 if $value is an object or an array (and can therefore
+    *                 not be converted into a string).
     * @param DomNode $element An instance of DomNode
     * @param string $name The name of the attribute to set.
     * @param string $value The value of the attribute to set.
     */
     private static function _setDOMAttribute(DomNode $element, $name, $value)
     {
+        if (is_object($value) || is_array($value)) {
+            /*
+            * Objects and arrays cannot be cast
+            * to a string without an error.
+            *
+            * unit test:
+            * _setDOMAttribute/throwXMLException.phpt
+            */
+            throw new XML_Query2XML_XMLException(
+                'A value of the type ' . gettype($value)
+                . ' cannot be used for an attribute value'
+            );
+        }
+        
         try {
             $element->setAttribute($name, self::_utf8encode($value));
         } catch(DOMException $e) {
@@ -2128,9 +2229,11 @@ class XML_Query2XML
     * @param string $childTagName  The name of the child element the grandchildren
     *                              should be added to; if this is an empty string,
     *                              $grandchildren will be directly added to $base.
+    * @param boolean $import       This argument is optional. The default is false.
+    *                              It will passed on to _addDOMChildren().
     */
     private static function _addDOMGrandchildren(DomNode $base, $grandchildren,
-        $childTagName)
+        $childTagName, $import = false)
     {
         $dom = $base->ownerDocument;
         if ($childTagName == '') {
@@ -2143,7 +2246,7 @@ class XML_Query2XML
                 $base->appendChild($child);
             }
         }
-        self::_addDOMChildren($child, $grandchildren);
+        self::_addDOMChildren($child, $grandchildren, $import);
     }
     
     /*Adds one or more child nodes to an existing DomNode instance.
@@ -2159,6 +2262,7 @@ class XML_Query2XML
     * @param boolean $import  Whether importNode() should be called for $children.
     *                         This is necessary if the instance(s) passed as $children
     *                         was/were created using a different DomDocument instance.
+    *                         This argument is optional. The default is false.
     */
     private static function _addDOMChildren(DomNode $base, $children, $import = false)
     {
@@ -2184,19 +2288,28 @@ class XML_Query2XML
                     }
                     $base->appendChild($children[$i]);
                 } else {
-                    //this should never happen
+                    /*
+                    * unit tests:
+                    * _addDOMChildren/throwXMLException_arrayWithObject.phpt
+                    * _addDOMChildren/throwXMLException_arrayWithString.phpt
+                    * _addDOMChildren/throwXMLException_arrayWithInt.phpt
+                    * _addDOMChildren/throwXMLException_arrayWithBool.phpt
+                    * _addDOMChildren/throwXMLException_arrayWithDouble.phpt
+                    */
                     throw new XML_Query2XML_XMLException(
-                        'array argument passed to XML_Query2XML::_addDOMChildren() '
-                        . 'has an element of a wrong type ('
+                        'The array argument passed to XML_Query2XML::_addDOMChildren() '
+                        . 'has an element of a wrong type: '
                         . gettype($children[$i])
-                        . ')'
                     );
                 }
             }
         } else {
-            //this should never happen
+            /*
+            * This should never happen because _addDOMChildren() is only called
+            * for arrays and instances of DomNode.
+            */
             throw new XML_Query2XML_XMLException(
-                'argument passed to XML_Query2XML::_addDOMChildren() '
+                'The argument passed to XML_Query2XML::_addDOMChildren() '
                 . 'is of the wrong type ('
                 . gettype($children)
                 . ')'
@@ -2212,8 +2325,10 @@ class XML_Query2XML
     * container elements please see the {@tutorial XML_Query2XML.pkg tutorial}.
     *
     * @param DomNode $element An instance of DomNode.
+    * @param string $hiddenContainerPrefix The containers that will be removed
+    *                         all start with this string.
     */
-    private static function _removeContainers($element)
+    private static function _removeContainers($element, $hiddenContainerPrefix)
     {
         $child = $element->firstChild;
         $children = array();
@@ -2221,13 +2336,14 @@ class XML_Query2XML
             $children[] = $child;
             $child = $child->nextSibling;
         }
+        
         for ($i = 0; $i < count($children); $i++) {
             if (
                 $children[$i]->nodeType == XML_ELEMENT_NODE
                 &&
-                strpos($children[$i]->tagName, '__') === 0
+                strpos($children[$i]->tagName, $hiddenContainerPrefix) === 0
             ) {
-                self::_removeContainers($children[$i]);
+                self::_removeContainers($children[$i], $hiddenContainerPrefix);
                 self::_replaceParentWithChildren($children[$i]);
             }
         }
@@ -2239,7 +2355,7 @@ class XML_Query2XML
             $child = $child->nextSibling;
         }
         for ($i = 0; $i < count($children); $i++) {
-            self::_removeContainers($children[$i]);
+            self::_removeContainers($children[$i], $hiddenContainerPrefix);
         }
         
     }
