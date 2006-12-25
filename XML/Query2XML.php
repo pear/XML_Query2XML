@@ -1020,8 +1020,8 @@ class XML_Query2XML
     * for {@link XML_Query2XML::_getNestedXMLRecord()}.
     *
     * @throws XML_Query2XML_XMLException This exception will bubble up
-    *                          if it is thrown by _addDOMGrandchildren() or
-    *                          _getNestedXMLRecord().
+    *                          if it is thrown by _addDOMGrandchildren(),
+    *                          _getNestedXMLRecord() or _applySqlOptionsToRecord().
     * @throws XML_Query2XML_DBException  This exception will bubble up
     *                          if it is thrown by _applySqlOptionsToRecord()
     *                          or _getNestedXMLRecord().
@@ -1107,8 +1107,9 @@ class XML_Query2XML
     * with the keys 'value' (mandatory), 'condition', 'sql' and 'sql_options'.
     *
     * @throws XML_Query2XML_XMLException This exception will bubble up
-    *                          if it is thrown by _setDOMAttribute() or
-    *                          _applyColumnStringToRecord().
+    *                          if it is thrown by _setDOMAttribute(),
+    *                          _applyColumnStringToRecord() or
+    *                          _applySqlOptionsToRecord().
     * @throws XML_Query2XML_DBException  This exception will bubble up
     *                          if it is thrown by _applySqlOptionsToRecord().
     * @throws XML_Query2XML_ConfigException This exception will bubble up
@@ -1187,9 +1188,12 @@ class XML_Query2XML
     *                           in the result set
     *                         - it bubbles up from _applyColumnStringToRecord()
     * @throws XML_Query2XML_DBException This exception will bubble up
-    *                                   if it is thrown by _getRecord(),
-    *                                   _getAllRecords(), _getRecordCached()
-    *                                   or _getAllRecordsCached()
+    *                         if it is thrown by _getRecord(), _getAllRecords(),
+    *                         _getRecordCached() or _getAllRecordsCached()
+    * @throws XML_Query2XML_XMLException It will bubble up if it is thrown
+    *                         by _applyColumnStringToRecord(). This can only
+    *                         happen if the '&' operator is (ab)used within an
+    *                         element of the array $options['sql']['data']
     * @param array $options   An associative multidimensional array of options.
     * @param array $record    The current record as an associative array.
     * @return array           An indexed array of records that are themselves
