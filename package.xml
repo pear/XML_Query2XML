@@ -101,9 +101,9 @@ Major features:
    <dir name="tests">
     <dir name="XML_Query2XML">
      <dir name="ADOdbDefault">
-      <dir name="clearProfiling">
-       <file baseinstalldir="/" name="clearProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/clearProfiling -->
+      <dir name="clearProfile">
+       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/clearProfile -->
       <dir name="disableDebugLog">
        <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/disableDebugLog -->
@@ -259,9 +259,9 @@ Major features:
       <file baseinstalldir="/" name="skipif.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault -->
      <dir name="ADOdbException">
-      <dir name="clearProfiling">
-       <file baseinstalldir="/" name="clearProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/clearProfiling -->
+      <dir name="clearProfile">
+       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbException/clearProfile -->
       <dir name="disableDebugLog">
        <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/disableDebugLog -->
@@ -417,9 +417,9 @@ Major features:
       <file baseinstalldir="/" name="skipif.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/ADOdbException -->
      <dir name="ADOdbPEAR">
-      <dir name="clearProfiling">
-       <file baseinstalldir="/" name="clearProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/clearProfiling -->
+      <dir name="clearProfile">
+       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/clearProfile -->
       <dir name="disableDebugLog">
        <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/disableDebugLog -->
@@ -575,9 +575,9 @@ Major features:
       <file baseinstalldir="/" name="skipif.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR -->
      <dir name="DB">
-      <dir name="clearProfiling">
-       <file baseinstalldir="/" name="clearProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/clearProfiling -->
+      <dir name="clearProfile">
+       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/DB/clearProfile -->
       <dir name="disableDebugLog">
        <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/disableDebugLog -->
@@ -733,9 +733,9 @@ Major features:
       <file baseinstalldir="/" name="skipif.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/DB -->
      <dir name="MDB2">
-      <dir name="clearProfiling">
-       <file baseinstalldir="/" name="clearProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/clearProfiling -->
+      <dir name="clearProfile">
+       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/MDB2/clearProfile -->
       <dir name="disableDebugLog">
        <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/disableDebugLog -->
