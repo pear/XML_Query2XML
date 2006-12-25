@@ -1,5 +1,5 @@
 --TEST--
-XML_Query2XML::getXML(): unserialization prefix with empty column within simple element specification
+XML_Query2XML::getXML(): unserialization prefix with empty column within complex element specification
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--

@@ -1,5 +1,5 @@
 --TEST--
-XML_Query2XML::setGlobalOption(): setting the hidden_container_prefix
+XML_Query2XML::getGlobalOption(): getting the hidden_container_prefix option
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--

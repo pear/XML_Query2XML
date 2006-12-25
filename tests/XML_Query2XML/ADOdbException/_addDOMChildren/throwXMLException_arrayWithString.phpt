@@ -1,5 +1,5 @@
 --TEST--
-XML_Query2XML::getXML(): check for XML_Query2XML_XMLException when returning object from callback
+XML_Query2XML::_addDOMChildren(): check for XML_Query2XML_XMLException when returning array with string from callback
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--

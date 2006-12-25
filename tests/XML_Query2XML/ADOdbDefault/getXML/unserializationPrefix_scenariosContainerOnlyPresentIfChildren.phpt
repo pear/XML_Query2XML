@@ -100,18 +100,18 @@ XML_Query2XML::getXML(): unserialization prefix: container only present if child
                 'street',
                 'phone',
                 //xml_data_column is '<p/>'
-                'xml_data_column' => '?&xml_data_column',    //scenario 1
-                'xml_data_column2' => array(                //scenario 2
+                'xml_data_column' => '?&xml_data_column',    //scenario 2
+                'xml_data_column2' => array(                 //scenario 6
                     'value' => '?&xml_data_column'
                 ),
                 //xml_data_column is NULL
-                'xml_data_column3' => '?&xml_data_column_null',  //scenario 1
-                'xml_data_column4' => array(                    //scenario 2
+                'xml_data_column3' => '?&xml_data_column_null',  //scenario 2
+                'xml_data_column4' => array(                     //scenario 6
                     'value' => '?&xml_data_column_null'
                 ),
                 //xml_data_column is '' (empty)
-                'xml_data_column3' => '?&xml_data_column_empty', //scenario 1
-                'xml_data_column4' => array(                    //scenario 2
+                'xml_data_column3' => '?&xml_data_column_empty', //scenario 2
+                'xml_data_column4' => array(                     //scenario 6
                     'value' => '?&xml_data_column_empty'
                 )
             )

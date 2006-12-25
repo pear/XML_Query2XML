@@ -1,5 +1,5 @@
 --TEST--
-XML_Query2XML::getXML(): unserialization prefix with column name within simple element specification
+XML_Query2XML::getXML(): unserialization prefix with column name within complex element specification
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--

@@ -1,5 +1,5 @@
 --TEST--
-XML_Query2XML::getXML(): unserialization prefix: container only present if children (scenarios 3,4,7,8,9,10)
+XML_Query2XML::getXML(): unserialization prefix: no container (scenarios 3,4,7,8,9,10)
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
