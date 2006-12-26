@@ -148,7 +148,7 @@ require_once 'adodb/adodb.inc.php';
 //require_once 'adodb/adodb-pear.inc.php';
 $adodb = ADONewConnection('mysql');
 $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
-$query2xml =& XML_Query2XML::factory($adodb);
+$query2xml = XML_Query2XML::factory($adodb);
 ?>
    ]]>
    </programlisting>
@@ -1072,7 +1072,7 @@ print $dom->saveXML();
     <refsect2 id="{@id options_idcolumn}">
    <title>$options['idColumn']</title>
    <para>
-    The name of the column by which a record is identified as unique. This is especially important within a
+    The name of the column by which a record is identified as unique, aka the primary key. This is especially important within a
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications Complex Element Specification}.
     See there for an example. This option is obligatory at the root level! The idColumn specification can be
     of the following types:
@@ -2307,14 +2307,35 @@ print $dom->saveXML();
         them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
         called with the current record as the first and '12' as the second argument. If you do not want
         to pass additional arguments to the callback function, the opening and closing brace are optional.
+        The callback function's return value will be converted to a string and used as the child text node
+        if it is anything but an object or an array. If you do return an object or an array from a callback
+        function it has to be an instance of {@link http://www.php.net/manual/en/ref.dom.php DOMNode} or
+        an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples
+        and further details. If an instances of any other class is returned, a XML_Query2XML_XMLException will be thrown.
       </listitem>
      </itemizedlist>
-     All three types can be combined with the <emphasis>CONDITIONAL prefix ?</emphasis>:
-     if the value is preceeded by a question mark ('?'), the whole element will be skipped
-     if the value equals (==) an empty string. The CONDITIONAL prefix can be combined with all types:
-     if you do this you have to write the CONDITIONAL prefix first e.g. '?#', '?:' or '?COLUMN_NAME'.
-     
-     The same syntax can be use for
+     There are two more prefixes available that can be used in conjunction with all the prifixes described above:
+     <itemizedlist>
+      <listitem>
+       <emphasis>XML UNSERIALIZATION prefix &amp;</emphasis>: the ampersand (&amp;) prefix allows you to
+       automatically unserialize string data, i.e. transform a string into a {@link http://www.php.net/manual/en/ref.dom.php DOMDocument}. DOMDocument's
+       {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php loadXML()} method will be
+       used for this purpose. You can combine all three types with this prefix: '&amp;COLUMN_NAME',
+       '&amp;#function()' or '&amp;:&lt;name&gt;John&lt;/name&gt;' will all work. You can even use the CONDITIONAL prefix
+       which has to preceed all other prefixes. If the data cannot be unserialized i.e.
+       {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
+       returns false, a XML_Query2XML_XMLException will be thrown. Please see
+       {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and thurther
+       details.
+      </listitem>
+      <listitem>
+       <emphasis>CONDITIONAL prefix ?</emphasis>: if the specification starts with a question mark ('?'),
+       the whole element will be skipped if the value equals (==) an empty string. The CONDITIONAL prefix
+       can be combined with all types: if you do this you have to write the CONDITIONAL prefix first
+       e.g. '?#', '?:' or '?COLUMN_NAME'.
+      </listitem>
+     </itemizedlist>
+     Basically, the same syntax can be use for
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications},
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications},
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification} and
@@ -3085,6 +3106,540 @@ print $dom->saveXML();
   </refsect2>
  </refsect1>
 
+ <refsect1 id="{@id preexisting_xmldata}">
+  <title>Integrating preexisting XML data and 3rd party XML data sources</title>
+  <refsect2 id="{@id intro}">
+   <title>Introduction</title>
+   <para>
+    Since release 1.1.0 it is possible to integrate preexisting XML data into
+    the XML data that is returned by {@link XML_Query2XML::getXML()}. For example
+    you might want to store XML data in your relational database and integrate that
+    into your xml feed. In this case the XML data is only present in serialized form
+    and therefore needs to be unserialized first. This means that the data has to be
+    converted into a {@link http://www.php.net/manual/en/ref.dom.php DOMDocument} using
+    {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}.
+    It might as well be that you already have a PHP application running that creates a DOMDocument.
+    In that case no unserialization is needed.
+   </para>
+  </refsect2>
+  <refsect2 id="{@id unserialization_prefix}">
+   <title>The unserialization prefix (&amp;)</title>
+   <para>
+    To unserialize xml data you can use the UNSERIALIZATION prefix &amp;. It has the following
+    characteristics:
+    <itemizedlist>
+     <listitem>
+      {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
+      is used for unserialization.
+     </listitem>
+     <listitem>
+      If the data to unserialize is an empty string ('') or null the data will be silently
+      ignored and no XML elements will be created.
+     </listitem>
+     <listitem>
+      A XML_Query2XML_XMLException will be thrown if the unserialization fails, i.e.
+      {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
+      returns false. This will happen for example if the data you try to unserialize is 'John Doe' (no xml tags at all),
+      '&lt;name&gt;John Doe' (no closing tag) or '&lt;name&gt;John Doe&lt;/name&gt;&lt;name&gt;Jane Doe&lt;/name&gt;' (no root tag element).
+     </listitem>
+    </itemizedlist>
+   </para>
+   <refsect3 id="{@id usage_scenarios}">
+    <title>Usage scenarios of the unserialization prefix (&amp;)</title>
+    <para>
+     Regarding an additional containing XML element (the root element of your unserialized data)
+     there are 3 different things you might want for the containing element when unserializing
+     the data:
+     <itemizedlist>
+      <listitem>
+       Container always present
+      </listitem>
+      <listitem>
+       Container only present if there are children
+      </listitem>
+      <listitem>
+       No Container
+      </listitem>
+     </itemizedlist>
+     Now follows a detailed description of each of the three possibilities. We will assume
+     that your XML data is stored in the database. Therefore &amp; will be used in the form
+     of '&amp;COLUMN_NAME'. If you wanted to unserialize static data you would write something
+     like
+     <programlisting role="php">
+     <![CDATA[
+'&:<name>John Doe</name>'
+     ]]>
+     </programlisting>
+     or if you wanted to unserialize a string returned from a callback function, you would use
+     <programlisting role="php">
+     <![CDATA[
+'&#MyClass::myFunction()'
+     ]]>
+     </programlisting>
+     <itemizedlist>
+      <listitem>
+       <emphasis>Container always present</emphasis>: The container element will be present
+       even if there is no data to be unserialized. This is the default behaviour:
+       <programlisting role="php">
+       <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom =& $query2xml->getXML(
+    "SELECT
+        *, NULL AS additional_xml
+     FROM
+        store",
+    array(
+        'rootTag' => 'music_stores',
+        'rowTag' => 'store',
+        'idColumn' => 'storeid',
+        'elements' => array(
+            'storeid',
+            'country',
+            'state',
+            'city',
+            'street',
+            'builing_xmldata' => '&builing_xmldata',
+            'additional_xml' => '&additional_xml',
+        )
+    )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+       ]]>
+       </programlisting>
+       For both records the 'building_xmldata' column contains a &lt;building&gt; element
+       that has 3 children: &lt;floors&gt;, &lt;elevators&gt; and &lt;square_meters&gt;. But
+       there is always a surrounding &lt;building_xmldata&gt; tag. The 'additional_xml' column
+       is NULL for both records but an empty &lt;additional_xml/&gt; element gets created for
+       both of them.
+       <programlisting role="tutorial">
+       <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_stores>
+  <store>
+    <storeid>1</storeid>
+    <country>US</country>
+    <state>New York</state>
+    <city>New York</city>
+    <street>Broadway &amp; 72nd Str</street>
+    <builing_xmldata>
+      <building>
+        <floors>4</floors>
+        <elevators>2</elevators>
+        <square_meters>3200</square_meters>
+      </building>
+    </builing_xmldata>
+    <additional_xml/>
+  </store>
+  <store>
+    <storeid>2</storeid>
+    <country>US</country>
+    <state>New York</state>
+    <city>Larchmont</city>
+    <street>Palmer Ave 71</street>
+    <builing_xmldata>
+      <building>
+        <floors>2</floors>
+        <elevators>1</elevators>
+        <square_meters>400</square_meters>
+      </building>
+    </builing_xmldata>
+    <additional_xml/>
+  </store>
+</music_stores>
+       ]]>
+       </programlisting>
+       Note: you would get exactly the same result by using the 'value' option within
+       a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}
+       instead of a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}.
+       Instead of
+       <programlisting role="php">
+       <![CDATA[
+'builing_xmldata' => '&builing_xmldata'
+       ]]>
+       </programlisting>
+       you would write
+       <programlisting role="php">
+       <![CDATA[
+'builing_xmldata' => array(
+    'value' => '&builing_xmldata'
+)
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>Container only present if there are children</emphasis>: The container will only be
+       present if the unserialization produces at least one XML element. This is achieved
+       by using the CONDITIONAL prefix (?):
+       <programlisting role="php">
+       <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom =& $query2xml->getXML(
+    "SELECT
+        *, NULL AS additional_xml
+     FROM
+        store",
+    array(
+        'rootTag' => 'music_stores',
+        'rowTag' => 'store',
+        'idColumn' => 'storeid',
+        'elements' => array(
+            'storeid',
+            'country',
+            'state',
+            'city',
+            'street',
+            'builing_xmldata' => '?&builing_xmldata',
+            'additional_xml' => '?&additional_xml',
+        )
+    )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+       ]]>
+       </programlisting>
+       The resulting XML data shows that the unserialized XML is still enclosed
+       by a &lt;builing_xmldata&gt; tag but the &lt;additional_xml&gt; elements are gone:
+       <programlisting role="tutorial">
+       <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_stores>
+  <store>
+    <storeid>1</storeid>
+    <country>US</country>
+    <state>New York</state>
+    <city>New York</city>
+    <street>Broadway &amp; 72nd Str</street>
+    <builing_xmldata>
+      <building>
+        <floors>4</floors>
+        <elevators>2</elevators>
+        <square_meters>3200</square_meters>
+      </building>
+    </builing_xmldata>
+  </store>
+  <store>
+    <storeid>2</storeid>
+    <country>US</country>
+    <state>New York</state>
+    <city>Larchmont</city>
+    <street>Palmer Ave 71</street>
+    <builing_xmldata>
+      <building>
+        <floors>2</floors>
+        <elevators>1</elevators>
+        <square_meters>400</square_meters>
+      </building>
+    </builing_xmldata>
+  </store>
+</music_stores>
+       ]]>
+       </programlisting>
+       Again: the same results can be achieved by using the 'value' option within
+       a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}
+       instead of a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}.
+       Instead of
+       <programlisting role="php">
+       <![CDATA[
+'builing_xmldata' => '?&builing_xmldata'
+       ]]>
+       </programlisting>
+       you would write
+       <programlisting role="php">
+       <![CDATA[
+'builing_xmldata' => array(
+    'value' => '?&builing_xmldata'
+)
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>No Container</emphasis>: Even if the unserialization produces an XML element
+       no container will be used. You have to effectively hide the container by using the
+       hidden_container_prefix that can be set using
+       {@tutorial XML_Query2XML.pkg#global_options.setglobaloption} and defaults to '__'. Here
+       goes an example:
+       <programlisting role="php">
+       <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom =& $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        store",
+    array(
+        'rootTag' => 'music_stores',
+        'rowTag' => 'store',
+        'idColumn' => 'storeid',
+        'elements' => array(
+            'storeid',
+            'country',
+            'state',
+            'city',
+            'street',
+            '__builing_xmldata' => '&builing_xmldata'
+        )
+    )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+       ]]>
+       </programlisting>
+       The resulting XML now does not contain &lt;builing_xmldata&gt; tags that surround
+       the &lt;building&gt; elements:
+       <programlisting role="tutorial">
+       <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_stores>
+  <store>
+    <storeid>1</storeid>
+    <country>US</country>
+    <state>New York</state>
+    <city>New York</city>
+    <street>Broadway &amp; 72nd Str</street>
+    <building>
+      <floors>4</floors>
+      <elevators>2</elevators>
+      <square_meters>3200</square_meters>
+    </building>
+  </store>
+  <store>
+    <storeid>2</storeid>
+    <country>US</country>
+    <state>New York</state>
+    <city>Larchmont</city>
+    <street>Palmer Ave 71</street>
+    <building>
+      <floors>2</floors>
+      <elevators>1</elevators>
+      <square_meters>400</square_meters>
+    </building>
+  </store>
+</music_stores>
+       ]]>
+       </programlisting>
+       The same results can be achieved by using the 'value' option within
+       a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}
+       instead of a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}.
+       Instead of
+       <programlisting role="php">
+       <![CDATA[
+'__builing_xmldata' => '&builing_xmldata'
+       ]]>
+       </programlisting>
+       you would write
+       <programlisting role="php">
+       <![CDATA[
+'__builing_xmldata' => array(
+    'value' => '&builing_xmldata'
+)
+       ]]>
+       </programlisting>
+       or (which is effectively the same)
+       <programlisting role="php">
+       <![CDATA[
+'builing_xmldata' => array(
+    'rowTag' => '__builing_xmldata'
+    'value' => '&builing_xmldata'
+)
+       ]]>
+       </programlisting>
+       Please also note that using the CONDITIONAL prefix (?) in conjunction with
+       the hidden_container_prefix '__' does not change the resulting XML data in any way:
+       <programlisting role="php">
+       <![CDATA[
+'__builing_xmldata' => '?&builing_xmldata'
+       ]]>
+       </programlisting>
+      </listitem>
+     </itemizedlist>
+    </para>
+   </refsect3>
+   <refsect3 id="{@id writing_your_own}">
+    <title>Writing your own unserialization method</title>
+    <para>
+     If you are unhappy with these chracteristics (e.g. you want invalid XML data to be ignored
+     rather than causing an exception to be thrown) you could do your own unserialization using
+     a CALLBACK FUNCTION (i.e. the # prefix). Here is what the unserialization performed by
+     the &amp; prefix looks like
+     <programlisting role="php">
+     <![CDATA[
+if (strlen($xmlData)) {
+    $doc = new DOMDocument();
+    if (!@$doc->loadXML($xmlData)) {
+        throw new XML_Query2XML_XMLException(
+            'Could not unserialize the following XML data: '
+            . $ret
+        );
+    }
+    return $doc->documentElement;
+} else {
+    return null;
+}
+     ]]>
+     </programlisting>
+    </para>
+   </refsect3>
+  </refsect2>
+  <refsect2 id="{@id callbacks}">
+   <title>Returning DOMNode instances from callbacks</title>
+   <para>
+    If you want to integrate XML_Query2XML with another PHP application that uses
+    PHP5's {@link http://www.php.net/manual/en/ref.dom.php DOM},
+    you can make your callbacks return an instance of
+    {@link http://www.php.net/manual/en/ref.dom.php DOMNode} or an array of DOMNode instances.
+   </para>
+   <para>
+    In the following example we return a &lt;unixtime&gt; tag from the callback function
+    getTime(). It will be placed inside a &lt;time&gt; tag.
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom =& $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        album",
+    array(
+        'rootTag' => 'music_store',
+        'rowTag' => 'album',
+        'idColumn' => 'albumid',
+        'elements' => array(
+            'albumid',
+            'title',
+            'time' => '#getTime()'
+        )
+    )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+
+function getTime()
+{
+    $dom = new DOMDocument();
+    $unixtime = $dom->createElement('unixtime');
+    $unixtime->appendChild($dom->createTextNode(time()));
+    return $unixtime;
+}
+?>
+    ]]>
+    </programlisting>
+    Have a look at the resulting XML data:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_store>
+  <album>
+    <albumid>1</albumid>
+    <title>New World Order</title>
+    <time>
+      <unixtime>1167167461</unixtime>
+    </time>
+  </album>
+  <album>
+    <albumid>2</albumid>
+    <title>Curtis</title>
+    <time>
+      <unixtime>1167167461</unixtime>
+    </time>
+  </album>
+  <album>
+    <albumid>3</albumid>
+    <title>Shaft</title>
+    <time>
+      <unixtime>1167167461</unixtime>
+    </time>
+  </album>
+</music_store>
+    ]]>
+    </programlisting>
+    Now we modify the example so that getTime() returns multiple DOMNode instances in an array.
+    We will also "hide" the surrounding element using the hidden_container_prefix that can be
+    set using {@tutorial XML_Query2XML.pkg#global_options.setglobaloption} and defaults to '__':
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom =& $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        album",
+    array(
+        'rootTag' => 'music_store',
+        'rowTag' => 'album',
+        'idColumn' => 'albumid',
+        'elements' => array(
+            'albumid',
+            'title',
+            '__time' => '#getTime()'
+        )
+    )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+
+function getTime()
+{
+    $dom = new DOMDocument();
+    $unixtime = $dom->createElement('unixtime');
+    $unixtime->appendChild($dom->createTextNode(time()));
+    
+    $rfc2822date = $dom->createElement('rfc2822date');
+    $rfc2822date->appendChild($dom->createTextNode(date('r')));
+    return array($unixtime, $rfc2822date);
+}
+?>
+    ]]>
+    </programlisting>
+    The surrounding &lt;time&gt; element is now gone and we have both tags &lt;unixtime&gt;
+    and &lt;rfc2822date&gt;:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_store>
+  <album>
+    <albumid>1</albumid>
+    <title>New World Order</title>
+    <unixtime>1167169325</unixtime>
+    <rfc2822date>Tue, 26 Dec 2006 22:42:05 +0100</rfc2822date>
+  </album>
+  <album>
+    <albumid>2</albumid>
+    <title>Curtis</title>
+    <unixtime>1167169325</unixtime>
+    <rfc2822date>Tue, 26 Dec 2006 22:42:05 +0100</rfc2822date>
+  </album>
+  <album>
+    <albumid>3</albumid>
+    <title>Shaft</title>
+    <unixtime>1167169325</unixtime>
+    <rfc2822date>Tue, 26 Dec 2006 22:42:05 +0100</rfc2822date>
+  </album>
+</music_store>
+    ]]>
+    </programlisting>
+   </para>
+  </refsect2>
+ </refsect1>
+  
  <refsect1 id="{@id exception_handling}">
   <title>Exception Handling</title>
   <para>
@@ -3252,6 +3807,196 @@ print $beautifier->formatString($dom->saveXML());
   </para>
  </refsect1>
  
+ <refsect1 id="{@id global_options}">
+  <title>Global Options</title>
+  <para>
+   Global options can be set using the public method 
+   {@tutorial XML_Query2XML.pkg#global_options.setglobaloption} and retrieved using
+   {@tutorial XML_Query2XML.pkg#global_options.getglobaloption}. Currently the
+   following global options are available:
+   <itemizedlist>
+    <listitem>
+     {@tutorial XML_Query2XML.pkg#global_options.hidden_container_prefix}
+    </listitem>
+   </itemizedlist>
+  </para>
+  <refsect2 id="{@id setglobaloption}">
+   <title>XML_Query2XML::setGlobalOption()</title>
+   <para>
+    {@link XML_Query2XML::setGlobalOption() XML_Query2XML::setGlobalOption}($option, $value)
+   </para>
+   <para>
+    Currently there is only one global option: {@tutorial XML_Query2XML.pkg#global_options.hidden_container_prefix}
+    which has to be set to a non empty string. If you try to set a non existing global option or
+    try to set an existing one to an invalid value a XML_Query2XML_ConfigException will be thrown.
+   </para>
+   <para>
+    Here goes an example:
+    <programlisting role="php">
+    <![CDATA[
+$query2xml =& XML_Query2XML::factory($db);
+$query2xml->setGlobalOption('hidden_container_prefix', '___');
+    ]]>
+    </programlisting>
+   </para>
+  </refsect2>
+  <refsect2 id="{@id getglobaloption}">
+   <title>XML_Query2XML::getGlobalOption()</title>
+   <para>
+    {@link XML_Query2XML::getGlobalOption() XML_Query2XML::getGlobalOption}($option)
+   </para>
+   <para>
+    Currently there is only one global option: {@tutorial XML_Query2XML.pkg#global_options.hidden_container_prefix}.
+    Use getGlobalOption() to retrieve a global option's current value:
+    <programlisting role="php">
+    <![CDATA[
+$query2xml =& XML_Query2XML::factory($db);
+echo $query2xml->getGlobalOption('hidden_container_prefix');
+    ]]>
+    </programlisting>
+   </para>
+  </refsect2>
+  <refsect2 id="{@id hidden_container_prefix}">
+   <title>hidden_container_prefix</title>
+   <para>
+    All elements whose name start with the string specified in the
+    hidden_container_prefix option are stripped from the DOMDocument that is finally
+    returned by {@tutorial XML_Query2XML.pkg#query2xml_getxml}. The container's child
+    elements are effectively replacing their parent. The default value of the
+    hidden_container_prefix option is '__'.
+    Here is an example using the default:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom =& $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        album",
+    array(
+        'rootTag' => 'music_store',
+        'rowTag' => 'album',
+        'idColumn' => 'albumid',
+        'elements' => array(
+            'albumid',
+            'title',
+            '__info' => '&:<name>John Doe</name>'
+        )
+    )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    Instead of
+    <programlisting role="php">
+    <![CDATA[
+'__info' => '&:<name>John Doe</name>'
+    ]]>
+    </programlisting>
+    we also could have written
+    <programlisting role="php">
+    <![CDATA[
+'name' => ':John Doe'
+    ]]>
+    </programlisting>
+    Both versions produce the same XML data. Note how the contents of the &lt;__name&gt;
+    element effectively replaced the &lt;__info&gt; tag. It results in the &lt;name&gt; element
+    being directly placed inside the &lt;album&gt; element.
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_store>
+  <album>
+    <albumid>1</albumid>
+    <title>New World Order</title>
+    <name>John Doe</name>
+  </album>
+  <album>
+    <albumid>2</albumid>
+    <title>Curtis</title>
+    <name>John Doe</name>
+  </album>
+  <album>
+    <albumid>3</albumid>
+    <title>Shaft</title>
+    <name>John Doe</name>
+  </album>
+</music_store>
+    ]]>
+    </programlisting>
+   </para>
+   <para>
+    Now imagine that we actually do want an XML element to be named '__info'. This
+    means that we have to change the hidden_container_prefix option:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$query2xml->setGlobalOption('hidden_container_prefix', '___');
+$dom =& $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        album",
+    array(
+        'rootTag' => 'music_store',
+        'rowTag' => 'album',
+        'idColumn' => 'albumid',
+        'elements' => array(
+            'albumid',
+            'title',
+            '__info' => '&:<name>John Doe</name>', //will not be hidden
+            '___info' => '&:<name>John Doe</name>' //will be hidden
+        )
+    )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    This produces the following XML data:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_store>
+  <album>
+    <albumid>1</albumid>
+    <title>New World Order</title>
+    <__info>
+      <name>John Doe</name>
+    </__info>
+    <name>John Doe</name>
+  </album>
+  <album>
+    <albumid>2</albumid>
+    <title>Curtis</title>
+    <__info>
+      <name>John Doe</name>
+    </__info>
+    <name>John Doe</name>
+  </album>
+  <album>
+    <albumid>3</albumid>
+    <title>Shaft</title>
+    <__info>
+      <name>John Doe</name>
+    </__info>
+    <name>John Doe</name>
+  </album>
+</music_store>
+    ]]>
+    </programlisting>
+   </para>
+  </refsect2>
+ </refsect1>
  <refsect1 id="{@id debugging}">
   <title>Debugging XML_Query2XML</title>
   <para>
