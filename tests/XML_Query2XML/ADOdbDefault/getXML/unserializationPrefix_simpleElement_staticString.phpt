@@ -23,9 +23,9 @@ XML_Query2XML::getXML(): unserialization prefix with static string within simple
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => '&:<floors>1</floors>',
-                '__builing_xmldata' => '&:<floors>1</floors>',
-                'builing_xmldata2' => '?&:<floors>1</floors>'
+                'building_xmldata' => '&:<floors>1</floors>',
+                '__building_xmldata' => '&:<floors>1</floors>',
+                'building_xmldata2' => '?&:<floors>1</floors>'
             )
         )
     );
@@ -42,13 +42,13 @@ XML_Query2XML::getXML(): unserialization prefix with static string within simple
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <floors>1</floors>
-    </builing_xmldata>
+    </building_xmldata>
     <floors>1</floors>
-    <builing_xmldata2>
+    <building_xmldata2>
       <floors>1</floors>
-    </builing_xmldata2>
+    </building_xmldata2>
   </store>
   <store>
     <storeid>2</storeid>
@@ -57,12 +57,12 @@ XML_Query2XML::getXML(): unserialization prefix with static string within simple
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <floors>1</floors>
-    </builing_xmldata>
+    </building_xmldata>
     <floors>1</floors>
-    <builing_xmldata2>
+    <building_xmldata2>
       <floors>1</floors>
-    </builing_xmldata2>
+    </building_xmldata2>
   </store>
 </music_stores>

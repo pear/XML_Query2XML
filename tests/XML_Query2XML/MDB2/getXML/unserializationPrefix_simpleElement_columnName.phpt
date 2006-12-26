@@ -23,9 +23,9 @@ XML_Query2XML::getXML(): unserialization prefix with column name within simple e
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => '&builing_xmldata',
-                '__builing_xmldata' => '&builing_xmldata',
-                'builing_xmldata2' => '&builing_xmldata'
+                'building_xmldata' => '&building_xmldata',
+                '__building_xmldata' => '&building_xmldata',
+                'building_xmldata2' => '&building_xmldata'
             )
         )
     );
@@ -42,25 +42,25 @@ XML_Query2XML::getXML(): unserialization prefix with column name within simple e
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>4</floors>
         <elevators>2</elevators>
         <square_meters>3200</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
     <building>
       <floors>4</floors>
       <elevators>2</elevators>
       <square_meters>3200</square_meters>
     </building>
-    <builing_xmldata2>
+    <building_xmldata2>
       <building>
         <floors>4</floors>
         <elevators>2</elevators>
         <square_meters>3200</square_meters>
       </building>
-    </builing_xmldata2>
+    </building_xmldata2>
   </store>
   <store>
     <storeid>2</storeid>
@@ -69,24 +69,24 @@ XML_Query2XML::getXML(): unserialization prefix with column name within simple e
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>2</floors>
         <elevators>1</elevators>
         <square_meters>400</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
     <building>
       <floors>2</floors>
       <elevators>1</elevators>
       <square_meters>400</square_meters>
     </building>
-    <builing_xmldata2>
+    <building_xmldata2>
       <building>
         <floors>2</floors>
         <elevators>1</elevators>
         <square_meters>400</square_meters>
       </building>
-    </builing_xmldata2>
+    </building_xmldata2>
   </store>
 </music_stores>

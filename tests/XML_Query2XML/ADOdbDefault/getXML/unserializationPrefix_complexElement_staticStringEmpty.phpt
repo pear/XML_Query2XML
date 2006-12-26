@@ -23,20 +23,20 @@ XML_Query2XML::getXML(): unserialization prefix with empty static string within 
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => array(
+                'building_xmldata' => array(
                     'value' => '&:'
                 ),
-                'builing_xmldata2' => array(
+                'building_xmldata2' => array(
                     'value' => '?&:'
                 ),
-                '__builing_xmldata3' => array(
+                '__building_xmldata3' => array(
                     'value' => '&:'
                 ),
-                'builing_xmldata4' => array(
+                'building_xmldata4' => array(
                     'rowTag' => '__row',
                     'value' => '&:'
                 ),
-                'builing_xmldata5' => array(
+                'building_xmldata5' => array(
                     'value' => '?&:'
                 )
             )
@@ -55,7 +55,7 @@ XML_Query2XML::getXML(): unserialization prefix with empty static string within 
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata/>
+    <building_xmldata/>
   </store>
   <store>
     <storeid>2</storeid>
@@ -64,6 +64,6 @@ XML_Query2XML::getXML(): unserialization prefix with empty static string within 
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata/>
+    <building_xmldata/>
   </store>
 </music_stores>

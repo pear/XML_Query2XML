@@ -23,14 +23,14 @@ XML_Query2XML::getXML(): unserialization prefix with static string within comple
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => array(
+                'building_xmldata' => array(
                     'value' => '&:<floors>1</floors>'
                 ),
-                'builing_xmldata2' => array(
+                'building_xmldata2' => array(
                     'rowTag' => '__container',
                     'value' => '&:<floors>2</floors>'
                 ),
-                '__builing_xmldata3' => array(
+                '__building_xmldata3' => array(
                     'value' => '&:<floors>2</floors>'
                 )
             )
@@ -49,9 +49,9 @@ XML_Query2XML::getXML(): unserialization prefix with static string within comple
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <floors>1</floors>
-    </builing_xmldata>
+    </building_xmldata>
     <floors>2</floors>
     <floors>2</floors>
   </store>
@@ -62,9 +62,9 @@ XML_Query2XML::getXML(): unserialization prefix with static string within comple
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <floors>1</floors>
-    </builing_xmldata>
+    </building_xmldata>
     <floors>2</floors>
     <floors>2</floors>
   </store>

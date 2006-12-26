@@ -23,13 +23,13 @@ XML_Query2XML::getXML(): unserialization prefix with callback within complex ele
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => array(
+                'building_xmldata' => array(
                     'value' => '&#getStaticXML()'
                 ),
-                '__builing_xmldata2' => array(
+                '__building_xmldata2' => array(
                     'value' => '&#getStaticXML()'
                 ),
-                'builing_xmldata3' => array(
+                'building_xmldata3' => array(
                     'rowTag' => '__row',
                     'value' => '&#getStaticXML()'
                 )
@@ -54,9 +54,9 @@ XML_Query2XML::getXML(): unserialization prefix with callback within complex ele
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <floors>1</floors>
-    </builing_xmldata>
+    </building_xmldata>
     <floors>1</floors>
     <floors>1</floors>
   </store>
@@ -67,9 +67,9 @@ XML_Query2XML::getXML(): unserialization prefix with callback within complex ele
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <floors>1</floors>
-    </builing_xmldata>
+    </building_xmldata>
     <floors>1</floors>
     <floors>1</floors>
   </store>

@@ -23,22 +23,22 @@ XML_Query2XML::getXML(): unserialization prefix with column name within complex 
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => array(
-                    'value' => '&builing_xmldata'
+                'building_xmldata' => array(
+                    'value' => '&building_xmldata'
                 ),
-                'builing_xmldata2' => array(
+                'building_xmldata2' => array(
                     'rowTag' => '__container',
-                    'value' => '&builing_xmldata'
+                    'value' => '&building_xmldata'
                 ),
-                'builing_xmldata3' => array(
-                    'value' => '?&builing_xmldata'
+                'building_xmldata3' => array(
+                    'value' => '?&building_xmldata'
                 ),
-                '__builing_xmldata4' => array(
-                    'value' => '&builing_xmldata'
+                '__building_xmldata4' => array(
+                    'value' => '&building_xmldata'
                 ),
-                'builing_xmldata5' => array(
-                    'rowTag' => '__builing_xmldata5',
-                    'value' => '&builing_xmldata'
+                'building_xmldata5' => array(
+                    'rowTag' => '__building_xmldata5',
+                    'value' => '&building_xmldata'
                 )
             )
         )
@@ -56,25 +56,25 @@ XML_Query2XML::getXML(): unserialization prefix with column name within complex 
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>4</floors>
         <elevators>2</elevators>
         <square_meters>3200</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
     <building>
       <floors>4</floors>
       <elevators>2</elevators>
       <square_meters>3200</square_meters>
     </building>
-    <builing_xmldata3>
+    <building_xmldata3>
       <building>
         <floors>4</floors>
         <elevators>2</elevators>
         <square_meters>3200</square_meters>
       </building>
-    </builing_xmldata3>
+    </building_xmldata3>
     <building>
       <floors>4</floors>
       <elevators>2</elevators>
@@ -93,25 +93,25 @@ XML_Query2XML::getXML(): unserialization prefix with column name within complex 
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>2</floors>
         <elevators>1</elevators>
         <square_meters>400</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
     <building>
       <floors>2</floors>
       <elevators>1</elevators>
       <square_meters>400</square_meters>
     </building>
-    <builing_xmldata3>
+    <building_xmldata3>
       <building>
         <floors>2</floors>
         <elevators>1</elevators>
         <square_meters>400</square_meters>
       </building>
-    </builing_xmldata3>
+    </building_xmldata3>
     <building>
       <floors>2</floors>
       <elevators>1</elevators>

@@ -3201,7 +3201,7 @@ $dom =& $query2xml->getXML(
             'state',
             'city',
             'street',
-            'builing_xmldata' => '&builing_xmldata',
+            'building_xmldata' => '&building_xmldata',
             'additional_xml' => '&additional_xml',
         )
     )
@@ -3226,13 +3226,13 @@ print $dom->saveXML();
     <state>New York</state>
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>4</floors>
         <elevators>2</elevators>
         <square_meters>3200</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
     <additional_xml/>
   </store>
   <store>
@@ -3241,13 +3241,13 @@ print $dom->saveXML();
     <state>New York</state>
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>2</floors>
         <elevators>1</elevators>
         <square_meters>400</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
     <additional_xml/>
   </store>
 </music_stores>
@@ -3259,14 +3259,14 @@ print $dom->saveXML();
        Instead of
        <programlisting role="php">
        <![CDATA[
-'builing_xmldata' => '&builing_xmldata'
+'building_xmldata' => '&building_xmldata'
        ]]>
        </programlisting>
        you would write
        <programlisting role="php">
        <![CDATA[
-'builing_xmldata' => array(
-    'value' => '&builing_xmldata'
+'building_xmldata' => array(
+    'value' => '&building_xmldata'
 )
        ]]>
        </programlisting>
@@ -3296,7 +3296,7 @@ $dom =& $query2xml->getXML(
             'state',
             'city',
             'street',
-            'builing_xmldata' => '?&builing_xmldata',
+            'building_xmldata' => '?&building_xmldata',
             'additional_xml' => '?&additional_xml',
         )
     )
@@ -3307,7 +3307,7 @@ print $dom->saveXML();
        ]]>
        </programlisting>
        The resulting XML data shows that the unserialized XML is still enclosed
-       by a &lt;builing_xmldata&gt; tag but the &lt;additional_xml&gt; elements are gone:
+       by a &lt;building_xmldata&gt; tag but the &lt;additional_xml&gt; elements are gone:
        <programlisting role="tutorial">
        <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -3318,13 +3318,13 @@ print $dom->saveXML();
     <state>New York</state>
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>4</floors>
         <elevators>2</elevators>
         <square_meters>3200</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
   </store>
   <store>
     <storeid>2</storeid>
@@ -3332,13 +3332,13 @@ print $dom->saveXML();
     <state>New York</state>
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
-    <builing_xmldata>
+    <building_xmldata>
       <building>
         <floors>2</floors>
         <elevators>1</elevators>
         <square_meters>400</square_meters>
       </building>
-    </builing_xmldata>
+    </building_xmldata>
   </store>
 </music_stores>
        ]]>
@@ -3349,14 +3349,14 @@ print $dom->saveXML();
        Instead of
        <programlisting role="php">
        <![CDATA[
-'builing_xmldata' => '?&builing_xmldata'
+'building_xmldata' => '?&building_xmldata'
        ]]>
        </programlisting>
        you would write
        <programlisting role="php">
        <![CDATA[
-'builing_xmldata' => array(
-    'value' => '?&builing_xmldata'
+'building_xmldata' => array(
+    'value' => '?&building_xmldata'
 )
        ]]>
        </programlisting>
@@ -3388,7 +3388,7 @@ $dom =& $query2xml->getXML(
             'state',
             'city',
             'street',
-            '__builing_xmldata' => '&builing_xmldata'
+            '__building_xmldata' => '&building_xmldata'
         )
     )
 );
@@ -3397,7 +3397,7 @@ print $dom->saveXML();
 ?>
        ]]>
        </programlisting>
-       The resulting XML now does not contain &lt;builing_xmldata&gt; tags that surround
+       The resulting XML now does not contain &lt;building_xmldata&gt; tags that surround
        the &lt;building&gt; elements:
        <programlisting role="tutorial">
        <![CDATA[
@@ -3436,23 +3436,23 @@ print $dom->saveXML();
        Instead of
        <programlisting role="php">
        <![CDATA[
-'__builing_xmldata' => '&builing_xmldata'
+'__building_xmldata' => '&building_xmldata'
        ]]>
        </programlisting>
        you would write
        <programlisting role="php">
        <![CDATA[
-'__builing_xmldata' => array(
-    'value' => '&builing_xmldata'
+'__building_xmldata' => array(
+    'value' => '&building_xmldata'
 )
        ]]>
        </programlisting>
        or (which is effectively the same)
        <programlisting role="php">
        <![CDATA[
-'builing_xmldata' => array(
-    'rowTag' => '__builing_xmldata'
-    'value' => '&builing_xmldata'
+'building_xmldata' => array(
+    'rowTag' => '__building_xmldata'
+    'value' => '&building_xmldata'
 )
        ]]>
        </programlisting>
@@ -3460,7 +3460,7 @@ print $dom->saveXML();
        the hidden_container_prefix '__' does not change the resulting XML data in any way:
        <programlisting role="php">
        <![CDATA[
-'__builing_xmldata' => '?&builing_xmldata'
+'__building_xmldata' => '?&building_xmldata'
        ]]>
        </programlisting>
       </listitem>
@@ -8569,87 +8569,88 @@ USE Query2XML_Tests;
 
 
 CREATE TABLE artist (
-  artistid INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255),
-  birth_year Int,
-  birth_place VARCHAR(255),
-  genre VARCHAR(255),
-  UNIQUE (artistid),
-  PRIMARY KEY (artistid)
+	artistid INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(255),
+	birth_year Int,
+	birth_place VARCHAR(255),
+	genre VARCHAR(255),
+	UNIQUE (artistid),
+    PRIMARY KEY (artistid)
 );
 
 CREATE TABLE customer (
-  customerid INT NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(255),
-  last_name VARCHAR(255),
-  email VARCHAR(255),
-  UNIQUE (customerid),
-  PRIMARY KEY (customerid)
+	customerid INT NOT NULL AUTO_INCREMENT,
+	first_name VARCHAR(255),
+	last_name VARCHAR(255),
+	email VARCHAR(255),
+	UNIQUE (customerid),
+    PRIMARY KEY (customerid)
 );
 
 CREATE TABLE album (
-  albumid INT NOT NULL AUTO_INCREMENT,
-  artist_id INT NOT NULL,
-  title VARCHAR(255),
-  published_year Int,
-  comment VARCHAR(255),
-  UNIQUE (albumid),
-  PRIMARY KEY (albumid),
-  FOREIGN KEY (artist_id) REFERENCES artist (artistid)
+	albumid INT NOT NULL AUTO_INCREMENT,
+	artist_id INT NOT NULL,
+	title VARCHAR(255),
+	published_year Int,
+	comment VARCHAR(255),
+	UNIQUE (albumid),
+    PRIMARY KEY (albumid),
+    FOREIGN KEY (artist_id) REFERENCES artist (artistid)
 );
 
 CREATE TABLE employee (
-  employeeid INT NOT NULL AUTO_INCREMENT,
-  employeename VARCHAR(255),
-  UNIQUE (employeeid),
-  PRIMARY KEY (employeeid)
+	employeeid INT NOT NULL AUTO_INCREMENT,
+	employeename VARCHAR(255),
+	UNIQUE (employeeid),
+    PRIMARY KEY (employeeid)
 );
 
 CREATE TABLE store (
-  storeid INT NOT NULL AUTO_INCREMENT,
-  manager INT NOT NULL,
-  country VARCHAR(255),
-  state VARCHAR(255),
-  city VARCHAR(255),
-  street VARCHAR(255),
-  phone VARCHAR(255),
-  UNIQUE (storeid),
-  PRIMARY KEY (storeid),
-  FOREIGN KEY (manager) REFERENCES employee (employeeid)
+	storeid INT NOT NULL AUTO_INCREMENT,
+	manager INT NOT NULL,
+	country VARCHAR(255),
+	state VARCHAR(255),
+	city VARCHAR(255),
+	street VARCHAR(255),
+	phone VARCHAR(255),
+	building_xmldata TEXT,
+	UNIQUE (storeid),
+    PRIMARY KEY (storeid),
+    FOREIGN KEY (manager) REFERENCES employee (employeeid)
 );
 
 CREATE TABLE department (
-  departmentid INT NOT NULL AUTO_INCREMENT,
-  store_id INT NOT NULL,
-  department_head INT NOT NULL,
-  departmentname VARCHAR(255),
-  UNIQUE (departmentid),
-  PRIMARY KEY (departmentid),
-  FOREIGN KEY (department_head) REFERENCES employee (employeeid),
-  FOREIGN KEY (store_id) REFERENCES store (storeid)
+	departmentid INT NOT NULL AUTO_INCREMENT,
+	store_id INT NOT NULL,
+	department_head INT NOT NULL,
+	departmentname VARCHAR(255),
+	UNIQUE (departmentid),
+    PRIMARY KEY (departmentid),
+    FOREIGN KEY (department_head) REFERENCES employee (employeeid),
+    FOREIGN KEY (store_id) REFERENCES store (storeid)
 );
 
 CREATE TABLE employee_department (
-  employee_id INT NOT NULL,
-  department_id INT NOT NULL,
-  PRIMARY KEY (employee_id,department_id),
-  FOREIGN KEY (employee_id) REFERENCES employee (employeeid),
-  FOREIGN KEY (department_id) REFERENCES department (departmentid)
+	employee_id INT NOT NULL,
+	department_id INT NOT NULL,
+    PRIMARY KEY (employee_id,department_id),
+    FOREIGN KEY (employee_id) REFERENCES employee (employeeid),
+    FOREIGN KEY (department_id) REFERENCES department (departmentid)
 );
 
 CREATE TABLE sale (
-  saleid INT NOT NULL AUTO_INCREMENT,
-  album_id INT NOT NULL,
-  customer_id INT NOT NULL,
-  employee_id INT NOT NULL,
-  store_id INT NOT NULL,
-  timestamp Timestamp(14),
-  UNIQUE (saleid),
-  PRIMARY KEY (saleid),
-  FOREIGN KEY (employee_id) REFERENCES employee (employeeid),
-  FOREIGN KEY (album_id) REFERENCES album (albumid),
-  FOREIGN KEY (customer_id) REFERENCES customer (customerid),
-  FOREIGN KEY (store_id) REFERENCES store (storeid)
+	saleid INT NOT NULL AUTO_INCREMENT,
+	album_id INT NOT NULL,
+	customer_id INT NOT NULL,
+	employee_id INT NOT NULL,
+	store_id INT NOT NULL,
+	timestamp Timestamp(14),
+	UNIQUE (saleid),
+    PRIMARY KEY (saleid),
+    FOREIGN KEY (employee_id) REFERENCES employee (employeeid),
+    FOREIGN KEY (album_id) REFERENCES album (albumid),
+    FOREIGN KEY (customer_id) REFERENCES customer (customerid),
+    FOREIGN KEY (store_id) REFERENCES store (storeid)
 );
 
 
@@ -8686,8 +8687,8 @@ INSERT INTO employee (employeeid, employeename) VALUES(10, 'Hanna Poll');
 INSERT INTO employee (employeeid, employeename) VALUES(11, 'Jim Wells');
 INSERT INTO employee (employeeid, employeename) VALUES(12, 'Sandra Wilson');
 
-INSERT INTO store (storeid, manager, country, state, city, street, phone) VALUES(1, 1, 'US', 'New York', 'New York', 'Broadway & 72nd Str', '123 456 7890');
-INSERT INTO store (storeid, manager, country, state, city, street, phone) VALUES(2, 2, 'US', 'New York', 'Larchmont', 'Palmer Ave 71', '456 7890');
+INSERT INTO store (storeid, manager, country, state, city, street, phone, building_xmldata) VALUES(1, 1, 'US', 'New York', 'New York', 'Broadway & 72nd Str', '123 456 7890', '<building><floors>4</floors><elevators>2</elevators><square_meters>3200</square_meters></building>');
+INSERT INTO store (storeid, manager, country, state, city, street, phone, building_xmldata) VALUES(2, 2, 'US', 'New York', 'Larchmont', 'Palmer Ave 71', '456 7890', '<building><floors>2</floors><elevators>1</elevators><square_meters>400</square_meters></building>');
 
 INSERT INTO department (departmentid, store_id, department_head, departmentname) VALUES(1, 1, 1, 'Sales');
 INSERT INTO department (departmentid, store_id, department_head, departmentname) VALUES(2, 1, 4, 'Marketing');

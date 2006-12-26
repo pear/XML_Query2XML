@@ -9,7 +9,7 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within complex
     $query2xml =& XML_Query2XML::factory($db);
     $dom =& $query2xml->getXML(
         "SELECT
-            *, NULL AS builing_xmldata2, '' AS builing_xmldata3
+            *, NULL AS building_xmldata2, '' AS building_xmldata3
          FROM
             store",
         array(
@@ -23,31 +23,31 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within complex
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata2' => array(
-                    'value' => '&builing_xmldata2'
+                'building_xmldata2' => array(
+                    'value' => '&building_xmldata2'
                 ),
-                'builing_xmldata3' => array(
-                    'value' => '&builing_xmldata3'
+                'building_xmldata3' => array(
+                    'value' => '&building_xmldata3'
                 ),
-                'builing_xmldata4' => array(
-                    'value' => '?&builing_xmldata2'
+                'building_xmldata4' => array(
+                    'value' => '?&building_xmldata2'
                 ),
-                'builing_xmldata5' => array(
-                    'value' => '?&builing_xmldata3'
+                'building_xmldata5' => array(
+                    'value' => '?&building_xmldata3'
                 ),
-                '__builing_xmldata6' => array(
-                    'value' => '&builing_xmldata2'
+                '__building_xmldata6' => array(
+                    'value' => '&building_xmldata2'
                 ),
-                '__builing_xmldata7' => array(
-                    'value' => '&builing_xmldata3'
+                '__building_xmldata7' => array(
+                    'value' => '&building_xmldata3'
                 ),
-                'builing_xmldata8' => array(
+                'building_xmldata8' => array(
                     'rowTag' => '__row',
-                    'value' => '&builing_xmldata2'
+                    'value' => '&building_xmldata2'
                 ),
-                'builing_xmldata9' => array(
+                'building_xmldata9' => array(
                     'rowTag' => '__row',
-                    'value' => '&builing_xmldata3'
+                    'value' => '&building_xmldata3'
                 ),
             )
         )
@@ -65,8 +65,8 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within complex
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata2/>
-    <builing_xmldata3/>
+    <building_xmldata2/>
+    <building_xmldata3/>
   </store>
   <store>
     <storeid>2</storeid>
@@ -75,7 +75,7 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within complex
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata2/>
-    <builing_xmldata3/>
+    <building_xmldata2/>
+    <building_xmldata3/>
   </store>
 </music_stores>

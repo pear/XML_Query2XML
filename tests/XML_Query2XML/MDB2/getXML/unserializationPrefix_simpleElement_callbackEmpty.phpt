@@ -23,14 +23,14 @@ XML_Query2XML::getXML(): unserialization prefix with empty callback within simpl
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => '&#getEmptyString()',
-                'builing_xmldata2' => '&#getNull()',
-                'builing_xmldata3' => '?&#getEmptyString()',
-                'builing_xmldata4' => '?&#getNull()',
-                '__builing_xmldata5' => '&#getEmptyString()',
-                '__builing_xmldata6' => '&#getNull()',
-                '__builing_xmldata7' => '?&#getEmptyString()',
-                '__builing_xmldata8' => '?&#getNull()'
+                'building_xmldata' => '&#getEmptyString()',
+                'building_xmldata2' => '&#getNull()',
+                'building_xmldata3' => '?&#getEmptyString()',
+                'building_xmldata4' => '?&#getNull()',
+                '__building_xmldata5' => '&#getEmptyString()',
+                '__building_xmldata6' => '&#getNull()',
+                '__building_xmldata7' => '?&#getEmptyString()',
+                '__building_xmldata8' => '?&#getNull()'
             )
         )
     );
@@ -57,8 +57,8 @@ XML_Query2XML::getXML(): unserialization prefix with empty callback within simpl
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata/>
-    <builing_xmldata2/>
+    <building_xmldata/>
+    <building_xmldata2/>
   </store>
   <store>
     <storeid>2</storeid>
@@ -67,7 +67,7 @@ XML_Query2XML::getXML(): unserialization prefix with empty callback within simpl
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata/>
-    <builing_xmldata2/>
+    <building_xmldata/>
+    <building_xmldata2/>
   </store>
 </music_stores>

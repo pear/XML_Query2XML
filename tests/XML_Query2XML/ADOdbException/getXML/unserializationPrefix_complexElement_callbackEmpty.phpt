@@ -23,30 +23,30 @@ XML_Query2XML::getXML(): unserialization prefix with empty callback within compl
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata' => array(
+                'building_xmldata' => array(
                     'value' => '&#getEmptyString()'
                 ),
-                'builing_xmldata2' => array(
+                'building_xmldata2' => array(
                     'value' => '&#getNull()'
                 ),
-                'builing_xmldata3' => array(
+                'building_xmldata3' => array(
                     'value' => '?&#getEmptyString()'
                 ),
-                'builing_xmldata4' => array(
+                'building_xmldata4' => array(
                     'value' => '?&#getNull()'
                 ),
-                '__builing_xmldata5' => array(
+                '__building_xmldata5' => array(
                     'value' => '&#getEmptyString()'
                 ),
-                '__builing_xmldata6' => array(
+                '__building_xmldata6' => array(
                     'value' => '&#getNull()'
                 )
                 ,
-                'builing_xmldata7' => array(
+                'building_xmldata7' => array(
                     'rowTag' => '__row',
                     'value' => '&#getEmptyString()'
                 ),
-                'builing_xmldata8' => array(
+                'building_xmldata8' => array(
                     'rowTag' => '__row',
                     'value' => '&#getNull()'
                 )
@@ -76,8 +76,8 @@ XML_Query2XML::getXML(): unserialization prefix with empty callback within compl
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata/>
-    <builing_xmldata2/>
+    <building_xmldata/>
+    <building_xmldata2/>
   </store>
   <store>
     <storeid>2</storeid>
@@ -86,7 +86,7 @@ XML_Query2XML::getXML(): unserialization prefix with empty callback within compl
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata/>
-    <builing_xmldata2/>
+    <building_xmldata/>
+    <building_xmldata2/>
   </store>
 </music_stores>

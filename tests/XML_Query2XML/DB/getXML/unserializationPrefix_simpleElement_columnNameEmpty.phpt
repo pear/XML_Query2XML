@@ -9,7 +9,7 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within simple 
     $query2xml =& XML_Query2XML::factory($db);
     $dom =& $query2xml->getXML(
         "SELECT
-            *, NULL AS builing_xmldata2, '' AS builing_xmldata3
+            *, NULL AS building_xmldata2, '' AS building_xmldata3
          FROM
             store",
         array(
@@ -23,12 +23,12 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within simple 
                 'city',
                 'street',
                 'phone',
-                'builing_xmldata2' => '&builing_xmldata2',
-                'builing_xmldata3' => '&builing_xmldata3',
-                'builing_xmldata4' => '?&builing_xmldata3',
-                'builing_xmldata5' => '?&builing_xmldata2',
-                '__builing_xmldata6' => '&builing_xmldata2',
-                '__builing_xmldata7' => '&builing_xmldata3'
+                'building_xmldata2' => '&building_xmldata2',
+                'building_xmldata3' => '&building_xmldata3',
+                'building_xmldata4' => '?&building_xmldata3',
+                'building_xmldata5' => '?&building_xmldata2',
+                '__building_xmldata6' => '&building_xmldata2',
+                '__building_xmldata7' => '&building_xmldata3'
             )
         )
     );
@@ -45,8 +45,8 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within simple 
     <city>New York</city>
     <street>Broadway &amp; 72nd Str</street>
     <phone>123 456 7890</phone>
-    <builing_xmldata2/>
-    <builing_xmldata3/>
+    <building_xmldata2/>
+    <building_xmldata3/>
   </store>
   <store>
     <storeid>2</storeid>
@@ -55,7 +55,7 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within simple 
     <city>Larchmont</city>
     <street>Palmer Ave 71</street>
     <phone>456 7890</phone>
-    <builing_xmldata2/>
-    <builing_xmldata3/>
+    <building_xmldata2/>
+    <building_xmldata3/>
   </store>
 </music_stores>

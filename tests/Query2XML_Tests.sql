@@ -53,7 +53,7 @@ CREATE TABLE store (
 	city VARCHAR(255),
 	street VARCHAR(255),
 	phone VARCHAR(255),
-	builing_xmldata TEXT,
+	building_xmldata TEXT,
 	UNIQUE (storeid),
     PRIMARY KEY (storeid),
     FOREIGN KEY (manager) REFERENCES employee (employeeid)
@@ -127,8 +127,8 @@ INSERT INTO employee (employeeid, employeename) VALUES(10, 'Hanna Poll');
 INSERT INTO employee (employeeid, employeename) VALUES(11, 'Jim Wells');
 INSERT INTO employee (employeeid, employeename) VALUES(12, 'Sandra Wilson');
 
-INSERT INTO store (storeid, manager, country, state, city, street, phone, builing_xmldata) VALUES(1, 1, 'US', 'New York', 'New York', 'Broadway & 72nd Str', '123 456 7890', '<building><floors>4</floors><elevators>2</elevators><square_meters>3200</square_meters></building>');
-INSERT INTO store (storeid, manager, country, state, city, street, phone, builing_xmldata) VALUES(2, 2, 'US', 'New York', 'Larchmont', 'Palmer Ave 71', '456 7890', '<building><floors>2</floors><elevators>1</elevators><square_meters>400</square_meters></building>');
+INSERT INTO store (storeid, manager, country, state, city, street, phone, building_xmldata) VALUES(1, 1, 'US', 'New York', 'New York', 'Broadway & 72nd Str', '123 456 7890', '<building><floors>4</floors><elevators>2</elevators><square_meters>3200</square_meters></building>');
+INSERT INTO store (storeid, manager, country, state, city, street, phone, building_xmldata) VALUES(2, 2, 'US', 'New York', 'Larchmont', 'Palmer Ave 71', '456 7890', '<building><floors>2</floors><elevators>1</elevators><square_meters>400</square_meters></building>');
 
 INSERT INTO department (departmentid, store_id, department_head, departmentname) VALUES(1, 1, 1, 'Sales');
 INSERT INTO department (departmentid, store_id, department_head, departmentname) VALUES(2, 1, 4, 'Marketing');
