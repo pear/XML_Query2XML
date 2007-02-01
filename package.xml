@@ -39,7 +39,13 @@ Major features:
   <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>Second stable release
+ <notes>A couple of great new features:
+- non-static methods can now be used as callbacks via the new PEAR_Callback
+- integration of pre-existing XML data sources (e.g. XML stored in the database)
+  - XML unserialization support
+  - DOMNode handling support
+- multi-column primary key support
+- now comes with 578 unit tests (also texted with PostgreSQL)
  </notes>
  <contents>
   <dir name="/">
@@ -141,6 +147,10 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="case02.phpt" role="test" />
        <file baseinstalldir="/" name="case03.phpt" role="test" />
        <file baseinstalldir="/" name="case04.phpt" role="test" />
@@ -209,6 +219,13 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -234,6 +251,8 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
@@ -299,6 +318,10 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="case02.phpt" role="test" />
        <file baseinstalldir="/" name="case03.phpt" role="test" />
        <file baseinstalldir="/" name="case04.phpt" role="test" />
@@ -367,6 +390,13 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -392,6 +422,8 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
@@ -457,6 +489,10 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="case02.phpt" role="test" />
        <file baseinstalldir="/" name="case03.phpt" role="test" />
        <file baseinstalldir="/" name="case04.phpt" role="test" />
@@ -525,6 +561,13 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -550,6 +593,8 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
@@ -615,6 +660,10 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="case02.phpt" role="test" />
        <file baseinstalldir="/" name="case03.phpt" role="test" />
        <file baseinstalldir="/" name="case04.phpt" role="test" />
@@ -683,6 +732,13 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -708,6 +764,8 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
@@ -773,6 +831,10 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="case02.phpt" role="test" />
        <file baseinstalldir="/" name="case03.phpt" role="test" />
        <file baseinstalldir="/" name="case04.phpt" role="test" />
@@ -841,6 +903,13 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
@@ -866,6 +935,8 @@ Major features:
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
@@ -930,9 +1001,13 @@ Major features:
      <file baseinstalldir="/" name="skipif.php" role="test" />
     </dir> <!-- /tests/XML_Query2XML_ISO9075Mapper -->
     <file baseinstalldir="/" name="Query2XML_Tests.sql" role="test" />
+    <file baseinstalldir="/" name="Query2XML_Tests.psql" role="test" />
    </dir> <!-- /tests -->
    <dir name="XML">
     <dir name="Query2XML">
+     <file baseinstalldir="/" name="Callback.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="ISO9075Mapper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
