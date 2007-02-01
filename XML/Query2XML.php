@@ -46,7 +46,7 @@ require_once 'PEAR.php';
 * A typical usage of XML_Query2XML looks like this:
 * <code>
 * require_once('XML/Query2XML.php');
-* $query2xml = new XML_Query2XML(DB::connect($dsn));
+* $query2xml = new XML_Query2XML(MDB2::connect($dsn));
 * $dom = $query2xml->getXML($sql, $options);
 * header('Content-Type: application/xml');
 * print $dom->saveXML();
@@ -292,7 +292,7 @@ class XML_Query2XML
     * <code>
     * require_once('Log.php');
     * require_once('XML/Query2XML.php');
-    * $query2xml = new XML_Query2XML(DB::connect($dsn));
+    * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
     * $debugLogger = Log::factory('file', 'out.log', 'XML_Query2XML');
     * $query2xml->enableDebugLog($debugLogger);
     * </code>
@@ -429,7 +429,7 @@ class XML_Query2XML
     * Example:
     * <code>
     * require_once('XML/Query2XML.php');
-    * $query2xml = XML_Query2XML::factory(DB::connect($dsn));
+    * $query2xml = XML_Query2XML::factory(MDB2::connect($dsn));
     * $dom = $query2xml->getFlatXML(
     *   'SELECT * FROM artist',
     *   'music_library',
@@ -726,6 +726,16 @@ class XML_Query2XML
         if ($id === null) {
             //the ID column is NULL
             return false;
+        } elseif (is_object($id) || is_array($id)) {
+            /*
+            * unit test: _getNestedXMLRecord/
+            *   throwConfigException_idcolumnOptionWrongTypeArray.phpt
+            *   throwConfigException_idcolumnOptionWrongTypeObject.phpt
+            */
+            throw new XML_Query2XML_ConfigException(
+                'The option "idColumn" must evaluate to a value that is not '
+                . 'an object or an array'
+            );
         }
         
         //default return value
