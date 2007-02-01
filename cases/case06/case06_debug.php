@@ -1,7 +1,7 @@
 <?php
-require_once('XML/Query2XML.php');
-require_once('DB.php');
-$query2xml = XML_Query2XML::factory(DB::connect('mysql://root@localhost/Query2XML_Tests'));
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once('Log.php');
 $debugLogger = &Log::factory('file', 'case06.log', 'XML_Query2XML');
