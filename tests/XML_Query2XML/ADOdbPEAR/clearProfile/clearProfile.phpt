@@ -12,7 +12,9 @@ XML_Query2XML::clearProfile()
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

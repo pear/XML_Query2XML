@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): unserialization prefix with column name within complex 
         "SELECT
             *
          FROM
-            store",
+            store
+         ORDER BY
+            storeid",
         array(
             'rootTag' => 'music_stores',
             'rowTag' => 'store',

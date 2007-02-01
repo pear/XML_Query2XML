@@ -11,7 +11,9 @@ XML_Query2XML::_processComplexElementSpecification(): check for XML_Query2XML_Co
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

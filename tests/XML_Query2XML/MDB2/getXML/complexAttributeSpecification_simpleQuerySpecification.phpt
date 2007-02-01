@@ -13,7 +13,9 @@ XML_Query2XML::getXML(): complex attribute specification with simple query speci
          FROM
             artist
          WHERE
-            artistid = 1",
+            artistid = 1
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

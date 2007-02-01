@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): unserialization prefix with empty column within simple 
         "SELECT
             *, NULL AS building_xmldata2, '' AS building_xmldata3
          FROM
-            store",
+            store
+         ORDER BY
+            storeid",
         array(
             'rootTag' => 'music_stores',
             'rowTag' => 'store',

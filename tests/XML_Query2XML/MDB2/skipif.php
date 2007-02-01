@@ -23,7 +23,7 @@ if (!@include_once 'MDB2.php') {
     exit;
 } else {
     require_once dirname(dirname(__FILE__)) . '/settings.php';
-    $db = @MDB2::factory(DSN);
+    $db = @MDB2::connect(DSN);
     if (PEAR::isError($db)) {
         print 'skip could not connect using DSN ' . DSN;
         exit;

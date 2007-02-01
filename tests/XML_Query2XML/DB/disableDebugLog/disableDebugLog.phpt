@@ -23,7 +23,9 @@ XML_Query2XML::disableDebugLog()
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

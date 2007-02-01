@@ -13,7 +13,9 @@ XML_Query2XML::stopProfiling()
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',
@@ -29,7 +31,7 @@ XML_Query2XML::stopProfiling()
                         'data' => array(
                             'artistid'
                         ),
-                        'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                        'query' => 'SELECT * FROM album WHERE artist_id = ? ORDER BY albumid'
                     ),
                     'sql_options' => array(
                         'uncached'      => true,

@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): asterisk shortcut with attributes - overwriting with co
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

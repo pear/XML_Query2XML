@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): asterisk shortcut with elements - supressing single ele
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

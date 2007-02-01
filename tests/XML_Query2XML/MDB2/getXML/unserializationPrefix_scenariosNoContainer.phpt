@@ -87,7 +87,9 @@ XML_Query2XML::getXML(): unserialization prefix: no container (scenarios 3,4,7,8
             NULL   AS xml_data_column_null,
             ''     AS xml_data_column_empty
          FROM
-            store WHERE storeid = 1",
+            store WHERE storeid = 1
+         ORDER BY
+            storeid",
         array(
             'rootTag' => 'music_stores',
             'rowTag' => 'store',

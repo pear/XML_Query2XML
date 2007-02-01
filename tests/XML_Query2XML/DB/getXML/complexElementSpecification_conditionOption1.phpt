@@ -12,7 +12,10 @@ XML_Query2XML::getXML(): complex element specification with "condition" option #
             *
          FROM
             artist
-            LEFT JOIN album ON album.artist_id = artist.artistid",
+            LEFT JOIN album ON album.artist_id = artist.artistid
+         ORDER BY
+            artistid,
+            albumid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): complex attribute specification with value prefixes
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

@@ -8,7 +8,7 @@ XML_Query2XML::getFlatXML(): Case01
     require_once('XML/Beautifier.php');
     require_once dirname(dirname(__FILE__)) . '/db_init.php';
     $query2xml =& XML_Query2XML::factory($db);
-    $dom =& $query2xml->getFlatXML("SELECT * FROM artist", 'music_library', 'artist');
+    $dom =& $query2xml->getFlatXML("SELECT * FROM artist ORDER BY artistid", 'music_library', 'artist');
     
     $dom->formatOutput = true;
     print $dom->saveXML();

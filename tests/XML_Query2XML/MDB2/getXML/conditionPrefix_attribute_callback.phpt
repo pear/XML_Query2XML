@@ -14,7 +14,10 @@ XML_Query2XML::getXML(): simple attribute - condition prefix with PHP code
             '' AS test
          FROM
             artist
-            LEFT JOIN album ON album.artist_id = artist.artistid",
+            LEFT JOIN album ON album.artist_id = artist.artistid
+         ORDER BY
+            artistid,
+            albumid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

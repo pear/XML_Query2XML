@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): unserialization prefix with empty callback within simpl
         "SELECT
             *
          FROM
-            store",
+            store
+         ORDER BY
+            storeid",
         array(
             'rootTag' => 'music_stores',
             'rowTag' => 'store',

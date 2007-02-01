@@ -12,7 +12,10 @@ XML_Query2XML::getXML(): simple element - condition prefix with static text
             *
          FROM
             artist
-            LEFT JOIN album ON album.artist_id = artist.artistid",
+            LEFT JOIN album ON album.artist_id = artist.artistid
+         ORDER BY
+            artistid,
+            albumid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

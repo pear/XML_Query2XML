@@ -15,7 +15,12 @@ XML_Query2XML::getXML(): Case05
              customer c
              LEFT JOIN sale s ON c.customerid = s.customer_id
              LEFT JOIN album al ON s.album_id = al.albumid
-             LEFT JOIN artist ar ON al.artist_id = ar.artistid",
+             LEFT JOIN artist ar ON al.artist_id = ar.artistid
+         ORDER BY
+            c.customerid,
+            s.saleid,
+            al.albumid,
+            ar.artistid",
         array(
             'rootTag' => 'music_store',
             'rowTag' => 'customer',

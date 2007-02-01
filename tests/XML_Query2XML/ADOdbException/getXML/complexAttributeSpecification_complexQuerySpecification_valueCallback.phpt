@@ -11,7 +11,9 @@ XML_Query2XML::getXML(): complex attribute specification with complex query spec
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

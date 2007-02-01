@@ -12,7 +12,9 @@ XML_Query2XML::getXML(): Case04
         "SELECT
             *
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'MUSIC_LIBRARY',
             'rowTag' => 'ARTIST',

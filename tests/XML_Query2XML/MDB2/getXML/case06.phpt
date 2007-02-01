@@ -114,7 +114,19 @@ XML_Query2XML::getXML(): Case06
                 LEFT JOIN sale sa ON sa.employee_id = e.employeeid
                  LEFT JOIN customer c ON c.customerid = sa.customer_id
                  LEFT JOIN album al ON al.albumid = sa.album_id
-                  LEFT JOIN artist ar ON ar.artistid = al.artist_id",
+                  LEFT JOIN artist ar ON ar.artistid = al.artist_id
+         ORDER BY
+            s.storeid,
+            manager.employeeid,
+            d.departmentid,
+            department_head.employeeid,
+            ed.employee_id,
+            ed.department_id,
+            e.employeeid,
+            sa.saleid,
+            c.customerid,
+            al.albumid,
+            ar.artistid",
         array(
             'rootTag' => 'music_company',
             'rowTag' => 'store',

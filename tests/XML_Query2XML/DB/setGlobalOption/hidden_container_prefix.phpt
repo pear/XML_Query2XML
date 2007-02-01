@@ -14,7 +14,10 @@ XML_Query2XML::setGlobalOption(): setting the hidden_container_prefix
             *
          FROM
             artist
-            LEFT JOIN album ON album.artist_id = artist.artistid",
+            LEFT JOIN album ON album.artist_id = artist.artistid
+         ORDER BY
+            artistid,
+            albumid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

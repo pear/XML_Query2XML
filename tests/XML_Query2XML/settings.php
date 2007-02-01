@@ -18,5 +18,10 @@
 * @version $Id$
 */
 
-define('DSN', 'mysql://root@localhost/Query2XML_Tests');
+if (getenv('PHP_PEAR_XML_QUERY2XML_TEST_DSN') != '') {
+    define('DSN', getenv('PHP_PEAR_XML_QUERY2XML_TEST_DSN'));
+} else {
+    define('DSN', 'mysql://root@localhost/Query2XML_Tests');
+    //define('DSN', 'pgsql://postgres:test@localhost/query2xml_tests');
+}
 ?>

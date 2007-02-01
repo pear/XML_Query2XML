@@ -7,7 +7,7 @@ XML_Query2XML::getFlatXML(): simple select
     require_once 'XML/Query2XML.php';
     require_once dirname(dirname(__FILE__)) . '/db_init.php';
     $query2xml =& XML_Query2XML::factory($db);
-    $dom =& $query2xml->getFlatXML('SELECT * FROM album');
+    $dom =& $query2xml->getFlatXML('SELECT * FROM album ORDER BY albumid');
     echo $dom->saveXML();
 ?>
 --EXPECT--

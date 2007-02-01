@@ -12,7 +12,9 @@ XML_Query2XML::getXML(): complex attribute specification with condition option
             *,
             '' AS empty_column
          FROM
-            artist",
+            artist
+         ORDER BY
+            artistid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',

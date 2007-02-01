@@ -13,7 +13,10 @@ XML_Query2XML::getXML(): Case02
             *
          FROM
             artist
-            LEFT JOIN album ON album.artist_id = artist.artistid",
+            LEFT JOIN album ON album.artist_id = artist.artistid
+         ORDER BY
+            artist.artistid,
+            album.albumid",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',
