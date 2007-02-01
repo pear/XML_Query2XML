@@ -354,15 +354,37 @@ array(
         them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
         called with the current record as the first and '12' as the second argument. If you do not want
         to pass additional arguments to the callback function, the opening and closing brace are optional.
+        The callback function's return value will be converted to a string and used as the child text node
+        if it is anything but an object or an array. If you do return an object or an array from a callback
+        function it has to be an instance of {@link http://www.php.net/manual/en/ref.dom.php DOMNode} or
+        an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples
+        and further details. If an instances of any other class is returned, a XML_Query2XML_XMLException will be thrown.
        </listitem>
       </itemizedlist>
-      All three types can be combined with the <emphasis>CONDITIONAL prefix ?</emphasis>:
-      if the value is preceeded by a question mark ('?'), the whole element will be skipped
-      if the value equals (==) an empty string. The CONDITIONAL prefix can be combined with all types:
-      if you do this you have to write the CONDITIONAL prefix first e.g. '?#', '?:' or '?COLUMN_NAME'.
+      There are two more prefixes available that can be used in conjunction with all the prifixes described above:
+      <itemizedlist>
+       <listitem>
+        <emphasis>XML UNSERIALIZATION prefix &amp;</emphasis>: the ampersand (&amp;) prefix allows you to
+        automatically unserialize string data, i.e. transform a string into a {@link http://www.php.net/manual/en/ref.dom.php DOMDocument}. DOMDocument's
+        {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php loadXML()} method will be
+        used for this purpose. You can combine all three types with this prefix: '&amp;COLUMN_NAME',
+        '&amp;#function()' or '&amp;:&lt;name&gt;John&lt;/name&gt;' will all work. You can even use the CONDITIONAL prefix
+        which has to preceed all other prefixes. If the data cannot be unserialized i.e.
+        {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
+        returns false, a XML_Query2XML_XMLException will be thrown. Please see
+        {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and thurther
+        details.
+       </listitem>
+       <listitem>
+        <emphasis>CONDITIONAL prefix ?</emphasis>: if the specification starts with a question mark ('?'),
+        the whole element will be skipped if the value equals (==) an empty string. The CONDITIONAL prefix
+        can be combined with all types: if you do this you have to write the CONDITIONAL prefix first
+        e.g. '?#', '?:' or '?COLUMN_NAME'.
+       </listitem>
+      </itemizedlist>
     <para>
     </para>
-      The same syntax can be use for
+      Basically, the same syntax can be use for
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value},
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes},
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification} and
@@ -1005,7 +1027,8 @@ $dom = $query2xml->getXML(
     'elements' => array(
         '*' => '*',
         'genre' => array(
-            'condition' => 'false'
+            'condition' => '#returnFalse()'
+            //this would also work: 'condition' => ':'
         )
     )
   )
@@ -1013,6 +1036,11 @@ $dom = $query2xml->getXML(
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
+
+function returnFalse()
+{
+    return false;
+}
 ?>
       ]]>
       </programlisting>
@@ -1069,10 +1097,11 @@ print $dom->saveXML();
     </refsect3>
   </refsect2>
   
-    <refsect2 id="{@id options_idcolumn}">
+  <refsect2 id="{@id options_idcolumn}">
    <title>$options['idColumn']</title>
    <para>
-    The name of the column by which a record is identified as unique, aka the primary key. This is especially important within a
+    In most cases this will be the name of the column by which a record is identified as unique, aka the
+    primary key. This is especially important within a
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications Complex Element Specification}.
     See there for an example. This option is obligatory at the root level! The idColumn specification can be
     of the following types:
@@ -1103,6 +1132,138 @@ print $dom->saveXML();
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications} because the private method
     {@link XML_Query2XML::_applyColumnStringToRecord()} is used in all cases.
    </para>
+   <refsect3 id="{@id multicolumn_pk}">
+    <title>Handling Multi-Column Primary Keys</title>
+    <para>
+     Sometimes your primary key will consist of multiple columns. For example, this might
+     be the case when you implement a many-to-many relationship using an intersection table.
+    </para>
+    <para>
+     But as you know by now,
+     $options['idColumn'] has to evaluate to one unique ID for every record.
+     Depending on the type of the primary key columns you will want to choose a different strategy to
+     compute that unique ID for every record. To begin with, you have to choose whether
+     you want to compute that unique ID within the database or using PHP. To do it within the
+     database you will have to define an alias using the "... AS alias_name" syntax. Using
+     PHP you have to use a callback function to generate the ID. When generating the ID, you
+     again have different options.
+    </para>
+    <para>
+     If your primary key columns are of a numeric type, you can
+     <itemizedlist>
+      <listitem>
+       Concatenate your primary key columns using a separator. In the database
+       you would use something like "CONCAT(column1, '_', column2) AS id" and
+       when implemented in PHP you would write a callback that returns something
+       like "$record['column1'] . '_' . $record['column2']".
+      </listitem>
+      <listitem>
+       If Leftshift the first column by the number of bits the second column consumes
+       and OR the leftshifted first column with the second column. E.g. if you had
+       two columns defined as TINYINT UNSIGNED (0 to 255, i.e. 8 bits), you could
+       generate the ID by
+       <programlisting role="php">
+       <![CDATA[
+$id = ($column1 << 8) | $column2;
+       ]]>
+       </programlisting>
+       Think of like this:
+       <![CDATA[
+$column1 (set to 255):           00000000000000000000000011111111
+$column2 left-shifted by 8 bits: 00000000000000001111111100000000
+
+now we OR the left-shifted $column1 with $column2 (both were
+originally set to the maximum of 255):
+$column1 (left-shifted 255): 00000000000000001111111100000000
+$column2 (set to 255):       00000000000000000000000011111111
+-------------------------------------------------------------
+result:                      00000000000000001111111111111111
+As you can see two different combinations of $column1 and $column2
+will always result in a different ID. This is because the left-shifted
+$column1 does not intersect with $column2.
+       ]]>
+       <emphasis>WARNING: an integer in PHP has 32 bits</emphasis> - 
+       the tecnique described above therefore only works if the sum
+       of the bits consumed by your primary key columns is less than
+       or equal to 32 (i.e. two 16 bit numbers, four 8 bit numbers or
+       two 8 bit numbers and one 16 bit number).
+      </listitem>
+      <listitem>
+       Use the generateIdFromMultiKeyPK() method described below.
+      </listitem>
+     </itemizedlist>
+    </para>
+    <para>
+     If your primary key columns are of a character type (e.g. CHAR, VARCHAR) you
+     have to come up with something else. Before you read on, I strongly urge
+     you to reconsider your choice for the primary key (does it really meet the
+     requirements of minimality and stability, i.e. is immutable?).
+     <emphasis>SECURITY WARNING:</emphasis>
+     Do not simply concatenate your character type columns (with or without a separator).
+     The following example shows why:
+     <![CDATA[
+record1: column1='a_b' column2='c'
+record2: column1='a'   column2='b_c'
+When using the separator '_' both records would have an ID of 'a_b_c'.
+     ]]>
+     A malicious attacker could use your separator within
+     one of the column values to force ID collisions, which potentially
+     lead to an exploitable security vulnerability. Great care should therefore
+     be taken when choosing a separator - and relying on its confidentiality is
+     not a good strategy. What you might do is to use a separator that is longer
+     than the maximum character length of your primary key columns. But this only
+     makes sense if that maximum is rather low. For example, if you have two CHAR(2)
+     columns, it is reasonable to use the separator '---' which is three characters long.
+    </para>
+    <para>
+     Another thing one might think of is to use a hash function like sha1() or md5().
+     But that's not really an option as it would really kill the performance of your
+     application.
+    </para>
+    <para>
+     The most bullet proof solution to the problem of generating a unique ID from
+     two character type columns is to use a callback function that works with
+     an array. The following function can be used as a callback whenever
+     you need to generate an ID from two character type columns.
+     <programlisting role="php">
+     <![CDATA[
+<?php
+/**Returns a unique ID base on the values stored in
+* $record[$columnName1] and $record[$columnName2].
+* 
+* @param array $record An associative array.
+* @param string $columnName1 The name of the first column.
+* @param string $columnName2 The name of the second column.
+* @return int The ID.
+*/
+function generateIdFromMultiKeyPK($record, $columnName1, $columnName2)
+{
+    static $ids = array();
+    static $idCounter = 0;
+    
+    $column1 = $record[$columnName1];
+    $column2 = $record[$columnName2];
+    if (!isset($ids[$column1])) {
+        $ids[$column1] = array();
+    }
+    if (!isset($ids[$column1][$column2])) {
+        $ids[$column1][$column2] = $idCounter++;
+    }
+    return $ids[$column1][$column2];
+}
+?>
+     ]]>
+     </programlisting>
+    </para>
+    <para>
+     All you have to do is to specify $options['idColumn'] as:
+     <![CDATA[
+'#generateIdFromMultiKeyPK(name_of_column1, name_of_column2)'
+     ]]>
+     Remember: $record is automatically passed as the first argument
+     to the callback function.
+    </para>
+   </refsect3>
   </refsect2>
   
   <refsect2 id="{@id options_attributes}">
@@ -1122,7 +1283,9 @@ print $dom->saveXML();
      will be put into an attribute named after the column. If you're
      unhappy with the default you can specify an other attribute name by using
      it as the array key. As documented for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
-     the prefixes "?", "!" and ":" can be used.
+     the prefixes "?", "!" and ":" can be used. Only the UNSERIALIZATION prefix &amp; which is valid for
+     a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications Simple Element Specification}
+     cannot be used for a Simple Attribute Specification.
     </para>
     <para>
      The follwing example will use
@@ -1174,6 +1337,7 @@ print $dom->saveXML();
      <itemizedlist>
       <listitem>
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value}: the attribute's value
+      (note: you cannot use the UNSERIALIZATION prefix &amp; for an attribute specification)
       </listitem>
      </itemizedlist>
      and optionally can contain
@@ -1223,7 +1387,7 @@ $dom = $query2xml->getXML(
       'birth_year',
       'bornBefore1940' => array(
         'value' => ':true',
-        'condition' => '$record["birth_year"] < 1940'
+        'condition' => '#lessThan(birth_year, 1940)'
       )
     )
   )
@@ -1231,6 +1395,11 @@ $dom = $query2xml->getXML(
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
+
+function lessThan($record, $columnName, $num)
+{
+    return $record[$columnName] < $num;
+}
 ?>
      ]]>
      </programlisting>
@@ -3140,15 +3309,15 @@ print $dom->saveXML();
       A XML_Query2XML_XMLException will be thrown if the unserialization fails, i.e.
       {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
       returns false. This will happen for example if the data you try to unserialize is 'John Doe' (no xml tags at all),
-      '&lt;name&gt;John Doe' (no closing tag) or '&lt;name&gt;John Doe&lt;/name&gt;&lt;name&gt;Jane Doe&lt;/name&gt;' (no root tag element).
+      '&lt;name&gt;John Doe' (no closing tag) or '&lt;name&gt;John Doe&lt;/name&gt;&lt;name&gt;Jane Doe&lt;/name&gt;' (no root tag).
      </listitem>
     </itemizedlist>
    </para>
    <refsect3 id="{@id usage_scenarios}">
     <title>Usage scenarios of the unserialization prefix (&amp;)</title>
     <para>
-     Regarding an additional containing XML element (the root element of your unserialized data)
-     there are 3 different things you might want for the containing element when unserializing
+     Regarding a container (the root element of your unserialized data)
+     there are 3 different things you might want when unserializing
      the data:
      <itemizedlist>
       <listitem>
@@ -3161,7 +3330,7 @@ print $dom->saveXML();
        No Container
       </listitem>
      </itemizedlist>
-     Now follows a detailed description of each of the three possibilities. We will assume
+     For the detailed description of each of the three possibilities that is to follow, we will assume
      that your XML data is stored in the database. Therefore &amp; will be used in the form
      of '&amp;COLUMN_NAME'. If you wanted to unserialize static data you would write something
      like
