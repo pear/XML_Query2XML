@@ -793,30 +793,17 @@ class XML_Query2XML
                         $column,
                         $tag
                     );
-                } elseif (is_string($column)) {
+                } else {
                     //simple attribute specifications
                     $attributeValue = $this->_applyColumnStringToRecord(
                         $column,
                         $record,
+                        $attributeName,
                         'attributes'
                     );
-                    if (strpos($column, '&') === 0) {
-                        //$column = '?' . $column;
-                    }
                     if ($this->_evaluateCondtion($attributeValue, $column)) {
                         self::_setDOMAttribute($tag, $attributeName, $attributeValue);
                     }
-                } else {
-                    /*
-                    * unit test: _getNestedXMLRecord/
-                    *  throwConfigException_attributeSpecWrongType.phpt
-                    */
-                    throw new XML_Query2XML_ConfigException(
-                        'The attribute "'
-                        . $attributeName
-                        . '" was not specified using a string nor an array',
-                        'attributes'
-                    );
                 }
             }
             if (isset($options['value'])) {
@@ -863,11 +850,9 @@ class XML_Query2XML
                     $tagValue = $this->_applyColumnStringToRecord(
                         $column,
                         $record,
+                        $tagName,
                         'elements'
                     );
-                    if (strpos($column, '&') === 0) {
-                        //$column = '?' . $column;
-                    }
                     if ($this->_evaluateCondtion($tagValue, $column)) {
                         if ($tagValue instanceof DomNode || is_array($tagValue)) {
                             /*
@@ -1176,7 +1161,8 @@ class XML_Query2XML
         $attributeValue = $this->_applyColumnStringToRecord(
             $options['value'],
             $attributeRecord,
-            'attributes'
+            'value',
+            array('attributes', $attributeName)
         );
         if ($this->_evaluateCondtion($attributeValue, $options['value'])) {
             self::_setDOMAttribute($tag, $attributeName, $attributeValue);
@@ -1384,8 +1370,10 @@ class XML_Query2XML
     /**Private method to apply a column string to a record.
     * Please see the tutorial for details on the different column strings.
     *
-    * @throws XML_Query2XML_ConfigException  Thrown if $record[$columnStr]
-    *               does not exist (and $columnStr has no special prefix).
+    * @throws XML_Query2XML_ConfigException  Thrown if $columnStr is not
+    *               a string or an instance of XML_Query2XML_Callback or if
+    *               $record[$columnStr] does not exist (and $columnStr has
+    *               no special prefix).
     * @throws XML_Query2XML_XMLException     Thrown if the '&' prefix was used
     *               but the data was not unserializeable, i.e. not valid XML data.
     * @param string $columnStr  One of the following: if prefixed by ':' it means
@@ -1397,11 +1385,43 @@ class XML_Query2XML
     *               or in conjunction with the ':' or '#' prefix, the resulting data
     *               is expected to be a string holding XML data. If the data cannot
     *               be unserialized an XML_Query2XML_XMLException will be thrown.
+    * @param array $record The record as an associative array.
+    * @param string $optionName The name of the option to process.
+    * @param mixed $parentOptionName The name of the parent option; this can also
+    *               be an array of parent options. It will be passed as second argument
+    *               to the XML_Query2XML_ConfigException constructor.
     * @return mixed The resulting value.
     */
     private function _applyColumnStringToRecord($columnStr, &$record, $optionName,
         $parentOptionName = '')
     {
+        if (
+            interface_exists('XML_Query2XML_Callback') &&
+            $columnStr instanceof XML_Query2XML_Callback
+        ) {
+            return $columnStr->execute($record);
+        } elseif (!is_string($columnStr)) {
+            /*
+            * unit tests:
+            *  _getNestedXMLRecord/
+            *   throwConfigException_attributeSpecWrongType.phpt
+            *  _applyColumnStringToRecord/
+            *   throwConfigException_callbackInterface_complexAttributeSpec.phpt
+            *   throwConfigException_callbackInterface_complexElementSpec.phpt
+            *   throwConfigException_callbackInterface_condition.phpt
+            *   throwConfigException_callbackInterface_data.phpt
+            *   throwConfigException_callbackInterface_idColumn.phpt
+            *   throwConfigException_callbackInterface_simpleAttributeSpec.phpt
+            *   throwConfigException_callbackInterface_simpleElementSpec.phpt
+            */
+            throw new XML_Query2XML_ConfigException(
+                '"' . $optionName . '" was not specified using a string, an array '
+                . 'or an instance of XML_Query2XML_Callback',
+                $parentOptionName
+            );
+        }
+        
+        
         if (strpos($columnStr, '?') === 0) {
             //the ? prefix is handled by _evaluateCondtion()
             $columnStr = substr($columnStr, 1);
@@ -1526,6 +1546,10 @@ class XML_Query2XML
     */
     private function _evaluateCondtion($value, $spec)
     {
+        if (is_object($spec)) {
+            //$spec is an instance of XML_Query2XML_Callback
+            return true;
+        }
         if (strpos($spec, '?') === 0) {
             /*
             * $spec defines a non-empty condition; return false if
