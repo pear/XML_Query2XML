@@ -23,7 +23,8 @@
   </para>
   <para>
     Both methods {@link XML_Query2XML::getXML()} and {@link XML_Query2XML::getFlatXML()} return an instance
-    of DomDocument. The class DomDocument is provided by PHP5's DOM XML extension.
+    of {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DomDocument}.
+    The class DomDocument is provided by {@link http://www.php.net/manual/en/ref.dom.php PHP5's DOM XML extension}.
   </para>
  </refsect1>
  
@@ -339,17 +340,18 @@ array(
       If you use both, the array key and the array value to specify an element, the array value can be of the following types:
       <itemizedlist>
        <listitem>
-        <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
+        <emphasis>COLUMN NAME (string)</emphasis>: this is the default if not preceeded by ':' or '#'.
         If the column does not exist, an {@link XML_Query2XML_ConfigException} will be thrown.
        </listitem>
        <listitem>
-        <emphasis>STATIC TEXT with a : prefix</emphasis>: if the value is preceeded by a colon (':'), it is
+        <emphasis>STATIC TEXT with a : prefix (string)</emphasis>: if the value is preceeded by a colon (':'), it is
         interpreted as static text.
        </listitem>
        <listitem>
-        <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
+        <emphasis>CALLBACK FUNCTION with a # prefix (string)</emphasis>: if the value is preceeded by a pound sign ('#'), it
         is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
-        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        method (e.g. '#MyClass::myFunction()') - for how to use a non-static method, see the type COMMAND OBJECT.
+        The current record will be passed to the callback function
         as an associative array. You can also pass additional string arguments to the callback function by specifing
         them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
         called with the current record as the first and '12' as the second argument. If you do not want
@@ -359,6 +361,16 @@ array(
         function it has to be an instance of {@link http://www.php.net/manual/en/ref.dom.php DOMNode} or
         an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples
         and further details. If an instances of any other class is returned, a XML_Query2XML_XMLException will be thrown.
+       </listitem>
+       <listitem>
+        <emphasis>COMMAND OBJECT (object)</emphasis>: If you want to use a non-static method as a
+        callback function, you can do so by specifying the value as an instance of a class that
+        implements the {@link XML_Query2XML_Callback} interface. This implementation of the
+        {@link http://en.wikipedia.org/wiki/Command_pattern command pattern} gives you all the
+        flexibility. The disadvantage ist that you cannot use the XML UNSERIALIZATION prefix
+        or the CONDITIONAL prefix. Note: you have to require_once 'XML/Query2XML/Callback.php'
+        before using the XML_Query2XML_Callback interface. The return value of a COMMAND OBJECT's
+        execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
        </listitem>
       </itemizedlist>
       There are two more prefixes available that can be used in conjunction with all the prifixes described above:
@@ -372,7 +384,7 @@ array(
         which has to preceed all other prefixes. If the data cannot be unserialized i.e.
         {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
         returns false, a XML_Query2XML_XMLException will be thrown. Please see
-        {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and thurther
+        {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and further
         details.
        </listitem>
        <listitem>
@@ -382,6 +394,8 @@ array(
         e.g. '?#', '?:' or '?COLUMN_NAME'.
        </listitem>
       </itemizedlist>
+      Note: for ovious reasons, the XML UNSERIALIZATION prefix and the CONDITIONAL prefix cannot be
+      combined with a COMMAND OBJECT.
     <para>
     </para>
       Basically, the same syntax can be use for
@@ -449,12 +463,44 @@ print $dom->saveXML();
      The following example demonstrates the usage of all different types. The comment element will be skipped if its value == "".
      Same holds true for the genre element which uses the trim'ed version of the value stored in the genre column. 
      The published_century element gets the century calculated using floor. The element "static" has a static value of
-     "some static text".
+     "some static text". The title element uses a COMMAND OBJECT, i.e. an instance of a class that implements
+     the {@link XML_Query2XML_Callback} interface. In our case, the command class ToLowerCallback returns the
+     lowercase'd version of the value of the column specified as the constructor argument.
      <programlisting role="php">
      <![CDATA[
 <?php
 require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/Callback.php';
 require_once 'MDB2.php';
+
+class Utils
+{
+    function trimGenre($record)
+    {
+        return trim($record['genre']);
+    }
+    
+    function getPublishedYearCentury($record)
+    {
+        return floor($record['published_year']/100);
+    }
+}
+
+class ToLowerCallback implements XML_Query2XML_Callback
+{
+    private $_columnName = '';
+    
+    public function __construct($columnName)
+    {
+        $this->_columnName = $columnName;
+    }
+    
+    public function execute(array $record)
+    {
+        return strtolower($record[$this->_columnName]);
+    }
+}
+
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
   "SELECT
@@ -470,7 +516,7 @@ $dom = $query2xml->getXML(
     'rowTag' => 'album',
     'elements' => array(
         'albumid',
-        'title',
+        'title' => new ToLowerCallback('title'),
         'published_year',
         'published_century' => "#Utils::getPublishedYearCentury()",
         'comment' => '?comment',
@@ -482,19 +528,6 @@ $dom = $query2xml->getXML(
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
-
-class Utils
-{
-    function trimGenre($record)
-    {
-        return trim($record['genre']);
-    }
-    
-    function getPublishedYearCentury($record)
-    {
-        return floor($record['published_year']/100);
-    }
-}
 ?>
       ]]>
       </programlisting>
@@ -505,7 +538,7 @@ class Utils
 <albums>
   <album>
     <albumid>1</albumid>
-    <title>New World Order</title>
+    <title>new world order</title>
     <published_year>1990</published_year>
     <published_century>19</published_century>
     <comment>the best ever!</comment>
@@ -514,7 +547,7 @@ class Utils
   </album>
   <album>
     <albumid>2</albumid>
-    <title>Curtis</title>
+    <title>curtis</title>
     <published_year>1970</published_year>
     <published_century>19</published_century>
     <comment>that man's got somthin' to say</comment>
@@ -523,7 +556,7 @@ class Utils
   </album>
   <album>
     <albumid>3</albumid>
-    <title>Shaft</title>
+    <title>shaft</title>
     <published_year>1972</published_year>
     <published_century>19</published_century>
     <comment>he's the man</comment>
@@ -1117,12 +1150,22 @@ print $dom->saveXML();
      </listitem>
      <listitem>
       <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
-        is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
-        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
-        as an associative array. You can also pass additional string arguments to the callback function by specifing
-        them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
-        called with the current record as the first and '12' as the second argument. If you do not want
-        to pass additional arguments to the callback function, the opening and closing brace are optional.
+      is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
+      method (e.g. '#MyClass::myFunction()') - for how to use a non-static method, see the type COMMAND OBJECT.
+      The current record will be passed to the callback function
+      as an associative array. You can also pass additional string arguments to the callback function by specifing
+      them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
+      called with the current record as the first and '12' as the second argument. If you do not want
+      to pass additional arguments to the callback function, the opening and closing brace are optional.
+     </listitem>
+     <listitem>
+      <emphasis>COMMAND OBJECT (object)</emphasis>: If you want to use a non-static method as a
+      callback function, you can do so by specifying the value as an instance of a class that
+      implements the {@link XML_Query2XML_Callback} interface. This implementation of the
+      {@link http://en.wikipedia.org/wiki/Command_pattern command pattern} gives you all the
+      flexibility. Note: you have to require_once 'XML/Query2XML/Callback.php'
+      before using the XML_Query2XML_Callback interface. The return value of a COMMAND OBJECT's
+      execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
      </listitem>
     </itemizedlist>
     The same syntax (with the additional '?' prefix) can be use for
@@ -1283,7 +1326,7 @@ function generateIdFromMultiKeyPK($record, $columnName1, $columnName2)
      will be put into an attribute named after the column. If you're
      unhappy with the default you can specify an other attribute name by using
      it as the array key. As documented for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
-     the prefixes "?", "!" and ":" can be used. Only the UNSERIALIZATION prefix &amp; which is valid for
+     the prefixes "?", "#" and ":" or a COMMAND OBJECT can be used. Only the UNSERIALIZATION prefix &amp; which is valid for
      a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications Simple Element Specification}
      cannot be used for a Simple Attribute Specification.
     </para>
@@ -1358,7 +1401,7 @@ print $dom->saveXML();
      should only be used for the following reasons:
      <itemizedlist>
       <listitem>
-      the attribute should only be included under a condition that cannot be expressed using the '?' prefix
+      the attribute is only to be included under a condition that cannot be expressed using the '?' prefix
       within a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications simple attribute specification}
       </listitem>
       <listitem>
@@ -2471,7 +2514,8 @@ print $dom->saveXML();
       <listitem>
        <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
         is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
-        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        method (e.g. '#MyClass::myFunction()') - for how to use a non-static method, see the type COMMAND OBJECT.
+        The current record will be passed to the callback function
         as an associative array. You can also pass additional string arguments to the callback function by specifing
         them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
         called with the current record as the first and '12' as the second argument. If you do not want
@@ -2482,19 +2526,30 @@ print $dom->saveXML();
         an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples
         and further details. If an instances of any other class is returned, a XML_Query2XML_XMLException will be thrown.
       </listitem>
+      <listitem>
+        <emphasis>COMMAND OBJECT (object)</emphasis>: If you want to use a non-static method as a
+        callback function, you can do so by specifying the value as an instance of a class that
+        implements the {@link XML_Query2XML_Callback} interface. This implementation of the
+        {@link http://en.wikipedia.org/wiki/Command_pattern command pattern} gives you all the
+        flexibility. The disadvantage ist that you cannot use the XML UNSERIALIZATION prefix
+        or the CONDITIONAL prefix. Note: you have to require_once 'XML/Query2XML/Callback.php'
+        before using the XML_Query2XML_Callback interface. The return value of a COMMAND OBJECT's
+        execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
+       </listitem>
      </itemizedlist>
      There are two more prefixes available that can be used in conjunction with all the prifixes described above:
      <itemizedlist>
       <listitem>
        <emphasis>XML UNSERIALIZATION prefix &amp;</emphasis>: the ampersand (&amp;) prefix allows you to
-       automatically unserialize string data, i.e. transform a string into a {@link http://www.php.net/manual/en/ref.dom.php DOMDocument}. DOMDocument's
+       automatically unserialize string data, i.e. transform a string into a
+       {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DOMDocument}. DOMDocument's
        {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php loadXML()} method will be
        used for this purpose. You can combine all three types with this prefix: '&amp;COLUMN_NAME',
        '&amp;#function()' or '&amp;:&lt;name&gt;John&lt;/name&gt;' will all work. You can even use the CONDITIONAL prefix
        which has to preceed all other prefixes. If the data cannot be unserialized i.e.
        {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
        returns false, a XML_Query2XML_XMLException will be thrown. Please see
-       {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and thurther
+       {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and further
        details.
       </listitem>
       <listitem>
@@ -2504,6 +2559,10 @@ print $dom->saveXML();
        e.g. '?#', '?:' or '?COLUMN_NAME'.
       </listitem>
      </itemizedlist>
+     Note: for ovious reasons, the XML UNSERIALIZATION prefix and the CONDITIONAL prefix cannot be
+     combined with a COMMAND OBJECT.
+   </para>
+   <para> 
      Basically, the same syntax can be use for
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications},
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications},
@@ -2632,11 +2691,21 @@ class Utils
        <listitem>
         <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
         is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
-        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        method (e.g. '#MyClass::myFunction()') - for how to use a non-static method, see the type COMMAND OBJECT.
+        The current record will be passed to the callback function
         as an associative array. You can also pass additional string arguments to the callback function by specifing
         them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
         called with the current record as the first and '12' as the second argument. If you do not want
         to pass additional arguments to the callback function, the opening and closing brace are optional.
+       </listitem>
+       <listitem>
+        <emphasis>COMMAND OBJECT (object)</emphasis>: If you want to use a non-static method as a
+        callback function, you can do so by specifying the value as an instance of a class that
+        implements the {@link XML_Query2XML_Callback} interface. This implementation of the
+        {@link http://en.wikipedia.org/wiki/Command_pattern command pattern} gives you all the
+        flexibility. Note: you have to require_once 'XML/Query2XML/Callback.php'
+        before using the XML_Query2XML_Callback interface. The return value of a COMMAND OBJECT's
+        execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
        </listitem>
       </itemizedlist>
     
@@ -2958,11 +3027,21 @@ print $dom->saveXML();
        <listitem>
         <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
         is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
-        method (e.g. '#MyClass::myFunction()'). The current record will be passed to the callback function
+        method (e.g. '#MyClass::myFunction()') - for how to use a non-static method, see the type COMMAND OBJECT.
+        The current record will be passed to the callback function
         as an associative array. You can also pass additional string arguments to the callback function by specifing
         them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
         called with the current record as the first and '12' as the second argument. If you do not want
         to pass additional arguments to the callback function, the opening and closing brace are optional.
+       </listitem>
+       <listitem>
+        <emphasis>COMMAND OBJECT (object)</emphasis>: If you want to use a non-static method as a
+        callback function, you can do so by specifying the value as an instance of a class that
+        implements the {@link XML_Query2XML_Callback} interface. This implementation of the
+        {@link http://en.wikipedia.org/wiki/Command_pattern command pattern} gives you all the
+        flexibility. Note: you have to require_once 'XML/Query2XML/Callback.php'
+        before using the XML_Query2XML_Callback interface. The return value of a COMMAND OBJECT's
+        execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
        </listitem>
       </itemizedlist>
       The same syntax (with the additional '?' prefix) can be use for
