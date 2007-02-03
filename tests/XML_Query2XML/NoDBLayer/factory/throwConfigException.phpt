@@ -2,7 +2,7 @@
 XML_Query2XML::factory(): check for XML_Query2XML_DBException
 --FILE--
 <?php
-    require_once('XML/Query2XML.php');
+    require_once 'XML/Query2XML.php';
     try {
         $query2xml =& XML_Query2XML::factory("some string");
     } catch (XML_Query2XML_ConfigException $e) {

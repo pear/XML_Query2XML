@@ -4,8 +4,8 @@ XML_Query2XML::factory(): check for XML_Query2XML_DBException
 <?php chdir(dirname(dirname(__FILE__))); require_once './skipif.php'; ?>
 --FILE--
 <?php
-    require_once('DB.php');
-    require_once('XML/Query2XML.php');
+    require_once 'DB.php';
+    require_once 'XML/Query2XML.php';
     $db = DB::connect('mysql://bogususer@256.256.256.256/bugusdb');
     try {
         $query2xml =& XML_Query2XML::factory($db);

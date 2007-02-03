@@ -4065,7 +4065,7 @@ $dom = $query2xml->getXML(
 header('Content-Type: application/xml');
 print '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
-require_once('XML/Beautifier.php');
+require_once 'XML/Beautifier.php';
 $beautifier = new XML_Beautifier();
 print $beautifier->formatString($dom->saveXML());
 ?>
@@ -5341,7 +5341,7 @@ require_once 'XML/Query2XML.php';
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case04.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -5400,7 +5400,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case04.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 
@@ -6038,7 +6038,7 @@ require_once 'XML/Query2XML.php';
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case05.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -6108,7 +6108,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case05.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 
@@ -7064,7 +7064,7 @@ class UppercaseColumnCommand implements XML_Query2XML_Callback
 
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case06.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -7243,7 +7243,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case06.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
@@ -8504,11 +8504,11 @@ function mapArtist($str)
 $myMappers = new Mappers();
 
 require_once 'XML/Query2XML.php';
-require_once('XML/Query2XML/ISO9075Mapper.php');
+require_once 'XML/Query2XML/ISO9075Mapper.php';
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case08.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -8694,7 +8694,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case08.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 

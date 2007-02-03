@@ -45,7 +45,7 @@ require_once 'PEAR.php';
 *
 * A typical usage of XML_Query2XML looks like this:
 * <code>
-* require_once('XML/Query2XML.php');
+* require_once 'XML/Query2XML.php';
 * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
 * $dom = $query2xml->getXML($sql, $options);
 * header('Content-Type: application/xml');
@@ -191,24 +191,24 @@ class XML_Query2XML
     /**Factory method.
     * As first argument pass an instance of PEAR DB, PEAR MDB2 or ADOdb:
     * <code>
-    * require_once('XML/Query2XML.php');
-    * require_once('DB.php');
+    * require_once 'XML/Query2XML.php';
+    * require_once 'DB.php';
     * $query2xml = XML_Query2XML::factory(
     *   DB::connect('mysql://root@localhost/Query2XML_Tests')
     * );
     * </code>
     * 
     * <code>
-    * require_once('XML/Query2XML.php');
-    * require_once('MDB2.php');
+    * require_once 'XML/Query2XML.php';
+    * require_once 'MDB2.php';
     * $query2xml = XML_Query2XML::factory(
     *   MDB2::factory('mysql://root@localhost/Query2XML_Tests')
     * );
     * </code>
     * 
     * <code>
-    * require_once('XML/Query2XML.php');
-    * require_once('adodb/adodb.inc.php');
+    * require_once 'XML/Query2XML.php';
+    * require_once 'adodb/adodb.inc.php';
     * $adodb = ADONewConnection('mysql');
     * $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
     * $query2xml =& XML_Query2XML::factory($adodb);
@@ -290,8 +290,8 @@ class XML_Query2XML
     * This will include all queries sent to the database.
     * Example:
     * <code>
-    * require_once('Log.php');
-    * require_once('XML/Query2XML.php');
+    * require_once 'Log.php';
+    * require_once 'XML/Query2XML.php';
     * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
     * $debugLogger = Log::factory('file', 'out.log', 'XML_Query2XML');
     * $query2xml->enableDebugLog($debugLogger);
@@ -428,7 +428,7 @@ class XML_Query2XML
     *
     * Example:
     * <code>
-    * require_once('XML/Query2XML.php');
+    * require_once 'XML/Query2XML.php';
     * $query2xml = XML_Query2XML::factory(MDB2::connect($dsn));
     * $dom = $query2xml->getFlatXML(
     *   'SELECT * FROM artist',
