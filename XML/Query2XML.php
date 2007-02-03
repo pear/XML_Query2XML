@@ -273,6 +273,7 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_ConfigException If the option does not exist
     * @param string $option The name of the option
+    * @return mixed The option's value
     */
     public function getGlobalOption($option)
     {
@@ -1390,7 +1391,7 @@ class XML_Query2XML
     * @param mixed $parentOptionName The name of the parent option; this can also
     *               be an array of parent options. It will be passed as second argument
     *               to the XML_Query2XML_ConfigException constructor.
-    * @return mixed The resulting value.
+    * @return mixed A value that can be cast to a string or an instance of DOMNode.
     */
     private function _applyColumnStringToRecord($columnStr, &$record, $optionName,
         $parentOptionName = '')
@@ -1535,13 +1536,13 @@ class XML_Query2XML
     }
     
     /**Returns whether $value is to be included in the output.
-    * If $spec is prefixed by a question mark this method will return false if
-    * $value is null or is a string with a length of zero. In any other case,
-    * this method will return the true.
+    * If $spec is a string an is prefixed by a question mark this method will
+    * return false if $value is null or is a string with a length of zero. In
+    * any other case, this method will return the true.
     *
     * @param string $value The value.
-    * @param string $spec The value specification with an optional question
-    *                     mark prefix.
+    * @param mixed $spec The value specification. This can be a string
+    *                    or an instance of XML_Query2XML_Callback.
     * @return boolean Whether $value is to be included in the output.
     */
     private function _evaluateCondtion($value, $spec)
@@ -2068,11 +2069,6 @@ class XML_Query2XML
     * @param string $value     The value of a child text node. This argument is
     *                          optional. The default is the boolean value false,
     *                          which means that no child text node will be appended.
-    * @param array $attributes An associative array used to define the element's
-    *                          attributes. The array keys are used as the attribute
-    *                          names and the array values are used as the attribute
-    *                          values. This argument is optional. The default is an
-    *                          empty array (e.g. no attributes).
     * @return DomNode          The newly created DomNode instance that was appended
     *                          to $element.
     */
@@ -2092,18 +2088,13 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_XMLException If $name is an invalid XML identifier.
     *                          Also it will bubble up if it is thrown by
-    *                          _setDOMAttribute() or _appendTextChildNode().
+    *                          _appendTextChildNode().
     * @param DomDocument $dom  An instance of DomDocument. It's createElement()
     *                          method is used to create the new DomNode instance.
     * @param string name       The tag name of the new element.
     * @param string $value     The value of a child text node. This argument is
     *                          optional. The default is the boolean value false,
     *                          which means that no child text node will be appended.
-    * @param array $attributes An associative array used to define the element's
-    *                          attributes. The array keys are used as the attribute
-    *                          names and the array values are used as the attribute
-    *                          values. This argument is optional. The default is an
-    *                          empty array (e.g. no attributes).
     * @return DomNode An instance of DomNode.
     */
     private static function _createDOMElement(DomDocument $dom, $name,
@@ -2141,7 +2132,6 @@ class XML_Query2XML
     *                 if $value cannot be UTF8-encoded for some reason. It will also
     *                 be thrown if $value is an object or an array (and can therefore
     *                 not be converted into a string).
-    * @param DomDocument $dom An instance of DomDocument.
     * @param DomNode $element An instance of DomNode
     * @param string $value The value of the text node.
     */
@@ -2242,8 +2232,9 @@ class XML_Query2XML
             return $domNodeList->item(0);
         }
         
-        /* This should never happen as _hasDOMChild() is always asked first whether
-        *  the child node exists at all.
+        /*
+        * This should never happen as _hasDOMChild() is always asked first whether
+        * the child node exists at all.
         */
         throw new XML_Query2XML_XMLException(
             $element->tagName
@@ -2297,10 +2288,11 @@ class XML_Query2XML
     * @param mixed $children  An array of DomNode instances or
     *                         just a single DomNode instance.
     *                         Boolean values of false are always ignored.
-    * @param boolean $import  Whether importNode() should be called for $children.
-    *                         This is necessary if the instance(s) passed as $children
-    *                         was/were created using a different DomDocument instance.
-    *                         This argument is optional. The default is false.
+    * @param boolean $import  Whether DOMDocument::importNode() should be called for
+    *                         $children. This is necessary if the instance(s) passed
+    *                         as $children was/were created using a different
+    *                         DomDocument instance. This argument is optional.
+    *                         The default is false.
     */
     private static function _addDOMChildren(DomNode $base, $children, $import = false)
     {
