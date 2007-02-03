@@ -359,7 +359,7 @@ array(
         The callback function's return value will be converted to a string and used as the child text node
         if it is anything but an object or an array. If you do return an object or an array from a callback
         function it has to be an instance of {@link http://www.php.net/manual/en/ref.dom.php DOMNode} or
-        an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples
+        an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#other_xml_data_sources} for examples
         and further details. If an instances of any other class is returned, a XML_Query2XML_XMLException will be thrown.
        </listitem>
        <listitem>
@@ -384,7 +384,7 @@ array(
         which has to preceed all other prefixes. If the data cannot be unserialized i.e.
         {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
         returns false, a XML_Query2XML_XMLException will be thrown. Please see
-        {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and further
+        {@tutorial XML_Query2XML.pkg#other_xml_data_sources} for examples and further
         details.
        </listitem>
        <listitem>
@@ -2542,7 +2542,7 @@ print $dom->saveXML();
         The callback function's return value will be converted to a string and used as the child text node
         if it is anything but an object or an array. If you do return an object or an array from a callback
         function it has to be an instance of {@link http://www.php.net/manual/en/ref.dom.php DOMNode} or
-        an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples
+        an array of DOMNode instances. Please see {@tutorial XML_Query2XML.pkg#other_xml_data_sources} for examples
         and further details. If an instances of any other class is returned, a XML_Query2XML_XMLException will be thrown.
       </listitem>
       <listitem>
@@ -2568,7 +2568,7 @@ print $dom->saveXML();
        which has to preceed all other prefixes. If the data cannot be unserialized i.e.
        {@link http://www.php.net/manual/en/function.dom-domdocument-loadxml.php DOMDocument::loadXML()}
        returns false, a XML_Query2XML_XMLException will be thrown. Please see
-       {@tutorial XML_Query2XML.pkg#preexisting_xmldata} for examples and further
+       {@tutorial XML_Query2XML.pkg#other_xml_data_sources} for examples and further
        details.
       </listitem>
       <listitem>
@@ -3373,12 +3373,12 @@ print $dom->saveXML();
   </refsect2>
  </refsect1>
 
- <refsect1 id="{@id preexisting_xmldata}">
-  <title>Integrating preexisting XML data and 3rd party XML data sources</title>
+ <refsect1 id="{@id other_xml_data_sources}">
+  <title>Integrating other XML data sources</title>
   <refsect2 id="{@id intro}">
    <title>Introduction</title>
    <para>
-    Since release 1.1.0 it is possible to integrate preexisting XML data into
+    Since release 1.1.0 it is possible to integrate other XML data sources into
     the XML data that is returned by {@link XML_Query2XML::getXML()}. For example
     you might want to store XML data in your relational database and integrate that
     into your xml feed. In this case the XML data is only present in serialized form
@@ -8907,89 +8907,92 @@ DB_DURATION:    0.20340394973755
    	In all the examples a MySQL database created with the SQL DDL shown below is used.
    	You might also want to have a look at the
    	{@link http://query2xml.sourceforge.net/docs/Query2XML_Tests.jpg ER diagram}.
+   	Note: in order for the unit tests to run you have to install
+   	the MySQL DDL $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql
+   	or the PostgreSQL DDL $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.psql.
     <![CDATA[
 CREATE DATABASE Query2XML_Tests;
 USE Query2XML_Tests;
 
 
 CREATE TABLE artist (
-	artistid INT NOT NULL AUTO_INCREMENT,
-	name VARCHAR(255),
-	birth_year Int,
-	birth_place VARCHAR(255),
-	genre VARCHAR(255),
-	UNIQUE (artistid),
+    artistid INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    birth_year Int,
+    birth_place VARCHAR(255),
+    genre VARCHAR(255),
+    UNIQUE (artistid),
     PRIMARY KEY (artistid)
 );
 
 CREATE TABLE customer (
-	customerid INT NOT NULL AUTO_INCREMENT,
-	first_name VARCHAR(255),
-	last_name VARCHAR(255),
-	email VARCHAR(255),
-	UNIQUE (customerid),
+    customerid INT NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255),
+    UNIQUE (customerid),
     PRIMARY KEY (customerid)
 );
 
 CREATE TABLE album (
-	albumid INT NOT NULL AUTO_INCREMENT,
-	artist_id INT NOT NULL,
-	title VARCHAR(255),
-	published_year Int,
-	comment VARCHAR(255),
-	UNIQUE (albumid),
+    albumid INT NOT NULL AUTO_INCREMENT,
+    artist_id INT NOT NULL,
+    title VARCHAR(255),
+    published_year Int,
+    comment VARCHAR(255),
+    UNIQUE (albumid),
     PRIMARY KEY (albumid),
     FOREIGN KEY (artist_id) REFERENCES artist (artistid)
 );
 
 CREATE TABLE employee (
-	employeeid INT NOT NULL AUTO_INCREMENT,
-	employeename VARCHAR(255),
-	UNIQUE (employeeid),
+    employeeid INT NOT NULL AUTO_INCREMENT,
+    employeename VARCHAR(255),
+    UNIQUE (employeeid),
     PRIMARY KEY (employeeid)
 );
 
 CREATE TABLE store (
-	storeid INT NOT NULL AUTO_INCREMENT,
-	manager INT NOT NULL,
-	country VARCHAR(255),
-	state VARCHAR(255),
-	city VARCHAR(255),
-	street VARCHAR(255),
-	phone VARCHAR(255),
-	building_xmldata TEXT,
-	UNIQUE (storeid),
+    storeid INT NOT NULL AUTO_INCREMENT,
+    manager INT NOT NULL,
+    country VARCHAR(255),
+    state VARCHAR(255),
+    city VARCHAR(255),
+    street VARCHAR(255),
+    phone VARCHAR(255),
+    building_xmldata TEXT,
+    UNIQUE (storeid),
     PRIMARY KEY (storeid),
     FOREIGN KEY (manager) REFERENCES employee (employeeid)
 );
 
 CREATE TABLE department (
-	departmentid INT NOT NULL AUTO_INCREMENT,
-	store_id INT NOT NULL,
-	department_head INT NOT NULL,
-	departmentname VARCHAR(255),
-	UNIQUE (departmentid),
+    departmentid INT NOT NULL AUTO_INCREMENT,
+    store_id INT NOT NULL,
+    department_head INT NOT NULL,
+    departmentname VARCHAR(255),
+    UNIQUE (departmentid),
     PRIMARY KEY (departmentid),
     FOREIGN KEY (department_head) REFERENCES employee (employeeid),
     FOREIGN KEY (store_id) REFERENCES store (storeid)
 );
 
 CREATE TABLE employee_department (
-	employee_id INT NOT NULL,
-	department_id INT NOT NULL,
+    employee_id INT NOT NULL,
+    department_id INT NOT NULL,
     PRIMARY KEY (employee_id,department_id),
     FOREIGN KEY (employee_id) REFERENCES employee (employeeid),
     FOREIGN KEY (department_id) REFERENCES department (departmentid)
 );
 
 CREATE TABLE sale (
-	saleid INT NOT NULL AUTO_INCREMENT,
-	album_id INT NOT NULL,
-	customer_id INT NOT NULL,
-	employee_id INT NOT NULL,
-	store_id INT NOT NULL,
-	timestamp Timestamp(14),
-	UNIQUE (saleid),
+    saleid INT NOT NULL AUTO_INCREMENT,
+    album_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    employee_id INT NOT NULL,
+    store_id INT NOT NULL,
+    timestamp Timestamp(14),
+    UNIQUE (saleid),
     PRIMARY KEY (saleid),
     FOREIGN KEY (employee_id) REFERENCES employee (employeeid),
     FOREIGN KEY (album_id) REFERENCES album (albumid),
