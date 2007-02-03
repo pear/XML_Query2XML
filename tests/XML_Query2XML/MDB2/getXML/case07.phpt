@@ -4,50 +4,49 @@ XML_Query2XML::getXML(): Case07
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
 <?php
-    require_once 'XML/Query2XML.php';
-    require_once('XML/Beautifier.php');
-    require_once dirname(dirname(__FILE__)) . '/db_init.php';
-    $query2xml =& XML_Query2XML::factory($db);
-    $dom =& $query2xml->getXML(
-        "SELECT
-            *
-         FROM
-            artist
-         ORDER BY
-            artistid",
-        array(
-            'rootTag' => 'music_library',
-            'rowTag' => 'artist',
-            'idColumn' => 'artistid',
-            'elements' => array(
-                '*',
-                'albums' => array(
-                    'sql' => array(
-                        'data' => array(
-                            'artistid'
-                        ),
-                        'query' => 'SELECT * FROM album WHERE artist_id = ?'
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            '*',
+            'albums' => array(
+                'sql' => array(
+                    'data' => array(
+                        'artistid'
                     ),
-                    'sql_options' => array(
-                        'uncached'      => true,
-                        'single_record' => false,
-                        'merge'         => false,
-                        'merge_master'  => false
-                    ),
-                    'rootTag' => 'albums',
-                    'rowTag' => 'album',
-                    'idColumn' => 'albumid',
-                    'elements' => array(
-                        '*',
-                        'artist_id' => '?:'
-                    )
+                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                ),
+                'sql_options' => array(
+                    'uncached'      => true,
+                    'single_record' => false,
+                    'merge'         => false,
+                    'merge_master'  => false
+                ),
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'elements' => array(
+                    '*',
+                    'artist_id' => '?:'
                 )
             )
         )
-    );
-    
-    $dom->formatOutput = true;
-    print $dom->saveXML();
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

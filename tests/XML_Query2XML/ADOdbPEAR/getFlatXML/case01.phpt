@@ -4,14 +4,21 @@ XML_Query2XML::getFlatXML(): Case01
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
 <?php
-    require_once 'XML/Query2XML.php';
-    require_once('XML/Beautifier.php');
-    require_once dirname(dirname(__FILE__)) . '/db_init.php';
-    $query2xml =& XML_Query2XML::factory($db);
-    $dom =& $query2xml->getFlatXML("SELECT * FROM artist ORDER BY artistid", 'music_library', 'artist');
-    
-    $dom->formatOutput = true;
-    print $dom->saveXML();
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getFlatXML(
+    "SELECT
+        *
+     FROM
+        artist",
+    'music_library',
+    'artist');
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

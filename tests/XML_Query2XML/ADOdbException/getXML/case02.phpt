@@ -4,46 +4,44 @@ XML_Query2XML::getXML(): Case02
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
 <?php
-    require_once 'XML/Query2XML.php';
-    require_once('XML/Beautifier.php');
-    require_once dirname(dirname(__FILE__)) . '/db_init.php';
-    $query2xml =& XML_Query2XML::factory($db);
-    $dom =& $query2xml->getXML(
-        "SELECT
-            *
-         FROM
-            artist
-            LEFT JOIN album ON album.artist_id = artist.artistid
-         ORDER BY
-            artist.artistid,
-            album.albumid",
-        array(
-            'rootTag' => 'music_library',
-            'rowTag' => 'artist',
-            'idColumn' => 'artistid',
-            'elements' => array(
-                'artistid',
-                'name',
-                'birth_year',
-                'birth_place',
-                'genre',
-                'albums' => array(
-                    'rootTag' => 'albums',
-                    'rowTag' => 'album',
-                    'idColumn' => 'albumid',
-                    'elements' => array(
-                        'albumid',
-                        'title',
-                        'published_year',
-                        'comment'
-                    )
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist
+        LEFT JOIN album ON album.artist_id = artist.artistid",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'artistid',
+            'name',
+            'birth_year',
+            'birth_place',
+            'genre',
+            'albums' => array(
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'elements' => array(
+                    'albumid',
+                    'title',
+                    'published_year',
+                    'comment'
                 )
             )
         )
-    );
-    
-    $dom->formatOutput = true;
-    print $dom->saveXML();
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
 ?>
 --EXPECT--
 <?xml version="1.0" encoding="UTF-8"?>

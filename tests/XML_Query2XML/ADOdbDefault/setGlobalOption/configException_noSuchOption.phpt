@@ -5,7 +5,6 @@ XML_Query2XML::setGlobalOption(): check for XML_Query2XML_ConfigException when s
 --FILE--
 <?php
     require_once 'XML/Query2XML.php';
-    require_once('XML/Beautifier.php');
     require_once dirname(dirname(__FILE__)) . '/db_init.php';
     try {
         $query2xml =& XML_Query2XML::factory($db);
