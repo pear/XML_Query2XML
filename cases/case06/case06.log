@@ -1,4 +1,4 @@
-Feb 11 17:39:46 XML_Query2XML [info] QUERY: SELECT
+Feb 03 15:45:32 XML_Query2XML [info] QUERY: SELECT
          s.*,
          manager.employeeid AS manager_employeeid,
          manager.employeename AS manager_employeename,
@@ -53,4 +53,16 @@ Feb 11 17:39:46 XML_Query2XML [info] QUERY: SELECT
              LEFT JOIN customer c ON c.customerid = sa.customer_id
              LEFT JOIN album al ON al.albumid = sa.album_id
               LEFT JOIN artist ar ON ar.artistid = al.artist_id
-Feb 11 17:39:46 XML_Query2XML [info] DONE
+     ORDER BY
+        s.storeid,
+        manager.employeeid,
+        d.departmentid,
+        department_head.employeeid,
+        ed.employee_id,
+        ed.department_id,
+        e.employeeid,
+        sa.saleid,
+        c.customerid,
+        al.albumid,
+        ar.artistid
+Feb 03 15:45:32 XML_Query2XML [info] DONE

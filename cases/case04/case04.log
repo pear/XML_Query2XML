@@ -1,11 +1,13 @@
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT
+Feb 03 15:46:01 Query2XML [info] QUERY: SELECT
         *
      FROM
         artist
-Feb 11 17:05:03 Query2XML [info] DONE
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 17:05:03 Query2XML [info] DONE
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 17:05:03 Query2XML [info] DONE
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 17:05:03 Query2XML [info] DONE
+     ORDER BY
+        artistid
+Feb 03 15:46:01 Query2XML [info] DONE
+Feb 03 15:46:01 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Feb 03 15:46:01 Query2XML [info] DONE
+Feb 03 15:46:01 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Feb 03 15:46:01 Query2XML [info] DONE
+Feb 03 15:46:01 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Feb 03 15:46:01 Query2XML [info] DONE

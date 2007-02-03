@@ -1,5 +1,5 @@
 FROM_DB FROM_CACHE CACHED AVG_DURATION DURATION_SUM SQL
-1       0          false  0.0172939300 0.0172939300 SELECT
+1       0          false  0.0285611152 0.0285611152 SELECT
          s.*,
          manager.employeeid AS manager_employeeid,
          manager.employeename AS manager_employeename,
@@ -54,6 +54,18 @@ FROM_DB FROM_CACHE CACHED AVG_DURATION DURATION_SUM SQL
              LEFT JOIN customer c ON c.customerid = sa.customer_id
              LEFT JOIN album al ON al.albumid = sa.album_id
               LEFT JOIN artist ar ON ar.artistid = al.artist_id
+     ORDER BY
+        s.storeid,
+        manager.employeeid,
+        d.departmentid,
+        department_head.employeeid,
+        ed.employee_id,
+        ed.department_id,
+        e.employeeid,
+        sa.saleid,
+        c.customerid,
+        al.albumid,
+        ar.artistid
 
-TOTAL_DURATION: 0.29014992713928
-DB_DURATION:    0.1554069519043
+TOTAL_DURATION: 0.20573091506958
+DB_DURATION:    0.15617609024048

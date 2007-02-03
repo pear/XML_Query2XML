@@ -29,11 +29,11 @@ function mapArtist($str)
 $myMappers = new Mappers();
 
 require_once 'XML/Query2XML.php';
-require_once('XML/Query2XML/ISO9075Mapper.php');
+require_once 'XML/Query2XML/ISO9075Mapper.php';
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case08.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -95,7 +95,19 @@ $dom = $query2xml->getXML(
             LEFT JOIN sale sa ON sa.employee_id = e.employeeid
              LEFT JOIN customer c ON c.customerid = sa.customer_id
              LEFT JOIN album al ON al.albumid = sa.album_id
-              LEFT JOIN artist ar ON ar.artistid = al.artist_id",
+              LEFT JOIN artist ar ON ar.artistid = al.artist_id
+     ORDER BY
+        s.storeid,
+        manager.employeeid,
+        d.departmentid,
+        department_head.employeeid,
+        ed.employee_id,
+        ed.department_id,
+        e.employeeid,
+        sa.saleid,
+        c.customerid,
+        al.albumid,
+        ar.artistid",
     array(
         'rootTag' => 'music_company',
         'rowTag' => 'store',
@@ -219,7 +231,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case08.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 

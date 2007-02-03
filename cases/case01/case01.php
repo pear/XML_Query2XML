@@ -6,7 +6,9 @@ $dom = $query2xml->getFlatXML(
     "SELECT
         *
      FROM
-        artist",
+        artist
+     ORDER BY
+        artistid",
     'music_library',
     'artist');
 

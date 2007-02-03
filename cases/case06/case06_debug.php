@@ -1,9 +1,79 @@
 <?php
 require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/Callback.php';
 require_once 'MDB2.php';
+
+/**Static class that provides validation and parsing methods for
+* generating XML.
+*
+* It is static so that we can easyly call its methods from inside
+* Query2XML using eval'd code.
+*/
+class Helper
+{
+    /**Associative array of US postal state codes*/
+    public static $statePostalCodes = array(
+        'ALABAMA' => 'AL', 'ALASKA' => 'AK', 'AMERICAN SAMOA' => 'AS', 'ARIZONA' => 'AZ', 'ARKANSAS' => 'AR', 'CALIFORNIA' => 'CA',
+        'COLORADO' => 'CO', 'CONNECTICUT' => 'CT', 'DELAWARE' => 'DE', 'DISTRICT OF COLUMBIA' => 'DC', 'FEDERATED STATES OF MICRONESIA' => 'FM',
+        'FLORIDA' => 'FL', 'GEORGIA' => 'GA', 'GUAM' => 'GU', 'HAWAII' => 'HI', 'IDAHO' => 'ID', 'ILLINOIS' => 'IL', 'INDIANA' => 'IN',
+        'IOWA' => 'IA', 'KANSAS' => 'KS', 'KENTUCKY' => 'KY', 'LOUISIANA' => 'LA', 'MAINE' => 'ME', 'MARSHALL ISLANDS' => 'MH', 'MARYLAND' => 'MD',
+        'MASSACHUSETTS' => 'MA', 'MICHIGAN' => 'MI', 'MINNESOTA' => 'MN', 'MISSISSIPPI' => 'MS', 'MISSOURI' => 'MO', 'MONTANA' => 'MT',
+        'NEBRASKA' => 'NE', 'NEVADA' => 'NV', 'NEW HAMPSHIRE' => 'NH', 'NEW JERSEY' => 'NJ', 'NEW JESEY' => 'NJ', 'NEW MEXICO' => 'NM', 'NEW YORK' => 'NY',
+        'NORTH CAROLINA' => 'NC', 'NORTH DAKOTA' => 'ND', 'NORTHERN MARIANA ISLANDS' => 'MP', 'OHIO' => 'OH', 'OKLAHOMA' => 'OK', 'OREGON' => 'OR',
+        'PALAU' => 'PW', 'PENNSYLVANIA' => 'PA', 'PUERTO RICO' => 'PR', 'RHODE ISLAND' => 'RI', 'SOUTH CAROLINA' => 'SC', 'SOUTH DAKOTA' => 'SD',
+        'TENNESSEE' => 'TN', 'TEXAS' => 'TX', 'UTAH' => 'UT', 'VERMONT' => 'VT', 'VIRGIN ISLANDS' => 'VI', 'VIRGINIA' => 'VA', 'WASHINGTON' => 'WA',
+        'WEST VIRGINIA' => 'WV', 'WISCONSIN' => 'WI', 'WYOMING' => 'WY'
+    );
+            
+    /**Translates a US state name into its two-letter postal code.
+    * If the translation fails, $state is returned unchanged
+    * @param $record The record
+    */
+    public static function getStatePostalCode($record)
+    {
+        $state = $record["state"];
+        $s = str_replace("  ", " ", trim(strtoupper($state)));
+        if (isset(self::$statePostalCodes[$s])) {
+            return self::$statePostalCodes[$s];
+        } else {
+            return $state;
+        }
+    }
+      
+    function summarize($str, $limit=50, $appendString=' ...')
+    {
+        if (strlen($str) > $limit) {
+            $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
+        }
+        return $str;
+    }
+    
+    function summarizeComment($record, $limit)
+    {
+        return self::summarize($record["comment"], $limit);
+    }
+}
+
+/**Command class that implements the command pattern.
+* It implements the XML_Query2XML_Callback interface
+* and therefore has to provide the public non-static
+* method execute(array $record).
+*/
+class UppercaseColumnCommand implements XML_Query2XML_Callback
+{
+    public function __construct($columnName)
+    {
+        $this->_columnName = $columnName;
+    }
+    public function execute(array $record)
+    {
+        return strtoupper($record[$this->_columnName]);
+    }
+}
+
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case06.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -65,7 +135,19 @@ $dom = $query2xml->getXML(
             LEFT JOIN sale sa ON sa.employee_id = e.employeeid
              LEFT JOIN customer c ON c.customerid = sa.customer_id
              LEFT JOIN album al ON al.albumid = sa.album_id
-              LEFT JOIN artist ar ON ar.artistid = al.artist_id",
+              LEFT JOIN artist ar ON ar.artistid = al.artist_id
+     ORDER BY
+        s.storeid,
+        manager.employeeid,
+        d.departmentid,
+        department_head.employeeid,
+        ed.employee_id,
+        ed.department_id,
+        e.employeeid,
+        sa.saleid,
+        c.customerid,
+        al.albumid,
+        ar.artistid",
     array(
         'rootTag' => 'music_company',
         'rowTag' => 'store',
@@ -89,7 +171,7 @@ $dom = $query2xml->getXML(
                 'elements' => array(
                     'country',
                     'state' => '#Helper::getStatePostalCode()',
-                    'city',
+                    'city' => new UppercaseColumnCommand('city'),
                     'street',
                     'phone'
                 )
@@ -182,59 +264,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case06.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
-
-
-/**Static class that provides validation and parsing methods for
-* generating XML.
-*
-* It is static so that we can easyly call its methods from inside
-* Query2XML using eval'd code.
-*/
-class Helper
-{
-    /**Associative array of US postal state codes*/
-    public static $statePostalCodes = array(
-        'ALABAMA' => 'AL', 'ALASKA' => 'AK', 'AMERICAN SAMOA' => 'AS', 'ARIZONA' => 'AZ', 'ARKANSAS' => 'AR', 'CALIFORNIA' => 'CA',
-        'COLORADO' => 'CO', 'CONNECTICUT' => 'CT', 'DELAWARE' => 'DE', 'DISTRICT OF COLUMBIA' => 'DC', 'FEDERATED STATES OF MICRONESIA' => 'FM',
-        'FLORIDA' => 'FL', 'GEORGIA' => 'GA', 'GUAM' => 'GU', 'HAWAII' => 'HI', 'IDAHO' => 'ID', 'ILLINOIS' => 'IL', 'INDIANA' => 'IN',
-        'IOWA' => 'IA', 'KANSAS' => 'KS', 'KENTUCKY' => 'KY', 'LOUISIANA' => 'LA', 'MAINE' => 'ME', 'MARSHALL ISLANDS' => 'MH', 'MARYLAND' => 'MD',
-        'MASSACHUSETTS' => 'MA', 'MICHIGAN' => 'MI', 'MINNESOTA' => 'MN', 'MISSISSIPPI' => 'MS', 'MISSOURI' => 'MO', 'MONTANA' => 'MT',
-        'NEBRASKA' => 'NE', 'NEVADA' => 'NV', 'NEW HAMPSHIRE' => 'NH', 'NEW JERSEY' => 'NJ', 'NEW JESEY' => 'NJ', 'NEW MEXICO' => 'NM', 'NEW YORK' => 'NY',
-        'NORTH CAROLINA' => 'NC', 'NORTH DAKOTA' => 'ND', 'NORTHERN MARIANA ISLANDS' => 'MP', 'OHIO' => 'OH', 'OKLAHOMA' => 'OK', 'OREGON' => 'OR',
-        'PALAU' => 'PW', 'PENNSYLVANIA' => 'PA', 'PUERTO RICO' => 'PR', 'RHODE ISLAND' => 'RI', 'SOUTH CAROLINA' => 'SC', 'SOUTH DAKOTA' => 'SD',
-        'TENNESSEE' => 'TN', 'TEXAS' => 'TX', 'UTAH' => 'UT', 'VERMONT' => 'VT', 'VIRGIN ISLANDS' => 'VI', 'VIRGINIA' => 'VA', 'WASHINGTON' => 'WA',
-        'WEST VIRGINIA' => 'WV', 'WISCONSIN' => 'WI', 'WYOMING' => 'WY'
-    );
-            
-    /**Translates a US state name into its two-letter postal code.
-    * If the translation fails, $state is returned unchanged
-    * @param $record The record
-    */
-    public static function getStatePostalCode($record)
-    {
-        $state = $record["state"];
-        $s = str_replace("  ", " ", trim(strtoupper($state)));
-        if (isset(self::$statePostalCodes[$s])) {
-            return self::$statePostalCodes[$s];
-        } else {
-            return $state;
-        }
-    }
-      
-    function summarize($str, $limit=50, $appendString=' ...')
-    {
-        if (strlen($str) > $limit) {
-            $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
-        }
-        return $str;
-    }
-    
-    function summarizeComment($record, $limit)
-    {
-        return self::summarize($record["comment"], $limit);
-    }
-}
 ?>

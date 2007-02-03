@@ -6,7 +6,9 @@ $dom = $query2xml->getXML(
     "SELECT
         *
      FROM
-        artist",
+        artist
+     ORDER BY
+        artistid",
     array(
         'rootTag' => 'music_library',
         'rowTag' => 'artist',

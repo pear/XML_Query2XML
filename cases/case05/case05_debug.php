@@ -3,7 +3,7 @@ require_once 'XML/Query2XML.php';
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once('Log.php');
+require_once 'Log.php';
 $debugLogger = &Log::factory('file', 'case05.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -17,7 +17,12 @@ $dom = $query2xml->getXML(
          customer c
          LEFT JOIN sale s ON c.customerid = s.customer_id
          LEFT JOIN album al ON s.album_id = al.albumid
-         LEFT JOIN artist ar ON al.artist_id = ar.artistid",
+         LEFT JOIN artist ar ON al.artist_id = ar.artistid
+     ORDER BY
+         c.customerid,
+         s.saleid,
+         al.albumid,
+         ar.artistid",
     array(
         'rootTag' => 'music_store',
         'rowTag' => 'customer',
@@ -73,7 +78,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once('File.php');
+require_once 'File.php';
 $fp = new File();
 $fp->write('case05.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 
