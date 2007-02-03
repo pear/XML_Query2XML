@@ -5,8 +5,8 @@ XML_Query2XML::getXML(): Case05
 --FILE--
 <?php
 require_once 'XML/Query2XML.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+require_once dirname(dirname(__FILE__)) . '/db_init.php';
+$query2xml = XML_Query2XML::factory($db);
 $dom = $query2xml->getXML(
     "SELECT
          *
@@ -14,7 +14,12 @@ $dom = $query2xml->getXML(
          customer c
          LEFT JOIN sale s ON c.customerid = s.customer_id
          LEFT JOIN album al ON s.album_id = al.albumid
-         LEFT JOIN artist ar ON al.artist_id = ar.artistid",
+         LEFT JOIN artist ar ON al.artist_id = ar.artistid
+     ORDER BY
+         c.customerid,
+         s.saleid,
+         al.albumid,
+         ar.artistid",
     array(
         'rootTag' => 'music_store',
         'rowTag' => 'customer',

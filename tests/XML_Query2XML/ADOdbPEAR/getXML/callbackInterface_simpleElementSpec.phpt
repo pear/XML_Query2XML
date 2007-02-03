@@ -6,7 +6,7 @@ XML_Query2XML::getXML(): using the callback interface for a simple element speci
 <?php
     require_once 'XML/Query2XML.php';
     require_once 'XML/Query2XML/Callback.php';
-    require_once 'MDB2.php';
+    require_once dirname(dirname(__FILE__)) . '/db_init.php';
     
     class MyCallback implements XML_Query2XML_Callback
     {
@@ -23,7 +23,7 @@ XML_Query2XML::getXML(): using the callback interface for a simple element speci
         }
     }
     
-    $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+    $query2xml = XML_Query2XML::factory($db);
     $dom =& $query2xml->getXML(
         "SELECT
             *

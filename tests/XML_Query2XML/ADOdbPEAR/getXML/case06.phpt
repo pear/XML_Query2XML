@@ -6,7 +6,7 @@ XML_Query2XML::getXML(): Case06
 <?php
 require_once 'XML/Query2XML.php';
 require_once 'XML/Query2XML/Callback.php';
-require_once 'MDB2.php';
+require_once dirname(dirname(__FILE__)) . '/db_init.php';
 
 /**Static class that provides validation and parsing methods for
 * generating XML.
@@ -76,7 +76,7 @@ class UppercaseColumnCommand implements XML_Query2XML_Callback
     }
 }
 
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$query2xml = XML_Query2XML::factory($db);
 $dom = $query2xml->getXML(
     "SELECT
          s.*,
@@ -132,7 +132,19 @@ $dom = $query2xml->getXML(
             LEFT JOIN sale sa ON sa.employee_id = e.employeeid
              LEFT JOIN customer c ON c.customerid = sa.customer_id
              LEFT JOIN album al ON al.albumid = sa.album_id
-              LEFT JOIN artist ar ON ar.artistid = al.artist_id",
+              LEFT JOIN artist ar ON ar.artistid = al.artist_id
+     ORDER BY
+        s.storeid,
+        manager.employeeid,
+        d.departmentid,
+        department_head.employeeid,
+        ed.employee_id,
+        ed.department_id,
+        e.employeeid,
+        sa.saleid,
+        c.customerid,
+        al.albumid,
+        ar.artistid",
     array(
         'rootTag' => 'music_company',
         'rowTag' => 'store',
