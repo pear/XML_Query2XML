@@ -7,8 +7,7 @@ v1.1.0
 ------
 Release date: 2007-02-03
 Release notes: This second stable release contains a couple of great new features:
-- integration of other XML data sources (e.g. XML stored in the database)
-  is now possible
+- it's now possible to integrate other XML data sources (e.g. XML stored in the DB)
   - XML unserialization support: see the ampersand prefix
   - you can now return DOMNode instances from callback functions
 - non-static methods can now be used as callbacks by
