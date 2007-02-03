@@ -1,5 +1,5 @@
-Query2XML
-=========
+XML_Query2XML
+=============
 Version: $Id$
 
 1. Overview
@@ -12,12 +12,12 @@ Version: $Id$
 
 1. Overview
 -----------
-Query2XML allows you to transform the records retrieved with
-one or more SQL SELECT queries into XML data. Very simple to
-highly complex transformations are supported. Is was written
+XML_Query2XML allows you to transform the records retrieved
+with one or more SQL SELECT queries into XML data. Very simple
+to highly complex transformations are supported. Is was written
 with performance in mind and can handel large amounts of data.
 
-Another thing you will find useful is Query2XML's capabilities
+Another thing you will find useful is XML_Query2XML's capabilities
 of Profiling and Performance Tuning.
 
 
@@ -35,7 +35,7 @@ of Profiling and Performance Tuning.
 |   +---case08 .......... Case 08: Case 06 revisited: Making use of Mappers
 +---XML ................. CONTAINS THE ACTUAL Query2XML.php that
 |                         will be installed in $PHP_PEAR_INSTALL_DIR/XML/
-+---tests ............... contains 398 phpt unit tests; all will be installed
++---tests ............... contains 678 phpt unit tests; all will be installed
                           in $PHP_PEAR_TEST_DIR/XML_Query2XML/tests. Please
                           see 3. Testing.
 
@@ -44,10 +44,15 @@ of Profiling and Performance Tuning.
 ----------
 Before you can actually run the unit tests you should:
 - run the MySQL DDL from $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql
+   `mysql -u root -p < $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql`
+  and/or run the PostgreSQL DDL from
+  $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.psql
+   `psql -U postgres < $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.psql`
+  
 - Edit $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/XML_Query2XML/settings.php
-  to change the DSN used to connect to the MySQL database. The default
-  DSN is "mysql://root@localhost/Query2XML_Tests".
-- install XML_Beautifier (otherwise some tests will be skipped)
+  to change the DSN used to connect to the MySQL database. Alternatively
+  you can also set the environment variable PHP_PEAR_XML_QUERY2XML_TEST_DSN.
+  The default DSN is "mysql://root@localhost/Query2XML_Tests".
 
 You can run all phpt unit tests by executing the following command:
 
@@ -57,26 +62,27 @@ Read on for more information about the php unit tests. After installation
 $PHP_PEAR_TEST_DIR/XML_Query2XML/tests will contain the following
 (all paths relative to $PHP_PEAR_TEST_DIR/XML_Query2XML/tests):
 
-./Query2XML_Tests.sql ........... the SQL DDL required to run the unit tests
+./Query2XML_Tests.sql ........... the MySQL DDL required to run the unit tests
+./Query2XML_Tests.psql .......... the PosgreSQL DDL required to run the unit tests
 ./XML_Query2XML_ISO9075Mapper ... unit tests for XML_Query2XML_ISO9075Mapper
 ./XML_Query2XML/ ................ phpt unit tests for XML_Query2XML
 ./XML_Query2XML/DB .............. phpt unit tests for XML_Query2XML using PEAR DB
 ./XML_Query2XML/MDB2 ............ phpt unit tests for XML_Query2XML using PEAR MDB2
-./XML_Query2XML/ADOdbDefault .... phpt unit tests for XML_Query2XML using ADOdB
+./XML_Query2XML/ADOdbDefault .... phpt unit tests for XML_Query2XML using ADOdb
                                   with default error handling
-./XML_Query2XML/ADOdbException .. phpt unit tests for XML_Query2XML using ADOdB
+./XML_Query2XML/ADOdbException .. phpt unit tests for XML_Query2XML using ADOdb
                                   with Exceptions
-./XML_Query2XML/ADOdbPEAR ....... phpt unit tests for XML_Query2XML using ADOdB
+./XML_Query2XML/ADOdbPEAR ....... phpt unit tests for XML_Query2XML using ADOdb
                                   with PEAR_Error
 
 Each of the ./XML_Query2XML/*/ directories contains subdirectories named
-like methods of XML_Query2XML; the directories contain phpt unit tests for
+like the class methods; the directories contain phpt unit tests for
 the respective method.
 
 If a specific database abstraction layer (DB/MDB2/ADOdb) is not installed
-the respective tests will be skipped. If XML_Beautifier is not installed
-some test will also be skipped. If I18N_UnicodeString is not installed
-all tests for XML_Query2XML_ISO9075Mapper will be skipped.
+the respective tests will be skipped. If I18N_UnicodeString is not installed
+all tests for XML_Query2XML_ISO9075Mapper will be skipped. Also all tests
+that require a database connection will be skipped if the connection fails.
 
 
 4. ChangeLog

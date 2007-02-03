@@ -1,7 +1,26 @@
-Public Releases of Query2XML
-============================
+Public Releases of XML_Query2XML
+================================
 Version: $Id$
 
+
+v1.1.0
+------
+Release date: 2007-02-03
+Release notes: This second stable release contains a couple of great new features:
+- integration of other XML data sources (e.g. XML stored in the database)
+  is now possible
+  - XML unserialization support: see the ampersand prefix
+  - you can now return DOMNode instances from callback functions
+- non-static methods can now be used as callbacks by
+  implementing the new XML_Query2XML_Callback interface
+
+The smaller changes include:
+- cleaned up API docs
+- hidden_container_prefix can now be set using setGlobalOption()
+- numerous CS fixes in the tutorial
+- now using MDB2 instead of DB in all examples
+- documented multi-column primary key support
+- now comes with 678 unit tests (tested with MySQL and PostgreSQL)
 
 v1.0.0
 ------

@@ -16,11 +16,11 @@ Major features:
 3. highly configurable for more complex tasks
 4. ISO/IEC 9075-14:2005 support: mapping of SQL identifiers to XML names
 5. works with any database that is supported by PEAR DB, PEAR MDB2 or ADOdb
-6. debugging and logging features
-7. provides profiling features
-8. in-depth documentation: tutorials and API documentation
-9. Eight case studies: from very simple to highly complex scenarios
-10. 433 phpt unit tests
+6. easy integration of other XML data sources (e.g. raw XML data stored in the DB)
+7. debugging and logging features
+8. provides profiling features
+9. in-depth documentation and case studies: tutorials and API documentation
+10. 678 phpt unit tests
  
  </description>
  <lead>
@@ -29,7 +29,7 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2006-12-22</date>
+ <date>2007-02-03</date>
  <version>
   <release>1.1.0</release>
   <api>1.1.0</api>
@@ -39,13 +39,21 @@ Major features:
   <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>A couple of great new features:
-- non-static methods can now be used as callbacks via the new PEAR_Callback
-- integration of pre-existing XML data sources (e.g. XML stored in the database)
-  - XML unserialization support
-  - DOMNode handling support
-- multi-column primary key support
-- now comes with 578 unit tests (also texted with PostgreSQL)
+ <notes>This second stable release contains a couple of great new features:
+- integration of other XML data sources (e.g. XML stored in the database)
+  is now possible
+  - XML unserialization support: see the ampersand prefix
+  - you can now return DOMNode instances from callback functions
+- non-static methods can now be used as callbacks by
+  implementing the new XML_Query2XML_Callback interface
+
+The smaller changes include:
+- cleaned up API docs
+- hidden_container_prefix can now be set using setGlobalOption()
+- numerous CS fixes in the tutorial
+- now using MDB2 instead of DB in all examples
+- documented multi-column primary key support
+- now comes with 678 unit tests (tested with MySQL and PostgreSQL)
  </notes>
  <contents>
   <dir name="/">
@@ -147,6 +155,13 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
@@ -318,6 +333,13 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
@@ -489,6 +511,13 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
@@ -660,6 +689,13 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
@@ -831,6 +867,13 @@ Major features:
        <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
@@ -1334,9 +1377,23 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2006-12-22</date>
+   <date>2007-02-03</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>Second stable release
+   <notes>This second stable release contains a couple of great new features:
+- integration of other XML data sources (e.g. XML stored in the database)
+  is now possible
+  - XML unserialization support: see the ampersand prefix
+  - you can now return DOMNode instances from callback functions
+- non-static methods can now be used as callbacks by
+  implementing the new XML_Query2XML_Callback interface
+
+The smaller changes include:
+- cleaned up API docs
+- hidden_container_prefix can now be set using setGlobalOption()
+- numerous CS fixes in the tutorial
+- now using MDB2 instead of DB in all examples
+- documented multi-column primary key support
+- now comes with 678 unit tests (tested with MySQL and PostgreSQL)
    </notes>
   </release>
  </changelog>
