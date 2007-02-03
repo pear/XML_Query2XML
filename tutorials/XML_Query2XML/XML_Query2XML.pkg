@@ -830,7 +830,7 @@ print $dom->saveXML();
       </programlisting>
      </para>
      <para>
-      Think of the asterisk as a variable that will get replaced with each column name found in the relut set:
+      Think of the asterisk as a variable that will get replaced with each column name found in the result set:
       <programlisting role="php">
       <![CDATA[
 <?php
@@ -844,13 +844,18 @@ $dom = $query2xml->getXML(
     'idColumn' => 'artistid',
     'rowTag' => 'artist',
     'elements' => array(
-        'TAG_*' => '!return "--" . $record["*"] . "--";'
+        'TAG_*' => '#padWithHyphens(*)'
     )
   )
 );
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
+
+function padWithHyphens($record, $columnName)
+{
+    return '--' . $record[$columnName] . '--';
+}
 ?>
       ]]>
       </programlisting>
@@ -903,13 +908,18 @@ $dom = $query2xml->getXML(
     'rowTag' => 'artist',
     'elements' => array(
         '*' => '*',
-        'genre' => '!return strtoupper($record["genre"]);'
+        'genre' => '#genre2uppercase()'
     )
   )
 );
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
+
+function genre2uppercase($record)
+{
+    return strtoupper($record['genre']);
+}
 ?>
       ]]>
       </programlisting>
@@ -947,7 +957,7 @@ print $dom->saveXML();
       <![CDATA[
 'elements' => array(
   '*' => '*',
-  'genre' => '!return strtoupper($record["genre"]);'
+  'genre' => '#genre2uppercase()'
 )
       ]]>
       </programlisting>
@@ -959,12 +969,12 @@ print $dom->saveXML();
   'name',
   'birth_year',
   'birth_place',
-  'genre' => '!return strtoupper($record["genre"]);'
+  'genre' => '#genre2uppercase()'
 )
       ]]>
       </programlisting>
       Please keep in mind that this also applies when combining an asterisk element specification with a complex element specification.
-      That's way the following code would produce exactly the same XML data:
+      That's why the following code would produce exactly the same XML data:
       <programlisting role="php">
       <![CDATA[
 <?php
@@ -980,7 +990,7 @@ $dom = $query2xml->getXML(
     'elements' => array(
         '*' => '*',
         'genre' => array(
-            'value' => '!return strtoupper($record["genre"]);'
+            'value' => '#genre2uppercase()'
         )
     )
   )
@@ -988,6 +998,11 @@ $dom = $query2xml->getXML(
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
+
+function genre2uppercase($record)
+{
+    return strtoupper($record['genre']);
+}
 ?>
       ]]>
       </programlisting>
@@ -1125,7 +1140,7 @@ print $dom->saveXML();
       ]]>
       </programlisting>
       just makes no sense and therfore "*" is treated as a regular column name - which does not exist in this case!
-      The exception's message would read: The column "*" used in the option "elements" does not exist in the result set.
+      The exception's message would read: [elements]: The column "*" used in the option "tag" does not exist in the result set.
      </para>
     </refsect3>
   </refsect2>
@@ -1534,8 +1549,7 @@ $dom = $query2xml->getXML(
       'name',
       'birth_year',
       'firstAlbum' => array(
-        'value' => 'title',
-        'value' => '!return $record["title"] . " (" . $record["genre"] . ")";',
+        'value' => '#combineTitleAndGenre()',
         'sql' => array(
           'data' => array(
             'artistid'
@@ -1552,6 +1566,11 @@ $dom = $query2xml->getXML(
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
+
+function combineTitleAndGenre($record)
+{
+    return $record['title'] . ' (' . $record['genre'] . ')';
+}
 ?>
      ]]>
      </programlisting>
@@ -1560,9 +1579,9 @@ print $dom->saveXML();
      <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
-  <artist birth_year="1920" firstAlbum="Curtis (Soul)" name="Curtis Mayfield" />
-  <artist birth_year="1942" firstAlbum="Shaft (Soul)" name="Isaac Hayes" />
-  <artist birth_year="1930" name="Ray Charles" />
+  <artist name="Curtis Mayfield" birth_year="1920" firstAlbum="Curtis (Soul)"/>
+  <artist name="Isaac Hayes" birth_year="1942" firstAlbum="Shaft (Soul)"/>
+  <artist name="Ray Charles" birth_year="1930"/>
 </favorite_artists>
     ]]>
      </programlisting>
@@ -5322,7 +5341,7 @@ require_once 'XML/Query2XML.php';
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once 'Log.php';
+require_once('Log.php');
 $debugLogger = &Log::factory('file', 'case04.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -5341,7 +5360,7 @@ $dom = $query2xml->getXML(
         'elements' => array(
             'NAME' => 'name',
             'BIRTH_YEAR' => 'birth_year',
-            'BIRTH_YEAR_TWO_DIGIT' => "!return substr(\$record['birth_year'], 2);",
+            'BIRTH_YEAR_TWO_DIGIT' => "#firstTwoChars()",
             'BIRTH_PLACE' => 'birth_place',
             'GENRE' => 'genre',
             'albums' => array(
@@ -5381,9 +5400,14 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once 'File.php';
+require_once('File.php');
 $fp = new File();
 $fp->write('case04.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
+
+function firstTwoChars($record)
+{
+    return substr($record['birth_year'], 2);
+}
 ?>
      ]]>
      </programlisting>
@@ -6014,7 +6038,7 @@ require_once 'XML/Query2XML.php';
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once 'Log.php';
+require_once('Log.php');
 $debugLogger = &Log::factory('file', 'case05.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -6045,8 +6069,8 @@ $dom = $query2xml->getXML(
                 'elements' => array(
                     'saleid',
                     'timestamp',
-                    'date' => "!return substr(\$record['timestamp'], 0, strpos(\$record['timestamp'], ' '));",
-                    'time' => "!return substr(\$record['timestamp'], strpos(\$record['timestamp'], ' ') + 1);",
+                    'date' => '#Callbacks::getFirstWord()',
+                    'time' => '#Callbacks::getSecondWord()',
                     'album' => array(
                         'rootTag' => '',
                         'rowTag' => 'album',
@@ -6084,9 +6108,22 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once 'File.php';
+require_once('File.php');
 $fp = new File();
 $fp->write('case05.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
+
+class Callbacks
+{
+    function getFirstWord($record)
+    {
+        return substr($record['timestamp'], 0, strpos($record['timestamp'], ' '));
+    }
+    
+    function getSecondWord($record)
+    {
+        return substr($record['timestamp'], strpos($record['timestamp'], ' ') + 1);
+    }
+}
 ?>
      ]]>
      </programlisting>
@@ -6138,13 +6175,14 @@ DB_DURATION:    0.050441980361938
     <para>
      Case 06 demonstrates how complex things can get :) First have a look at the
      {@link http://query2xml.sourceforge.net/docs/Query2XML_Tests.jpg ER diagram}.
-     It shows a company that sells records. The basic structure is as follows:
+     It shows a company that sells records. The basic structure of the generated
+     XML document is as follows:
      <itemizedlist>
       <listitem>
        for each store we want a list of all departments that are located in this store
       </listitem>
       <listitem>
-       for each department we want we want a list of all employees that work in this department
+       for each department we want a list of all employees that work in this department
       </listitem>
       <listitem>
        for each employee we want a list of all his sales
@@ -6165,7 +6203,77 @@ DB_DURATION:    0.050441980361938
      <![CDATA[
 <?php
 require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/Callback.php';
 require_once 'MDB2.php';
+
+/**Static class that provides validation and parsing methods for
+* generating XML.
+*
+* It is static so that we can easyly call its methods from inside
+* Query2XML using eval'd code.
+*/
+class Helper
+{
+    /**Associative array of US postal state codes*/
+    public static $statePostalCodes = array(
+        'ALABAMA' => 'AL', 'ALASKA' => 'AK', 'AMERICAN SAMOA' => 'AS', 'ARIZONA' => 'AZ', 'ARKANSAS' => 'AR', 'CALIFORNIA' => 'CA',
+        'COLORADO' => 'CO', 'CONNECTICUT' => 'CT', 'DELAWARE' => 'DE', 'DISTRICT OF COLUMBIA' => 'DC', 'FEDERATED STATES OF MICRONESIA' => 'FM',
+        'FLORIDA' => 'FL', 'GEORGIA' => 'GA', 'GUAM' => 'GU', 'HAWAII' => 'HI', 'IDAHO' => 'ID', 'ILLINOIS' => 'IL', 'INDIANA' => 'IN',
+        'IOWA' => 'IA', 'KANSAS' => 'KS', 'KENTUCKY' => 'KY', 'LOUISIANA' => 'LA', 'MAINE' => 'ME', 'MARSHALL ISLANDS' => 'MH', 'MARYLAND' => 'MD',
+        'MASSACHUSETTS' => 'MA', 'MICHIGAN' => 'MI', 'MINNESOTA' => 'MN', 'MISSISSIPPI' => 'MS', 'MISSOURI' => 'MO', 'MONTANA' => 'MT',
+        'NEBRASKA' => 'NE', 'NEVADA' => 'NV', 'NEW HAMPSHIRE' => 'NH', 'NEW JERSEY' => 'NJ', 'NEW JESEY' => 'NJ', 'NEW MEXICO' => 'NM', 'NEW YORK' => 'NY',
+        'NORTH CAROLINA' => 'NC', 'NORTH DAKOTA' => 'ND', 'NORTHERN MARIANA ISLANDS' => 'MP', 'OHIO' => 'OH', 'OKLAHOMA' => 'OK', 'OREGON' => 'OR',
+        'PALAU' => 'PW', 'PENNSYLVANIA' => 'PA', 'PUERTO RICO' => 'PR', 'RHODE ISLAND' => 'RI', 'SOUTH CAROLINA' => 'SC', 'SOUTH DAKOTA' => 'SD',
+        'TENNESSEE' => 'TN', 'TEXAS' => 'TX', 'UTAH' => 'UT', 'VERMONT' => 'VT', 'VIRGIN ISLANDS' => 'VI', 'VIRGINIA' => 'VA', 'WASHINGTON' => 'WA',
+        'WEST VIRGINIA' => 'WV', 'WISCONSIN' => 'WI', 'WYOMING' => 'WY'
+    );
+            
+    /**Translates a US state name into its two-letter postal code.
+    * If the translation fails, $state is returned unchanged
+    * @param $record The record
+    */
+    public static function getStatePostalCode($record)
+    {
+        $state = $record["state"];
+        $s = str_replace("  ", " ", trim(strtoupper($state)));
+        if (isset(self::$statePostalCodes[$s])) {
+            return self::$statePostalCodes[$s];
+        } else {
+            return $state;
+        }
+    }
+      
+    function summarize($str, $limit=50, $appendString=' ...')
+    {
+        if (strlen($str) > $limit) {
+            $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
+        }
+        return $str;
+    }
+    
+    function summarizeComment($record, $limit)
+    {
+        return self::summarize($record["comment"], $limit);
+    }
+}
+
+/**Command class that implements the command pattern.
+* It implements the XML_Query2XML_Callback interface
+* and therefore has to provide the public non-static
+* method execute(array $record).
+*/
+class UppercaseColumnCommand implements XML_Query2XML_Callback
+{
+    public function __construct($columnName)
+    {
+        $this->_columnName = $columnName;
+    }
+    public function execute(array $record)
+    {
+        return strtoupper($record[$this->_columnName]);
+    }
+}
+
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 $dom = $query2xml->getXML(
     "SELECT
@@ -6246,7 +6354,7 @@ $dom = $query2xml->getXML(
                 'elements' => array(
                     'country',
                     'state' => '#Helper::getStatePostalCode()',
-                    'city',
+                    'city' => new UppercaseColumnCommand('city'),
                     'street',
                     'phone'
                 )
@@ -6338,59 +6446,6 @@ header('Content-Type: application/xml');
 
 $dom->formatOutput = true;
 print $dom->saveXML();
-
-
-
-/**Static class that provides validation and parsing methods for
-* generating XML.
-*
-* It is static so that we can easyly call its methods from inside
-* Query2XML using eval'd code.
-*/
-class Helper
-{
-    /**Associative array of US postal state codes*/
-    public static $statePostalCodes = array(
-        'ALABAMA' => 'AL', 'ALASKA' => 'AK', 'AMERICAN SAMOA' => 'AS', 'ARIZONA' => 'AZ', 'ARKANSAS' => 'AR', 'CALIFORNIA' => 'CA',
-        'COLORADO' => 'CO', 'CONNECTICUT' => 'CT', 'DELAWARE' => 'DE', 'DISTRICT OF COLUMBIA' => 'DC', 'FEDERATED STATES OF MICRONESIA' => 'FM',
-        'FLORIDA' => 'FL', 'GEORGIA' => 'GA', 'GUAM' => 'GU', 'HAWAII' => 'HI', 'IDAHO' => 'ID', 'ILLINOIS' => 'IL', 'INDIANA' => 'IN',
-        'IOWA' => 'IA', 'KANSAS' => 'KS', 'KENTUCKY' => 'KY', 'LOUISIANA' => 'LA', 'MAINE' => 'ME', 'MARSHALL ISLANDS' => 'MH', 'MARYLAND' => 'MD',
-        'MASSACHUSETTS' => 'MA', 'MICHIGAN' => 'MI', 'MINNESOTA' => 'MN', 'MISSISSIPPI' => 'MS', 'MISSOURI' => 'MO', 'MONTANA' => 'MT',
-        'NEBRASKA' => 'NE', 'NEVADA' => 'NV', 'NEW HAMPSHIRE' => 'NH', 'NEW JERSEY' => 'NJ', 'NEW JESEY' => 'NJ', 'NEW MEXICO' => 'NM', 'NEW YORK' => 'NY',
-        'NORTH CAROLINA' => 'NC', 'NORTH DAKOTA' => 'ND', 'NORTHERN MARIANA ISLANDS' => 'MP', 'OHIO' => 'OH', 'OKLAHOMA' => 'OK', 'OREGON' => 'OR',
-        'PALAU' => 'PW', 'PENNSYLVANIA' => 'PA', 'PUERTO RICO' => 'PR', 'RHODE ISLAND' => 'RI', 'SOUTH CAROLINA' => 'SC', 'SOUTH DAKOTA' => 'SD',
-        'TENNESSEE' => 'TN', 'TEXAS' => 'TX', 'UTAH' => 'UT', 'VERMONT' => 'VT', 'VIRGIN ISLANDS' => 'VI', 'VIRGINIA' => 'VA', 'WASHINGTON' => 'WA',
-        'WEST VIRGINIA' => 'WV', 'WISCONSIN' => 'WI', 'WYOMING' => 'WY'
-    );
-            
-    /**Translates a US state name into its two-letter postal code.
-    * If the translation fails, $state is returned unchanged
-    * @param $record The record
-    */
-    public static function getStatePostalCode($record)
-    {
-        $state = $record["state"];
-        $s = str_replace("  ", " ", trim(strtoupper($state)));
-        if (isset(self::$statePostalCodes[$s])) {
-            return self::$statePostalCodes[$s];
-        } else {
-            return $state;
-        }
-    }
-      
-    function summarize($str, $limit=50, $appendString=' ...')
-    {
-        if (strlen($str) > $limit) {
-            $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
-        }
-        return $str;
-    }
-    
-    function summarizeComment($record, $limit)
-    {
-        return self::summarize($record["comment"], $limit);
-    }
-}
 ?>
      ]]>
      </programlisting>
@@ -6403,6 +6458,14 @@ class Helper
      ]]>
      </programlisting>
      which means that the string '12' will be passed as second argument to Helper::summarizeComment().
+     The CONDITIONAL prefix ? means that the comment element will only appear if the (summarized)
+     comment != "".
+     </para>
+     <para>
+      In addition to the CALLBACK FUNCTION we also use a COMMAND OBJECT. In our case it is
+      an instance of the class UppercaseColumnCommand which implements the {@link XML_Query2XML_Callback}
+      interface. We pass the column's name as constructor argument, so that UppercaseColumnCommand::execute()
+      knows which column (i.e. which element of the $record array) to pass to strtoupper().
      </para>
     </refsect3>
     <refsect3 id="{@id case06_xml}">
@@ -6422,7 +6485,7 @@ class Helper
     <address>
       <country>US</country>
       <state>NY</state>
-      <city>New York</city>
+      <city>NEW YORK</city>
       <street>Broadway &amp; 72nd Str</street>
       <phone>123 456 7890</phone>
     </address>
@@ -6651,15 +6714,15 @@ class Helper
       <employees>
         <employee employeeid="4">
           <employeename>Joan Kerr</employeename>
-          <sales />
+          <sales/>
         </employee>
         <employee employeeid="5">
           <employeename>Marcus Roth</employeename>
-          <sales />
+          <sales/>
         </employee>
         <employee employeeid="6">
           <employeename>Jack Mack</employeename>
-          <sales />
+          <sales/>
         </employee>
       </employees>
     </department>
@@ -6673,7 +6736,7 @@ class Helper
     <address>
       <country>US</country>
       <state>NY</state>
-      <city>Larchmont</city>
+      <city>LARCHMONT</city>
       <street>Palmer Ave 71</street>
       <phone>456 7890</phone>
     </address>
@@ -6902,15 +6965,15 @@ class Helper
       <employees>
         <employee employeeid="10">
           <employeename>Hanna Poll</employeename>
-          <sales />
+          <sales/>
         </employee>
         <employee employeeid="11">
           <employeename>Jim Wells</employeename>
-          <sales />
+          <sales/>
         </employee>
         <employee employeeid="12">
           <employeename>Sandra Wilson</employeename>
-          <sales />
+          <sales/>
         </employee>
       </employees>
     </department>
@@ -6928,10 +6991,80 @@ class Helper
      <![CDATA[
 <?php
 require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/Callback.php';
 require_once 'MDB2.php';
+
+/**Static class that provides validation and parsing methods for
+* generating XML.
+*
+* It is static so that we can easyly call its methods from inside
+* Query2XML using eval'd code.
+*/
+class Helper
+{
+    /**Associative array of US postal state codes*/
+    public static $statePostalCodes = array(
+        'ALABAMA' => 'AL', 'ALASKA' => 'AK', 'AMERICAN SAMOA' => 'AS', 'ARIZONA' => 'AZ', 'ARKANSAS' => 'AR', 'CALIFORNIA' => 'CA',
+        'COLORADO' => 'CO', 'CONNECTICUT' => 'CT', 'DELAWARE' => 'DE', 'DISTRICT OF COLUMBIA' => 'DC', 'FEDERATED STATES OF MICRONESIA' => 'FM',
+        'FLORIDA' => 'FL', 'GEORGIA' => 'GA', 'GUAM' => 'GU', 'HAWAII' => 'HI', 'IDAHO' => 'ID', 'ILLINOIS' => 'IL', 'INDIANA' => 'IN',
+        'IOWA' => 'IA', 'KANSAS' => 'KS', 'KENTUCKY' => 'KY', 'LOUISIANA' => 'LA', 'MAINE' => 'ME', 'MARSHALL ISLANDS' => 'MH', 'MARYLAND' => 'MD',
+        'MASSACHUSETTS' => 'MA', 'MICHIGAN' => 'MI', 'MINNESOTA' => 'MN', 'MISSISSIPPI' => 'MS', 'MISSOURI' => 'MO', 'MONTANA' => 'MT',
+        'NEBRASKA' => 'NE', 'NEVADA' => 'NV', 'NEW HAMPSHIRE' => 'NH', 'NEW JERSEY' => 'NJ', 'NEW JESEY' => 'NJ', 'NEW MEXICO' => 'NM', 'NEW YORK' => 'NY',
+        'NORTH CAROLINA' => 'NC', 'NORTH DAKOTA' => 'ND', 'NORTHERN MARIANA ISLANDS' => 'MP', 'OHIO' => 'OH', 'OKLAHOMA' => 'OK', 'OREGON' => 'OR',
+        'PALAU' => 'PW', 'PENNSYLVANIA' => 'PA', 'PUERTO RICO' => 'PR', 'RHODE ISLAND' => 'RI', 'SOUTH CAROLINA' => 'SC', 'SOUTH DAKOTA' => 'SD',
+        'TENNESSEE' => 'TN', 'TEXAS' => 'TX', 'UTAH' => 'UT', 'VERMONT' => 'VT', 'VIRGIN ISLANDS' => 'VI', 'VIRGINIA' => 'VA', 'WASHINGTON' => 'WA',
+        'WEST VIRGINIA' => 'WV', 'WISCONSIN' => 'WI', 'WYOMING' => 'WY'
+    );
+            
+    /**Translates a US state name into its two-letter postal code.
+    * If the translation fails, $state is returned unchanged
+    * @param $record The record
+    */
+    public static function getStatePostalCode($record)
+    {
+        $state = $record["state"];
+        $s = str_replace("  ", " ", trim(strtoupper($state)));
+        if (isset(self::$statePostalCodes[$s])) {
+            return self::$statePostalCodes[$s];
+        } else {
+            return $state;
+        }
+    }
+      
+    function summarize($str, $limit=50, $appendString=' ...')
+    {
+        if (strlen($str) > $limit) {
+            $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
+        }
+        return $str;
+    }
+    
+    function summarizeComment($record, $limit)
+    {
+        return self::summarize($record["comment"], $limit);
+    }
+}
+
+/**Command class that implements the command pattern.
+* It implements the XML_Query2XML_Callback interface
+* and therefore has to provide the public non-static
+* method execute(array $record).
+*/
+class UppercaseColumnCommand implements XML_Query2XML_Callback
+{
+    public function __construct($columnName)
+    {
+        $this->_columnName = $columnName;
+    }
+    public function execute(array $record)
+    {
+        return strtoupper($record[$this->_columnName]);
+    }
+}
+
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once 'Log.php';
+require_once('Log.php');
 $debugLogger = &Log::factory('file', 'case06.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -7016,8 +7149,8 @@ $dom = $query2xml->getXML(
             'address' => array(
                 'elements' => array(
                     'country',
-                    'state' => '!return Helper::getStatePostalCode($record["state"]);',
-                    'city',
+                    'state' => '#Helper::getStatePostalCode()',
+                    'city' => new UppercaseColumnCommand('city'),
                     'street',
                     'phone'
                 )
@@ -7077,7 +7210,7 @@ $dom = $query2xml->getXML(
                                         'elements' => array(
                                             'title',
                                             'published_year',
-                                            'comment' => '?!return Helper::summarize($record["comment"], 12);',
+                                            'comment' => '?#Helper::summarizeComment(12)',
                                             'artist' => array(
                                                 'idColumn' => 'artistid',
                                                 'attributes' => array(
@@ -7110,59 +7243,13 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once 'File.php';
+require_once('File.php');
 $fp = new File();
 $fp->write('case06.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
-
-
-/**Static class that provides validation and parsing methods for
-* generating XML.
-*
-* It is static so that we can easyly call its methods from inside
-* Query2XML using eval'd code.
-*/
-class Helper
-{
-    /**Associative array of US postal state codes*/
-    public static $statePostalCodes = array(
-        'ALABAMA' => 'AL', 'ALASKA' => 'AK', 'AMERICAN SAMOA' => 'AS', 'ARIZONA' => 'AZ', 'ARKANSAS' => 'AR', 'CALIFORNIA' => 'CA',
-        'COLORADO' => 'CO', 'CONNECTICUT' => 'CT', 'DELAWARE' => 'DE', 'DISTRICT OF COLUMBIA' => 'DC', 'FEDERATED STATES OF MICRONESIA' => 'FM',
-        'FLORIDA' => 'FL', 'GEORGIA' => 'GA', 'GUAM' => 'GU', 'HAWAII' => 'HI', 'IDAHO' => 'ID', 'ILLINOIS' => 'IL', 'INDIANA' => 'IN',
-        'IOWA' => 'IA', 'KANSAS' => 'KS', 'KENTUCKY' => 'KY', 'LOUISIANA' => 'LA', 'MAINE' => 'ME', 'MARSHALL ISLANDS' => 'MH', 'MARYLAND' => 'MD',
-        'MASSACHUSETTS' => 'MA', 'MICHIGAN' => 'MI', 'MINNESOTA' => 'MN', 'MISSISSIPPI' => 'MS', 'MISSOURI' => 'MO', 'MONTANA' => 'MT',
-        'NEBRASKA' => 'NE', 'NEVADA' => 'NV', 'NEW HAMPSHIRE' => 'NH', 'NEW JERSEY' => 'NJ', 'NEW JESEY' => 'NJ', 'NEW MEXICO' => 'NM', 'NEW YORK' => 'NY',
-        'NORTH CAROLINA' => 'NC', 'NORTH DAKOTA' => 'ND', 'NORTHERN MARIANA ISLANDS' => 'MP', 'OHIO' => 'OH', 'OKLAHOMA' => 'OK', 'OREGON' => 'OR',
-        'PALAU' => 'PW', 'PENNSYLVANIA' => 'PA', 'PUERTO RICO' => 'PR', 'RHODE ISLAND' => 'RI', 'SOUTH CAROLINA' => 'SC', 'SOUTH DAKOTA' => 'SD',
-        'TENNESSEE' => 'TN', 'TEXAS' => 'TX', 'UTAH' => 'UT', 'VERMONT' => 'VT', 'VIRGIN ISLANDS' => 'VI', 'VIRGINIA' => 'VA', 'WASHINGTON' => 'WA',
-        'WEST VIRGINIA' => 'WV', 'WISCONSIN' => 'WI', 'WYOMING' => 'WY'
-    );
-            
-    /**Translates a US state name into its two-letter postal code.
-    * If the translation fails, $state is returned unchanged
-    * @param $state The state's name
-    */
-    public static function getStatePostalCode($state)
-    {
-        $s = str_replace("  ", " ", trim(strtoupper($state)));
-        if (isset(self::$statePostalCodes[$s])) {
-            return self::$statePostalCodes[$s];
-        } else {
-            return $state;
-        }
-    }
-      
-    function summarize($str, $limit=50, $appendString=' ...')
-    {
-        if (strlen($str) > $limit) {
-            $str = substr($str, 0, $limit - strlen($appendString)) . $appendString;
-        }
-        return $str;
-    }
-}
 ?>
      ]]>
      </programlisting>
-     The lines 5-7 do the debugging, line 9 and 186-188 the profiling. This will create
+     The lines 76-78 do the debugging, line 80 and 255-257 the profiling. This will create
      case06.log and case06.profile.
      </para>
     </refsect3>
@@ -8417,11 +8504,11 @@ function mapArtist($str)
 $myMappers = new Mappers();
 
 require_once 'XML/Query2XML.php';
-require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once('XML/Query2XML/ISO9075Mapper.php');
 require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
-require_once 'Log.php';
+require_once('Log.php');
 $debugLogger = &Log::factory('file', 'case08.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
@@ -8507,7 +8594,7 @@ $dom = $query2xml->getXML(
             'address' => array(
                 'elements' => array(
                     'country',
-                    'state' => '!return Helper::getStatePostalCode($record["state"]);',
+                    'state' => '#Helper::getStatePostalCode()',
                     'city',
                     'street',
                     'phone'
@@ -8573,7 +8660,7 @@ $dom = $query2xml->getXML(
                                         'elements' => array(
                                             'title',
                                             'published_year',
-                                            'comment' => '?!return Helper::summarize($record["comment"], 12);',
+                                            'comment' => '?#Helper::summarizeComment(12)',
                                             'artist' => array(
                                                 'idColumn' => 'artistid',
                                                 'mapper' => 'mapArtist',
@@ -8607,7 +8694,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 
-require_once 'File.php';
+require_once('File.php');
 $fp = new File();
 $fp->write('case08.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 
@@ -8636,10 +8723,11 @@ class Helper
             
     /**Translates a US state name into its two-letter postal code.
     * If the translation fails, $state is returned unchanged
-    * @param $state The state's name
+    * @param $record The record
     */
-    public static function getStatePostalCode($state)
+    public static function getStatePostalCode($record)
     {
+        $state = $record["state"];
         $s = str_replace("  ", " ", trim(strtoupper($state)));
         if (isset(self::$statePostalCodes[$s])) {
             return self::$statePostalCodes[$s];
@@ -8655,11 +8743,16 @@ class Helper
         }
         return $str;
     }
+    
+    function summarizeComment($record, $limit)
+    {
+        return self::summarize($record["comment"], $limit);
+    }
 }
 ?>
      ]]>
      </programlisting>
-     The lines 36-38 do the debugging, line 40 and 224-226 the profiling. This will create
+     The lines 36-38 do the debugging, line 40 and 222-224 the profiling. This will create
      case08.log and case08.profile.
      </para>
     </refsect3>
