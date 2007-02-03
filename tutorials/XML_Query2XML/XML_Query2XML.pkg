@@ -735,7 +735,7 @@ artistid  name                birth_year  albumid album_title     album_publishe
       ]]>
       For every record {@link XML_Query2XML::getXML()} called the private method {@link XML_Query2XML::_getNestedXMLRecord()}.
       It did not create two artist tags for Curtis Mayfield because $options['idColumn'] was set
-      to 'artistid' and _getNestedXMLRecord() therefor knew that there already was a tag for
+      to 'artistid' and _getNestedXMLRecord() therefore knew that there already was a tag for
       Curtis Mayfield.
      </para>
      <para>
@@ -2520,7 +2520,7 @@ print $dom->saveXML();
   <refsect2 id="{@id options_value}">
    <title>$options['value']</title>
    <para>
-    The value of the XML element. The specification can be of the following types:
+    The value of an XML element's child text node. The specification can be of the following types:
      <itemizedlist>
       <listitem>
        <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
@@ -4095,7 +4095,8 @@ print $beautifier->formatString($dom->saveXML());
    <para>
     Currently there is only one global option: {@tutorial XML_Query2XML.pkg#global_options.hidden_container_prefix}
     which has to be set to a non empty string. If you try to set a non existing global option or
-    try to set an existing one to an invalid value a XML_Query2XML_ConfigException will be thrown.
+    try to set an existing one to an invalid value a {@link XML_Query2XML_ConfigException}
+    will be thrown.
    </para>
    <para>
     Here goes an example:
@@ -4121,6 +4122,8 @@ $query2xml =& XML_Query2XML::factory($db);
 echo $query2xml->getGlobalOption('hidden_container_prefix');
     ]]>
     </programlisting>
+    If you try to retrieve the value of a non existing global option a
+    {@link XML_Query2XML_ConfigException} will be thrown.
    </para>
   </refsect2>
   <refsect2 id="{@id hidden_container_prefix}">
@@ -4171,8 +4174,8 @@ print $dom->saveXML();
 'name' => ':John Doe'
     ]]>
     </programlisting>
-    Both versions produce the same XML data. Note how the contents of the &lt;__name&gt;
-    element effectively replaced the &lt;__info&gt; tag. It results in the &lt;name&gt; element
+    Both versions produce the same XML data. Note how the contents of the &lt;__info&gt;
+    element effectively replaced the &lt;__info&gt; tag itself. It results in the &lt;name&gt; element
     being directly placed inside the &lt;album&gt; element.
     <programlisting role="tutorial">
     <![CDATA[
