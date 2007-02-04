@@ -26,7 +26,10 @@ if (!@include_once 'adodb/adodb.inc.php') {
     exit;
 } else {
     require_once dirname(dirname(__FILE__)) . '/settings.php';
-    $db = NewADOConnection(DSN);
+    $db = false;
+    try {
+        $db = @NewADOConnection(DSN);
+    } catch (Exception $e) {}
     if (!$db) {
         print 'skip could not connect using DSN ' . DSN;
         exit;
