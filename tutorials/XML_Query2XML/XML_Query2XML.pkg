@@ -1332,6 +1332,10 @@ function generateIdFromMultiKeyPK($record, $columnName1, $columnName2)
     and {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.complex_attribute_specifications complex} attribute
     specifications are supported.
    </para>
+   <para>
+    If you want to add attributes to the root element (i.e. the first child of the DOMDocument instance returned by {@link XML_Query2XML::getXML() getXML()}),
+    please see {@tutorial XML_Query2XML.pkg#query2xml_getxml.return_value_modification}.
+   </para>
    <refsect3 id="{@id simple_attribute_specifications}">
     <title>Simple Attribute Specifications</title>
     <para>
@@ -3364,7 +3368,86 @@ print $dom->saveXML();
     </para>
    </refsect3>
   </refsect2>
- 
+  
+  <refsect2 id="{@id return_value_modification}">
+   <title>Modifying the returned DOMDocument instance</title>
+   <para>
+    {@link XML_Query2XML::getXML()} returns an instance of
+    {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DomDocument}.
+    I recommend that you do some reading about 
+    {@link http://www.php.net/manual/en/ref.dom.php PHP5's DOM extension}.
+   </para>
+   <para>
+    Let's see how we can add attributes to the root element
+    (i.e. the first child of the DOMDocument instance returned by {@link XML_Query2XML::getXML() getXML()}):
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+
+$doc = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'artistid',
+            'name',
+            'birth_year',
+            'birth_place',
+            'genre'
+        )
+    )
+);
+$root = $doc->firstChild;
+$root->setAttribute('copyright', 'John Doe 2007');
+
+header('Content-Type: application/xml');
+$doc->formatOutput = true;
+print $doc->saveXML();
+?>
+    ]]>
+    </programlisting>
+   </para>
+   <para>
+    This adds an attribute named 'copyright' with a value of 'John Doe 2007'
+    to the root element &lt;music_library&gt;:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_library copyright="John Doe 2007">
+  <artist>
+    <artistid>1</artistid>
+    <name>Curtis Mayfield</name>
+    <birth_year>1920</birth_year>
+    <birth_place>Chicago</birth_place>
+    <genre>Soul</genre>
+  </artist>
+  <artist>
+    <artistid>2</artistid>
+    <name>Isaac Hayes</name>
+    <birth_year>1942</birth_year>
+    <birth_place>Tennessee</birth_place>
+    <genre>Soul</genre>
+  </artist>
+  <artist>
+    <artistid>3</artistid>
+    <name>Ray Charles</name>
+    <birth_year>1930</birth_year>
+    <birth_place>Mississippi</birth_place>
+    <genre>Country and Soul</genre>
+  </artist>
+</music_library>
+    ]]>
+    </programlisting>
+   </para>
+  </refsect2>
   <refsect2 id="{@id final_notes}">
    <title>Final Notes on XML_Query2XML::getXML()</title>
    <para>
