@@ -45,11 +45,13 @@ require_once 'PEAR.php';
 *
 * A typical usage of XML_Query2XML looks like this:
 * <code>
+* <?php
 * require_once 'XML/Query2XML.php';
 * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
 * $dom = $query2xml->getXML($sql, $options);
 * header('Content-Type: application/xml');
 * print $dom->saveXML();
+* ?>
 * </code>
 *
 * Please read the <b>{@tutorial XML_Query2XML.pkg tutorial}</b> for
@@ -191,27 +193,33 @@ class XML_Query2XML
     /**Factory method.
     * As first argument pass an instance of PEAR DB, PEAR MDB2 or ADOdb:
     * <code>
+    * <?php
     * require_once 'XML/Query2XML.php';
     * require_once 'DB.php';
     * $query2xml = XML_Query2XML::factory(
     *   DB::connect('mysql://root@localhost/Query2XML_Tests')
     * );
+    * ?>
     * </code>
     * 
     * <code>
+    * <?php
     * require_once 'XML/Query2XML.php';
     * require_once 'MDB2.php';
     * $query2xml = XML_Query2XML::factory(
     *   MDB2::factory('mysql://root@localhost/Query2XML_Tests')
     * );
+    * ?>
     * </code>
     * 
     * <code>
+    * <?php
     * require_once 'XML/Query2XML.php';
     * require_once 'adodb/adodb.inc.php';
     * $adodb = ADONewConnection('mysql');
     * $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
     * $query2xml =& XML_Query2XML::factory($adodb);
+    * ?>
     * </code>
     *
     * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
@@ -291,11 +299,13 @@ class XML_Query2XML
     * This will include all queries sent to the database.
     * Example:
     * <code>
+    * <?php
     * require_once 'Log.php';
     * require_once 'XML/Query2XML.php';
     * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
     * $debugLogger = Log::factory('file', 'out.log', 'XML_Query2XML');
     * $query2xml->enableDebugLog($debugLogger);
+    * ?>
     * </code>
     * Please see {@link http://pear.php.net/package/Log} for details on PEAR Log.
     *
@@ -429,6 +439,7 @@ class XML_Query2XML
     *
     * Example:
     * <code>
+    * <?php
     * require_once 'XML/Query2XML.php';
     * $query2xml = XML_Query2XML::factory(MDB2::connect($dsn));
     * $dom = $query2xml->getFlatXML(
@@ -436,6 +447,7 @@ class XML_Query2XML
     *   'music_library',
     *   'artist'
     * );
+    * ?>
     * </code>
     *
     * @throws XML_Query2XML_Exception This is the base class for the exception
@@ -716,6 +728,37 @@ class XML_Query2XML
             $mapper = false;
         }
         
+        if (isset($options['encoder'])) {
+            $encoder = $options['encoder'];
+            if (is_string($encoder) && strpos($encoder, '::') !== false) {
+                $encoder = split('::', $encoder);
+            }
+            if (
+                $encoder !== false
+                &&
+                $encoder !== null
+                &&
+                !is_callable($encoder, false, $callableName)
+             ) {
+                /*
+                * Only check if $encoder is not false (don't use an encoder)
+                * or null (use self::_utf8encode()).
+                *
+                * unit tests MISSING: _getNestedXMLRecord/
+                *  throwConfigException_encoderNotCallableStaticMethod1.phpt
+                *  throwConfigException_encoderNotCallableStaticMethod2.phpt
+                *  throwConfigException_encoderNotCallableNonstaticMethod.phpt
+                *  throwConfigException_encoderNotCallableFunction.phpt
+                */
+                throw new XML_Query2XML_ConfigException(
+                    'The method/function "' . $callableName . '" specified in the '
+                    . 'configuration option "encoder" is not callable.'
+                );
+            }
+        } else {
+            $encoder = null;
+        }
+        
         $idColumn =& $options['idColumn'];
         $elements =& $options['elements'];
         $attributes =& $options['attributes'];
@@ -792,7 +835,8 @@ class XML_Query2XML
                         $attributeName,
                         $record,
                         $column,
-                        $tag
+                        $tag,
+                        $encoder
                     );
                 } else {
                     //simple attribute specifications
@@ -803,7 +847,11 @@ class XML_Query2XML
                         'attributes'
                     );
                     if ($this->_evaluateCondtion($attributeValue, $column)) {
-                        self::_setDOMAttribute($tag, $attributeName, $attributeValue);
+                        self::_setDOMAttribute(
+                            $tag,
+                            $attributeName,
+                            self::_executeEncoder($attributeValue, $encoder)
+                        );
                     }
                 }
             }
@@ -818,7 +866,10 @@ class XML_Query2XML
                     self::_addDOMChildren($tag, $parsedValue, true);
                 } else {
                     if ($parsedValue !== false && !is_null($parsedValue)) {
-                        self::_appendTextChildNode($tag, $parsedValue);
+                        self::_appendTextChildNode(
+                            $tag,
+                            self::_executeEncoder($parsedValue, $encoder)
+                        );
                     }
                 }
             }
@@ -844,7 +895,8 @@ class XML_Query2XML
                         $tree[$id],
                         $tagName,
                         $idColumn,
-                        $mapper
+                        $mapper,
+                        $encoder
                     );
                 } else {
                     //simple element specification
@@ -864,7 +916,11 @@ class XML_Query2XML
                             */
                             self::_addDOMGrandchildren($tag, $tagValue, $tagName, true);
                         } else {
-                            self::_addNewDOMChild($tag, $tagName, $tagValue);
+                            self::_addNewDOMChild(
+                                $tag,
+                                $tagName,
+                                self::_executeEncoder($tagValue, $encoder)
+                            );
                         }
                     }
                 }
@@ -884,7 +940,8 @@ class XML_Query2XML
                         $tree[$id],
                         $tagName,
                         $idColumn,
-                        $mapper
+                        $mapper,
+                        $encoder
                     );
                 }
             }
@@ -1030,15 +1087,18 @@ class XML_Query2XML
     * @param array $options    The current options.
     * @param array $tree       associative multi-dimensional array, that is used to
     *                          store which tags have already been created
-    * @param string  $tagName  The element's name.
-    * @param string  $parentIdColumn The parent ID column - it will be used if there
+    * @param string $tagName  The element's name.
+    * @param string $parentIdColumn The parent ID column - it will be used if there
     *                          was none specified at this level.
-    * @param mixed  $parentMapper A valid argument for call_user_func(), a full
+    * @param mixed $parentMapper A valid argument for call_user_func(), a full
     *                          method method name (e.g. "MyMapperClass::map") or a
     *                          value that == false for no special mapping at all.
+    * @param mixed $parentEncoder A valid argument for call_user_func(), null to
+    *                             use self::_utf8encode() or false to not use
+    *                             any encoding.
     */
     private function _processComplexElementSpecification(&$record, &$options, $dom,
-        &$tree, $tagName, $parentIdColumn, $parentMapper)
+        &$tree, $tagName, $parentIdColumn, $parentMapper, $parentEncoder)
     {
         $tag = $tree['tag'];
         if (!isset($tree['elements'])) {
@@ -1053,6 +1113,9 @@ class XML_Query2XML
         }
         if (!isset($options['mapper'])) {
             $options['mapper'] = $parentMapper;
+        }
+        if (!array_key_exists('encoder', $options)) {
+            $options['encoder'] = $parentEncoder;
         }
         if (!isset($options['rootTag']) || $options['rootTag'] == '')  {
             /* If rootTag is not set or an empty string: create a
@@ -1118,9 +1181,12 @@ class XML_Query2XML
     * @param array $record     The current record.
     * @param array $options    The complex attribute specification itself.
     * @param DomNode $tag      The DomNode to which the attribute is to be added.
+    * @param mixed $parentEncoder A valid argument for call_user_func(), null to
+    *                             use self::_utf8encode() or false to not use
+    *                             any encoding.
     */
     private function _processComplexAttributeSpecification($attributeName, &$record,
-        &$options, $tag)
+        &$options, $tag, $parentEncoder)
     {
         if (isset($options['condition'])) {
             $continue = $this->_applyColumnStringToRecord(
@@ -1166,7 +1232,14 @@ class XML_Query2XML
             array('attributes', $attributeName)
         );
         if ($this->_evaluateCondtion($attributeValue, $options['value'])) {
-            self::_setDOMAttribute($tag, $attributeName, $attributeValue);
+            if (!isset($options['encoder'])) {
+                $options['encoder'] = $parentEncoder;
+            }
+            self::_setDOMAttribute(
+                $tag,
+                $attributeName,
+                self::_executeEncoder($attributeValue, $options['encoder'])
+            );
         }
     }
                     
@@ -2124,8 +2197,8 @@ class XML_Query2XML
     }
     
     /**Append a new child text node to $element.
-    * $value must not be UTF8-encoded as this method will call
-    * self::_utf8encode() itself.
+    * $value must already be UTF8-encoded; this is to be handled
+    * by self::_executeEncoder() and $options['encoder'].
     *
     * @throws XML_Query2XML_XMLException Any lower-level DOMException will be wrapped
     *                 and re-thrown as a XML_Query2XML_XMLException. This will happen
@@ -2152,7 +2225,7 @@ class XML_Query2XML
         }
         $dom = $element->ownerDocument;
         try {
-            $element->appendChild($dom->createTextNode(self::_utf8encode($value)));
+            $element->appendChild($dom->createTextNode($value));
         } catch(DOMException $e) {
             //this should never happen as $value is UTF-8 encoded
             throw new XML_Query2XML_XMLException(
@@ -2164,8 +2237,8 @@ class XML_Query2XML
     }
     
     /**Set the attribute $name with a value of $value for $element.
-    * $value must not be UTF8-encoded as this method will call
-    * self::_utf8encode() itself.
+    * $value must already be UTF8-encoded; this is to be handled
+    * by self::_executeEncoder() and $options['encoder'].
     *
     * @throws XML_Query2XML_XMLException Any lower-level DOMException will be wrapped
     *                 and re-thrown as a XML_Query2XML_XMLException. This will happen
@@ -2193,7 +2266,7 @@ class XML_Query2XML
         }
         
         try {
-            $element->setAttribute($name, self::_utf8encode($value));
+            $element->setAttribute($name, $value);
         } catch(DOMException $e) {
             //no unit test available for this one
             throw new XML_Query2XML_XMLException(
@@ -2406,6 +2479,54 @@ class XML_Query2XML
             $parent->parentNode->insertBefore($children[$i], $parent);
         }
         $parent->parentNode->removeChild($parent);
+    }
+    
+    /**Calls an encoder for XML node values
+    * Usually the data in the database is not UTF8-encoded while
+    * XML should be UTF8-encoded.
+    * The second argument can be one of the following:
+    * - null: self::_utf8encode() will be used
+    * - false: no encoding will be performed
+    * - callback: a string or an array as defined by the
+    *             callback pseudo-type; please see
+    *             http://www.php.net/manual/en/language.pseudo-types.php#language.types.callback
+    *
+    * @param string $str The string to encode
+    * @param mixed $encoder The encoder
+    */
+    private static function _executeEncoder($str, $encoder)
+    {
+        if (!is_string($str) || $encoder === false) {
+            return $str;
+        }
+        
+        if ($encoder === null) {
+            return self::_utf8encode($str);
+        }
+        
+        if (is_callable($encoder, false, $callableName)) {
+            try {
+                return call_user_func($encoder, $str);
+            } catch (Exception $e) {
+                /*
+                * unit tests MISSING:
+                *  _executeEncoder/throwXMLException.phpt
+                */
+                throw new XML_Query2XML_XMLException(
+                    'Could not encode "' . $str . '" using the encoder '
+                    . $callableName . ': ' . $e->getMessage()
+                );
+            }
+        } else {
+            /*
+            * This should never happen as _getNestedXMLRecord() already
+            * checks if $encoder is callable. Therefore no unit tests
+            * can be provided for this exception.
+            */
+            throw new XML_Query2XML_Exception(
+                'The encoder "' . $callableName . '" is not callable.'
+            );
+        }
     }
     
     /**UTF-8 encode $str using mb_conver_encoding or if that is not
