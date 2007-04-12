@@ -1,5 +1,5 @@
 --TEST--
-XML_Query2XML::_executeEncoder(): default encoder
+XML_Query2XML::_executeEncoder(): setting encoder to false
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
