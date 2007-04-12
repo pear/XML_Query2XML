@@ -383,7 +383,7 @@ class XML_Query2XML
             $durationSum = 0.0;
             $durationCount = 0;
             $runTimes =& $this->_profile['queries'][$sql]['runTimes'];
-            foreach ($runTimes as $key => $runTime) {
+            foreach ($runTimes as $runTime) {
                 $durationSum += ($runTime['stop'] - $runTime['start']);
                 ++$durationCount;
             }
@@ -477,10 +477,14 @@ class XML_Query2XML
         $dom = self::_createDomDocument();
         $rootTag = self::_addNewDOMChild($dom, $rootTagName);
         $records = $this->_getAllRecords($sql);
-        foreach ($records as $key => $record) {
+        foreach ($records as $record) {
             $rowTag = self::_addNewDOMChild($rootTag, $rowTagName);
             foreach ($record as $field => $value) {
-                self::_addNewDOMChild($rowTag, $field, $value);
+                self::_addNewDOMChild(
+                    $rowTag,
+                    $field,
+                    self::_utf8encode($value)
+                );
             }
         }
         return $dom;
@@ -2544,15 +2548,6 @@ class XML_Query2XML
         }
         return $str;
     }
-    
-    /**Default mapper that just returns unchanged argument.
-    * @param string $str
-    * @return string $str without any modifications
-    */
-    private static function _mapUnchanged($str)
-    {
-        return $str;
-    }
 }
 
 /**Parent class for ALL exceptions thrown by this package.
@@ -2653,7 +2648,7 @@ class XML_Query2XML_ConfigException extends XML_Query2XML_Exception
             $this->_addConfigParent($configParents);
         } else {
             $configParentsReversed = array_reverse($configParents);
-            foreach ($configParentsReversed as $key => $parent) {
+            foreach ($configParentsReversed as $parent) {
                 $this->_addConfigParent($parent);
             }
         }
