@@ -3,6 +3,21 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.2.0
+------
+Release date: 2007-04-15
+Release notes: This third stable release contains a new feature and some minor
+coding-style related changes.
+- it is now possible to handle data sources that use another character encoding
+  than ISO-8859-1; see the 'encoder' option:
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#query2xml_getxml.options_encoder
+  Thanks to Mickael Guerin for making me implement this feature that has been sitting on my
+  todo list for quite some time now.
+- other character encodings than UTF-8 can now also be used for XML encoding; see
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#encoding
+- unit tests are now correctly skipped if the database connection fails
+- XML_Query2XML now comes with 783 phpt unit tests
+
 v1.1.0
 ------
 Release date: 2007-02-03
