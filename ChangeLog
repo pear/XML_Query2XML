@@ -1,12 +1,358 @@
+2007-04-15 14:23  lukasfeiler
+
+	* README (1.6): number of unit tests corrected
+
+2007-04-15 14:23  lukasfeiler
+
+	* RELEASES (1.11): documented v1.2.0
+
+2007-04-15 14:22  lukasfeiler
+
+	* package.xml (1.19): added new unit tests and release notes for
+	  v1.2.0
+
+2007-04-15 14:18  lukasfeiler
+
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.18): documented new
+	  'encoder' option; added section explaining how to use alternative
+	  XML character encoding
+
+2007-04-15 14:16  lukasfeiler
+
+	* XML/Query2XML.php (1.20): CS fix
+
+2007-04-15 12:34  lukasfeiler
+
+	* INSTALL (1.7): including new unit tests
+
+2007-04-12 14:20  lukasfeiler
+
+	* tests/XML_Query2XML/:
+	  ADOdbDefault/_executeEncoder/throwXMLException.phpt (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_encoderNotCallableFunction.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_encoderNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod1.phpt
+	  (1.1),
+	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod2.phpt
+	  (1.1), ADOdbException/_executeEncoder/throwXMLException.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_encoderNotCallableFunction.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_encoderNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod1.phpt
+	  (1.1),
+	  ADOdbException/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod2.phpt
+	  (1.1), ADOdbPEAR/_executeEncoder/throwXMLException.phpt (1.1),
+	  ADOdbPEAR/_getNestedXMLRecord/throwConfigException_encoderNotCallableFunction.phpt
+	  (1.1),
+	  ADOdbPEAR/_getNestedXMLRecord/throwConfigException_encoderNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  ADOdbPEAR/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod1.phpt
+	  (1.1),
+	  ADOdbPEAR/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod2.phpt
+	  (1.1), DB/_executeEncoder/throwXMLException.phpt (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_encoderNotCallableFunction.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_encoderNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod1.phpt
+	  (1.1),
+	  DB/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod2.phpt
+	  (1.1), MDB2/_executeEncoder/throwXMLException.phpt (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_encoderNotCallableFunction.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_encoderNotCallableNonstaticMethod.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod1.phpt
+	  (1.1),
+	  MDB2/_getNestedXMLRecord/throwConfigException_encoderNotCallableStaticMethod2.phpt
+	  (1.1): unit tests for encoder related exceptions
+
+2007-04-12 11:45  lukasfeiler
+
+	* XML/Query2XML.php (1.19): using 'foreach ( as )' instead of
+	  'foreach ( as  => )' where possible; removed unneeded
+	  _mapUnchanged(); now calling self::_utf8encode() directly from
+	  getFlatXML()
+
+2007-04-12 11:13  lukasfeiler
+
+	* tests/XML_Query2XML/: ADOdbDefault/_executeEncoder/basics.phpt
+	  (1.2), ADOdbDefault/_executeEncoder/encoder_false.phpt (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_function.phpt (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_nonStaticMethod.phpt (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_null.phpt (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_staticMethodArray.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/encoder_staticMethodString.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.2),
+	  ADOdbDefault/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.2), ADOdbException/_executeEncoder/basics.phpt (1.2),
+	  ADOdbException/_executeEncoder/encoder_false.phpt (1.2),
+	  ADOdbException/_executeEncoder/encoder_function.phpt (1.2),
+	  ADOdbException/_executeEncoder/encoder_nonStaticMethod.phpt
+	  (1.2), ADOdbException/_executeEncoder/encoder_null.phpt (1.2),
+	  ADOdbException/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/encoder_staticMethodArray.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/encoder_staticMethodString.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.2),
+	  ADOdbException/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.2), ADOdbPEAR/_executeEncoder/basics.phpt (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_false.phpt (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_function.phpt (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_nonStaticMethod.phpt (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_null.phpt (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.2),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.2), ADOdbPEAR/_executeEncoder/encoder_staticMethodArray.phpt
+	  (1.2), ADOdbPEAR/_executeEncoder/encoder_staticMethodString.phpt
+	  (1.2),
+	  ADOdbPEAR/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.2),
+	  ADOdbPEAR/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.2),
+	  ADOdbPEAR/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.2), DB/_executeEncoder/basics.phpt (1.2),
+	  DB/_executeEncoder/encoder_false.phpt (1.2),
+	  DB/_executeEncoder/encoder_function.phpt (1.2),
+	  DB/_executeEncoder/encoder_nonStaticMethod.phpt (1.2),
+	  DB/_executeEncoder/encoder_null.phpt (1.2),
+	  DB/_executeEncoder/encoder_overwritten_default_false.phpt (1.2),
+	  DB/_executeEncoder/encoder_overwritten_default_false2.phpt (1.2),
+	  DB/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.2),
+	  DB/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.2),
+	  DB/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.2), DB/_executeEncoder/encoder_staticMethodArray.phpt (1.2),
+	  DB/_executeEncoder/encoder_staticMethodString.phpt (1.2),
+	  DB/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.2),
+	  DB/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.2),
+	  DB/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.2), MDB2/_executeEncoder/basics.phpt (1.2),
+	  MDB2/_executeEncoder/encoder_false.phpt (1.2),
+	  MDB2/_executeEncoder/encoder_function.phpt (1.2),
+	  MDB2/_executeEncoder/encoder_nonStaticMethod.phpt (1.2),
+	  MDB2/_executeEncoder/encoder_null.phpt (1.2),
+	  MDB2/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.2),
+	  MDB2/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.2),
+	  MDB2/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.2),
+	  MDB2/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.2),
+	  MDB2/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.2), MDB2/_executeEncoder/encoder_staticMethodArray.phpt (1.2),
+	  MDB2/_executeEncoder/encoder_staticMethodString.phpt (1.2),
+	  MDB2/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.2),
+	  MDB2/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.2),
+	  MDB2/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.2): fixed unit test names
+
+2007-04-12 10:58  lukasfeiler
+
+	* tests/XML_Query2XML/: ADOdbDefault/_executeEncoder/basics.phpt
+	  (1.1), ADOdbDefault/_executeEncoder/encoder_default.phpt (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_false.phpt (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_function.phpt (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_nonStaticMethod.phpt (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_null.phpt (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_staticMethodArray.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/encoder_staticMethodString.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.1),
+	  ADOdbDefault/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.1), ADOdbException/_executeEncoder/basics.phpt (1.1),
+	  ADOdbException/_executeEncoder/encoder_default.phpt (1.1),
+	  ADOdbException/_executeEncoder/encoder_false.phpt (1.1),
+	  ADOdbException/_executeEncoder/encoder_function.phpt (1.1),
+	  ADOdbException/_executeEncoder/encoder_nonStaticMethod.phpt
+	  (1.1), ADOdbException/_executeEncoder/encoder_null.phpt (1.1),
+	  ADOdbException/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/encoder_staticMethodArray.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/encoder_staticMethodString.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.1),
+	  ADOdbException/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.1), ADOdbPEAR/_executeEncoder/basics.phpt (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_default.phpt (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_false.phpt (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_function.phpt (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_nonStaticMethod.phpt (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_null.phpt (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.1),
+	  ADOdbPEAR/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.1), ADOdbPEAR/_executeEncoder/encoder_staticMethodArray.phpt
+	  (1.1), ADOdbPEAR/_executeEncoder/encoder_staticMethodString.phpt
+	  (1.1),
+	  ADOdbPEAR/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.1),
+	  ADOdbPEAR/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.1),
+	  ADOdbPEAR/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.1), DB/_executeEncoder/basics.phpt (1.1),
+	  DB/_executeEncoder/encoder_default.phpt (1.1),
+	  DB/_executeEncoder/encoder_false.phpt (1.1),
+	  DB/_executeEncoder/encoder_function.phpt (1.1),
+	  DB/_executeEncoder/encoder_nonStaticMethod.phpt (1.1),
+	  DB/_executeEncoder/encoder_null.phpt (1.1),
+	  DB/_executeEncoder/encoder_overwritten_default_false.phpt (1.1),
+	  DB/_executeEncoder/encoder_overwritten_default_false2.phpt (1.1),
+	  DB/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.1),
+	  DB/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.1),
+	  DB/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.1), DB/_executeEncoder/encoder_staticMethodArray.phpt (1.1),
+	  DB/_executeEncoder/encoder_staticMethodString.phpt (1.1),
+	  DB/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.1),
+	  DB/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.1),
+	  DB/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.1), MDB2/_executeEncoder/basics.phpt (1.1),
+	  MDB2/_executeEncoder/encoder_default.phpt (1.1),
+	  MDB2/_executeEncoder/encoder_false.phpt (1.1),
+	  MDB2/_executeEncoder/encoder_function.phpt (1.1),
+	  MDB2/_executeEncoder/encoder_nonStaticMethod.phpt (1.1),
+	  MDB2/_executeEncoder/encoder_null.phpt (1.1),
+	  MDB2/_executeEncoder/encoder_overwritten_default_false.phpt
+	  (1.1),
+	  MDB2/_executeEncoder/encoder_overwritten_default_false2.phpt
+	  (1.1),
+	  MDB2/_executeEncoder/encoder_overwritten_default_false_function.phpt
+	  (1.1),
+	  MDB2/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
+	  (1.1),
+	  MDB2/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
+	  (1.1), MDB2/_executeEncoder/encoder_staticMethodArray.phpt (1.1),
+	  MDB2/_executeEncoder/encoder_staticMethodString.phpt (1.1),
+	  MDB2/_executeEncoder/within_complexAttributeSpecificationValue.phpt
+	  (1.1),
+	  MDB2/_executeEncoder/within_complexElementSpecificationValue.phpt
+	  (1.1),
+	  MDB2/_executeEncoder/within_simpleAttributeSpecification.phpt
+	  (1.1): new unit tests for encoder feature
+
+2007-04-11 12:06  lukasfeiler
+
+	* package.xml (1.18): getting ready for 1.2.0
+
+2007-04-11 12:05  lukasfeiler
+
+	* XML/Query2XML.php (1.18): implemented new 'encoder' option - this
+	  allows for user defined encoding
+
+2007-04-11 09:41  lukasfeiler
+
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.17): new section:
+	  Modifying the returned DOMDocument instance
+
+2007-02-04 22:53  lukasfeiler
+
+	* tests/XML_Query2XML/: ADOdbDefault/skipif.php (1.3),
+	  ADOdbException/skipif.php (1.3), ADOdbPEAR/skipif.php (1.3):
+	  silencing db connect errors in order for unit tests to be skipped
+	  instead of failing
+
+2007-02-03 18:36  tag RELEASE_1_1_0
+
+2007-02-03 18:36  lukasfeiler
+
+	* RELEASES (1.10), package.xml (1.17) (utags: RELEASE_1_1_0):
+	  updated release notes
+
+2007-02-03 18:30  lukasfeiler
+
+	* ChangeLog (1.7, RELEASE_1_1_0): updated ChangeLog
+
 2007-02-03 18:29  lukasfeiler
 
-	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.16): replaced tabs
-	  with spaces; renamed section 'Integrating other XML data sources'
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.16, RELEASE_1_1_0):
+	  replaced tabs with spaces; renamed section 'Integrating other XML
+	  data sources'
 
 2007-02-03 17:05  lukasfeiler
 
-	* INSTALL (1.6), README (1.5), RELEASES (1.9), package.xml (1.16):
-	  getting ready for v1.1.0
+	* INSTALL (1.6, RELEASE_1_1_0), README (1.5, RELEASE_1_1_0),
+	  RELEASES (1.9), package.xml (1.16): getting ready for v1.1.0
 
 2007-02-03 17:04  lukasfeiler
 
@@ -28,8 +374,8 @@
 	  case07/case07.log (1.2), case07/case07.php (1.4),
 	  case07/case07.profile (1.2), case07/case07_debug.php (1.4),
 	  case08/case08.log (1.2), case08/case08.php (1.5),
-	  case08/case08.profile (1.2), case08/case08_debug.php (1.5): added
-	  ORDER BY clauses & CRLF --> LF
+	  case08/case08.profile (1.2), case08/case08_debug.php (1.5)
+	  (utags: RELEASE_1_1_0): added ORDER BY clauses & CRLF --> LF
 
 2007-02-03 16:53  lukasfeiler
 
@@ -191,36 +537,40 @@
 	  MDB2/getXML/case02.phpt (1.5), MDB2/getXML/case03.phpt (1.5),
 	  MDB2/getXML/case04.phpt (1.7), MDB2/getXML/case05.phpt (1.7),
 	  MDB2/getXML/case06.phpt (1.6), MDB2/getXML/case07.phpt (1.5),
-	  MDB2/getXML/case08.phpt (1.7): added ORDER BY clauses and fixed
-	  dynamic usage of database abstraction layers
+	  MDB2/getXML/case08.phpt (1.7) (utags: RELEASE_1_1_0): added ORDER
+	  BY clauses and fixed dynamic usage of database abstraction layers
 
 2007-02-03 12:49  lukasfeiler
 
-	* XML/Query2XML/Callback.php (1.2): added examples and API docs
+	* XML/Query2XML/Callback.php (1.2, RELEASE_1_1_0): added examples
+	  and API docs
 
 2007-02-03 12:49  lukasfeiler
 
-	* XML/Query2XML.php (1.17): corrected docs for some private methods
+	* XML/Query2XML.php (1.17, RELEASE_1_1_0): corrected docs for some
+	  private methods
 
 2007-02-03 12:11  lukasfeiler
 
 	* XML/Query2XML.php (1.16),
 	  tests/XML_Query2XML/ADOdbDefault/factory/throwDBException.phpt
-	  (1.2), tests/XML_Query2XML/ADOdbDefault/getXML/case08.phpt (1.6),
+	  (1.2, RELEASE_1_1_0),
+	  tests/XML_Query2XML/ADOdbDefault/getXML/case08.phpt (1.6),
 	  tests/XML_Query2XML/ADOdbException/factory/throwDBException.phpt
-	  (1.2), tests/XML_Query2XML/ADOdbException/getXML/case08.phpt
+	  (1.2, RELEASE_1_1_0),
+	  tests/XML_Query2XML/ADOdbException/getXML/case08.phpt (1.6),
+	  tests/XML_Query2XML/ADOdbPEAR/factory/throwDBException.phpt (1.2,
+	  RELEASE_1_1_0), tests/XML_Query2XML/ADOdbPEAR/getXML/case08.phpt
+	  (1.6), tests/XML_Query2XML/DB/factory/throwDBException.phpt (1.2,
+	  RELEASE_1_1_0), tests/XML_Query2XML/DB/getXML/case08.phpt (1.6),
+	  tests/XML_Query2XML/MDB2/factory/throwDBException.phpt (1.2,
+	  RELEASE_1_1_0), tests/XML_Query2XML/MDB2/getXML/case08.phpt
 	  (1.6),
-	  tests/XML_Query2XML/ADOdbPEAR/factory/throwDBException.phpt
-	  (1.2), tests/XML_Query2XML/ADOdbPEAR/getXML/case08.phpt (1.6),
-	  tests/XML_Query2XML/DB/factory/throwDBException.phpt (1.2),
-	  tests/XML_Query2XML/DB/getXML/case08.phpt (1.6),
-	  tests/XML_Query2XML/MDB2/factory/throwDBException.phpt (1.2),
-	  tests/XML_Query2XML/MDB2/getXML/case08.phpt (1.6),
 	  tests/XML_Query2XML/NoDBLayer/factory/throwConfigException.phpt
-	  (1.2),
-	  tests/XML_Query2XML/NoDBLayer/factory/throwDBException.phpt
-	  (1.2), tutorials/XML_Query2XML/XML_Query2XML.pkg (1.14): fixed
-	  require_once CS issue
+	  (1.2, RELEASE_1_1_0),
+	  tests/XML_Query2XML/NoDBLayer/factory/throwDBException.phpt (1.2,
+	  RELEASE_1_1_0), tutorials/XML_Query2XML/XML_Query2XML.pkg (1.14):
+	  fixed require_once CS issue
 
 2007-02-03 11:28  lukasfeiler
 
@@ -232,8 +582,9 @@
 
 	* tests/XML_Query2XML/: ADOdbDefault/getFlatXML/case01.phpt (1.4),
 	  ADOdbDefault/getGlobalOption/configException_noSuchOption.phpt
-	  (1.3), ADOdbDefault/getGlobalOption/hidden_container_prefix.phpt
-	  (1.3), ADOdbDefault/getXML/case02.phpt (1.4),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbDefault/getGlobalOption/hidden_container_prefix.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbDefault/getXML/case02.phpt (1.4),
 	  ADOdbDefault/getXML/case03.phpt (1.4),
 	  ADOdbDefault/getXML/case04.phpt (1.6),
 	  ADOdbDefault/getXML/case05.phpt (1.6),
@@ -241,16 +592,17 @@
 	  ADOdbDefault/getXML/case07.phpt (1.4),
 	  ADOdbDefault/getXML/case08.phpt (1.5),
 	  ADOdbDefault/setGlobalOption/configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/setGlobalOption/configException_noSuchOption.phpt
-	  (1.3), ADOdbDefault/setGlobalOption/hidden_container_prefix.phpt
-	  (1.3), ADOdbException/getFlatXML/case01.phpt (1.4),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbDefault/setGlobalOption/hidden_container_prefix.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbException/getFlatXML/case01.phpt (1.4),
 	  ADOdbException/getGlobalOption/configException_noSuchOption.phpt
-	  (1.3),
-	  ADOdbException/getGlobalOption/hidden_container_prefix.phpt
-	  (1.3), ADOdbException/getXML/case02.phpt (1.4),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbException/getGlobalOption/hidden_container_prefix.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbException/getXML/case02.phpt (1.4),
 	  ADOdbException/getXML/case03.phpt (1.4),
 	  ADOdbException/getXML/case04.phpt (1.6),
 	  ADOdbException/getXML/case05.phpt (1.6),
@@ -258,51 +610,56 @@
 	  ADOdbException/getXML/case07.phpt (1.4),
 	  ADOdbException/getXML/case08.phpt (1.5),
 	  ADOdbException/setGlobalOption/configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/setGlobalOption/configException_noSuchOption.phpt
-	  (1.3),
-	  ADOdbException/setGlobalOption/hidden_container_prefix.phpt
-	  (1.3), ADOdbPEAR/getFlatXML/case01.phpt (1.4),
-	  ADOdbPEAR/getGlobalOption/configException_noSuchOption.phpt
-	  (1.3), ADOdbPEAR/getGlobalOption/hidden_container_prefix.phpt
-	  (1.3), ADOdbPEAR/getXML/case02.phpt (1.4),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbException/setGlobalOption/hidden_container_prefix.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbPEAR/getFlatXML/case01.phpt (1.4),
+	  ADOdbPEAR/getGlobalOption/configException_noSuchOption.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getGlobalOption/hidden_container_prefix.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbPEAR/getXML/case02.phpt (1.4),
 	  ADOdbPEAR/getXML/case03.phpt (1.4), ADOdbPEAR/getXML/case04.phpt
 	  (1.6), ADOdbPEAR/getXML/case05.phpt (1.6),
 	  ADOdbPEAR/getXML/case06.phpt (1.5), ADOdbPEAR/getXML/case07.phpt
 	  (1.4), ADOdbPEAR/getXML/case08.phpt (1.5),
 	  ADOdbPEAR/setGlobalOption/configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt
-	  (1.3),
-	  ADOdbPEAR/setGlobalOption/configException_noSuchOption.phpt
-	  (1.3), ADOdbPEAR/setGlobalOption/hidden_container_prefix.phpt
-	  (1.3), DB/getFlatXML/case01.phpt (1.4),
-	  DB/getGlobalOption/configException_noSuchOption.phpt (1.3),
-	  DB/getGlobalOption/hidden_container_prefix.phpt (1.3),
-	  DB/getXML/case02.phpt (1.4), DB/getXML/case03.phpt (1.4),
-	  DB/getXML/case04.phpt (1.6), DB/getXML/case05.phpt (1.6),
-	  DB/getXML/case06.phpt (1.5), DB/getXML/case07.phpt (1.4),
-	  DB/getXML/case08.phpt (1.5),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbPEAR/setGlobalOption/configException_noSuchOption.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/setGlobalOption/hidden_container_prefix.phpt (1.3,
+	  RELEASE_1_1_0), DB/getFlatXML/case01.phpt (1.4),
+	  DB/getGlobalOption/configException_noSuchOption.phpt (1.3,
+	  RELEASE_1_1_0), DB/getGlobalOption/hidden_container_prefix.phpt
+	  (1.3, RELEASE_1_1_0), DB/getXML/case02.phpt (1.4),
+	  DB/getXML/case03.phpt (1.4), DB/getXML/case04.phpt (1.6),
+	  DB/getXML/case05.phpt (1.6), DB/getXML/case06.phpt (1.5),
+	  DB/getXML/case07.phpt (1.4), DB/getXML/case08.phpt (1.5),
 	  DB/setGlobalOption/configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  DB/setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt
-	  (1.3), DB/setGlobalOption/configException_noSuchOption.phpt
-	  (1.3), DB/setGlobalOption/hidden_container_prefix.phpt (1.3),
-	  MDB2/getFlatXML/case01.phpt (1.4),
-	  MDB2/getGlobalOption/configException_noSuchOption.phpt (1.3),
-	  MDB2/getGlobalOption/hidden_container_prefix.phpt (1.3),
-	  MDB2/getXML/case02.phpt (1.4), MDB2/getXML/case03.phpt (1.4),
-	  MDB2/getXML/case04.phpt (1.6), MDB2/getXML/case05.phpt (1.6),
-	  MDB2/getXML/case06.phpt (1.5), MDB2/getXML/case07.phpt (1.4),
-	  MDB2/getXML/case08.phpt (1.5),
+	  (1.3, RELEASE_1_1_0),
+	  DB/setGlobalOption/configException_noSuchOption.phpt (1.3,
+	  RELEASE_1_1_0), DB/setGlobalOption/hidden_container_prefix.phpt
+	  (1.3, RELEASE_1_1_0), MDB2/getFlatXML/case01.phpt (1.4),
+	  MDB2/getGlobalOption/configException_noSuchOption.phpt (1.3,
+	  RELEASE_1_1_0), MDB2/getGlobalOption/hidden_container_prefix.phpt
+	  (1.3, RELEASE_1_1_0), MDB2/getXML/case02.phpt (1.4),
+	  MDB2/getXML/case03.phpt (1.4), MDB2/getXML/case04.phpt (1.6),
+	  MDB2/getXML/case05.phpt (1.6), MDB2/getXML/case06.phpt (1.5),
+	  MDB2/getXML/case07.phpt (1.4), MDB2/getXML/case08.phpt (1.5),
 	  MDB2/setGlobalOption/configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt
-	  (1.3), MDB2/setGlobalOption/configException_noSuchOption.phpt
-	  (1.3), MDB2/setGlobalOption/hidden_container_prefix.phpt (1.3):
-	  removed references to XML_Beautifier; CS fixes
+	  (1.3, RELEASE_1_1_0),
+	  MDB2/setGlobalOption/configException_noSuchOption.phpt (1.3,
+	  RELEASE_1_1_0), MDB2/setGlobalOption/hidden_container_prefix.phpt
+	  (1.3, RELEASE_1_1_0): removed references to XML_Beautifier; CS
+	  fixes
 
 2007-02-02 13:01  lukasfeiler
 
@@ -386,8 +743,8 @@
 	  MDB2/_applyColumnStringToRecord/throwConfigException_element2.phpt
 	  (1.2),
 	  MDB2/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
-	  (1.2): more details on location of config error that leads to
-	  XML_Query2XML_ConfigException
+	  (1.2) (utags: RELEASE_1_1_0): more details on location of config
+	  error that leads to XML_Query2XML_ConfigException
 
 2007-02-02 00:51  lukasfeiler
 
@@ -571,7 +928,7 @@
 	  MDB2/_getNestedXMLRecord/throwConfigException_idcolumnOptionWrongTypeArray.phpt
 	  (1.1),
 	  MDB2/_getNestedXMLRecord/throwConfigException_idcolumnOptionWrongTypeObject.phpt
-	  (1.1): unit tests for new exception
+	  (1.1) (utags: RELEASE_1_1_0): unit tests for new exception
 
 2007-02-01 20:09  lukasfeiler
 
@@ -581,35 +938,51 @@
 
 2007-02-01 16:49  lukasfeiler
 
-	* tests/Query2XML_Tests.psql (1.1): PostgreSQL DDL for unit tests
+	* tests/Query2XML_Tests.psql (1.1, RELEASE_1_1_0): PostgreSQL DDL
+	  for unit tests
 
 2007-02-01 16:32  lukasfeiler
 
-	* tests/XML_Query2XML/: diffTests_MDB2Master.sh (1.1), settings.php
-	  (1.3), syncTests_MDB2Master.sh (1.1),
-	  ADOdbDefault/_applyColumnStringToRecord/callbacks.phpt (1.2),
+	* tests/XML_Query2XML/: diffTests_MDB2Master.sh (1.1,
+	  RELEASE_1_1_0), settings.php (1.3, RELEASE_1_1_0),
+	  syncTests_MDB2Master.sh (1.1, RELEASE_1_1_0),
+	  ADOdbDefault/_applyColumnStringToRecord/callbacks.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbDefault/_processComplexElementSpecification/condition_function.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/_processComplexElementSpecification/condition_staticMethod.phpt
-	  (1.2), ADOdbDefault/clearProfile/clearProfile.phpt (1.2),
-	  ADOdbDefault/disableDebugLog/disableDebugLog.phpt (1.2),
-	  ADOdbDefault/getFlatXML/case01.phpt (1.3),
-	  ADOdbDefault/getFlatXML/simpleSelect.phpt (1.2),
-	  ADOdbDefault/getProfile/getProfile.phpt (1.2),
-	  ADOdbDefault/getRawProfile/getRawProfile.phpt (1.2),
-	  ADOdbDefault/getXML/asteriskShortcut_attributes1.phpt (1.2),
-	  ADOdbDefault/getXML/asteriskShortcut_attributes2.phpt (1.3),
-	  ADOdbDefault/getXML/asteriskShortcut_attributes3.phpt (1.3),
-	  ADOdbDefault/getXML/asteriskShortcut_attributes4.phpt (1.3),
-	  ADOdbDefault/getXML/asteriskShortcut_attributes5.phpt (1.2),
-	  ADOdbDefault/getXML/asteriskShortcut_attributes6.phpt (1.3),
-	  ADOdbDefault/getXML/asteriskShortcut_elements1.phpt (1.2),
-	  ADOdbDefault/getXML/asteriskShortcut_elements2.phpt (1.3),
-	  ADOdbDefault/getXML/asteriskShortcut_elements3.phpt (1.3),
-	  ADOdbDefault/getXML/asteriskShortcut_elements4.phpt (1.3),
-	  ADOdbDefault/getXML/asteriskShortcut_elements5.phpt (1.2),
-	  ADOdbDefault/getXML/asteriskShortcut_elements6.phpt (1.3),
-	  ADOdbDefault/getXML/case02.phpt (1.3),
+	  (1.2, RELEASE_1_1_0), ADOdbDefault/clearProfile/clearProfile.phpt
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbDefault/disableDebugLog/disableDebugLog.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbDefault/getFlatXML/case01.phpt (1.3),
+	  ADOdbDefault/getFlatXML/simpleSelect.phpt (1.2, RELEASE_1_1_0),
+	  ADOdbDefault/getProfile/getProfile.phpt (1.2, RELEASE_1_1_0),
+	  ADOdbDefault/getRawProfile/getRawProfile.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes1.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes2.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes3.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes4.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes5.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes6.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_elements1.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_elements2.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_elements3.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_elements4.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_elements5.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_elements6.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbDefault/getXML/case02.phpt (1.3),
 	  ADOdbDefault/getXML/case03.phpt (1.3),
 	  ADOdbDefault/getXML/case04.phpt (1.5),
 	  ADOdbDefault/getXML/case05.phpt (1.5),
@@ -617,88 +990,109 @@
 	  ADOdbDefault/getXML/case07.phpt (1.3),
 	  ADOdbDefault/getXML/case08.phpt (1.4),
 	  ADOdbDefault/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/complexAttributeSpecification_conditionOption.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/complexAttributeSpecification_valuePrefixes.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/complexElementSpecification_conditionOption1.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/complexElementSpecification_conditionOption2.phpt
-	  (1.3),
-	  ADOdbDefault/getXML/conditionPrefix_attribute_callback.phpt
-	  (1.2),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbDefault/getXML/conditionPrefix_attribute_callback.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbDefault/getXML/conditionPrefix_attribute_columnName.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/conditionPrefix_attribute_staticText.phpt
-	  (1.2), ADOdbDefault/getXML/conditionPrefix_element_callback.phpt
-	  (1.2),
-	  ADOdbDefault/getXML/conditionPrefix_element_columnName.phpt
-	  (1.2),
-	  ADOdbDefault/getXML/conditionPrefix_element_staticText.phpt
-	  (1.2), ADOdbDefault/getXML/conditionPrefix_value_callback.phpt
-	  (1.2), ADOdbDefault/getXML/conditionPrefix_value_columnName.phpt
-	  (1.2), ADOdbDefault/getXML/conditionPrefix_value_staticText.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbDefault/getXML/conditionPrefix_element_callback.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/conditionPrefix_element_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/conditionPrefix_element_staticText.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/conditionPrefix_value_callback.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/conditionPrefix_value_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/getXML/conditionPrefix_value_staticText.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_complexElement_callback.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_complexElement_columnName.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_complexElement_columnNameEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_complexElement_staticString.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_complexElement_staticStringEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_scenariosContainerAlwaysPresent.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_scenariosNoContainer.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_simpleElement_callback.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_simpleElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_simpleElement_columnName.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_simpleElement_columnNameEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_simpleElement_staticString.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbDefault/getXML/unserializationPrefix_simpleElement_staticStringEmpty.phpt
-	  (1.3), ADOdbDefault/setGlobalOption/hidden_container_prefix.phpt
-	  (1.2), ADOdbDefault/startProfiling/startProfiling.phpt (1.2),
-	  ADOdbDefault/stopProfiling/stopProfiling.phpt (1.2),
-	  ADOdbException/_applyColumnStringToRecord/callbacks.phpt (1.2),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbDefault/setGlobalOption/hidden_container_prefix.phpt (1.2),
+	  ADOdbDefault/startProfiling/startProfiling.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbDefault/stopProfiling/stopProfiling.phpt
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbException/_applyColumnStringToRecord/callbacks.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbException/_processComplexElementSpecification/condition_function.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/_processComplexElementSpecification/condition_staticMethod.phpt
-	  (1.2), ADOdbException/clearProfile/clearProfile.phpt (1.2),
-	  ADOdbException/disableDebugLog/disableDebugLog.phpt (1.2),
-	  ADOdbException/getFlatXML/case01.phpt (1.3),
-	  ADOdbException/getFlatXML/simpleSelect.phpt (1.2),
-	  ADOdbException/getProfile/getProfile.phpt (1.2),
-	  ADOdbException/getRawProfile/getRawProfile.phpt (1.2),
-	  ADOdbException/getXML/asteriskShortcut_attributes1.phpt (1.2),
-	  ADOdbException/getXML/asteriskShortcut_attributes2.phpt (1.3),
-	  ADOdbException/getXML/asteriskShortcut_attributes3.phpt (1.3),
-	  ADOdbException/getXML/asteriskShortcut_attributes4.phpt (1.3),
-	  ADOdbException/getXML/asteriskShortcut_attributes5.phpt (1.2),
-	  ADOdbException/getXML/asteriskShortcut_attributes6.phpt (1.3),
-	  ADOdbException/getXML/asteriskShortcut_elements1.phpt (1.2),
-	  ADOdbException/getXML/asteriskShortcut_elements2.phpt (1.3),
-	  ADOdbException/getXML/asteriskShortcut_elements3.phpt (1.3),
-	  ADOdbException/getXML/asteriskShortcut_elements4.phpt (1.3),
-	  ADOdbException/getXML/asteriskShortcut_elements5.phpt (1.2),
-	  ADOdbException/getXML/asteriskShortcut_elements6.phpt (1.3),
-	  ADOdbException/getXML/case02.phpt (1.3),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbException/clearProfile/clearProfile.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/disableDebugLog/disableDebugLog.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbException/getFlatXML/case01.phpt (1.3),
+	  ADOdbException/getFlatXML/simpleSelect.phpt (1.2, RELEASE_1_1_0),
+	  ADOdbException/getProfile/getProfile.phpt (1.2, RELEASE_1_1_0),
+	  ADOdbException/getRawProfile/getRawProfile.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_attributes1.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_attributes2.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_attributes3.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_attributes4.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_attributes5.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_attributes6.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_elements1.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_elements2.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_elements3.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_elements4.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_elements5.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_elements6.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbException/getXML/case02.phpt (1.3),
 	  ADOdbException/getXML/case03.phpt (1.3),
 	  ADOdbException/getXML/case04.phpt (1.5),
 	  ADOdbException/getXML/case05.phpt (1.5),
@@ -706,310 +1100,355 @@
 	  ADOdbException/getXML/case07.phpt (1.3),
 	  ADOdbException/getXML/case08.phpt (1.4),
 	  ADOdbException/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/getXML/complexAttributeSpecification_conditionOption.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/complexAttributeSpecification_valuePrefixes.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/complexElementSpecification_conditionOption1.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/complexElementSpecification_conditionOption2.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/conditionPrefix_attribute_callback.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/getXML/conditionPrefix_attribute_columnName.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/getXML/conditionPrefix_attribute_staticText.phpt
-	  (1.2),
-	  ADOdbException/getXML/conditionPrefix_element_callback.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbException/getXML/conditionPrefix_element_callback.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbException/getXML/conditionPrefix_element_columnName.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/getXML/conditionPrefix_element_staticText.phpt
-	  (1.2), ADOdbException/getXML/conditionPrefix_value_callback.phpt
-	  (1.2),
-	  ADOdbException/getXML/conditionPrefix_value_columnName.phpt
-	  (1.2),
-	  ADOdbException/getXML/conditionPrefix_value_staticText.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbException/getXML/conditionPrefix_value_callback.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/conditionPrefix_value_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/getXML/conditionPrefix_value_staticText.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_complexElement_callback.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_complexElement_columnName.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_complexElement_columnNameEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_complexElement_staticString.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_complexElement_staticStringEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_scenariosContainerAlwaysPresent.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_scenariosNoContainer.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_simpleElement_callback.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_simpleElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_simpleElement_columnName.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_simpleElement_columnNameEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_simpleElement_staticString.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/getXML/unserializationPrefix_simpleElement_staticStringEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbException/setGlobalOption/hidden_container_prefix.phpt
-	  (1.2), ADOdbException/startProfiling/startProfiling.phpt (1.2),
-	  ADOdbException/stopProfiling/stopProfiling.phpt (1.2),
-	  ADOdbPEAR/_applyColumnStringToRecord/callbacks.phpt (1.2),
+	  (1.2), ADOdbException/startProfiling/startProfiling.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbException/stopProfiling/stopProfiling.phpt
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/_applyColumnStringToRecord/callbacks.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbPEAR/_processComplexElementSpecification/condition_function.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/_processComplexElementSpecification/condition_staticMethod.phpt
-	  (1.2), ADOdbPEAR/clearProfile/clearProfile.phpt (1.2),
-	  ADOdbPEAR/disableDebugLog/disableDebugLog.phpt (1.2),
-	  ADOdbPEAR/getFlatXML/case01.phpt (1.3),
-	  ADOdbPEAR/getFlatXML/simpleSelect.phpt (1.2),
-	  ADOdbPEAR/getProfile/getProfile.phpt (1.2),
-	  ADOdbPEAR/getRawProfile/getRawProfile.phpt (1.2),
-	  ADOdbPEAR/getXML/asteriskShortcut_attributes1.phpt (1.2),
-	  ADOdbPEAR/getXML/asteriskShortcut_attributes2.phpt (1.3),
-	  ADOdbPEAR/getXML/asteriskShortcut_attributes3.phpt (1.3),
-	  ADOdbPEAR/getXML/asteriskShortcut_attributes4.phpt (1.3),
-	  ADOdbPEAR/getXML/asteriskShortcut_attributes5.phpt (1.2),
-	  ADOdbPEAR/getXML/asteriskShortcut_attributes6.phpt (1.3),
-	  ADOdbPEAR/getXML/asteriskShortcut_elements1.phpt (1.2),
-	  ADOdbPEAR/getXML/asteriskShortcut_elements2.phpt (1.3),
-	  ADOdbPEAR/getXML/asteriskShortcut_elements3.phpt (1.3),
-	  ADOdbPEAR/getXML/asteriskShortcut_elements4.phpt (1.3),
-	  ADOdbPEAR/getXML/asteriskShortcut_elements5.phpt (1.2),
-	  ADOdbPEAR/getXML/asteriskShortcut_elements6.phpt (1.3),
-	  ADOdbPEAR/getXML/case02.phpt (1.3), ADOdbPEAR/getXML/case03.phpt
-	  (1.3), ADOdbPEAR/getXML/case04.phpt (1.5),
-	  ADOdbPEAR/getXML/case05.phpt (1.5), ADOdbPEAR/getXML/case06.phpt
-	  (1.4), ADOdbPEAR/getXML/case07.phpt (1.3),
-	  ADOdbPEAR/getXML/case08.phpt (1.4),
+	  (1.2, RELEASE_1_1_0), ADOdbPEAR/clearProfile/clearProfile.phpt
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/disableDebugLog/disableDebugLog.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbPEAR/getFlatXML/case01.phpt (1.3),
+	  ADOdbPEAR/getFlatXML/simpleSelect.phpt (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/getProfile/getProfile.phpt (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/getRawProfile/getRawProfile.phpt (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes1.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes2.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes3.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes4.phpt (1.3,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes5.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes6.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbPEAR/getXML/asteriskShortcut_elements1.phpt
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_elements2.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbPEAR/getXML/asteriskShortcut_elements3.phpt
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_elements4.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbPEAR/getXML/asteriskShortcut_elements5.phpt
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_elements6.phpt (1.3,
+	  RELEASE_1_1_0), ADOdbPEAR/getXML/case02.phpt (1.3),
+	  ADOdbPEAR/getXML/case03.phpt (1.3), ADOdbPEAR/getXML/case04.phpt
+	  (1.5), ADOdbPEAR/getXML/case05.phpt (1.5),
+	  ADOdbPEAR/getXML/case06.phpt (1.4), ADOdbPEAR/getXML/case07.phpt
+	  (1.3), ADOdbPEAR/getXML/case08.phpt (1.4),
 	  ADOdbPEAR/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/complexAttributeSpecification_conditionOption.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/complexAttributeSpecification_valuePrefixes.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/complexElementSpecification_conditionOption1.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/complexElementSpecification_conditionOption2.phpt
-	  (1.3), ADOdbPEAR/getXML/conditionPrefix_attribute_callback.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_attribute_columnName.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_attribute_staticText.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_element_callback.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_element_columnName.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_element_staticText.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_value_callback.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_value_columnName.phpt
-	  (1.2), ADOdbPEAR/getXML/conditionPrefix_value_staticText.phpt
-	  (1.2),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_attribute_callback.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_attribute_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_attribute_staticText.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_element_callback.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_element_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_element_staticText.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_value_callback.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_value_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/conditionPrefix_value_staticText.phpt (1.2,
+	  RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_complexElement_callback.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_complexElement_columnName.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_complexElement_columnNameEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_complexElement_staticString.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_complexElement_staticStringEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_scenariosContainerAlwaysPresent.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_scenariosNoContainer.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_simpleElement_callback.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_simpleElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_simpleElement_columnName.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_simpleElement_columnNameEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_simpleElement_staticString.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  ADOdbPEAR/getXML/unserializationPrefix_simpleElement_staticStringEmpty.phpt
-	  (1.3), ADOdbPEAR/setGlobalOption/hidden_container_prefix.phpt
-	  (1.2), ADOdbPEAR/startProfiling/startProfiling.phpt (1.2),
-	  ADOdbPEAR/stopProfiling/stopProfiling.phpt (1.2),
-	  DB/_applyColumnStringToRecord/callbacks.phpt (1.2),
+	  (1.3, RELEASE_1_1_0),
+	  ADOdbPEAR/setGlobalOption/hidden_container_prefix.phpt (1.2),
+	  ADOdbPEAR/startProfiling/startProfiling.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbPEAR/stopProfiling/stopProfiling.phpt (1.2,
+	  RELEASE_1_1_0), DB/_applyColumnStringToRecord/callbacks.phpt
+	  (1.2, RELEASE_1_1_0),
 	  DB/_processComplexElementSpecification/condition_function.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  DB/_processComplexElementSpecification/condition_staticMethod.phpt
-	  (1.2), DB/clearProfile/clearProfile.phpt (1.2),
-	  DB/disableDebugLog/disableDebugLog.phpt (1.2),
-	  DB/getFlatXML/case01.phpt (1.3), DB/getFlatXML/simpleSelect.phpt
-	  (1.2), DB/getProfile/getProfile.phpt (1.2),
-	  DB/getRawProfile/getRawProfile.phpt (1.2),
-	  DB/getXML/asteriskShortcut_attributes1.phpt (1.2),
-	  DB/getXML/asteriskShortcut_attributes2.phpt (1.3),
-	  DB/getXML/asteriskShortcut_attributes3.phpt (1.3),
-	  DB/getXML/asteriskShortcut_attributes4.phpt (1.3),
-	  DB/getXML/asteriskShortcut_attributes5.phpt (1.2),
-	  DB/getXML/asteriskShortcut_attributes6.phpt (1.3),
-	  DB/getXML/asteriskShortcut_elements1.phpt (1.2),
-	  DB/getXML/asteriskShortcut_elements2.phpt (1.3),
-	  DB/getXML/asteriskShortcut_elements3.phpt (1.3),
-	  DB/getXML/asteriskShortcut_elements4.phpt (1.3),
-	  DB/getXML/asteriskShortcut_elements5.phpt (1.2),
-	  DB/getXML/asteriskShortcut_elements6.phpt (1.3),
+	  (1.2, RELEASE_1_1_0), DB/clearProfile/clearProfile.phpt (1.2,
+	  RELEASE_1_1_0), DB/disableDebugLog/disableDebugLog.phpt (1.2,
+	  RELEASE_1_1_0), DB/getFlatXML/case01.phpt (1.3),
+	  DB/getFlatXML/simpleSelect.phpt (1.2, RELEASE_1_1_0),
+	  DB/getProfile/getProfile.phpt (1.2, RELEASE_1_1_0),
+	  DB/getRawProfile/getRawProfile.phpt (1.2, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_attributes1.phpt (1.2, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_attributes2.phpt (1.3, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_attributes3.phpt (1.3, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_attributes4.phpt (1.3, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_attributes5.phpt (1.2, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_attributes6.phpt (1.3, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_elements1.phpt (1.2, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_elements2.phpt (1.3, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_elements3.phpt (1.3, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_elements4.phpt (1.3, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_elements5.phpt (1.2, RELEASE_1_1_0),
+	  DB/getXML/asteriskShortcut_elements6.phpt (1.3, RELEASE_1_1_0),
 	  DB/getXML/case02.phpt (1.3), DB/getXML/case03.phpt (1.3),
 	  DB/getXML/case04.phpt (1.5), DB/getXML/case05.phpt (1.5),
 	  DB/getXML/case06.phpt (1.4), DB/getXML/case07.phpt (1.3),
 	  DB/getXML/case08.phpt (1.4),
 	  DB/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  DB/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  DB/getXML/complexAttributeSpecification_conditionOption.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  DB/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
-	  (1.3), DB/getXML/complexAttributeSpecification_valuePrefixes.phpt
-	  (1.3),
-	  DB/getXML/complexElementSpecification_conditionOption1.phpt
-	  (1.3),
-	  DB/getXML/complexElementSpecification_conditionOption2.phpt
-	  (1.3), DB/getXML/conditionPrefix_attribute_callback.phpt (1.2),
-	  DB/getXML/conditionPrefix_attribute_columnName.phpt (1.2),
-	  DB/getXML/conditionPrefix_attribute_staticText.phpt (1.2),
-	  DB/getXML/conditionPrefix_element_callback.phpt (1.2),
-	  DB/getXML/conditionPrefix_element_columnName.phpt (1.2),
-	  DB/getXML/conditionPrefix_element_staticText.phpt (1.2),
-	  DB/getXML/conditionPrefix_value_callback.phpt (1.2),
-	  DB/getXML/conditionPrefix_value_columnName.phpt (1.2),
-	  DB/getXML/conditionPrefix_value_staticText.phpt (1.2),
+	  (1.3, RELEASE_1_1_0),
+	  DB/getXML/complexAttributeSpecification_valuePrefixes.phpt (1.3,
+	  RELEASE_1_1_0),
+	  DB/getXML/complexElementSpecification_conditionOption1.phpt (1.3,
+	  RELEASE_1_1_0),
+	  DB/getXML/complexElementSpecification_conditionOption2.phpt (1.3,
+	  RELEASE_1_1_0), DB/getXML/conditionPrefix_attribute_callback.phpt
+	  (1.2, RELEASE_1_1_0),
+	  DB/getXML/conditionPrefix_attribute_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  DB/getXML/conditionPrefix_attribute_staticText.phpt (1.2,
+	  RELEASE_1_1_0), DB/getXML/conditionPrefix_element_callback.phpt
+	  (1.2, RELEASE_1_1_0),
+	  DB/getXML/conditionPrefix_element_columnName.phpt (1.2,
+	  RELEASE_1_1_0), DB/getXML/conditionPrefix_element_staticText.phpt
+	  (1.2, RELEASE_1_1_0),
+	  DB/getXML/conditionPrefix_value_callback.phpt (1.2,
+	  RELEASE_1_1_0), DB/getXML/conditionPrefix_value_columnName.phpt
+	  (1.2, RELEASE_1_1_0),
+	  DB/getXML/conditionPrefix_value_staticText.phpt (1.2,
+	  RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_complexElement_callback.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_complexElement_columnName.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_complexElement_columnNameEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_complexElement_staticString.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_complexElement_staticStringEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_scenariosContainerAlwaysPresent.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt
-	  (1.3), DB/getXML/unserializationPrefix_scenariosNoContainer.phpt
-	  (1.3),
-	  DB/getXML/unserializationPrefix_simpleElement_callback.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
+	  DB/getXML/unserializationPrefix_scenariosNoContainer.phpt (1.3,
+	  RELEASE_1_1_0),
+	  DB/getXML/unserializationPrefix_simpleElement_callback.phpt (1.3,
+	  RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_simpleElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_simpleElement_columnName.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_simpleElement_columnNameEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_simpleElement_staticString.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  DB/getXML/unserializationPrefix_simpleElement_staticStringEmpty.phpt
-	  (1.3), DB/setGlobalOption/hidden_container_prefix.phpt (1.2),
-	  DB/startProfiling/startProfiling.phpt (1.2),
-	  DB/stopProfiling/stopProfiling.phpt (1.2), MDB2/skipif.php (1.3),
-	  MDB2/_applyColumnStringToRecord/callbacks.phpt (1.2),
+	  (1.3, RELEASE_1_1_0),
+	  DB/setGlobalOption/hidden_container_prefix.phpt (1.2),
+	  DB/startProfiling/startProfiling.phpt (1.2, RELEASE_1_1_0),
+	  DB/stopProfiling/stopProfiling.phpt (1.2, RELEASE_1_1_0),
+	  MDB2/skipif.php (1.3, RELEASE_1_1_0),
+	  MDB2/_applyColumnStringToRecord/callbacks.phpt (1.2,
+	  RELEASE_1_1_0),
 	  MDB2/_processComplexElementSpecification/condition_function.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  MDB2/_processComplexElementSpecification/condition_staticMethod.phpt
-	  (1.2), MDB2/clearProfile/clearProfile.phpt (1.2),
-	  MDB2/disableDebugLog/disableDebugLog.phpt (1.2),
-	  MDB2/getFlatXML/case01.phpt (1.3),
-	  MDB2/getFlatXML/simpleSelect.phpt (1.2),
-	  MDB2/getProfile/getProfile.phpt (1.2),
-	  MDB2/getRawProfile/getRawProfile.phpt (1.2),
-	  MDB2/getXML/asteriskShortcut_attributes1.phpt (1.2),
-	  MDB2/getXML/asteriskShortcut_attributes2.phpt (1.3),
-	  MDB2/getXML/asteriskShortcut_attributes3.phpt (1.3),
-	  MDB2/getXML/asteriskShortcut_attributes4.phpt (1.3),
-	  MDB2/getXML/asteriskShortcut_attributes5.phpt (1.2),
-	  MDB2/getXML/asteriskShortcut_attributes6.phpt (1.3),
-	  MDB2/getXML/asteriskShortcut_elements1.phpt (1.2),
-	  MDB2/getXML/asteriskShortcut_elements2.phpt (1.3),
-	  MDB2/getXML/asteriskShortcut_elements3.phpt (1.3),
-	  MDB2/getXML/asteriskShortcut_elements4.phpt (1.3),
-	  MDB2/getXML/asteriskShortcut_elements5.phpt (1.2),
-	  MDB2/getXML/asteriskShortcut_elements6.phpt (1.3),
-	  MDB2/getXML/case02.phpt (1.3), MDB2/getXML/case03.phpt (1.3),
-	  MDB2/getXML/case04.phpt (1.5), MDB2/getXML/case05.phpt (1.5),
-	  MDB2/getXML/case06.phpt (1.4), MDB2/getXML/case07.phpt (1.3),
-	  MDB2/getXML/case08.phpt (1.4),
+	  (1.2, RELEASE_1_1_0), MDB2/clearProfile/clearProfile.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/disableDebugLog/disableDebugLog.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/getFlatXML/case01.phpt (1.3),
+	  MDB2/getFlatXML/simpleSelect.phpt (1.2, RELEASE_1_1_0),
+	  MDB2/getProfile/getProfile.phpt (1.2, RELEASE_1_1_0),
+	  MDB2/getRawProfile/getRawProfile.phpt (1.2, RELEASE_1_1_0),
+	  MDB2/getXML/asteriskShortcut_attributes1.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_attributes2.phpt
+	  (1.3, RELEASE_1_1_0),
+	  MDB2/getXML/asteriskShortcut_attributes3.phpt (1.3,
+	  RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_attributes4.phpt
+	  (1.3, RELEASE_1_1_0),
+	  MDB2/getXML/asteriskShortcut_attributes5.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_attributes6.phpt
+	  (1.3, RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_elements1.phpt
+	  (1.2, RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_elements2.phpt
+	  (1.3, RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_elements3.phpt
+	  (1.3, RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_elements4.phpt
+	  (1.3, RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_elements5.phpt
+	  (1.2, RELEASE_1_1_0), MDB2/getXML/asteriskShortcut_elements6.phpt
+	  (1.3, RELEASE_1_1_0), MDB2/getXML/case02.phpt (1.3),
+	  MDB2/getXML/case03.phpt (1.3), MDB2/getXML/case04.phpt (1.5),
+	  MDB2/getXML/case05.phpt (1.5), MDB2/getXML/case06.phpt (1.4),
+	  MDB2/getXML/case07.phpt (1.3), MDB2/getXML/case08.phpt (1.4),
 	  MDB2/getXML/complexAttributeSpecification_complexQuerySpecification.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  MDB2/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  MDB2/getXML/complexAttributeSpecification_conditionOption.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/complexAttributeSpecification_valuePrefixes.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/complexElementSpecification_conditionOption1.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/complexElementSpecification_conditionOption2.phpt
-	  (1.3), MDB2/getXML/conditionPrefix_attribute_callback.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_attribute_columnName.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_attribute_staticText.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_element_callback.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_element_columnName.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_element_staticText.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_value_callback.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_value_columnName.phpt (1.2),
-	  MDB2/getXML/conditionPrefix_value_staticText.phpt (1.2),
+	  (1.3, RELEASE_1_1_0),
+	  MDB2/getXML/conditionPrefix_attribute_callback.phpt (1.2,
+	  RELEASE_1_1_0),
+	  MDB2/getXML/conditionPrefix_attribute_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  MDB2/getXML/conditionPrefix_attribute_staticText.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/getXML/conditionPrefix_element_callback.phpt
+	  (1.2, RELEASE_1_1_0),
+	  MDB2/getXML/conditionPrefix_element_columnName.phpt (1.2,
+	  RELEASE_1_1_0),
+	  MDB2/getXML/conditionPrefix_element_staticText.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/getXML/conditionPrefix_value_callback.phpt
+	  (1.2, RELEASE_1_1_0),
+	  MDB2/getXML/conditionPrefix_value_columnName.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/getXML/conditionPrefix_value_staticText.phpt
+	  (1.2, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_complexElement_callback.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_complexElement_columnName.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_complexElement_columnNameEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_complexElement_staticString.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_complexElement_staticStringEmpty.phpt
-	  (1.4),
+	  (1.4, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_scenariosContainerAlwaysPresent.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt
-	  (1.3),
-	  MDB2/getXML/unserializationPrefix_scenariosNoContainer.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
+	  MDB2/getXML/unserializationPrefix_scenariosNoContainer.phpt (1.3,
+	  RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_simpleElement_callback.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_simpleElement_callbackEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_simpleElement_columnName.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_simpleElement_columnNameEmpty.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_simpleElement_staticString.phpt
-	  (1.3),
+	  (1.3, RELEASE_1_1_0),
 	  MDB2/getXML/unserializationPrefix_simpleElement_staticStringEmpty.phpt
-	  (1.3), MDB2/setGlobalOption/hidden_container_prefix.phpt (1.2),
-	  MDB2/startProfiling/startProfiling.phpt (1.2),
-	  MDB2/stopProfiling/stopProfiling.phpt (1.2): added ORDER BY
-	  clause to all unit tests; all unit tests now also run with
-	  PostgreSQL
+	  (1.3, RELEASE_1_1_0),
+	  MDB2/setGlobalOption/hidden_container_prefix.phpt (1.2),
+	  MDB2/startProfiling/startProfiling.phpt (1.2, RELEASE_1_1_0),
+	  MDB2/stopProfiling/stopProfiling.phpt (1.2, RELEASE_1_1_0): added
+	  ORDER BY clause to all unit tests; all unit tests now also run
+	  with PostgreSQL
 
 2007-02-01 15:54  lukasfeiler
 
@@ -1019,7 +1458,7 @@
 
 2006-12-27 00:35  lukasfeiler
 
-	* tests/Query2XML_Tests.sql (1.3),
+	* tests/Query2XML_Tests.sql (1.3, RELEASE_1_1_0),
 	  tests/XML_Query2XML/ADOdbDefault/getXML/unserializationPrefix_complexElement_callback.phpt
 	  (1.3),
 	  tests/XML_Query2XML/ADOdbDefault/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
@@ -1162,23 +1601,27 @@
 2006-12-25 17:49  lukasfeiler
 
 	* tests/XML_Query2XML/: checkTestNames.sh (1.1), diffTests.sh
-	  (1.3), syncTests.sh (1.1): unit test management helper scripts
+	  (1.3), syncTests.sh (1.1) (utags: RELEASE_1_1_0): unit test
+	  management helper scripts
 
 2006-12-25 17:40  lukasfeiler
 
 	* tests/XML_Query2XML/: diffTests.sh (1.2),
 	  ADOdbDefault/_addDOMChildren/throwXMLException_arrayWithBool.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/_addDOMChildren/throwXMLException_arrayWithDouble.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/_addDOMChildren/throwXMLException_arrayWithInt.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/_addDOMChildren/throwXMLException_arrayWithObject.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbDefault/_addDOMChildren/throwXMLException_arrayWithString.phpt
-	  (1.2), ADOdbDefault/_appendTextChildNode/throwXMLException.phpt
-	  (1.2), ADOdbDefault/_setDOMAttribute/throwXMLException.phpt
-	  (1.2), ADOdbDefault/clearProfile/clearProfile.phpt (1.1),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbDefault/_appendTextChildNode/throwXMLException.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbDefault/_setDOMAttribute/throwXMLException.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbDefault/clearProfile/clearProfile.phpt
+	  (1.1),
 	  ADOdbDefault/getGlobalOption/configException_noSuchOption.phpt
 	  (1.2), ADOdbDefault/getGlobalOption/hidden_container_prefix.phpt
 	  (1.2),
@@ -1203,17 +1646,20 @@
 	  ADOdbDefault/setGlobalOption/configException_noSuchOption.phpt
 	  (1.2),
 	  ADOdbException/_addDOMChildren/throwXMLException_arrayWithBool.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/_addDOMChildren/throwXMLException_arrayWithDouble.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/_addDOMChildren/throwXMLException_arrayWithInt.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/_addDOMChildren/throwXMLException_arrayWithObject.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbException/_addDOMChildren/throwXMLException_arrayWithString.phpt
-	  (1.2), ADOdbException/_appendTextChildNode/throwXMLException.phpt
-	  (1.2), ADOdbException/_setDOMAttribute/throwXMLException.phpt
-	  (1.2), ADOdbException/clearProfile/clearProfile.phpt (1.1),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbException/_appendTextChildNode/throwXMLException.phpt (1.2,
+	  RELEASE_1_1_0),
+	  ADOdbException/_setDOMAttribute/throwXMLException.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbException/clearProfile/clearProfile.phpt
+	  (1.1),
 	  ADOdbException/getGlobalOption/configException_noSuchOption.phpt
 	  (1.2),
 	  ADOdbException/getGlobalOption/hidden_container_prefix.phpt
@@ -1239,17 +1685,19 @@
 	  ADOdbException/setGlobalOption/configException_noSuchOption.phpt
 	  (1.2),
 	  ADOdbPEAR/_addDOMChildren/throwXMLException_arrayWithBool.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/_addDOMChildren/throwXMLException_arrayWithDouble.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/_addDOMChildren/throwXMLException_arrayWithInt.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/_addDOMChildren/throwXMLException_arrayWithObject.phpt
-	  (1.2),
+	  (1.2, RELEASE_1_1_0),
 	  ADOdbPEAR/_addDOMChildren/throwXMLException_arrayWithString.phpt
-	  (1.2), ADOdbPEAR/_appendTextChildNode/throwXMLException.phpt
-	  (1.2), ADOdbPEAR/_setDOMAttribute/throwXMLException.phpt (1.2),
-	  ADOdbPEAR/clearProfile/clearProfile.phpt (1.1),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/_appendTextChildNode/throwXMLException.phpt (1.2,
+	  RELEASE_1_1_0), ADOdbPEAR/_setDOMAttribute/throwXMLException.phpt
+	  (1.2, RELEASE_1_1_0), ADOdbPEAR/clearProfile/clearProfile.phpt
+	  (1.1),
 	  ADOdbPEAR/getGlobalOption/configException_noSuchOption.phpt
 	  (1.2), ADOdbPEAR/getGlobalOption/hidden_container_prefix.phpt
 	  (1.2),
@@ -1273,13 +1721,17 @@
 	  (1.2),
 	  ADOdbPEAR/setGlobalOption/configException_noSuchOption.phpt
 	  (1.2), DB/_addDOMChildren/throwXMLException_arrayWithBool.phpt
-	  (1.2), DB/_addDOMChildren/throwXMLException_arrayWithDouble.phpt
-	  (1.2), DB/_addDOMChildren/throwXMLException_arrayWithInt.phpt
-	  (1.2), DB/_addDOMChildren/throwXMLException_arrayWithObject.phpt
-	  (1.2), DB/_addDOMChildren/throwXMLException_arrayWithString.phpt
-	  (1.2), DB/_appendTextChildNode/throwXMLException.phpt (1.2),
-	  DB/_setDOMAttribute/throwXMLException.phpt (1.2),
-	  DB/clearProfile/clearProfile.phpt (1.1),
+	  (1.2, RELEASE_1_1_0),
+	  DB/_addDOMChildren/throwXMLException_arrayWithDouble.phpt (1.2,
+	  RELEASE_1_1_0),
+	  DB/_addDOMChildren/throwXMLException_arrayWithInt.phpt (1.2,
+	  RELEASE_1_1_0),
+	  DB/_addDOMChildren/throwXMLException_arrayWithObject.phpt (1.2,
+	  RELEASE_1_1_0),
+	  DB/_addDOMChildren/throwXMLException_arrayWithString.phpt (1.2,
+	  RELEASE_1_1_0), DB/_appendTextChildNode/throwXMLException.phpt
+	  (1.2, RELEASE_1_1_0), DB/_setDOMAttribute/throwXMLException.phpt
+	  (1.2, RELEASE_1_1_0), DB/clearProfile/clearProfile.phpt (1.1),
 	  DB/getGlobalOption/configException_noSuchOption.phpt (1.2),
 	  DB/getGlobalOption/hidden_container_prefix.phpt (1.2),
 	  DB/getXML/unserializationPrefix_complexElement_callback.phpt
@@ -1300,16 +1752,18 @@
 	  DB/setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt
 	  (1.2), DB/setGlobalOption/configException_noSuchOption.phpt
 	  (1.2), MDB2/_addDOMChildren/throwXMLException_arrayWithBool.phpt
-	  (1.2),
-	  MDB2/_addDOMChildren/throwXMLException_arrayWithDouble.phpt
-	  (1.2), MDB2/_addDOMChildren/throwXMLException_arrayWithInt.phpt
-	  (1.2),
-	  MDB2/_addDOMChildren/throwXMLException_arrayWithObject.phpt
-	  (1.2),
-	  MDB2/_addDOMChildren/throwXMLException_arrayWithString.phpt
-	  (1.2), MDB2/_appendTextChildNode/throwXMLException.phpt (1.2),
-	  MDB2/_setDOMAttribute/throwXMLException.phpt (1.2),
-	  MDB2/clearProfile/clearProfile.phpt (1.1),
+	  (1.2, RELEASE_1_1_0),
+	  MDB2/_addDOMChildren/throwXMLException_arrayWithDouble.phpt (1.2,
+	  RELEASE_1_1_0),
+	  MDB2/_addDOMChildren/throwXMLException_arrayWithInt.phpt (1.2,
+	  RELEASE_1_1_0),
+	  MDB2/_addDOMChildren/throwXMLException_arrayWithObject.phpt (1.2,
+	  RELEASE_1_1_0),
+	  MDB2/_addDOMChildren/throwXMLException_arrayWithString.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/_appendTextChildNode/throwXMLException.phpt
+	  (1.2, RELEASE_1_1_0),
+	  MDB2/_setDOMAttribute/throwXMLException.phpt (1.2,
+	  RELEASE_1_1_0), MDB2/clearProfile/clearProfile.phpt (1.1),
 	  MDB2/getGlobalOption/configException_noSuchOption.phpt (1.2),
 	  MDB2/getGlobalOption/hidden_container_prefix.phpt (1.2),
 	  MDB2/getXML/unserializationPrefix_complexElement_callback.phpt
@@ -1343,9 +1797,9 @@
 
 2006-12-24 13:39  lukasfeiler
 
-	* tests/: Query2XML_Tests.dm2 (1.2), Query2XML_Tests.jpg (1.2),
-	  Query2XML_Tests.sql (1.2): new building_xmldata column needed for
-	  unit tests
+	* tests/: Query2XML_Tests.dm2 (1.2, RELEASE_1_1_0),
+	  Query2XML_Tests.jpg (1.2, RELEASE_1_1_0), Query2XML_Tests.sql
+	  (1.2): new building_xmldata column needed for unit tests
 
 2006-12-24 13:34  lukasfeiler
 
@@ -1362,8 +1816,8 @@
 	  (1.1), ADOdbDefault/_appendTextChildNode/throwXMLException.phpt
 	  (1.1),
 	  ADOdbDefault/_applyColumnStringToRecord/throwXMLException_unserialize.phpt
-	  (1.1), ADOdbDefault/_setDOMAttribute/throwXMLException.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_1_0),
+	  ADOdbDefault/_setDOMAttribute/throwXMLException.phpt (1.1),
 	  ADOdbDefault/getGlobalOption/configException_noSuchOption.phpt
 	  (1.1), ADOdbDefault/getGlobalOption/hidden_container_prefix.phpt
 	  (1.1),
@@ -1416,8 +1870,8 @@
 	  (1.1), ADOdbException/_appendTextChildNode/throwXMLException.phpt
 	  (1.1),
 	  ADOdbException/_applyColumnStringToRecord/throwXMLException_unserialize.phpt
-	  (1.1), ADOdbException/_setDOMAttribute/throwXMLException.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_1_0),
+	  ADOdbException/_setDOMAttribute/throwXMLException.phpt (1.1),
 	  ADOdbException/getGlobalOption/configException_noSuchOption.phpt
 	  (1.1),
 	  ADOdbException/getGlobalOption/hidden_container_prefix.phpt
@@ -1472,7 +1926,8 @@
 	  (1.1), ADOdbPEAR/_appendTextChildNode/throwXMLException.phpt
 	  (1.1),
 	  ADOdbPEAR/_applyColumnStringToRecord/throwXMLException_unserialize.phpt
-	  (1.1), ADOdbPEAR/_setDOMAttribute/throwXMLException.phpt (1.1),
+	  (1.1, RELEASE_1_1_0),
+	  ADOdbPEAR/_setDOMAttribute/throwXMLException.phpt (1.1),
 	  ADOdbPEAR/getGlobalOption/configException_noSuchOption.phpt
 	  (1.1), ADOdbPEAR/getGlobalOption/hidden_container_prefix.phpt
 	  (1.1),
@@ -1519,9 +1974,9 @@
 	  (1.1), DB/_addDOMChildren/throwXMLException_arrayWithString.phpt
 	  (1.1), DB/_appendTextChildNode/throwXMLException.phpt (1.1),
 	  DB/_applyColumnStringToRecord/throwXMLException_unserialize.phpt
-	  (1.1), DB/_setDOMAttribute/throwXMLException.phpt (1.1),
-	  DB/getGlobalOption/configException_noSuchOption.phpt (1.1),
-	  DB/getGlobalOption/hidden_container_prefix.phpt (1.1),
+	  (1.1, RELEASE_1_1_0), DB/_setDOMAttribute/throwXMLException.phpt
+	  (1.1), DB/getGlobalOption/configException_noSuchOption.phpt
+	  (1.1), DB/getGlobalOption/hidden_container_prefix.phpt (1.1),
 	  DB/getXML/unserializationPrefix_complexElement_callback.phpt
 	  (1.1),
 	  DB/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
@@ -1565,7 +2020,8 @@
 	  MDB2/_addDOMChildren/throwXMLException_arrayWithString.phpt
 	  (1.1), MDB2/_appendTextChildNode/throwXMLException.phpt (1.1),
 	  MDB2/_applyColumnStringToRecord/throwXMLException_unserialize.phpt
-	  (1.1), MDB2/_setDOMAttribute/throwXMLException.phpt (1.1),
+	  (1.1, RELEASE_1_1_0),
+	  MDB2/_setDOMAttribute/throwXMLException.phpt (1.1),
 	  MDB2/getGlobalOption/configException_noSuchOption.phpt (1.1),
 	  MDB2/getGlobalOption/hidden_container_prefix.phpt (1.1),
 	  MDB2/getXML/unserializationPrefix_complexElement_callback.phpt
@@ -1629,20 +2085,21 @@
 
 2006-12-23 18:11  lukasfeiler
 
-	* cases/case01/case01.php (1.2), cases/case01/case01.xml (1.2),
-	  cases/case02/case02.php (1.2), cases/case02/case02.xml (1.2),
+	* cases/case01/case01.php (1.2), cases/case01/case01.xml (1.2,
+	  RELEASE_1_1_0), cases/case02/case02.php (1.2),
+	  cases/case02/case02.xml (1.2, RELEASE_1_1_0),
 	  cases/case02/case02_debug.php (1.2), cases/case03/case03.php
-	  (1.2), cases/case03/case03.xml (1.2),
+	  (1.2), cases/case03/case03.xml (1.2, RELEASE_1_1_0),
 	  cases/case03/case03_debug.php (1.2), cases/case04/case04.php
-	  (1.4), cases/case04/case04.xml (1.2),
+	  (1.4), cases/case04/case04.xml (1.2, RELEASE_1_1_0),
 	  cases/case04/case04_debug.php (1.4), cases/case05/case05.php
-	  (1.4), cases/case05/case05.xml (1.2),
+	  (1.4), cases/case05/case05.xml (1.2, RELEASE_1_1_0),
 	  cases/case05/case05_debug.php (1.3), cases/case06/case06.php
 	  (1.3), cases/case06/case06.xml (1.2),
 	  cases/case06/case06_debug.php (1.3), cases/case07/case07.php
-	  (1.2), cases/case07/case07.xml (1.2),
+	  (1.2), cases/case07/case07.xml (1.2, RELEASE_1_1_0),
 	  cases/case07/case07_debug.php (1.2), cases/case08/case08.php
-	  (1.3), cases/case08/case08.xml (1.2),
+	  (1.3), cases/case08/case08.xml (1.2, RELEASE_1_1_0),
 	  cases/case08/case08_debug.php (1.3),
 	  tests/XML_Query2XML/ADOdbDefault/getFlatXML/case01.phpt (1.2),
 	  tests/XML_Query2XML/ADOdbDefault/getXML/case02.phpt (1.2),
@@ -1757,8 +2214,8 @@
 	  ADOdbPEAR/_prepareAndExecute/throwDBException_complexQuery.phpt
 	  (1.2), DB/_prepareAndExecute/throwDBException_complexQuery.phpt
 	  (1.2), MDB2/_prepareAndExecute/throwDBException_complexQuery.phpt
-	  (1.2) (utags: RELEASE_0_8_0, RELEASE_1_0_0): modified for
-	  MDB2-2.3.0
+	  (1.2) (utags: RELEASE_0_8_0, RELEASE_1_0_0, RELEASE_1_1_0):
+	  modified for MDB2-2.3.0
 
 2006-11-03 19:41  lukasfeiler
 
@@ -1799,23 +2256,24 @@
 2006-11-03 16:53  lukasfeiler
 
 	* tests/: XML_Query2XML/settings.php (1.2),
-	  XML_Query2XML/ADOdbDefault/db_init.php (1.2),
-	  XML_Query2XML/ADOdbDefault/skipif.php (1.2),
+	  XML_Query2XML/ADOdbDefault/db_init.php (1.2, RELEASE_1_1_0),
+	  XML_Query2XML/ADOdbDefault/skipif.php (1.2, RELEASE_1_1_0),
 	  XML_Query2XML/ADOdbDefault/skipif_XML_Beautifier.php (1.2),
-	  XML_Query2XML/ADOdbException/db_init.php (1.2),
-	  XML_Query2XML/ADOdbException/skipif.php (1.2),
+	  XML_Query2XML/ADOdbException/db_init.php (1.2, RELEASE_1_1_0),
+	  XML_Query2XML/ADOdbException/skipif.php (1.2, RELEASE_1_1_0),
 	  XML_Query2XML/ADOdbException/skipif_XML_Beautifier.php (1.2),
-	  XML_Query2XML/ADOdbPEAR/db_init.php (1.2),
-	  XML_Query2XML/ADOdbPEAR/skipif.php (1.2),
+	  XML_Query2XML/ADOdbPEAR/db_init.php (1.2, RELEASE_1_1_0),
+	  XML_Query2XML/ADOdbPEAR/skipif.php (1.2, RELEASE_1_1_0),
 	  XML_Query2XML/ADOdbPEAR/skipif_XML_Beautifier.php (1.2),
-	  XML_Query2XML/DB/db_init.php (1.2), XML_Query2XML/DB/skipif.php
-	  (1.2), XML_Query2XML/DB/skipif_XML_Beautifier.php (1.2),
-	  XML_Query2XML/MDB2/db_init.php (1.2),
+	  XML_Query2XML/DB/db_init.php (1.2, RELEASE_1_1_0),
+	  XML_Query2XML/DB/skipif.php (1.2, RELEASE_1_1_0),
+	  XML_Query2XML/DB/skipif_XML_Beautifier.php (1.2),
+	  XML_Query2XML/MDB2/db_init.php (1.2, RELEASE_1_1_0),
 	  XML_Query2XML/MDB2/skipif.php (1.2),
 	  XML_Query2XML/MDB2/skipif_XML_Beautifier.php (1.2),
-	  XML_Query2XML_ISO9075Mapper/skipif.php (1.2) (utags:
-	  RELEASE_0_8_0, RELEASE_1_0_0): added page-level docblock to all
-	  unit test include files
+	  XML_Query2XML_ISO9075Mapper/skipif.php (1.2, RELEASE_1_1_0)
+	  (utags: RELEASE_0_8_0, RELEASE_1_0_0): added page-level docblock
+	  to all unit test include files
 
 2006-11-03 16:37  lukasfeiler
 
@@ -1944,11 +2402,12 @@
 
 	* tests/XML_Query2XML/:
 	  ADOdbDefault/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
-	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes2.phpt
-	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes3.phpt
-	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes4.phpt
-	  (1.2), ADOdbDefault/getXML/asteriskShortcut_attributes6.phpt
-	  (1.2), ADOdbDefault/getXML/asteriskShortcut_elements2.phpt (1.2),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes2.phpt (1.2),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes3.phpt (1.2),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes4.phpt (1.2),
+	  ADOdbDefault/getXML/asteriskShortcut_attributes6.phpt (1.2),
+	  ADOdbDefault/getXML/asteriskShortcut_elements2.phpt (1.2),
 	  ADOdbDefault/getXML/asteriskShortcut_elements3.phpt (1.2),
 	  ADOdbDefault/getXML/asteriskShortcut_elements4.phpt (1.2),
 	  ADOdbDefault/getXML/asteriskShortcut_elements6.phpt (1.2),
@@ -1967,15 +2426,16 @@
 	  ADOdbDefault/getXML/complexElementSpecification_conditionOption2.phpt
 	  (1.2),
 	  ADOdbException/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes2.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes3.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes4.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_attributes6.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_elements2.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_elements3.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_elements4.phpt
-	  (1.2), ADOdbException/getXML/asteriskShortcut_elements6.phpt
-	  (1.2), ADOdbException/getXML/case04.phpt (1.3),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbException/getXML/asteriskShortcut_attributes2.phpt (1.2),
+	  ADOdbException/getXML/asteriskShortcut_attributes3.phpt (1.2),
+	  ADOdbException/getXML/asteriskShortcut_attributes4.phpt (1.2),
+	  ADOdbException/getXML/asteriskShortcut_attributes6.phpt (1.2),
+	  ADOdbException/getXML/asteriskShortcut_elements2.phpt (1.2),
+	  ADOdbException/getXML/asteriskShortcut_elements3.phpt (1.2),
+	  ADOdbException/getXML/asteriskShortcut_elements4.phpt (1.2),
+	  ADOdbException/getXML/asteriskShortcut_elements6.phpt (1.2),
+	  ADOdbException/getXML/case04.phpt (1.3),
 	  ADOdbException/getXML/case05.phpt (1.3),
 	  ADOdbException/getXML/case06.phpt (1.2),
 	  ADOdbException/getXML/case08.phpt (1.2),
@@ -1990,7 +2450,8 @@
 	  ADOdbException/getXML/complexElementSpecification_conditionOption2.phpt
 	  (1.2),
 	  ADOdbPEAR/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
-	  (1.2), ADOdbPEAR/getXML/asteriskShortcut_attributes2.phpt (1.2),
+	  (1.2, RELEASE_1_1_0),
+	  ADOdbPEAR/getXML/asteriskShortcut_attributes2.phpt (1.2),
 	  ADOdbPEAR/getXML/asteriskShortcut_attributes3.phpt (1.2),
 	  ADOdbPEAR/getXML/asteriskShortcut_attributes4.phpt (1.2),
 	  ADOdbPEAR/getXML/asteriskShortcut_attributes6.phpt (1.2),
@@ -2012,8 +2473,8 @@
 	  ADOdbPEAR/getXML/complexElementSpecification_conditionOption2.phpt
 	  (1.2),
 	  DB/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
-	  (1.2), DB/getXML/asteriskShortcut_attributes2.phpt (1.2),
-	  DB/getXML/asteriskShortcut_attributes3.phpt (1.2),
+	  (1.2, RELEASE_1_1_0), DB/getXML/asteriskShortcut_attributes2.phpt
+	  (1.2), DB/getXML/asteriskShortcut_attributes3.phpt (1.2),
 	  DB/getXML/asteriskShortcut_attributes4.phpt (1.2),
 	  DB/getXML/asteriskShortcut_attributes6.phpt (1.2),
 	  DB/getXML/asteriskShortcut_elements2.phpt (1.2),
@@ -2032,7 +2493,8 @@
 	  DB/getXML/complexElementSpecification_conditionOption2.phpt
 	  (1.2),
 	  MDB2/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
-	  (1.2), MDB2/getXML/asteriskShortcut_attributes2.phpt (1.2),
+	  (1.2, RELEASE_1_1_0),
+	  MDB2/getXML/asteriskShortcut_attributes2.phpt (1.2),
 	  MDB2/getXML/asteriskShortcut_attributes3.phpt (1.2),
 	  MDB2/getXML/asteriskShortcut_attributes4.phpt (1.2),
 	  MDB2/getXML/asteriskShortcut_attributes6.phpt (1.2),
@@ -2085,8 +2547,9 @@
 
 2006-10-29 13:09  lukasfeiler
 
-	* tests/testCases.sh (1.2, RELEASE_1_0_0, RELEASE_0_8_0): now not
-	  included in the package anymore - only to be used by developers
+	* tests/testCases.sh (1.2, RELEASE_1_1_0, RELEASE_1_0_0,
+	  RELEASE_0_8_0): now not included in the package anymore - only to
+	  be used by developers
 
 2006-10-29 13:08  lukasfeiler
 
@@ -2102,8 +2565,8 @@
 
 2006-10-28 01:21  lukasfeiler
 
-	* XML/Query2XML/ISO9075Mapper.php (1.2, RELEASE_1_0_0,
-	  RELEASE_0_8_0): removed old @author tag
+	* XML/Query2XML/ISO9075Mapper.php (1.2, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0): removed old @author tag
 
 2006-10-28 01:20  lukasfeiler
 
@@ -2132,59 +2595,59 @@
 	  XML_Query2XML/ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_element2.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_elementInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_elementInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_mapSQLIdentifierToXMLName/throwXMLException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_prepareAndExecute/throwDBException_complexQuery.phpt
 	  (1.1),
 	  XML_Query2XML/ADOdbPEAR/_prepareAndExecute/throwDBException_simpleQuery.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_processComplexElementSpecification/rethrowConfigException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
 	  (1.1),
 	  XML_Query2XML/ADOdbPEAR/disableDebugLog/disableDebugLog.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/enableDebugLog/enableDebugLog.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/factory/throwDBException.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/getFlatXML/case01.phpt (1.1,
@@ -2192,7 +2655,7 @@
 	  XML_Query2XML/ADOdbPEAR/getFlatXML/simpleSelect.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/getFlatXML/throwDBException.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/getProfile/getProfile.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/getRawProfile/getRawProfile.phpt (1.1,
@@ -2261,7 +2724,7 @@
 	  XML_Query2XML/ADOdbPEAR/getXML/conditionPrefix_value_staticText.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/getXML/throwDBException.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/startProfiling/startProfiling.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/ADOdbPEAR/stopProfiling/stopProfiling.phpt (1.1,
@@ -2271,56 +2734,59 @@
 	  XML_Query2XML/NoDBLayer/factory/throwDBException.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/skipif.php (1.1),
-	  XML_Query2XML_ISO9075Mapper/map/_X_UC.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), XML_Query2XML_ISO9075Mapper/map/_x.phpt (1.1,
+	  XML_Query2XML_ISO9075Mapper/map/_X_UC.phpt (1.1, RELEASE_1_1_0,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  XML_Query2XML_ISO9075Mapper/map/at.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), XML_Query2XML_ISO9075Mapper/map/colon.phpt (1.1,
+	  XML_Query2XML_ISO9075Mapper/map/_x.phpt (1.1, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/at.phpt (1.1, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/colon.phpt (1.1, RELEASE_1_1_0,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/curlyBraceClose.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/curlyBraceOpen.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/equalSign.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/greaterThan.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/invalidNameStartChars.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/invalidNametChars.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/lessThan.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/poundSign.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/semicolon.phpt (1.1,
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/space.phpt (1.1, RELEASE_1_1_0,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  XML_Query2XML_ISO9075Mapper/map/space.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/startWith_XML_UC.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/startWith_xml.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/throwException1.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/throwException2.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/throwException3.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/unmodified1.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/unmodified2.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validNameChars.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validNameStartChars.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validSpecialChars1.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validSpecialChars2.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/variousChars.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0): migrated from PHPUnit2 to phpt
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0): migrated from
+	  PHPUnit2 to phpt
 
 2006-10-28 01:09  lukasfeiler
 
@@ -2332,64 +2798,64 @@
 	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_element2.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_createDOMElement/throwXMLException_elementInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_createDOMElement/throwXMLException_elementInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_mapSQLIdentifierToXMLName/throwXMLException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_prepareAndExecute/throwDBException_complexQuery.phpt
 	  (1.1),
 	  ADOdbDefault/_prepareAndExecute/throwDBException_simpleQuery.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_processComplexElementSpecification/rethrowConfigException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
 	  (1.1), ADOdbDefault/disableDebugLog/disableDebugLog.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/enableDebugLog/enableDebugLog.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/factory/throwDBException.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), ADOdbDefault/getFlatXML/case01.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/getFlatXML/simpleSelect.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), ADOdbDefault/getFlatXML/throwDBException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/getProfile/getProfile.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), ADOdbDefault/getRawProfile/getRawProfile.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
@@ -2445,9 +2911,10 @@
 	  ADOdbDefault/getXML/conditionPrefix_value_phpCode.phpt (1.1),
 	  ADOdbDefault/getXML/conditionPrefix_value_staticText.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  ADOdbDefault/getXML/throwDBException.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), ADOdbDefault/startProfiling/startProfiling.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  ADOdbDefault/getXML/throwDBException.phpt (1.1, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  ADOdbDefault/startProfiling/startProfiling.phpt (1.1,
+	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbDefault/stopProfiling/stopProfiling.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0), ADOdbException/db_init.php (1.1),
 	  ADOdbException/skipif.php (1.1),
@@ -2457,64 +2924,64 @@
 	  ADOdbException/_applyColumnStringToRecord/throwConfigException_element2.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_createDOMElement/throwXMLException_elementInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_createDOMElement/throwXMLException_elementInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_mapSQLIdentifierToXMLName/throwXMLException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_prepareAndExecute/throwDBException_complexQuery.phpt
 	  (1.1),
 	  ADOdbException/_prepareAndExecute/throwDBException_simpleQuery.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_processComplexElementSpecification/rethrowConfigException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
 	  (1.1), ADOdbException/disableDebugLog/disableDebugLog.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/enableDebugLog/enableDebugLog.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/factory/throwDBException.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), ADOdbException/getFlatXML/case01.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/getFlatXML/simpleSelect.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), ADOdbException/getFlatXML/throwDBException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/getProfile/getProfile.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), ADOdbException/getRawProfile/getRawProfile.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
@@ -2571,9 +3038,10 @@
 	  ADOdbException/getXML/conditionPrefix_value_phpCode.phpt (1.1),
 	  ADOdbException/getXML/conditionPrefix_value_staticText.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  ADOdbException/getXML/throwDBException.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), ADOdbException/startProfiling/startProfiling.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  ADOdbException/getXML/throwDBException.phpt (1.1, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  ADOdbException/startProfiling/startProfiling.phpt (1.1,
+	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  ADOdbException/stopProfiling/stopProfiling.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0): migrated from PHPUnit2 to phpt
 
@@ -2585,66 +3053,67 @@
 	  MDB2/_applyColumnStringToRecord/throwConfigException_element2.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_createDOMElement/throwXMLException_elementInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_createDOMElement/throwXMLException_elementInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_mapSQLIdentifierToXMLName/throwXMLException.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_prepareAndExecute/throwDBException_complexQuery.phpt (1.1),
 	  MDB2/_prepareAndExecute/throwDBException_simpleQuery.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_processComplexElementSpecification/rethrowConfigException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
 	  (1.1), MDB2/disableDebugLog/disableDebugLog.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  MDB2/enableDebugLog/enableDebugLog.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), MDB2/factory/throwDBException.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0), MDB2/getFlatXML/case01.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0), MDB2/getFlatXML/simpleSelect.phpt
+	  MDB2/enableDebugLog/enableDebugLog.phpt (1.1, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0), MDB2/factory/throwDBException.phpt
+	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0), MDB2/getFlatXML/case01.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
-	  MDB2/getFlatXML/throwDBException.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), MDB2/getProfile/getProfile.phpt (1.1,
+	  MDB2/getFlatXML/simpleSelect.phpt (1.1, RELEASE_1_0_0,
+	  RELEASE_0_8_0), MDB2/getFlatXML/throwDBException.phpt (1.1,
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  MDB2/getProfile/getProfile.phpt (1.1, RELEASE_1_0_0,
+	  RELEASE_0_8_0), MDB2/getRawProfile/getRawProfile.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  MDB2/getRawProfile/getRawProfile.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), MDB2/getXML/asteriskShortcut_attributes1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  MDB2/getXML/asteriskShortcut_attributes1.phpt (1.1,
+	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/getXML/asteriskShortcut_attributes2.phpt (1.1),
 	  MDB2/getXML/asteriskShortcut_attributes3.phpt (1.1),
 	  MDB2/getXML/asteriskShortcut_attributes4.phpt (1.1),
@@ -2691,7 +3160,7 @@
 	  MDB2/getXML/conditionPrefix_value_phpCode.phpt (1.1),
 	  MDB2/getXML/conditionPrefix_value_staticText.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0), MDB2/getXML/throwDBException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  MDB2/startProfiling/startProfiling.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), MDB2/stopProfiling/stopProfiling.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0), MDB2/db_init.php (1.1),
@@ -2701,68 +3170,68 @@
 	  DB/_applyColumnStringToRecord/throwConfigException_element2.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_applySqlOptionsToRecord/throwConfigException_dataOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_applySqlOptionsToRecord/throwConfigException_mergeselectiveOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_applySqlOptionsToRecord/throwConfigException_queryOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_applySqlOptionsToRecord/throwConfigException_sqlOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_createDOMElement/throwXMLException_elementInvalid1.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_createDOMElement/throwXMLException_elementInvalid2.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_attributesOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_elementsOptionWrongType.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_idcolumnOptionMissing.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableFunction.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableNonstaticMethod.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod1.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_getNestedXMLRecord/throwConfigException_mapperNotCallableStaticMethod2.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_mapSQLIdentifierToXMLName/throwXMLException.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_prepareAndExecute/throwDBException_complexQuery.phpt (1.1),
 	  DB/_prepareAndExecute/throwDBException_simpleQuery.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_processComplexElementSpecification/rethrowConfigException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/_processComplexElementSpecification/throwConfigException_valueOptionMissing.phpt
 	  (1.1), DB/disableDebugLog/disableDebugLog.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  DB/enableDebugLog/enableDebugLog.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), DB/factory/throwDBException.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0), DB/getFlatXML/case01.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0), DB/getFlatXML/simpleSelect.phpt
+	  DB/enableDebugLog/enableDebugLog.phpt (1.1, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0), DB/factory/throwDBException.phpt
+	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0), DB/getFlatXML/case01.phpt
 	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
-	  DB/getFlatXML/throwDBException.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), DB/getProfile/getProfile.phpt (1.1,
+	  DB/getFlatXML/simpleSelect.phpt (1.1, RELEASE_1_0_0,
+	  RELEASE_0_8_0), DB/getFlatXML/throwDBException.phpt (1.1,
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  DB/getProfile/getProfile.phpt (1.1, RELEASE_1_0_0,
+	  RELEASE_0_8_0), DB/getRawProfile/getRawProfile.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  DB/getRawProfile/getRawProfile.phpt (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0), DB/getXML/asteriskShortcut_attributes1.phpt (1.1,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  DB/getXML/asteriskShortcut_attributes2.phpt (1.1),
-	  DB/getXML/asteriskShortcut_attributes3.phpt (1.1),
+	  DB/getXML/asteriskShortcut_attributes1.phpt (1.1, RELEASE_1_0_0,
+	  RELEASE_0_8_0), DB/getXML/asteriskShortcut_attributes2.phpt
+	  (1.1), DB/getXML/asteriskShortcut_attributes3.phpt (1.1),
 	  DB/getXML/asteriskShortcut_attributes4.phpt (1.1),
 	  DB/getXML/asteriskShortcut_attributes5.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), DB/getXML/asteriskShortcut_attributes6.phpt
@@ -2805,7 +3274,7 @@
 	  DB/getXML/conditionPrefix_value_phpCode.phpt (1.1),
 	  DB/getXML/conditionPrefix_value_staticText.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0), DB/getXML/throwDBException.phpt
-	  (1.1, RELEASE_1_0_0, RELEASE_0_8_0),
+	  (1.1, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  DB/startProfiling/startProfiling.phpt (1.1, RELEASE_1_0_0,
 	  RELEASE_0_8_0), DB/stopProfiling/stopProfiling.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0), DB/db_init.php (1.1),
@@ -2884,9 +3353,9 @@
 
 2006-09-28 12:05  lukasfeiler
 
-	* ChangeLog-until-v0.6.0 (1.1, RELEASE_1_0_0, RELEASE_0_8_0,
-	  RELEASE_0_7_0, RELEASE_0_6_1): ChangeLog entries prior to v0.6.0
-	  which was developed at sourceforge
+	* ChangeLog-until-v0.6.0 (1.1, RELEASE_1_1_0, RELEASE_1_0_0,
+	  RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1): ChangeLog entries
+	  prior to v0.6.0 which was developed at sourceforge
 
 2006-09-28 11:19  lukasfeiler
 
@@ -2896,12 +3365,12 @@
 
 2006-04-29 09:03  lukasfeiler
 
-	* ChangeLog (1.1), INSTALL (1.1), LICENSE (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1), README (1.1),
-	  RELEASES (1.1), package.xml (1.1), XML/Query2XML.php (1.1),
-	  XML/Query2XML/ISO9075Mapper.php (1.1, RELEASE_0_7_0,
-	  RELEASE_0_6_1), cases/case01/case01.php (1.1, RELEASE_1_0_0,
-	  RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1),
+	* ChangeLog (1.1), INSTALL (1.1), LICENSE (1.1, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1),
+	  README (1.1), RELEASES (1.1), package.xml (1.1),
+	  XML/Query2XML.php (1.1), XML/Query2XML/ISO9075Mapper.php (1.1,
+	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case01/case01.php (1.1,
+	  RELEASE_1_0_0, RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1),
 	  cases/case01/case01.xml (1.1, RELEASE_1_0_0, RELEASE_0_8_0,
 	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case02/case02.log (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1),
