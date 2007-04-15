@@ -11,16 +11,16 @@ with one or more SQL SELECT queries into XML data. Very simple to
 highly complex transformations are supported. Is was written with
 performance in mind and can handle large amounts of data. No XSLT needed!
 Major features:
-1. XML_Query2XML works with the classes provided by PHP5&apos;s DOM XML extension
+1. XML_Query2XML works with the classes provided by PHP5&apos;s built-in DOM API
 2. minimum effort necessary to get the simple jobs done
 3. highly configurable for more complex tasks
 4. ISO/IEC 9075-14:2005 support: mapping of SQL identifiers to XML names
 5. works with any database that is supported by PEAR DB, PEAR MDB2 or ADOdb
 6. easy integration of other XML data sources (e.g. raw XML data stored in the DB)
-7. debugging and logging features
-8. provides profiling features
+7. debugging, logging and profiling features
+8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 678 phpt unit tests
+10. 783 phpt unit tests
  
  </description>
  <lead>
@@ -29,7 +29,7 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2007-04-11</date>
+ <date>2007-04-15</date>
  <version>
   <release>1.2.0</release>
   <api>1.2.0</api>
@@ -39,9 +39,16 @@ Major features:
   <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>This third stable release contains a new feature and some minor changes
-- new 'encoder' option
-- unit tests now correctly skipped if DB unavailable
+ <notes>This third stable release contains a new feature and some minor coding-style related changes
+- it is now possible to handle data sources that use another character encoding
+  than ISO-8859-1; see the 'encoder' option:
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#query2xml_getxml.options_encoder
+  Thanks to Mickael Guerin for making me implement this feature that has been sitting on my
+  todo list for quite some time now.
+- other character encodings than UTF-8 can now also be used for XML encoding; see
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#encoding
+- unit tests are now correctly skipped if the database connection fails
+- XML_Query2XML now comes with 783 phpt unit tests
  </notes>
  <contents>
   <dir name="/">
@@ -249,10 +256,33 @@ Major features:
        <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_createDOMElement -->
+      <dir name="_executeEncoder">
+       <file baseinstalldir="/" name="basics.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
+      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_executeEncoder -->
       <dir name="_getNestedXMLRecord">
        <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
@@ -427,10 +457,33 @@ Major features:
        <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/_createDOMElement -->
+      <dir name="_executeEncoder">
+       <file baseinstalldir="/" name="basics.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
+      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_executeEncoder -->
       <dir name="_getNestedXMLRecord">
        <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
@@ -605,10 +658,33 @@ Major features:
        <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_createDOMElement -->
+      <dir name="_executeEncoder">
+       <file baseinstalldir="/" name="basics.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
+      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_executeEncoder -->
       <dir name="_getNestedXMLRecord">
        <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
@@ -783,10 +859,33 @@ Major features:
        <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/_createDOMElement -->
+      <dir name="_executeEncoder">
+       <file baseinstalldir="/" name="basics.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
+      </dir> <!-- /tests/XML_Query2XML/DB/_executeEncoder -->
       <dir name="_getNestedXMLRecord">
        <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
@@ -961,10 +1060,33 @@ Major features:
        <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/_createDOMElement -->
+      <dir name="_executeEncoder">
+       <file baseinstalldir="/" name="basics.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
+       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
+       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
+      </dir> <!-- /tests/XML_Query2XML/MDB2/_executeEncoder -->
       <dir name="_getNestedXMLRecord">
        <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
@@ -1392,11 +1514,18 @@ The smaller changes include:
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2007-04-11</date>
+   <date>2007-04-15</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This third stable release contains a new feature and some minor changes
-- new 'encoder' option
-- unit tests now correctly skipped if DB unavailable
+   <notes>This third stable release contains a new feature and some minor coding-style related changes
+- it is now possible to handle data sources that use another character encoding
+  than ISO-8859-1; see the 'encoder' option:
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#query2xml_getxml.options_encoder
+  Thanks to Mickael Guerin for making me implement this feature that has been sitting on my
+  todo list for quite some time now.
+- other character encodings than UTF-8 can now also be used for XML encoding; see
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#encoding
+- unit tests are now correctly skipped if the database connection fails
+- XML_Query2XML now comes with 783 phpt unit tests
    </notes>
   </release>
  </changelog>
