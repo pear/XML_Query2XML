@@ -23,8 +23,8 @@
   </para>
   <para>
     Both methods {@link XML_Query2XML::getXML()} and {@link XML_Query2XML::getFlatXML()} return an instance
-    of {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DomDocument}.
-    The class DomDocument is provided by {@link http://www.php.net/manual/en/ref.dom.php PHP5's DOM XML extension}.
+    of {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DOMDocument}.
+    The class DOMDocument is provided by {@link http://www.php.net/manual/en/ref.dom.php PHP5's built-in DOM API}.
   </para>
  </refsect1>
  
@@ -37,7 +37,7 @@
       <emphasis>PHP5</emphasis>: XML_Query2XML heavily uses the new exception handling and object orientation features.
      </listitem>
      <listitem>
-      <emphasis>PHP5's DOM XML extension (which is complied in to PHP5 by default)</emphasis>
+      <emphasis>PHP5's built-in DOM API</emphasis>
      </listitem>
      <listitem>
       <emphasis>{@link http://pear.php.net/package/DB PEAR DB}</emphasis>, 
@@ -185,7 +185,7 @@ $query2xml = XML_Query2XML::factory($adodb);
   </para>
   <para>
   	This method is the most powerful transformation method. It returns an instance of
-  	DomDocument (part of PHP5's DOM XML extension). The records returned by the query/queries will be processed
+  	DOMDocument (part of PHP5's built-in DOM API). The records returned by the query/queries will be processed
   	one after another. The $options argument is a rather complex, associative,
   	multi dimensional array. The $sql argument can be a string or as well an associative array.
   </para>
@@ -1782,492 +1782,6 @@ print $dom->saveXML();
    </para>
   </refsect2>
   
-  <refsect2 id="{@id options_mapper}">
-   <title>$options['mapper']</title>
-   <para>
-    This option allows you to specifiy a function for mapping SQL identifiers to XML names.
-    Whenever you use a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications Simple Element Specification}
-    or a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications Simple Attribute Specification}
-    only with a column name and without a tag/attribute name, the specified column name will be used for the
-    tag/attribute name. Please note that mapping is also performed when the
-    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.asterisk_shortcut} is used.
-    Per default $options['mapper'] is set to false which means that no special mapping is used.
-    $options['mapper'] can have one of the following formats:
-    <itemizedlist>
-      <listitem>
-       <emphasis>'CLASS::STATIC_METHOD'</emphasis>: this syntax allows you to use a static method
-       for mapping:
-       <programlisting role="php">
-       <![CDATA[
-'mapper' => 'MyMapper::map'
-       ]]>
-       </programlisting>
-      </listitem>
-      <listitem>
-       <emphasis>array('CLASS', 'STATIC_METHOD')</emphasis>: this syntax also allows you to use a static
-       method for mapping:
-       <programlisting role="php">
-       <![CDATA[
-'mapper' => array('MyMapper', 'map')
-       ]]>
-       </programlisting>
-      </listitem>
-      <listitem>
-       <emphasis>array($instance, 'METHOD')</emphasis>: this syntax allows you to use a non-static
-       method for mapping:
-       <programlisting role="php">
-       <![CDATA[
-'mapper' => array($myMap, 'map')
-       ]]>
-       </programlisting>
-      </listitem>
-      <listitem>
-       <emphasis>'FUNCTION'</emphasis>: this syntax allows you to use a regular function
-       for mapping:
-       <programlisting role="php">
-       <![CDATA[
-'mapper' => 'myUppercaseMapper'
-       ]]>
-       </programlisting>
-      </listitem>
-      <listitem>
-       <emphasis>false</emphasis>: use the boolean value false (or any other value that == false) to
-       deactivate any special mapping:
-       <programlisting role="php">
-       <![CDATA[
-'mapper' => false
-       ]]>
-       </programlisting>
-      </listitem>
-    </itemizedlist>
-    Remember that the mapping only applies to
-    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
-    and {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications}
-    that do not explicitly have a tag/attribute name or those that have a tag/attribute name that contains
-    an {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.asterisk_shortcut asterisk shortcut}.
-    The following example will also show that a mapper defined at the root level is also used at all lower levels
-    (unless it gets overwritten, see
-    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_mapper.multiple_mappers}):
-    <programlisting role="php">
-     <![CDATA[
-<?php
-class SomeMapper
-{
-    public function map($str)
-    {
-        //do something with $str
-        return $str;
-    }
-}
-
-require_once 'XML/Query2XML.php';
-require_once 'XML/Query2XML/ISO9075Mapper.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(           //
-  "SELECT * FROM artist",            //
-  array(                             //
-    'rootTag' => 'favorite_artists', //no mapping
-    'idColumn' => 'artistid',        //nothing to map
-    'rowTag' => 'artist',            //no mapping
-    'mapper' => 'SomeMapper::map',   //
-    'elements' => array(             //
-      'artistid',                 //mapping
-      'NAME' => 'name',           //no mapping as the tag name is specified
-      '*',                        //mapping
-      'TAG_*' => '*',             //does a mapping too!
-      'albums' => array(          //nothing to map
-        'sql' => array(           //
-          'data' => array(        //
-            'artistid'            //nothing to map
-          ),                      //
-          'query' => 'SELECT * FROM album WHERE artist_id = ?'      //
-        ),                      //
-        'rootTag' => 'albums',  //no mapping
-        'rowTag' => 'album',    //no mapping
-        'idColumn' => 'albumid',//nothing to map
-        'elements' => array(    //
-          'albumid',          //mapping using the mapper specified at the root level
-          'title',            //mapping using the mapper specified at the root level
-          'published_year',   //mapping using the mapper specified at the root level
-          'comment'           //mapping using the mapper specified at the root level
-        )                     //
-      )                       //
-    ),                        //
-    'attributes' => array(        //
-      'artistid',                 //mapping
-      'NAME' => 'name',           //no mapping as the tag name is specified
-      '*',                        //mapping
-      'TAG_*' => '*'              //does a mapping too!
-    )                             //
-  )                               //
-);                                //
-header('Content-Type: application/xml');    //
-print $dom->saveXML();                      //
-?>
-     ]]>
-     </programlisting>
-     
-   </para>
-   
-   <refsect3 id="{@id 9075mapping}">
-    <title>Mapping SQL identifiers to XML names in accordance with ISO/IEC 9075-14:2005</title>
-    <para>
-     The package XML_Query2XML also implements the Final Committee Draft for ISO/IEC 9075-14:2005,
-     section "9.1 Mapping SQL &lt;identifier&gt;s to XML Names". ISO/IEC 9075-14:2005 is available
-     online at {@link http://www.sqlx.org/SQL-XML-documents/5FCD-14-XML-2004-07.pdf}.
-    </para>
-    <para>
-     A lot of characters are legal in SQL identifiers but cannot be used within
-     XML names. To begin with, SQL identifiers can contain any Unicode character
-     while XML names are limited to a certain set of characters. E.g the
-     SQL identifier "&lt;21yrs in age" obviously is not a valid XML name.
-     '#', '{', and '}' are also not allowed. Fully escaped SQL identifiers
-     also must not contain a column (':') or start with "xml" (in any case
-     combination). Illegal characters are mapped to a string of the form
-     _xUUUU_ where UUUU is the Unicode value of the character.
-    </para>
-    <para>
-     The following is a table of example mappings:
-     <![CDATA[
-+----------------+------------------------+------------------------------------+
-| SQL-Identifier | Fully escaped XML name | Comment                            |
-+----------------+------------------------+------------------------------------+
-| dept:id        | dept_x003A_id          | ":" is illegal                     |
-| xml_name       | _x0078_ml_name         | must not start with [Xx][Mm][Ll]   |
-| XML_name       | _x0058_ML_name         | must not start with [Xx][Mm][Ll]   |
-| hire date      | hire_x0020_date        | space is illegal too               |
-| Works@home     | Works_x0040_home       | "@" is illegal                     |
-| file_xls       | file_x005F_xls         | "_" gets mapped if followed by "x" |
-| FIRST_NAME     | FIRST_NAME             | no problem here                    |
-+----------------+------------------------+------------------------------------+
-     ]]>
-    </para>
-    <para>
-     The ISO 9075-mapping does produce some overhead which might not be needed in
-     a lot of situations. Therefore it is not the default mapper. In most cases
-     it will be sufficient to validate your XML schema once using tools like the free
-     {@link http://www.altova.com/download_spy_home.html XMLSpy Home Edition}.
-    </para>
-    <para>
-     To use the ISO 9075-mapper that comes with XML_Query2XML you have to:
-     <itemizedlist>
-      <listitem>
-       make sure that {@link http://pear.php.net/package/I18N_UnicodeString PEAR I18N_UnicodeString}
-       is installed - see {@tutorial XML_Query2XML.pkg#requirements}.
-      </listitem>
-      <listitem>
-       require XML/Query2XML/ISO9075Mapper.php
-      </listitem>
-      <listitem>
-       set the option "mapper" to "XML_Query2XML_ISO9075Mapper::map"
-      </listitem>
-     </itemizedlist>
-     Here goes an example:
-     <programlisting role="php">
-     <![CDATA[
-<?php
-require_once 'XML/Query2XML.php';
-require_once 'XML/Query2XML/ISO9075Mapper.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(
-  "SELECT * FROM artist",
-  array(
-    'rootTag' => 'favorite_artists',
-    'idColumn' => 'artistid',
-    'rowTag' => 'artist',
-    'mapper' => 'XML_Query2XML_ISO9075Mapper::map',
-    'elements' => array(
-        '*'
-    )
-  )
-);
-header('Content-Type: application/xml');
-$dom->formatOutput = true;
-print $dom->saveXML();
-?>
-     ]]>
-     </programlisting>
-    </para>
-   </refsect3>
-   <refsect3 id="{@id own_mappers}">
-    <title>Building your own mappers</title>
-    <para>
-     There are cases when you will want the tag and attribute names to be somehow different from
-     the column names. Let's say you want to use the column names as tag and attribute names
-     but make them all uppercase. Certainly you could write code like this:
-     <programlisting role="php">
-     <![CDATA[
-<?php
-require_once 'XML/Query2XML.php';
-require_once 'XML/Query2XML/ISO9075Mapper.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(
-  "SELECT * FROM artist",
-  array(
-    'rootTag' => 'favorite_artists',
-    'idColumn' => 'artistid',
-    'rowTag' => 'artist',
-    'elements' => array(
-        'NAME' => 'name',
-        'BIRTH_YEAR' => 'birth_year',
-        'BIRTH_PLACE' => 'birth_place',
-        'GENRE' => 'genre',
-    ),
-    'attributes' => array(
-        'ARTISTID' => 'artistid'
-    )
-  )
-);
-header('Content-Type: application/xml');
-$dom->formatOutput = true;
-print $dom->saveXML();
-?>
-     ]]>
-     </programlisting>
-     But that seems a little redundant, doesn't it? In cases like these it is recommended
-     to write your own mapper. As we want to write OO code we don't implement our mapper
-     as a function but as a static public method of the new class UppercaseMapper. The
-     mapper must take a string as an argument and must return a string:
-     <programlisting role="php">
-     <![CDATA[
-<?php
-class UppercaseMapper
-{
-    public function map($str)
-    {
-        return strtoupper($str);
-    }
-}
-
-require_once 'XML/Query2XML.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(
-  "SELECT * FROM artist",
-  array(
-    'rootTag' => 'favorite_artists',
-    'idColumn' => 'artistid',
-    'rowTag' => 'artist',
-    'mapper' => 'UppercaseMapper::map',
-    'elements' => array(
-        'name',
-        'birth_year',
-        'birth_place',
-        'genre',
-    ),
-    'attributes' => array(
-        'artistid'
-    )
-  )
-);
-header('Content-Type: application/xml');
-$dom->formatOutput = true;
-print $dom->saveXML();
-?>
-     ]]>
-     </programlisting>
-     The resulting XML data looks like this:
-     <programlisting role="tutorial">
-     <![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<favorite_artists>
-  <artist ARTISTID="1">
-    <NAME>Curtis Mayfield</NAME>
-    <BIRTH_YEAR>1920</BIRTH_YEAR>
-    <BIRTH_PLACE>Chicago</BIRTH_PLACE>
-    <GENRE>Soul</GENRE>
-  </artist>
-  <artist ARTISTID="2">
-    <NAME>Isaac Hayes</NAME>
-    <BIRTH_YEAR>1942</BIRTH_YEAR>
-    <BIRTH_PLACE>Tennessee</BIRTH_PLACE>
-    <GENRE>Soul</GENRE>
-  </artist>
-  <artist ARTISTID="3">
-    <NAME>Ray Charles</NAME>
-    <BIRTH_YEAR>1930</BIRTH_YEAR>
-    <BIRTH_PLACE>Mississippi</BIRTH_PLACE>
-    <GENRE>Country and Soul</GENRE>
-  </artist>
-</favorite_artists>
-     ]]>
-     </programlisting>
-    </para>
-   </refsect3>
-   <refsect3 id="{@id multiple_mappers}">
-    <title>Using multiple mappers</title>
-    <para>
-     Let's say we want to force all tags corresponding to columns of the artist table to be uppercase
-     and all tags corresponding to columns of the album table to be lowercase. This can be done
-     using two mappers:
-     <programlisting role="php">
-     <![CDATA[
-<?php
-class MyMappers
-{
-    public function uppercaseMapper($str)
-    {
-        return strtoupper($str);
-    }
-    
-    public function lowercaseMapper($str)
-    {
-        return strtolower($str);
-    }
-}
-
-require_once 'XML/Query2XML.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(
-    "SELECT
-        *
-     FROM
-        artist",
-    array(
-        'rootTag' => 'music_library',
-        'rowTag' => 'artist',
-        'idColumn' => 'artistid',
-        'mapper' => 'MyMappers::uppercaseMapper',
-        'elements' => array(
-            '*',
-            'albums' => array(
-                'sql' => array(
-                    'data' => array(
-                        'artistid'
-                    ),
-                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
-                ),
-                'rootTag' => 'albums',
-                'rowTag' => 'album',
-                'idColumn' => 'albumid',
-                'mapper' => 'MyMappers::lowercaseMapper',
-                'elements' => array(
-                    '*',
-                    'artist_id' => '?:'
-                )
-            )
-        )
-    )
-);
-header('Content-Type: application/xml');
-$dom->formatOutput = true;
-print $dom->saveXML();
-?>
-     ]]>
-     </programlisting>
-     As we know that the columns of the album table already are lowercase we could as well
-     use one mapper and just deactivate that for the complex element "albums':
-     <programlisting role="php">
-     <![CDATA[
-<?php
-class MyMappers
-{
-    public function uppercaseMapper($str)
-    {
-        return strtoupper($str);
-    }
-}
-
-require_once 'XML/Query2XML.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(
-    "SELECT
-        *
-     FROM
-        artist",
-    array(
-        'rootTag' => 'music_library',
-        'rowTag' => 'artist',
-        'idColumn' => 'artistid',
-        'mapper' => 'MyMappers::uppercaseMapper',
-        'elements' => array(
-            '*',
-            'albums' => array(
-                'sql' => array(
-                    'data' => array(
-                        'artistid'
-                    ),
-                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
-                ),
-                'rootTag' => 'albums',
-                'rowTag' => 'album',
-                'idColumn' => 'albumid',
-                'mapper' => false,
-                'elements' => array(
-                    '*',
-                    'artist_id' => '?:'
-                )
-            )
-        )
-    )
-);
-header('Content-Type: application/xml');
-$dom->formatOutput = true;
-print $dom->saveXML();
-?>
-     ]]>
-     </programlisting>
-     In both cases the resulting XML data will look like this:
-     <programlisting role="tutorial">
-     <![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<music_library>
-  <artist>
-    <ARTISTID>1</ARTISTID>
-    <NAME>Curtis Mayfield</NAME>
-    <BIRTH_YEAR>1920</BIRTH_YEAR>
-    <BIRTH_PLACE>Chicago</BIRTH_PLACE>
-    <GENRE>Soul</GENRE>
-    <albums>
-      <album>
-        <albumid>1</albumid>
-        <title>New World Order</title>
-        <published_year>1990</published_year>
-        <comment>the best ever!</comment>
-      </album>
-      <album>
-        <albumid>2</albumid>
-        <title>Curtis</title>
-        <published_year>1970</published_year>
-        <comment>that man's got somthin' to say</comment>
-      </album>
-    </albums>
-  </artist>
-  <artist>
-    <ARTISTID>2</ARTISTID>
-    <NAME>Isaac Hayes</NAME>
-    <BIRTH_YEAR>1942</BIRTH_YEAR>
-    <BIRTH_PLACE>Tennessee</BIRTH_PLACE>
-    <GENRE>Soul</GENRE>
-    <albums>
-      <album>
-        <albumid>3</albumid>
-        <title>Shaft</title>
-        <published_year>1972</published_year>
-        <comment>he's the man</comment>
-      </album>
-    </albums>
-  </artist>
-  <artist>
-    <ARTISTID>3</ARTISTID>
-    <NAME>Ray Charles</NAME>
-    <BIRTH_YEAR>1930</BIRTH_YEAR>
-    <BIRTH_PLACE>Mississippi</BIRTH_PLACE>
-    <GENRE>Country and Soul</GENRE>
-    <albums />
-  </artist>
-</music_library>
-     ]]>
-     </programlisting>
-    </para>
-   </refsect3>
-  </refsect2>
-  
   <refsect2 id="{@id options_roottag}">
    <title>$options['rootTag']</title>
    <para>
@@ -3369,11 +2883,853 @@ print $dom->saveXML();
    </refsect3>
   </refsect2>
   
+  <refsect2 id="{@id options_mapper}">
+   <title>$options['mapper']</title>
+   <para>
+    This option allows you to specifiy a function for mapping SQL identifiers to XML names.
+    Whenever you use a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications Simple Element Specification}
+    or a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications Simple Attribute Specification}
+    only with a column name and without a tag/attribute name, the specified column name will be used for the
+    tag/attribute name. Please note that mapping is also performed when the
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.asterisk_shortcut} is used.
+    Per default $options['mapper'] is set to false which means that no special mapping is used.
+    $options['mapper'] can have one of the following formats:
+    <itemizedlist>
+      <listitem>
+       <emphasis>'CLASS::STATIC_METHOD'</emphasis>: this syntax allows you to use a static method
+       for mapping:
+       <programlisting role="php">
+       <![CDATA[
+'mapper' => 'MyMapper::map'
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>array('CLASS', 'STATIC_METHOD')</emphasis>: this syntax also allows you to use a static
+       method for mapping:
+       <programlisting role="php">
+       <![CDATA[
+'mapper' => array('MyMapper', 'map')
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>array($instance, 'METHOD')</emphasis>: this syntax allows you to use a non-static
+       method for mapping:
+       <programlisting role="php">
+       <![CDATA[
+'mapper' => array($myMap, 'map')
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>'FUNCTION'</emphasis>: this syntax allows you to use a regular function
+       for mapping:
+       <programlisting role="php">
+       <![CDATA[
+'mapper' => 'myUppercaseMapper'
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>false</emphasis>: use the boolean value false (or any other value that == false) to
+       deactivate any special mapping:
+       <programlisting role="php">
+       <![CDATA[
+'mapper' => false
+       ]]>
+       </programlisting>
+      </listitem>
+    </itemizedlist>
+    Remember that the mapping only applies to
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
+    and {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications}
+    that do not explicitly have a tag/attribute name or those that have a tag/attribute name that contains
+    an {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.asterisk_shortcut asterisk shortcut}.
+    The following example will also show that a mapper defined at the root level is also used at all lower levels
+    (unless it gets overwritten, see
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_mapper.multiple_mappers}):
+    <programlisting role="php">
+     <![CDATA[
+<?php
+class SomeMapper
+{
+    public function map($str)
+    {
+        //do something with $str
+        return $str;
+    }
+}
+
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(           //
+  "SELECT * FROM artist",            //
+  array(                             //
+    'rootTag' => 'favorite_artists', //no mapping
+    'idColumn' => 'artistid',        //nothing to map
+    'rowTag' => 'artist',            //no mapping
+    'mapper' => 'SomeMapper::map',   //
+    'elements' => array(             //
+      'artistid',                 //mapping
+      'NAME' => 'name',           //no mapping as the tag name is specified
+      '*',                        //mapping
+      'TAG_*' => '*',             //does a mapping too!
+      'albums' => array(          //nothing to map
+        'sql' => array(           //
+          'data' => array(        //
+            'artistid'            //nothing to map
+          ),                      //
+          'query' => 'SELECT * FROM album WHERE artist_id = ?'      //
+        ),                      //
+        'rootTag' => 'albums',  //no mapping
+        'rowTag' => 'album',    //no mapping
+        'idColumn' => 'albumid',//nothing to map
+        'elements' => array(    //
+          'albumid',          //mapping using the mapper specified at the root level
+          'title',            //mapping using the mapper specified at the root level
+          'published_year',   //mapping using the mapper specified at the root level
+          'comment'           //mapping using the mapper specified at the root level
+        )                     //
+      )                       //
+    ),                        //
+    'attributes' => array(        //
+      'artistid',                 //mapping
+      'NAME' => 'name',           //no mapping as the tag name is specified
+      '*',                        //mapping
+      'TAG_*' => '*'              //does a mapping too!
+    )                             //
+  )                               //
+);                                //
+header('Content-Type: application/xml');    //
+print $dom->saveXML();                      //
+?>
+     ]]>
+     </programlisting>
+     
+   </para>
+   
+   <refsect3 id="{@id 9075mapping}">
+    <title>Mapping SQL identifiers to XML names in accordance with ISO/IEC 9075-14:2005</title>
+    <para>
+     The package XML_Query2XML also implements the Final Committee Draft for ISO/IEC 9075-14:2005,
+     section "9.1 Mapping SQL &lt;identifier&gt;s to XML Names". ISO/IEC 9075-14:2005 is available
+     online at {@link http://www.sqlx.org/SQL-XML-documents/5FCD-14-XML-2004-07.pdf}.
+    </para>
+    <para>
+     A lot of characters are legal in SQL identifiers but cannot be used within
+     XML names. To begin with, SQL identifiers can contain any Unicode character
+     while XML names are limited to a certain set of characters. E.g the
+     SQL identifier "&lt;21yrs in age" obviously is not a valid XML name.
+     '#', '{', and '}' are also not allowed. Fully escaped SQL identifiers
+     also must not contain a column (':') or start with "xml" (in any case
+     combination). Illegal characters are mapped to a string of the form
+     _xUUUU_ where UUUU is the Unicode value of the character.
+    </para>
+    <para>
+     The following is a table of example mappings:
+     <![CDATA[
++----------------+------------------------+------------------------------------+
+| SQL-Identifier | Fully escaped XML name | Comment                            |
++----------------+------------------------+------------------------------------+
+| dept:id        | dept_x003A_id          | ":" is illegal                     |
+| xml_name       | _x0078_ml_name         | must not start with [Xx][Mm][Ll]   |
+| XML_name       | _x0058_ML_name         | must not start with [Xx][Mm][Ll]   |
+| hire date      | hire_x0020_date        | space is illegal too               |
+| Works@home     | Works_x0040_home       | "@" is illegal                     |
+| file_xls       | file_x005F_xls         | "_" gets mapped if followed by "x" |
+| FIRST_NAME     | FIRST_NAME             | no problem here                    |
++----------------+------------------------+------------------------------------+
+     ]]>
+    </para>
+    <para>
+     The ISO 9075-mapping does produce some overhead which might not be needed in
+     a lot of situations. Therefore it is not the default mapper. In most cases
+     it will be sufficient to validate your XML schema once using tools like the free
+     {@link http://www.altova.com/download_spy_home.html XMLSpy Home Edition}.
+    </para>
+    <para>
+     To use the ISO 9075-mapper that comes with XML_Query2XML you have to:
+     <itemizedlist>
+      <listitem>
+       make sure that {@link http://pear.php.net/package/I18N_UnicodeString PEAR I18N_UnicodeString}
+       is installed - see {@tutorial XML_Query2XML.pkg#requirements}.
+      </listitem>
+      <listitem>
+       require XML/Query2XML/ISO9075Mapper.php
+      </listitem>
+      <listitem>
+       set the option "mapper" to "XML_Query2XML_ISO9075Mapper::map"
+      </listitem>
+     </itemizedlist>
+     Here goes an example:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+  "SELECT * FROM artist",
+  array(
+    'rootTag' => 'favorite_artists',
+    'idColumn' => 'artistid',
+    'rowTag' => 'artist',
+    'mapper' => 'XML_Query2XML_ISO9075Mapper::map',
+    'elements' => array(
+        '*'
+    )
+  )
+);
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+    </para>
+   </refsect3>
+   <refsect3 id="{@id own_mappers}">
+    <title>Building your own mappers</title>
+    <para>
+     There are cases when you will want the tag and attribute names to be somehow different from
+     the column names. Let's say you want to use the column names as tag and attribute names
+     but make them all uppercase. Certainly you could write code like this:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+  "SELECT * FROM artist",
+  array(
+    'rootTag' => 'favorite_artists',
+    'idColumn' => 'artistid',
+    'rowTag' => 'artist',
+    'elements' => array(
+        'NAME' => 'name',
+        'BIRTH_YEAR' => 'birth_year',
+        'BIRTH_PLACE' => 'birth_place',
+        'GENRE' => 'genre',
+    ),
+    'attributes' => array(
+        'ARTISTID' => 'artistid'
+    )
+  )
+);
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     But that seems a little redundant, doesn't it? In cases like these it is recommended
+     to write your own mapper. As we want to write OO code we don't implement our mapper
+     as a function but as a static public method of the new class UppercaseMapper. The
+     mapper must take a string as an argument and must return a string:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+class UppercaseMapper
+{
+    public function map($str)
+    {
+        return strtoupper($str);
+    }
+}
+
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+  "SELECT * FROM artist",
+  array(
+    'rootTag' => 'favorite_artists',
+    'idColumn' => 'artistid',
+    'rowTag' => 'artist',
+    'mapper' => 'UppercaseMapper::map',
+    'elements' => array(
+        'name',
+        'birth_year',
+        'birth_place',
+        'genre',
+    ),
+    'attributes' => array(
+        'artistid'
+    )
+  )
+);
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     The resulting XML data looks like this:
+     <programlisting role="tutorial">
+     <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<favorite_artists>
+  <artist ARTISTID="1">
+    <NAME>Curtis Mayfield</NAME>
+    <BIRTH_YEAR>1920</BIRTH_YEAR>
+    <BIRTH_PLACE>Chicago</BIRTH_PLACE>
+    <GENRE>Soul</GENRE>
+  </artist>
+  <artist ARTISTID="2">
+    <NAME>Isaac Hayes</NAME>
+    <BIRTH_YEAR>1942</BIRTH_YEAR>
+    <BIRTH_PLACE>Tennessee</BIRTH_PLACE>
+    <GENRE>Soul</GENRE>
+  </artist>
+  <artist ARTISTID="3">
+    <NAME>Ray Charles</NAME>
+    <BIRTH_YEAR>1930</BIRTH_YEAR>
+    <BIRTH_PLACE>Mississippi</BIRTH_PLACE>
+    <GENRE>Country and Soul</GENRE>
+  </artist>
+</favorite_artists>
+     ]]>
+     </programlisting>
+    </para>
+   </refsect3>
+   <refsect3 id="{@id multiple_mappers}">
+    <title>Using multiple mappers</title>
+    <para>
+     Let's say we want to force all tags corresponding to columns of the artist table to be uppercase
+     and all tags corresponding to columns of the album table to be lowercase. This can be done
+     using two mappers:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+class MyMappers
+{
+    public function uppercaseMapper($str)
+    {
+        return strtoupper($str);
+    }
+    
+    public function lowercaseMapper($str)
+    {
+        return strtolower($str);
+    }
+}
+
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'mapper' => 'MyMappers::uppercaseMapper',
+        'elements' => array(
+            '*',
+            'albums' => array(
+                'sql' => array(
+                    'data' => array(
+                        'artistid'
+                    ),
+                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                ),
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'mapper' => 'MyMappers::lowercaseMapper',
+                'elements' => array(
+                    '*',
+                    'artist_id' => '?:'
+                )
+            )
+        )
+    )
+);
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     As we know that the columns of the album table already are lowercase we could as well
+     use one mapper and just deactivate that for the complex element "albums':
+     <programlisting role="php">
+     <![CDATA[
+<?php
+class MyMappers
+{
+    public function uppercaseMapper($str)
+    {
+        return strtoupper($str);
+    }
+}
+
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'mapper' => 'MyMappers::uppercaseMapper',
+        'elements' => array(
+            '*',
+            'albums' => array(
+                'sql' => array(
+                    'data' => array(
+                        'artistid'
+                    ),
+                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                ),
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'mapper' => false,
+                'elements' => array(
+                    '*',
+                    'artist_id' => '?:'
+                )
+            )
+        )
+    )
+);
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     In both cases the resulting XML data will look like this:
+     <programlisting role="tutorial">
+     <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_library>
+  <artist>
+    <ARTISTID>1</ARTISTID>
+    <NAME>Curtis Mayfield</NAME>
+    <BIRTH_YEAR>1920</BIRTH_YEAR>
+    <BIRTH_PLACE>Chicago</BIRTH_PLACE>
+    <GENRE>Soul</GENRE>
+    <albums>
+      <album>
+        <albumid>1</albumid>
+        <title>New World Order</title>
+        <published_year>1990</published_year>
+        <comment>the best ever!</comment>
+      </album>
+      <album>
+        <albumid>2</albumid>
+        <title>Curtis</title>
+        <published_year>1970</published_year>
+        <comment>that man's got somthin' to say</comment>
+      </album>
+    </albums>
+  </artist>
+  <artist>
+    <ARTISTID>2</ARTISTID>
+    <NAME>Isaac Hayes</NAME>
+    <BIRTH_YEAR>1942</BIRTH_YEAR>
+    <BIRTH_PLACE>Tennessee</BIRTH_PLACE>
+    <GENRE>Soul</GENRE>
+    <albums>
+      <album>
+        <albumid>3</albumid>
+        <title>Shaft</title>
+        <published_year>1972</published_year>
+        <comment>he's the man</comment>
+      </album>
+    </albums>
+  </artist>
+  <artist>
+    <ARTISTID>3</ARTISTID>
+    <NAME>Ray Charles</NAME>
+    <BIRTH_YEAR>1930</BIRTH_YEAR>
+    <BIRTH_PLACE>Mississippi</BIRTH_PLACE>
+    <GENRE>Country and Soul</GENRE>
+    <albums />
+  </artist>
+</music_library>
+     ]]>
+     </programlisting>
+    </para>
+   </refsect3>
+  </refsect2>
+
+  <refsect2 id="{@id options_encoder}">
+   <title>$options['encoder']</title>
+   <para>
+    This option allows you to specifiy a function/method that performs the
+    XML encoding for node and attribute values. Per default it is assumed
+    that all data is in ISO-8859-1 (Latin-1) and will be encoded to UTF-8 using
+    {@link http://at.php.net/mb_convert_encoding mb_convert_encoding()} or if not available
+    using {@link http://at.php.net/utf8_encode utf8_encode()}.
+   </para>
+   <para>
+    For some introduction to XML encoding please see
+    {@link http://www.w3schools.com/xml/xml_encoding.asp} and
+    {@link http://www.opentag.com/xfaq_enc.htm}.
+    Note: I highly recommend to use UTF-8 for XML if you don't have a compelling reason
+    to use an other encoding standard.
+   </para>
+   <para>
+    The default encoding mechanism (ISO-8859-1 to UTF-8) will be just fine in most cases
+    but sometimes your data might already be in in UTF-8 or you might not want
+    your XML to be UTF-8 encoded at all.
+   </para>
+   <para>
+    Please see {@tutorial XML_Query2XML.pkg#encoding} for how to change the encoding
+    standard used in the XML declaration.
+   </para>
+   <para>
+    $options['encoder'] can have one of the following formats:
+    <itemizedlist>
+      <listitem>
+       <emphasis>'CLASS::STATIC_METHOD'</emphasis>: this syntax allows you to use a static method
+       for encoding:
+       <programlisting role="php">
+       <![CDATA[
+'encoder' => 'MyEncoder::encode'
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>array('CLASS', 'STATIC_METHOD')</emphasis>: this syntax also allows you to use a static
+       method for encoding:
+       <programlisting role="php">
+       <![CDATA[
+'encoder' => array('MyEncoder', 'encode')
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>array($instance, 'METHOD')</emphasis>: this syntax allows you to use a non-static
+       method for encoding:
+       <programlisting role="php">
+       <![CDATA[
+'encoder' => array($myEncoder, 'encode')
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>'FUNCTION'</emphasis>: this syntax allows you to use a regular function
+       for encoding:
+       <programlisting role="php">
+       <![CDATA[
+'encoder' => 'myUTF8toISO88591Encoder'
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>false</emphasis>: use the boolean value false to deactivate encoding:
+       <programlisting role="php">
+       <![CDATA[
+'encoder' => false
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       <emphasis>null</emphasis>: use NULL to reset encoding to the builint default encoding.
+       This default assumes that all data is in ISO-8859-1 (Latin-1) and will encode it to
+       UTF-8 using {@link http://at.php.net/mb_convert_encoding mb_convert_encoding()}
+       or if not available using {@link http://at.php.net/utf8_encode utf8_encode()}.
+       <programlisting role="php">
+       <![CDATA[
+'encoder' => false
+       ]]>
+       </programlisting>
+      </listitem>
+    </itemizedlist>
+    One thing you should keep in mind when writing your own encoding (wrapper) functions is
+    that the encoder will only be called if the current record has a string value for
+    that column; i.e. the encoder will not be called if the column value is NULL.
+   </para>
+   <para>
+    The following example will show that an encoder defined at the root level is also used
+    at all lower levels (unless it gets overwritten, see
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_encoder.multiple_encoders}):
+    <programlisting role="php">
+    <![CDATA[
+<?php
+class SomeEncoder
+{
+    public function encode($str)
+    {
+        //do something with $str
+        return $str;
+    }
+}
+
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/ISO9075Mapper.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+  "SELECT * FROM artist",
+  array(
+    'rootTag' => 'favorite_artists',
+    'idColumn' => 'artistid',
+    'rowTag' => 'artist',
+    'encoder' => 'SomeEncoder::encode',     /* we define an encoder at the root level */
+    'elements' => array(
+      'artistid',                           // encoding will be
+      'name',                               // performed on these
+      'albums' => array(
+        'sql' => array(
+          'data' => array(
+            'artistid'
+          ),
+          'query' => 'SELECT * FROM album WHERE artist_id = ?'
+        ),
+        'rootTag' => 'albums',
+        'rowTag' => 'album',
+        'idColumn' => 'albumid',
+        'elements' => array(
+          'albumid',            // encoder setting is affective on all lower
+          'title'               // levels
+        ),
+        'attributes' => array(
+          'comment'             // note: encoding is also performed for attributes
+        )
+      )
+    )
+  )
+);
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+    </para>
+    <refsect3 id="{@id iso88591toutf8}">
+     <title>ISO-8859-1 to UTF-8 encoding (default)</title>
+     <para>
+      This is what will automatically be performed if you do not use $options['encoder']
+      at all. This is because most databases use ISO-8859-1 (aka Latin-1) by default.
+      As previously stated, XML_Query2XML will use
+      {@link http://at.php.net/mb_convert_encoding mb_convert_encoding()}
+      or if that is not available {@link http://at.php.net/utf8_encode utf8_encode()} for the
+      actual encoding.
+     </para>
+     <para>
+      If you have set $options['encoder'] on the root level but wish to switch back to
+      the default on a lower level all you have to do is to use the NULL value:
+      <programlisting role="php">
+      <![CDATA[
+'encoder' => null
+      ]]>
+      </programlisting>
+     </para>
+    </refsect3>
+    <refsect3 id="{@id utf8toiso88591}">
+     <title>UTF-8 to ISO-8859-1 encoding</title>
+     <para>
+      If your data is in UTF-8 but you would like your XML to be in ISO-8859-1 (Latin-1),
+      you can use {@link http://at.php.net/utf8_decode utf8_decode()}:
+      <programlisting role="php">
+      <![CDATA[
+'encoder' => 'utf8_decode'
+      ]]>
+      </programlisting>
+      or define a wrapper for {@link http://at.php.net/mb_convert_encoding mb_convert_encoding()}
+      and use that:
+      <programlisting role="php">
+      <![CDATA[
+function utf8ToLatin1($str)
+{
+    //hint: mb_convert_encoding (str, to_encoding, from_encoding)
+    return mb_convert_encoding($str, 'iso-8859-1', 'UTF-8');
+}
+      ]]>
+      </programlisting>
+      specified as encoder:
+      <programlisting role="php">
+      <![CDATA[
+'encoder' => 'utf8ToLatin1'
+      ]]>
+      </programlisting>
+     </para>
+    </refsect3>
+    <refsect3 id="{@id disabling}">
+     <title>Disabling encoding</title>
+     <para>
+      If you data already is in the character set you wish to use for the XML, all you
+      have to do is to disable the encoding by using a boolean value of false:
+      <programlisting role="php">
+      <![CDATA[
+'encoder' => 'false'
+      ]]>
+      </programlisting>
+     </para>
+    </refsect3>
+    <refsect3 id="{@id multiple_encoders}">
+     <title>Using multiple encoders</title>
+     <para>
+      It might happen to you that some of your data sources are in one character set
+      while others are in another. This means that you need different encoding procedures
+      to convert them all to the same character set you wish to use for the XML (usually UTF-8).
+     </para>
+     <para>
+      In the first example we will assume that all columns of the table artist are in
+      ISO-8859-1 (Latin-1) while all columns of the table album are in UTF-8.
+      <programlisting role="php">
+      <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist
+        LEFT JOIN album ON album.artist_id = artist.artistid",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(    // all columns of the table artist are in
+            'artistid',         // ISO-8859-1; the default conversion therefore
+            'name',             // is just fine
+            'birth_year',
+            'birth_place',
+            'genre',
+            'albums' => array(
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'encoder' => false,     // the columns of the album table already are in UTF-8;
+                'elements' => array(    // we therefore have to disable encoding
+                    'albumid',
+                    'title',
+                    'published_year',
+                    'comment'
+                )
+            )
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+      ]]>
+      </programlisting>
+     
+     </para>
+     <para>
+      For our second example, let's assume that the following columns use the following
+      character sets:
+      <![CDATA[
++----------------------------------------+
+| Column         | Character Set         |
++----------------------------------------+
+| artist.name    | ISO-8859-1 (Latin-1)  |
+| artist.genre   | UTF-8                 |
+| album.title    | UTF-16                |
+| album.comment  | Windows-1252          |
++----------------+-----------------------+
+      ]]>
+      As our XML output shall be in UTF-8 we have to use multiple encoders on a
+      per-column basis:
+      <programlisting role="php">
+      <![CDATA[
+<?php
+function latin1ToUTF8($str)
+{
+    return utf8_decode($str);
+    // alternatively we could have used
+    // return mb_convert_encoding($str, 'UTF-8', 'iso-8859-1');
+}
+
+function utf16ToUTF8($str)
+{
+    return mb_convert_encoding($str, 'UTF-8', 'UTF-16');
+}
+
+function windows1252ToUTF8($str)
+{
+    return mb_convert_encoding($str, 'UTF-8', 'windows-1252');
+}
+
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist
+        LEFT JOIN album ON album.artist_id = artist.artistid",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'artistid',
+            'name', // name is in ISO-8859-1 and therefore will be handled by the default conversion
+            'birth_year',
+            'birth_place',
+            'genre' => array(
+                'value' => 'genre',
+                'encoder' => false  // genre already is in UTF-8
+            ),
+            'albums' => array(
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'elements' => array(
+                    'albumid',
+                    'title' => array(
+                        'value' => 'title',
+                        'encoder' => 'utf16ToUTF8'  // title is in UTF-16 and therefore needs
+                    ),                              // special treatment
+                    'published_year'
+                ),
+                'attributes' => array(
+                    'comment' => array(
+                        'value' => 'comment',
+                        'encoder' => 'windows1252ToUTF8'    // comment is in Windows-1252
+                    )
+                )
+            )
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+      ]]>
+      </programlisting>
+      
+     </para>
+    </refsect3>
+  </refsect2>
+  
   <refsect2 id="{@id return_value_modification}">
    <title>Modifying the returned DOMDocument instance</title>
    <para>
     {@link XML_Query2XML::getXML()} returns an instance of
-    {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DomDocument}.
+    {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DOMDocument}.
     I recommend that you do some reading about 
     {@link http://www.php.net/manual/en/ref.dom.php PHP5's DOM extension}.
    </para>
@@ -3448,6 +3804,8 @@ print $doc->saveXML();
     </programlisting>
    </para>
   </refsect2>
+  
+  
   <refsect2 id="{@id final_notes}">
    <title>Final Notes on XML_Query2XML::getXML()</title>
    <para>
@@ -4093,7 +4451,7 @@ try {
  <refsect1 id="{@id formatting}">
   <title>Output formatting</title>
   <para>
-   Before calling the saveXML() method on your DomDocument instance set its public property
+   Before calling the saveXML() method on your DOMDocument instance set its public property
    {@link http://at.php.net/manual/en/ref.dom.php#dom.class.domdocument.properties formatOutput} to true!
    Here goes an example:
    <programlisting role="php">
@@ -4152,6 +4510,100 @@ require_once 'XML/Beautifier.php';
 $beautifier = new XML_Beautifier();
 print $beautifier->formatString($dom->saveXML());
 ?>
+   ]]>
+   </programlisting>
+  </para>
+ </refsect1>
+ 
+ <refsect1 id="{@id encoding}">
+  <title>XML encoding</title>
+  <para>
+   It is highly recommended to use UTF-8 for your XML data. But if you want
+   to use another encoding standard you have to:
+   <itemizedlist>
+    <listitem>
+     Use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_encoder} to convert
+     all node and attribute values to the desired encoding standard. If source and
+     destination encoding standards are the same, you just have to set
+     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_encoder} to false.
+    </listitem>
+    <listitem>
+     Set the encoding property of the DOMDocument instance returned by XML_Query2XML::getXML().
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>
+    For some introduction to XML encoding please see
+    {@link http://www.w3schools.com/xml/xml_encoding.asp} and
+    {@link http://www.opentag.com/xfaq_enc.htm}.
+    Note: I highly recommend to use UTF-8 for XML if you don't have a compelling reason
+    to use an other encoding standard.
+   </para>
+  <para>
+   Here goes an example that shows how to use ISO-8859-1 (Latin-1) for XML encoding. We
+   will assume that your data is in ISO-8859-1 and therefore does not need any conversion.
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'encoder' => false,     // disable default ISO-8859-1 to UTF-8 encoding
+        'elements' => array(
+            'artistid',
+            'name',
+            'birth_year',
+            'birth_place',
+            'genre'
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+
+$dom->encoding = 'iso-8859-1';  //setting XML encoding
+
+print $dom->saveXML();
+?>
+   ]]>
+   </programlisting>
+   This results in the following XML:
+   <programlisting role="tutorial">
+   <![CDATA[
+<?xml version="1.0" encoding="iso-8859-1"?>
+<music_library>
+  <artist>
+    <artistid>1</artistid>
+    <name>Curtis Mayfield</name>
+    <birth_year>1920</birth_year>
+    <birth_place>Chicago</birth_place>
+    <genre>Soul</genre>
+  </artist>
+  <artist>
+    <artistid>2</artistid>
+    <name>Isaac Hayes</name>
+    <birth_year>1942</birth_year>
+    <birth_place>Tennessee</birth_place>
+    <genre>Soul</genre>
+  </artist>
+  <artist>
+    <artistid>3</artistid>
+    <name>Ray Charles</name>
+    <birth_year>1930</birth_year>
+    <birth_place>Mississippi</birth_place>
+    <genre>Country and Soul</genre>
+  </artist>
+</music_library>
    ]]>
    </programlisting>
   </para>
@@ -5636,7 +6088,7 @@ class Callbacks
      ]]>
      </programlisting>
      ['elements']['sales']['elements']['date'] and ['time'] contain portions of the timestamp column.
-     Also note that a separate call to DomNode::setAttribute() is used to
+     Also note that a separate call to DOMNode::setAttribute() is used to
      set the attribute date_generated in the root element.
      </para>
     </refsect3>
