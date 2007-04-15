@@ -40,8 +40,8 @@ require_once 'PEAR.php';
 * Very powerful and flexible method that can produce whatever XML data you want. It
 * was specifically written to also handle LEFT JOINS.
 *
-* They both return an instance of the class DomDocument provided by PHP5's
-* DOM XML extension.
+* They both return an instance of the class DOMDocument provided by PHP5's
+* built-in DOM API.
 *
 * A typical usage of XML_Query2XML looks like this:
 * <code>
@@ -238,7 +238,7 @@ class XML_Query2XML
     * Currently the following global options are available:
     *
     * hidden_container_prefix: The prefix to use for container elements that are
-    *   to be removed before the DomDocument before it is returned by
+    *   to be removed before the DOMDocument before it is returned by
     *   {@link XML_Query2XML::getXML()}. This has to be a non-empty string.
     *   The default value is '__'.
     *
@@ -434,7 +434,7 @@ class XML_Query2XML
     
     /**Transforms the data retrieved by a single SQL query into flat XML data.
     *
-    * This method will return a new instance of DomDocument. The column names
+    * This method will return a new instance of DOMDocument. The column names
     * will be used as element names.
     *
     * Example:
@@ -464,7 +464,7 @@ class XML_Query2XML
     *                            (default: 'root').
     * @param string $rowTagName  The name of the tag used for each row; this
     *                            argument is optional (default: 'row').
-    * @return DomDocument        A new instance of DomDocument.
+    * @return DOMDocument        A new instance of DOMDocument.
     */
     public function getFlatXML($sql, $rootTagName = 'root', $rowTagName = 'row')
     {
@@ -474,7 +474,7 @@ class XML_Query2XML
         *  getFlatXML/throwDBException.phpt
         *  getFlatXML/case01.phpt
         */
-        $dom = self::_createDomDocument();
+        $dom = self::_createDOMDocument();
         $rootTag = self::_addNewDOMChild($dom, $rootTagName);
         $records = $this->_getAllRecords($sql);
         foreach ($records as $record) {
@@ -493,7 +493,7 @@ class XML_Query2XML
     /**Transforms your SQL data retrieved by one or more queries into complex and
     * highly configurable XML data.
     *
-    * This method will return a new instance of DomDocument.
+    * This method will return a new instance of DOMDocument.
     * Please see the <b>{@tutorial XML_Query2XML.pkg tutorial}</b> for details.
     * 
     * @throws XML_Query2XML_Exception This is the base class for the exception types
@@ -509,7 +509,7 @@ class XML_Query2XML
     * @param array $options Options for the creation of the XML data stored in an
     *                       associative, potentially mutli-dimensional array
     *                       (please see the tutorial).
-    * @return DomDocument   The XML data as a new instance of DomDocument.
+    * @return DOMDocument   The XML data as a new instance of DOMDocument.
     */
     public function getXML($sql, $options)
     {
@@ -542,7 +542,7 @@ class XML_Query2XML
             $rootTagName = 'root';
         }
         
-        $dom = self::_createDomDocument();
+        $dom = self::_createDOMDocument();
         $rootTag = self::_addNewDOMChild($dom, $rootTagName);
         
         $options['sql'] = $sql;
@@ -577,9 +577,9 @@ class XML_Query2XML
     /**Private recursive method that creates the nested XML elements from a record.
     *
     * getXML calls this method for every row in the initial result set.
-    * The $tree argument deserves some more explanation. All DomNodes are stored
+    * The $tree argument deserves some more explanation. All DOMNodes are stored
     * in $tree the way they appear in the XML document. The same hirachy needs to be
-    * built so that we can know if a DomNode that corresponds to a column ID of 2 is
+    * built so that we can know if a DOMNode that corresponds to a column ID of 2 is
     * already a child node of a certain XML element. Let's have a look at an example
     * to clarify this:
     * <code>
@@ -654,12 +654,12 @@ class XML_Query2XML
     * @param array $options   An array containing the options for this nested 
     *                         element; this will be a subset of the array originally
     *                         passed to getXML().
-    * @param DomDocument $dom An instance of DomDocument.
+    * @param DOMDocument $dom An instance of DOMDocument.
     * @param array $tree      An associative multi-dimensional array, that is
     *                         used to store the information which tag has already
     *                         been created for a certain ID column value.
     * @return mixed           The XML element's representation as a new instance of
-    *                         DomNode or the boolean value false (meaning no
+    *                         DOMNode or the boolean value false (meaning no
     *                         new tag was created).
     */
     private function _getNestedXMLRecord($record, &$options, $dom, &$tree)
@@ -748,7 +748,7 @@ class XML_Query2XML
                 * Only check if $encoder is not false (don't use an encoder)
                 * or null (use self::_utf8encode()).
                 *
-                * unit tests MISSING: _getNestedXMLRecord/
+                * unit test: _getNestedXMLRecord/
                 *  throwConfigException_encoderNotCallableStaticMethod1.phpt
                 *  throwConfigException_encoderNotCallableStaticMethod2.phpt
                 *  throwConfigException_encoderNotCallableNonstaticMethod.phpt
@@ -860,11 +860,11 @@ class XML_Query2XML
                 }
             }
             if (isset($options['value'])) {
-                if ($parsedValue instanceof DomNode || is_array($parsedValue)) {
+                if ($parsedValue instanceof DOMNode || is_array($parsedValue)) {
                     /*
                     * The value returned from _applyColumnStringToRecord() and
-                    * stored in $parsedValue is an instance of DomNode or an
-                    * array of DomNode instances. _addDOMChildren() will handle
+                    * stored in $parsedValue is an instance of DOMNode or an
+                    * array of DOMNode instances. _addDOMChildren() will handle
                     * both.
                     */
                     self::_addDOMChildren($tag, $parsedValue, true);
@@ -911,11 +911,11 @@ class XML_Query2XML
                         'elements'
                     );
                     if ($this->_evaluateCondtion($tagValue, $column)) {
-                        if ($tagValue instanceof DomNode || is_array($tagValue)) {
+                        if ($tagValue instanceof DOMNode || is_array($tagValue)) {
                             /*
                             * The value returned from _applyColumnStringToRecord()
-                            * and stored in $tagValue is an instance of DomNode or
-                            * an array of DomNode instances. _addDOMGrandchildren()
+                            * and stored in $tagValue is an instance of DOMNode or
+                            * an array of DOMNode instances. _addDOMGrandchildren()
                             * will handle both.
                             */
                             self::_addDOMGrandchildren($tag, $tagValue, $tagName, true);
@@ -929,7 +929,7 @@ class XML_Query2XML
                     }
                 }
             }
-            /* We set $ret to $tag because $tag holds a newly created DomNode that
+            /* We set $ret to $tag because $tag holds a newly created DOMNode that
             *  needs to be added to it's parent; this is to be handled by the method
             *  that called _getNestedXMLRecord().
             */
@@ -952,7 +952,7 @@ class XML_Query2XML
             //we leave $ret set to false because $tag already existed
         }
         
-        //Return the whole tag (an instance of DomNode).
+        //Return the whole tag (an instance of DOMNode).
         return $ret;
     }
     
@@ -1184,7 +1184,7 @@ class XML_Query2XML
     *                          specification.
     * @param array $record     The current record.
     * @param array $options    The complex attribute specification itself.
-    * @param DomNode $tag      The DomNode to which the attribute is to be added.
+    * @param DOMNode $tag      The DOMNode to which the attribute is to be added.
     * @param mixed $parentEncoder A valid argument for call_user_func(), null to
     *                             use self::_utf8encode() or false to not use
     *                             any encoding.
@@ -1596,7 +1596,7 @@ class XML_Query2XML
                         . $ret
                     );
                 }
-                //we return the root DomNode
+                //we return the root DOMNode
                 $ret = $doc->documentElement;
             } else {
                 /*
@@ -1635,7 +1635,7 @@ class XML_Query2XML
             */
             return !(is_null($value) || (is_string($value) && strlen($value) == 0));
         } elseif (strpos($spec, '&') === 0) {
-            //return $value instanceof DomNode || is_array($value);
+            //return $value instanceof DOMNode || is_array($value);
         }
         return true;
     }
@@ -2126,32 +2126,32 @@ class XML_Query2XML
         }
     }
     
-    /**Creates a new instance of DomDocument.
+    /**Creates a new instance of DOMDocument.
     * '1.0' is passed as first argument and 'UTF-8' as second to the
-    * DomDocument constructor.
-    * @return DomDocument The new instance.
+    * DOMDocument constructor.
+    * @return DOMDocument The new instance.
     */
-    private static function _createDomDocument()
+    private static function _createDOMDocument()
     {
-        return new DomDocument('1.0', 'UTF-8');
+        return new DOMDocument('1.0', 'UTF-8');
     }
     
     /**Create and then add a new child element.
     *
     * @throws XML_Query2XML_XMLException This exception will bubble up if it is
     *                          thrown by _createDOMElement().
-    * @param DomNode $element  The parent DomNode the new DOM element should be
+    * @param DOMNode $element  The parent DOMNode the new DOM element should be
     *                          appended to.
     * @param string $name      The tag name of the new element.
     * @param string $value     The value of a child text node. This argument is
     *                          optional. The default is the boolean value false,
     *                          which means that no child text node will be appended.
-    * @return DomNode          The newly created DomNode instance that was appended
+    * @return DOMNode          The newly created DOMNode instance that was appended
     *                          to $element.
     */
-    private static function _addNewDOMChild(DomNode $element, $name, $value = false)
+    private static function _addNewDOMChild(DOMNode $element, $name, $value = false)
     {
-        if ($element instanceof DomDocument) {
+        if ($element instanceof DOMDocument) {
             $dom = $element;
         } else {
             $dom = $element->ownerDocument;
@@ -2161,20 +2161,20 @@ class XML_Query2XML
         return $child;
     }
     
-    /**Helper method to create a new instance of DomNode
+    /**Helper method to create a new instance of DOMNode
     *
     * @throws XML_Query2XML_XMLException If $name is an invalid XML identifier.
     *                          Also it will bubble up if it is thrown by
     *                          _appendTextChildNode().
-    * @param DomDocument $dom  An instance of DomDocument. It's createElement()
-    *                          method is used to create the new DomNode instance.
+    * @param DOMDocument $dom  An instance of DOMDocument. It's createElement()
+    *                          method is used to create the new DOMNode instance.
     * @param string name       The tag name of the new element.
     * @param string $value     The value of a child text node. This argument is
     *                          optional. The default is the boolean value false,
     *                          which means that no child text node will be appended.
-    * @return DomNode An instance of DomNode.
+    * @return DOMNode An instance of DOMNode.
     */
-    private static function _createDOMElement(DomDocument $dom, $name,
+    private static function _createDOMElement(DOMDocument $dom, $name,
         $value = false)
     {
         try {
@@ -2209,10 +2209,10 @@ class XML_Query2XML
     *                 if $value cannot be UTF8-encoded for some reason. It will also
     *                 be thrown if $value is an object or an array (and can therefore
     *                 not be converted into a string).
-    * @param DomNode $element An instance of DomNode
+    * @param DOMNode $element An instance of DOMNode
     * @param string $value The value of the text node.
     */
-    private static function _appendTextChildNode(DomNode $element, $value)
+    private static function _appendTextChildNode(DOMNode $element, $value)
     {
         if (is_object($value) || is_array($value)) {
             /*
@@ -2249,11 +2249,11 @@ class XML_Query2XML
     *                 if $name is not a valid attribute name. It will also be thrown
     *                 if $value is an object or an array (and can therefore
     *                 not be converted into a string).
-    * @param DomNode $element An instance of DomNode
+    * @param DOMNode $element An instance of DOMNode
     * @param string $name The name of the attribute to set.
     * @param string $value The value of the attribute to set.
     */
-    private static function _setDOMAttribute(DomNode $element, $name, $value)
+    private static function _setDOMAttribute(DOMNode $element, $name, $value)
     {
         if (is_object($value) || is_array($value)) {
             /*
@@ -2285,11 +2285,11 @@ class XML_Query2XML
     * It will also return true if $element has multiple child nodes
     * named $childTagName.
     *
-    * @param DomNode $element An instance of DomNode
+    * @param DOMNode $element An instance of DOMNode
     * @param string $childTagName The name of the node to look for
     * @return boolean
     */
-    private static function _hasDOMChild(DomNode $element, $childTagName)
+    private static function _hasDOMChild(DOMNode $element, $childTagName)
     {
         return (bool)$element->getElementsByTagName($childTagName)->length;
     }
@@ -2298,11 +2298,11 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_XMLException If $element has no child
     *                                    named $childTagName.
-    * @param DomNode $element An instance of DomNode
+    * @param DOMNode $element An instance of DOMNode
     * @param string $childTagName The name of the node to look for
-    * @return DomNode The first child node named $childTagName
+    * @return DOMNode The first child node named $childTagName
     */
-    private static function _getDOMChild(DomNode $element, $childTagName)
+    private static function _getDOMChild(DOMNode $element, $childTagName)
     {
         $domNodeList = $element->getElementsByTagName($childTagName);
         if($domNodeList->length) {
@@ -2328,9 +2328,9 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_XMLException It will bubble up if it is thrown
     *                              by _addDOMChildren().
-    * @param DomNode $base         An instance of DomNode.
-    * @param mixed $granchildren   An array of DomNode instances or
-    *                              just a single DomNode instance.
+    * @param DOMNode $base         An instance of DOMNode.
+    * @param mixed $granchildren   An array of DOMNode instances or
+    *                              just a single DOMNode instance.
     *                              Boolean values of false are always ignored.
     * @param string $childTagName  The name of the child element the grandchildren
     *                              should be added to; if this is an empty string,
@@ -2338,15 +2338,15 @@ class XML_Query2XML
     * @param boolean $import       This argument is optional. The default is false.
     *                              It will passed on to _addDOMChildren().
     */
-    private static function _addDOMGrandchildren(DomNode $base, $grandchildren,
+    private static function _addDOMGrandchildren(DOMNode $base, $grandchildren,
         $childTagName, $import = false)
     {
         $dom = $base->ownerDocument;
         if ($childTagName == '') {
             $child = $base;
         } else {
-            if (self::_hasDomChild($base, $childTagName)) {
-                $child = self::_getDomChild($base, $childTagName);
+            if (self::_hasDOMChild($base, $childTagName)) {
+                $child = self::_getDOMChild($base, $childTagName);
             } else {
                 $child = $dom->createElement($childTagName);
                 $base->appendChild($child);
@@ -2355,28 +2355,28 @@ class XML_Query2XML
         self::_addDOMChildren($child, $grandchildren, $import);
     }
     
-    /*Adds one or more child nodes to an existing DomNode instance.
+    /*Adds one or more child nodes to an existing DOMNode instance.
     *
     * @throws XML_Query2XML_XMLException If one of the specified children
-    *                         is not one of the following: an instance of DomNode,
+    *                         is not one of the following: an instance of DOMNode,
     *                         the boolean value false, or an array containing
     *                         these two.
-    * @param DomNode $base    An instance of DomNode.
-    * @param mixed $children  An array of DomNode instances or
-    *                         just a single DomNode instance.
+    * @param DOMNode $base    An instance of DOMNode.
+    * @param mixed $children  An array of DOMNode instances or
+    *                         just a single DOMNode instance.
     *                         Boolean values of false are always ignored.
     * @param boolean $import  Whether DOMDocument::importNode() should be called for
     *                         $children. This is necessary if the instance(s) passed
     *                         as $children was/were created using a different
-    *                         DomDocument instance. This argument is optional.
+    *                         DOMDocument instance. This argument is optional.
     *                         The default is false.
     */
-    private static function _addDOMChildren(DomNode $base, $children, $import = false)
+    private static function _addDOMChildren(DOMNode $base, $children, $import = false)
     {
         if ($children === false) {
             //don't do anything
             return;
-        } elseif ($children instanceof DomNode) {
+        } elseif ($children instanceof DOMNode) {
             //$children is a single complex child
             if ($import) {
                 $children = $base->ownerDocument->importNode($children, true);
@@ -2386,7 +2386,7 @@ class XML_Query2XML
             for ($i = 0; $i < count($children); $i++) {
                 if ($children[$i] === false) {
                     //don't do anything
-                } elseif ($children[$i] instanceof DomNode) {
+                } elseif ($children[$i] instanceof DOMNode) {
                     if ($import) {
                         $children[$i] = $base->ownerDocument->importNode(
                             $children[$i],
@@ -2413,7 +2413,7 @@ class XML_Query2XML
         } else {
             /*
             * This should never happen because _addDOMChildren() is only called
-            * for arrays and instances of DomNode.
+            * for arrays and instances of DOMNode.
             */
             throw new XML_Query2XML_XMLException(
                 'The argument passed to XML_Query2XML::_addDOMChildren() '
@@ -2431,7 +2431,7 @@ class XML_Query2XML
     * {@link XML_Query2XML::_replaceParentWithChildren()}. For the concept of
     * container elements please see the {@tutorial XML_Query2XML.pkg tutorial}.
     *
-    * @param DomNode $element An instance of DomNode.
+    * @param DOMNode $element An instance of DOMNode.
     * @param string $hiddenContainerPrefix The containers that will be removed
     *                         all start with this string.
     */
@@ -2468,9 +2468,9 @@ class XML_Query2XML
     }
     
     /**Replace a certain node with its child nodes.
-    * @param DomNode $parent An instance of DomNode.
+    * @param DOMNode $parent An instance of DOMNode.
     */
-    private static function _replaceParentWithChildren(DomNode $parent)
+    private static function _replaceParentWithChildren(DOMNode $parent)
     {
         $child = $parent->firstChild;
         $children = array();
@@ -2513,7 +2513,7 @@ class XML_Query2XML
                 return call_user_func($encoder, $str);
             } catch (Exception $e) {
                 /*
-                * unit tests MISSING:
+                * unit test:
                 *  _executeEncoder/throwXMLException.phpt
                 */
                 throw new XML_Query2XML_XMLException(
