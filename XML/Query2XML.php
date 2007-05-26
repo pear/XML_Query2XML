@@ -61,7 +61,6 @@ require_once 'PEAR.php';
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
 * @package XML_Query2XML
-* @todo $options['idColumn'] should also accept multiple columns in an array
 */
 class XML_Query2XML
 {
@@ -553,7 +552,11 @@ class XML_Query2XML
         */
         $tree = array();
         
-        $records = $this->_applySqlOptionsToRecord($options, $emptyRecord = array());
+        if ($sql === false) {
+            $records = array(array()); // one empty record
+        } else {
+            $records = $this->_applySqlOptionsToRecord($options, $emptyRecord = array());
+        }
         foreach ($records as $key => $record) {
             $tag = $this->_getNestedXMLRecord($records[$key], $options, $dom, $tree);
             
@@ -770,7 +773,12 @@ class XML_Query2XML
             $attributes = array();
         }
         
-        $id = $this->_applyColumnStringToRecord($idColumn, $record, 'idColumn');
+        if ($idColumn === false) {
+            static $uniqueIdCounter = 0;
+            $id = ++$uniqueIdCounter;
+        } else {
+            $id = $this->_applyColumnStringToRecord($idColumn, $record, 'idColumn');
+        }
         if ($id === null) {
             //the ID column is NULL
             return false;
