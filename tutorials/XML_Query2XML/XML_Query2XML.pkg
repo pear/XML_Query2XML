@@ -193,9 +193,11 @@ $query2xml = XML_Query2XML::factory($adodb);
   <refsect2 id="{@id sql}">
    <title>$sql</title>
    <para>
-    This option is exactly like {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}: you
+    This option is almost exactly like {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}: you
     can specify the query with a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification}
     or a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification}.
+    What is different from {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql} is that
+    you can also specify a boolean value of false.
    </para>
    <para>
     Here is an example of a simple query specification (<emphasis>WARNING:</emphasis> to prevent SQL injection
@@ -255,9 +257,9 @@ $dom = $query2xml->getXML(
     'idColumn' => 'artistid',
     'rowTag' => 'artist',
     'elements' => array(
-        'name',
-        'birth_year',
-        'music_genre' => 'genre'
+      'name',
+      'birth_year',
+      'music_genre' => 'genre'
     )
   )
 );
@@ -280,6 +282,124 @@ print $dom->saveXML();
 </favorite_artist>
     ]]>
     </programlisting>
+   </para>
+   <para>
+    As stated above $sql can also be a boolean value of false. This will only be useful in
+    scenarios where you want to combine the results of multiple unrelated queries into
+    a single XML document. XML_Query2XML will deal with an $sql argument that has a value
+    of false as if it executed a query that returned a single record with no colunns.
+   </para>
+   <para>
+    If you simpy wanted all the records of the table "album" and all
+    the records of the table "artist" you could write code like this:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+
+$dom = $query2xml->getXML(
+    false,
+    array(
+        'idColumn' => false,
+        'rowTag' => '__tables',
+        'rootTag' => 'music_store',
+        'elements' => array(
+            'artists' => array(
+                'rootTag' => 'artists',
+                'rowTag' => 'artist',
+                'idColumn' => 'artistid',
+                'sql' => 'SELECT * FROM artist',
+                'elements' => array(
+                    '*'
+                )
+            ),
+            'albums' => array(
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'sql' => 'SELECT * FROM album',
+                'elements' => array(
+                    '*'
+                )
+            )
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    In this case we actually are not interested in $sql at all; all we want is to get our
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}s executed.
+    Also note that we used '__tables' for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_rowtag}
+    at the root level: this is because we don't have anything to loop over at the root level - remember
+    using false for $sql is like using a query that returns a single record with no columns.
+   </para>
+   <para>
+    The resulting XML looks like this:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_store>
+  <artists>
+    <artist>
+      <artistid>1</artistid>
+      <name>Curtis Mayfield</name>
+      <birth_year>1920</birth_year>
+      <birth_place>Chicago</birth_place>
+      <genre>Soul</genre>
+    </artist>
+    <artist>
+      <artistid>2</artistid>
+      <name>Isaac Hayes</name>
+      <birth_year>1942</birth_year>
+      <birth_place>Tennessee</birth_place>
+      <genre>Soul</genre>
+    </artist>
+    <artist>
+      <artistid>3</artistid>
+      <name>Ray Charles</name>
+      <birth_year>1930</birth_year>
+      <birth_place>Mississippi</birth_place>
+      <genre>Country and Soul</genre>
+    </artist>
+  </artists>
+  <albums>
+    <album>
+      <albumid>1</albumid>
+      <artist_id>1</artist_id>
+      <title>New World Order</title>
+      <published_year>1990</published_year>
+      <comment>the best ever!</comment>
+    </album>
+    <album>
+      <albumid>2</albumid>
+      <artist_id>1</artist_id>
+      <title>Curtis</title>
+      <published_year>1970</published_year>
+      <comment>that man's got somthin' to say</comment>
+    </album>
+    <album>
+      <albumid>3</albumid>
+      <artist_id>2</artist_id>
+      <title>Shaft</title>
+      <published_year>1972</published_year>
+      <comment>he's the man</comment>
+    </album>
+  </albums>
+</music_store>
+    ]]>
+    </programlisting>
+   </para>
+   <para>
+    Want to dump not just two but all of your table? Have a look at
+    {@tutorial XML_Query2XML.pkg#dumpdatabase}.
    </para>
   </refsect2>
     
@@ -1182,8 +1302,19 @@ print $dom->saveXML();
       before using the XML_Query2XML_Callback interface. The return value of a COMMAND OBJECT's
       execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
      </listitem>
+     <listitem>
+      <emphasis>FALSE (boolean)</emphasis>: Only use this if you don't have a primary key
+      (which is a very bad idea) or you have a very simple tasks at hand like retrieving all
+      records from a table. Using the value FALSE will make XML_Query2XML treat every record
+      as unique. WARNING: it is considered very bad practice to use a value of
+      FALSE if you have a way to specify your primar key. This is because your code might
+      change over time and having your primary key specified will just make your more stable.
+      For a legitimate use of the value FALSE for the option idColumn, please see
+      {@tutorial XML_Query2XML.pkg#dumpdatabase}.
+     </listitem>
     </itemizedlist>
-    The same syntax (with the additional '?' prefix) can be use for
+    The same syntax (with the additional '?' prefix but without the boolean value FALSE) can
+    be use for
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value},
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications},
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification} and 
@@ -4606,6 +4737,99 @@ print $dom->saveXML();
 </music_library>
    ]]>
    </programlisting>
+  </para>
+ </refsect1>
+ 
+ <refsect1 id="{@id dumpdatabase}">
+  <title>Using dynamic $options to dump all data of your database</title>
+  <para>
+   For some reason you might simply want to dump every table in your database
+   with all their records. If you don't want to go over your code everytime a
+   new table was added, you need to generate (parts of) the $options argument on
+   the fly. Here is one way to do it:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+
+$mdb2 = MDB2::factory('mysql://root@localhost/world');
+$query2xml = XML_Query2XML::factory($mdb2);
+
+
+//we need MDB2's manager module to get the list of tables in a database independent way
+$mdb2->loadModule('Manager');
+$elements = array();
+$tables = $mdb2->listTables();
+for ($i = 0; $i < count($tables); $i++) {
+    $elements['table' . $i] = array(
+        'rowTag' => 'table',
+        'attributes' => array(
+            'name' => ':' . $tables[$i]
+        ),
+        'elements' => array(
+            'record' => array(
+                'idColumn' => false,
+                'sql' => 'SELECT * FROM ' . $tables[$i],
+                'elements' => array(
+                    '*'
+                )
+            )
+        )
+    );
+}
+
+$dom = $query2xml->getXML(
+    false,
+    array(
+        'idColumn' => false,
+        'rowTag' => '__tables',
+        'rootTag' => 'database',
+        'elements' => $elements
+    )
+);
+
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+   ]]>
+   </programlisting>
+  </para>
+  <para>
+   Notice how we used MDB2's manager module to get a list of all tables in our database.
+   We then loop over the names and create
+   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements}
+   at run time.
+  </para>
+  <para>
+   Each table tag will have an attribute "name". We use the ':' prefix to indicate that
+   what follows is a static text not to be interpreted as a column name.
+  </para>
+  <para>
+   When looking at the getXML() call, you'll notice that we didn't pass a query as the
+   first argument ({@tutorial XML_Query2XML.pkg#query2xml_getxml.sql}) but rather a boolean
+   value of false. As documented at {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql}
+   this will make XML_Query2XML behave as if we used a query that returned a single record
+   with no columns. This is necessary because in our example we use multiple unrelated queries
+   that we simply want to palce inside a database tag.
+  </para>
+  <para>
+   Also notice that we use the boolean value of FALSE for
+   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}
+   at the root level and for each of the
+   tables. It is OK to do so on the root level because we are actually only dealing with a
+   single fake record there. To use FALSE for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}
+   on the sub-levels within the $elements array
+   generated at run-time is also OK because we will always want all records and (which is
+   the reason why we are not violating best practices) we simply don't know the primary key
+   columns for all tables that might get created in the future.
+  </para>
+  <para>
+   Also note that we used '__tables' for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_rowtag}
+   at the root level: this is because we don't have anything to loop over at the root level - remember
+   using false for {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} is like using a
+   query that returns a single record with no columns.
   </para>
  </refsect1>
  
