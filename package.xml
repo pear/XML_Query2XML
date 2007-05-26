@@ -20,7 +20,7 @@ Major features:
 7. debugging, logging and profiling features
 8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 783 phpt unit tests
+10. 803 phpt unit tests
  
  </description>
  <lead>
@@ -29,26 +29,23 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2007-04-15</date>
+ <date>2007-05-26</date>
  <version>
-  <release>1.2.0</release>
-  <api>1.2.0</api>
+  <release>1.2.1</release>
+  <api>1.2.1</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>This third stable release contains a new feature and some minor coding-style related changes
-- it is now possible to handle data sources that use another character encoding
-  than ISO-8859-1; see the 'encoder' option:
-  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#query2xml_getxml.options_encoder
-  Thanks to Mickael Guerin for making me implement this feature that has been sitting on my
-  todo list for quite some time now.
-- other character encodings than UTF-8 can now also be used for XML encoding; see
-  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#encoding
-- unit tests are now correctly skipped if the database connection fails
-- XML_Query2XML now comes with 783 phpt unit tests
+ <notes>This fourth stable release contains only some small enhancements:
+- dumping the data of all the tables in your database is now easier;
+  there is also a new section in the tutorial that describes how to do this:
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#dumpdatabase
+  Thanks to vikram dot melonfire at gmail dot com for raising the issue of database dumps
+- $sql and $options['idColumn'] now also accept a value of false
+- XML_Query2XML now comes with 803 phpt unit tests
  </notes>
  <contents>
   <dir name="/">
@@ -200,6 +197,10 @@ Major features:
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getXML -->
       <dir name="setGlobalOption">
        <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
@@ -401,6 +402,10 @@ Major features:
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/getXML -->
       <dir name="setGlobalOption">
        <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
@@ -602,6 +607,10 @@ Major features:
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getXML -->
       <dir name="setGlobalOption">
        <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
@@ -803,6 +812,10 @@ Major features:
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/getXML -->
       <dir name="setGlobalOption">
        <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
@@ -1004,6 +1017,10 @@ Major features:
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
+       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/getXML -->
       <dir name="setGlobalOption">
        <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
@@ -1526,6 +1543,26 @@ The smaller changes include:
   http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#encoding
 - unit tests are now correctly skipped if the database connection fails
 - XML_Query2XML now comes with 783 phpt unit tests
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.2.1</release>
+    <api>1.2.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-05-26</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>This fourth stable release contains only some small enhancements:
+- dumping the data of all the tables in your database is now easier;
+  there is also a new section in the tutorial that describes how to do this:
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#dumpdatabase
+  Thanks to vikram dot melonfire at gmail dot com for raising the issue of database dumps
+- $sql and $options['idColumn'] now also accept a value of false
+- XML_Query2XML now comes with 803 phpt unit tests
    </notes>
   </release>
  </changelog>

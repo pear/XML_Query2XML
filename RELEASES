@@ -3,6 +3,17 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.2.1
+------
+Release date: 2007-05-26
+Release notes: This fourth stable release contains only some small enhancements:
+- dumping the data of all the tables in your database is now easier;
+  there is also a new section in the tutorial that describes how to do this:
+  http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#dumpdatabase
+  Thanks to vikram dot melonfire at gmail dot com for raising the issue of database dumps
+- $sql and $options['idColumn'] now also accept a value of false
+- XML_Query2XML now comes with 803 phpt unit tests
+
 v1.2.0
 ------
 Release date: 2007-04-15

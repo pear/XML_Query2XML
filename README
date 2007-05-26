@@ -35,7 +35,7 @@ of Profiling and Performance Tuning.
 |   +---case08 .......... Case 08: Case 06 revisited: Making use of Mappers
 +---XML ................. CONTAINS THE ACTUAL Query2XML.php that
 |                         will be installed in $PHP_PEAR_INSTALL_DIR/XML/
-+---tests ............... contains 783 phpt unit tests; all will be installed
++---tests ............... contains 803 phpt unit tests; all will be installed
                           in $PHP_PEAR_TEST_DIR/XML_Query2XML/tests. Please
                           see 3. Testing.
 

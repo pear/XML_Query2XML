@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # sync the test directories DB, MDB2, ADOdbDefault, ADOdbException & ADOdbPEAR
-# treating DB as the master
+# treating MDB2 as the master
 
 cd `dirname $0` || exit 1
 
