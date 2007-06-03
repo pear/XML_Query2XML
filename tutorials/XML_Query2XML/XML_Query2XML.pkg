@@ -4760,7 +4760,9 @@ $query2xml = XML_Query2XML::factory($mdb2);
 //we need MDB2's manager module to get the list of tables in a database independent way
 $mdb2->loadModule('Manager');
 $elements = array();
+$mdb2->setOption('portability', MDB2_PORTABILITY_NONE);
 $tables = $mdb2->listTables();
+$mdb2->setOption('portability', MDB2_PORTABILITY_ALL);
 for ($i = 0; $i < count($tables); $i++) {
     $elements['table' . $i] = array(
         'rowTag' => 'table',
