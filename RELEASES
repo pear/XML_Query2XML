@@ -3,6 +3,20 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.3.0
+------
+Release date: 2007-08-26
+Release notes: This fith stable release contains a couple of new features:
+- enhanced support for CDATA sections
+  (see the CDATA SECTION prefix)
+- enhanced support for binary data via base64 encoding
+  (see the BASE64 ENCODING prefix; thanks to Thomas Haslbeck
+  for making me implement this feature)
+- support for dynamic XML element names determined at run time
+  (see the dynamicRowTag option; thanks to John P. McCaskey for
+  requesting this feature)
+- XML_Query2XML now comes with 913 phpt unit tests
+
 v1.2.1
 ------
 Release date: 2007-05-26
