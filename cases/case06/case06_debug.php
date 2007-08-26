@@ -257,7 +257,7 @@ $dom = $query2xml->getXML(
 ); //getXML method call
 
 $root = $dom->firstChild;
-$root->setAttribute('date_generated', date("Y-m-d\TH:i:s", 1124801570));
+$root->setAttribute('date_generated', '2005-08-23T14:52:50');
 
 header('Content-Type: application/xml');
 
