@@ -420,10 +420,11 @@ print $dom->saveXML();
    <refsect3 id="{@id simple_element_specifications}">
     <title>Simple Element Specifications</title>
     <para> 
-      These allow you to specify elements that have only two properties: a name and a value.
-      The column names are the array values. By default the XML element will be named
-      after the column. If you're unhappy with that default, you can specify an other element
-      name by using it as the array key. The element specification
+      These allow you to use an array to specify elements that have only two properties: a name and a value.
+      The array values are used to specify the XML element values whereas the array keys are used to specify the
+      XML element names. For all array elements that are defined without a key, the array values will be used for
+      the XML element names. If no prefix is used (see below) the contents of the array values are interpreted
+      as column names. The following example illustrates the most basic usage of a simple element specification:
       <programlisting role="php">
       <![CDATA[
 array(
@@ -432,13 +433,15 @@ array(
 );
       ]]>
       </programlisting>
-      might therefore result in XML data like this:
+      This might result in XML data like this:
       <programlisting role="tutorial">
       <![CDATA[
 <COLUMN1>this was the contents of COLUMN1</COLUMN1>
 <COLUMN2>this was the contents of COLUMN2</COLUMN2>
       ]]>
       </programlisting>
+      If you do not want your XML elements named after your database columns you have to work with array keys
+      (ELEMENT1 and ELEMENT2 in our example):
       while the element specification
       <programlisting role="php">
       <![CDATA[
@@ -448,7 +451,7 @@ array(
 );
       ]]>
       </programlisting>
-      would make the same data appear like this:
+      This would make the same data appear like this:
       <programlisting role="tutorial">
       <![CDATA[
 <ELEMENT1>this was the contents of COLUMN1</ELEMENT1>
@@ -457,7 +460,7 @@ array(
       </programlisting>
     </para>
     <para>
-      If you use both, the array key and the array value to specify an element, the array value can be of the following types:
+      If you use both, the array key and the array value to specify an XML element, the array value can be of the following types:
       <itemizedlist>
        <listitem>
         <emphasis>COLUMN NAME (string)</emphasis>: this is the default if not preceeded by ':' or '#'.
@@ -493,7 +496,7 @@ array(
         execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
        </listitem>
       </itemizedlist>
-      There are two more prefixes available that can be used in conjunction with all the prifixes described above:
+      There are four more prefixes available that can be used in conjunction with all the prifixes described above:
       <itemizedlist>
        <listitem>
         <emphasis>XML UNSERIALIZATION prefix &amp;</emphasis>: the ampersand (&amp;) prefix allows you to
@@ -508,14 +511,26 @@ array(
         details.
        </listitem>
        <listitem>
+        <emphasis>BASE64 ENCODING prefix ^</emphasis>: if the specification starts with a carrat sign ('^'),
+        the element value will be passed to {@link http://www.php.net/base64_encode base64_encode()}.
+        The BASE64 ENCODING prefix can be used with all the prefixes described above (just put the BASE64 ENCODING prefix first):
+        e.g. '^#', '^:' or '^COLUMN_NAME'.
+       </listitem>
+       <listitem>
+        <emphasis>CDATA SECTION prefix =</emphasis>: if the specification starts with an equal sign ('='),
+        the element value will be enclosed in a CDATA section. A CDATA section starts with
+        "&lt;![CDATA[" and ends with "]]&gt;".
+        The CDATA SECTION prefix can be used with all the prefixes described above (just put the CDATA SECTION prefix first):
+        e.g. '=#', '=:', '=COLUMN_NAME' or '=^'.
+       </listitem>
+       <listitem>
         <emphasis>CONDITIONAL prefix ?</emphasis>: if the specification starts with a question mark ('?'),
         the whole element will be skipped if the value equals (==) an empty string. The CONDITIONAL prefix
-        can be combined with all types: if you do this you have to write the CONDITIONAL prefix first
-        e.g. '?#', '?:' or '?COLUMN_NAME'.
+        can be combined with all types described above: if you do this you have to write the CONDITIONAL
+        prefix first e.g. '?#', '?:', '?&amp;', '?=', '?^', or '?COLUMN_NAME'.
        </listitem>
       </itemizedlist>
-      Note: for ovious reasons, the XML UNSERIALIZATION prefix and the CONDITIONAL prefix cannot be
-      combined with a COMMAND OBJECT.
+      Note: for ovious reasons, the prefix cannot be combined with a COMMAND OBJECT.
     <para>
     </para>
       Basically, the same syntax can be use for
@@ -580,12 +595,7 @@ print $dom->saveXML();
      </para>
      
      <para>
-     The following example demonstrates the usage of all different types. The comment element will be skipped if its value == "".
-     Same holds true for the genre element which uses the trim'ed version of the value stored in the genre column. 
-     The published_century element gets the century calculated using floor. The element "static" has a static value of
-     "some static text". The title element uses a COMMAND OBJECT, i.e. an instance of a class that implements
-     the {@link XML_Query2XML_Callback} interface. In our case, the command class ToLowerCallback returns the
-     lowercase'd version of the value of the column specified as the constructor argument.
+     The following example demonstrates the usage of all different types:
      <programlisting role="php">
      <![CDATA[
 <?php
@@ -595,9 +605,9 @@ require_once 'MDB2.php';
 
 class Utils
 {
-    function trimGenre($record)
+    function trim($record, $columnName)
     {
-        return trim($record['genre']);
+        return trim($record[$columnName]);
     }
     
     function getPublishedYearCentury($record)
@@ -626,66 +636,139 @@ $dom = $query2xml->getXML(
   "SELECT
     *
    FROM
-    album al,
-    artist ar
+    sale,
+    store,
+    album
    WHERE
-    al.artist_id = ar.artistid",
+    sale.store_id = store.storeid
+    AND
+    sale.album_id = album.albumid
+    AND
+    sale.timestamp < '2005-06-01'",
   array(
-    'rootTag' => 'albums',
-    'idColumn' => 'albumid',
-    'rowTag' => 'album',
+    'rootTag' => 'sales',
+    'idColumn' => 'saleid',
+    'rowTag' => 'sale',
     'elements' => array(
-        'albumid',
-        'title' => new ToLowerCallback('title'),
-        'published_year',
-        'published_century' => "#Utils::getPublishedYearCentury()",
-        'comment' => '?comment',
+        'saleid',
+        'sale_timestamp' => 'timestamp',
         'static' => ':some static text',
-        'genre' => "?#Utils::trimGenre"
+        'now' => ':' . time(),
+        'album_century' => '#Utils::getPublishedYearCentury()',
+        'album_title' => '?#Utils::trim(title)',
+        'album_comment' => new ToLowerCallback('comment'),
+        'storeid',
+        'store_building1' => '?&building_xmldata',
+        'store_building2' => '?=building_xmldata',
+        'store_building3' => '?^building_xmldata'
     )
   )
 );
+
 header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 ?>
       ]]>
       </programlisting>
+      Let's go through all simple element specifications, one by one:
+      <itemizedlist>
+       <listitem>
+        <emphasis>'saleid'</emphasis>: this is as simple as it can get. The value of the column saleid will be used for an element named saleid.
+       </listitem>
+       <listitem>
+        <emphasis>'sale_timestamp' => 'timestamp'</emphasis>: here we want to place the value of the
+        column timestamp in an element named sale_timestamp; we therefore use sale_timestamp as the array key.
+       </listitem>
+       <listitem>
+        <emphasis>'static' => ':some static text'</emphasis>: the STATIC TEXT (note the ":" prefix) "some static text" will be placed inside an element named static.
+       </listitem>
+       <listitem>
+        <emphasis>'now' => ':' . time()</emphasis>: here the static text is computed at run time; however it will be the same for all "now" elements.
+       </listitem>
+       <listitem>
+        <emphasis>'album_century' => '#Utils::getPublishedYearCentury()'</emphasis>: here we use
+        a CALLBACK FUNCTION with a "#" prefix; the return value of Utils::getPublishedYearCentury() is used as the XML element value.
+        Note that the callback function will automatically be called with the current $record as the first argument.
+       </listitem>
+       <listitem>
+        <emphasis>'album_title' => '?#Utils::trim(title)'</emphasis>: we also use a CALLBACK FUNCTION with a "#" prefix, but
+        this time we pass an additional string argument to our callback function by specifing it within the opening and
+        closing brace. Also, we use the CONDITIONAL prefix ? which means that the album_title element will only appear in
+        the generated XML data if Utils::trim() returned a non-empty string (to be precise a string that != "").
+       </listitem>
+       <listitem>
+        <emphasis>'album_comment' => new ToLowerCallback('comment')</emphasis>: here we use a COMMAND OBJECT implementing
+        the {@link XML_Query2XML_Callback} interface. This is the object oriented way to use callbacks! Note how we pass the
+        column name to the callback class constructor, so that it's execute() method will now what column to work on.
+       </listitem>
+       <listitem>
+        <emphasis>'storeid'</emphasis>: plain an simple again
+       </listitem>
+       <listitem>
+        <emphasis>'store_building1' =>  '?&amp;building_xmldata'</emphasis>: here we use the XML UNSERIALIZATION prefix "&amp;"
+        to transform the value of the building_xmldata column into a DOMDocument. Using the CONDITIONAL prefix ? means
+        that store_building1 will only appear if building_xmldata is non-empty (!= "" to be precise).
+       </listitem>
+       <listitem>
+        <emphasis>'store_building2' => '?=building_xmldata'</emphasis>: CDATA SECTION prefix "=" is another way
+        incorporate XML data; the contents of the column building_xmldata will be surrounded by
+         "&lt;![CDATA[" and "]]&gt;". Using the CONDITIONAL prefix ? means
+        that store_building2 will only appear if building_xmldata is non-empty (!= "" to be precise).
+       </listitem>
+       <listitem>
+        <emphasis>'store_building3' => '?^building_xmldata'</emphasis>: here we use the BASE64 ENCODING prefix "^"
+        to first base64-encode the contents of the building_xmldata column. We again use the CONDITIONAL prefix "?".
+       </listitem>
+      </itemizedlist>
       The resulting XML data looks like this:
       <programlisting role="tutorial">
       <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<albums>
-  <album>
-    <albumid>1</albumid>
-    <title>new world order</title>
-    <published_year>1990</published_year>
-    <published_century>19</published_century>
-    <comment>the best ever!</comment>
+<sales>
+  <sale>
+    <saleid>1</saleid>
+    <sale_timestamp>2005-05-25 07:32:00</sale_timestamp>
     <static>some static text</static>
-    <genre>Soul</genre>
-  </album>
-  <album>
-    <albumid>2</albumid>
-    <title>curtis</title>
-    <published_year>1970</published_year>
-    <published_century>19</published_century>
-    <comment>that man's got somthin' to say</comment>
+    <now>1187498966</now>
+    <album_century>19</album_century>
+    <album_title>New World Order</album_title>
+    <album_comment>the best ever!</album_comment>
+    <storeid>1</storeid>
+    <store_building1>
+      <building>
+        <floors>4</floors>
+        <elevators>2</elevators>
+        <square_meters>3200</square_meters>
+      </building>
+    </store_building1>
+    <store_building2>< ![CDATA[<building><floors>4</floors><elevators>2</elevators><square_meters>3200</square_meters></building>]] ></store_building2>
+    <store_building3>PGJ1aWxkaW5nPjxmbG9vcnM+NDwvZmxvb3JzPjxlbGV2YXRvcnM+MjwvZWxldmF0b3JzPjxzcXVhcmVfbWV0ZXJzPjMyMDA8L3NxdWFyZV9tZXRlcnM+PC9idWlsZGluZz4=</store_building3>
+  </sale>
+  <sale>
+    <saleid>11</saleid>
+    <sale_timestamp>2005-05-25 07:23:00</sale_timestamp>
     <static>some static text</static>
-    <genre>Soul</genre>
-  </album>
-  <album>
-    <albumid>3</albumid>
-    <title>shaft</title>
-    <published_year>1972</published_year>
-    <published_century>19</published_century>
-    <comment>he's the man</comment>
-    <static>some static text</static>
-    <genre>Soul</genre>
-  </album>
-</albums>
+    <now>1187498966</now>
+    <album_century>19</album_century>
+    <album_title>Curtis</album_title>
+    <album_comment>that man's got somthin' to say</album_comment>
+    <storeid>2</storeid>
+    <store_building1>
+      <building>
+        <floors>2</floors>
+        <elevators>1</elevators>
+        <square_meters>400</square_meters>
+      </building>
+    </store_building1>
+    <store_building2>< ![CDATA[<building><floors>2</floors><elevators>1</elevators><square_meters>400</square_meters></building>]] ></store_building2>
+    <store_building3>PGJ1aWxkaW5nPjxmbG9vcnM+MjwvZmxvb3JzPjxlbGV2YXRvcnM+MTwvZWxldmF0b3JzPjxzcXVhcmVfbWV0ZXJzPjQwMDwvc3F1YXJlX21ldGVycz48L2J1aWxkaW5nPg==</store_building3>
+  </sale>
+</sales>
       ]]>
       </programlisting>
+      Note: due to a bug in phpDocumentor I had to cheat a little bit in the above XML; as you might have noticed
+      there was a space between "&lt;" and "![CDATA[".
      </para>
     </refsect3>
     <refsect3 id="{@id complex_element_specifications}">
@@ -1476,7 +1559,7 @@ function generateIdFromMultiKeyPK($record, $columnName1, $columnName2)
      will be put into an attribute named after the column. If you're
      unhappy with the default you can specify an other attribute name by using
      it as the array key. As documented for {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
-     the prefixes "?", "#" and ":" or a COMMAND OBJECT can be used. Only the UNSERIALIZATION prefix &amp; which is valid for
+     the prefixes "?", "#", "^" and ":" or a COMMAND OBJECT can be used. Only the UNSERIALIZATION prefix &amp; and the CDATA SECTION prefix ^ which are valid for
      a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications Simple Element Specification}
      cannot be used for a Simple Attribute Specification.
     </para>
@@ -1530,7 +1613,7 @@ print $dom->saveXML();
      <itemizedlist>
       <listitem>
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value}: the attribute's value
-      (note: you cannot use the UNSERIALIZATION prefix &amp; for an attribute specification)
+      (note: you cannot use the UNSERIALIZATION prefix &amp; or the the CDATA SECTION prefix ^ for an attribute specification)
       </listitem>
      </itemizedlist>
      and optionally can contain
@@ -1877,7 +1960,7 @@ print $dom->saveXML();
     so please see there for the resulting XML data.
    </para>
    <para>
-    In some situations, 'rowTag' can be omitted at all:
+    In some situations, 'rowTag' can be omitted all together:
     <programlisting role="php">
     <![CDATA[
 <?php
@@ -1910,6 +1993,133 @@ print $dom->saveXML();
     </programlisting>
     Here the complex element definition ['elements']['name'] has no 'rowTag' option. This is alright
     because the specification's array key ('name' in this case) is used by default.
+   </para>
+  </refsect2>
+  
+  <refsect2 id="{@id options_dynamicrowtag}">
+   <title>$options['dynamicRowTag']</title>
+   <para>
+    Use this option if you want the name of an XML element determined at run time (e.g. you want to pull the
+    XML element name from the database). Note: if this option is present, 
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_rowtag} will be ignored.
+   </para>
+   <para>
+    What you can assign to $options['dynamicRowTag'] is very similar as what you can use for
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value}
+    or a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications Simple Element Specification}.
+    
+    $options['dynamicRowTag'] can be of the following types:
+    <itemizedlist>
+     <listitem>
+      <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
+      If the column does not exist, an {@link XML_Query2XML_ConfigException} will be thrown.
+     </listitem>
+     <listitem>
+      <emphasis>STATIC TEXT with a : prefix</emphasis>: if the value is preceeded by a colon (':'), it is
+      interpreted as static text.
+     </listitem>
+     <listitem>
+      <emphasis>CALLBACK FUNCTION with a # prefix</emphasis>: if the value is preceeded by a pound sign ('#'), it
+       is interpreted as a callback function. You can use a regular function (e.g. '#myFunction()') or a static
+       method (e.g. '#MyClass::myFunction()') - for how to use a non-static method, see the type COMMAND OBJECT.
+       The current record will be passed to the callback function
+       as an associative array. You can also pass additional string arguments to the callback function by specifing
+       them within the opening and closing brace; e.g. '#Utils::limit(12)' will result in Util::limit() being
+       called with the current record as the first and '12' as the second argument. If you do not want
+       to pass additional arguments to the callback function, the opening and closing brace are optional.
+       The callback function's return value obviously has to be a string that is a valid XML element name.
+     </listitem>
+     <listitem>
+       <emphasis>COMMAND OBJECT (object)</emphasis>: If you want to use a non-static method as a
+       callback function, you can do so by specifying the value as an instance of a class that
+       implements the {@link XML_Query2XML_Callback} interface. This implementation of the
+       {@link http://en.wikipedia.org/wiki/Command_pattern command pattern} gives you all the
+       flexibility. The disadvantage ist that you cannot use the XML UNSERIALIZATION prefix
+       or the CONDITIONAL prefix. Note: you have to require_once 'XML/Query2XML/Callback.php'
+       before using the XML_Query2XML_Callback interface. The return value of a COMMAND OBJECT's
+       execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
+      </listitem>
+    </itemizedlist>
+   </para>
+   <para>
+    Let's have a look at a straightforward example: we want our customer's email addresses inside a tag named
+    after the customer's first name, e.g. &lt;John&gt;john.doe@example.com&lt;/John&gt;:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+  "SELECT * FROM customer",
+  array(
+    'rootTag' => 'customers',
+    'idColumn' => 'customerid',
+    'rowTag' => 'customer',
+    'elements' => array(
+        'customerid',
+        'name_and_email' => array(
+            'dynamicRowTag' => 'first_name',
+            'value' => 'email'
+        )
+    )
+  )
+);
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+   ]]>
+   </programlisting>
+   The resulting XML looks like this:
+   <programlisting role="tutorial">
+   <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<customers>
+  <customer>
+    <customerid>1</customerid>
+    <Jane>jane.doe@example.com</Jane>
+  </customer>
+  <customer>
+    <customerid>2</customerid>
+    <John>john.doe@example.com</John>
+  </customer>
+  <customer>
+    <customerid>3</customerid>
+    <Susan>susan.green@example.com</Susan>
+  </customer>
+  <customer>
+    <customerid>4</customerid>
+    <Victoria>victory.alt@example.com</Victoria>
+  </customer>
+  <customer>
+    <customerid>5</customerid>
+    <Will>will.wippy@example.com</Will>
+  </customer>
+  <customer>
+    <customerid>6</customerid>
+    <Tim>tim.raw@example.com</Tim>
+  </customer>
+  <customer>
+    <customerid>7</customerid>
+    <Nick>nick.fallow@example.com</Nick>
+  </customer>
+  <customer>
+    <customerid>8</customerid>
+    <Ed>ed.burton@example.com</Ed>
+  </customer>
+  <customer>
+    <customerid>9</customerid>
+    <Jack>jack.woo@example.com</Jack>
+  </customer>
+  <customer>
+    <customerid>10</customerid>
+    <Maria>maria.gonzales@example.com</Maria>
+  </customer>
+</customers>
+   ]]>
+   </programlisting>
+    
    </para>
   </refsect2>
   
@@ -2205,7 +2415,7 @@ print $dom->saveXML();
         execute() method is treated exactly the same as the return value of a CALLBACK FUNCTION.
        </listitem>
      </itemizedlist>
-     There are two more prefixes available that can be used in conjunction with all the prifixes described above:
+     There are four more prefixes available that can be used in conjunction with all the prifixes described above:
      <itemizedlist>
       <listitem>
        <emphasis>XML UNSERIALIZATION prefix &amp;</emphasis>: the ampersand (&amp;) prefix allows you to
@@ -2221,10 +2431,23 @@ print $dom->saveXML();
        details.
       </listitem>
       <listitem>
+       <emphasis>BASE64 ENCODING prefix ^</emphasis>: if the specification starts with a carrat sign ('^'),
+       the element value will be passed to {@link http://www.php.net/base64_encode base64_encode()}.
+       The BASE64 ENCODING prefix can be used with all the prefixes described above (just put the BASE64 ENCODING prefix first):
+       e.g. '^#', '^:' or '^COLUMN_NAME'.
+      </listitem>
+      <listitem>
+       <emphasis>CDATA SECTION prefix =</emphasis>: if the specification starts with an equal sign ('='),
+       the element value will be enclosed in a CDATA section. A CDATA section starts with
+       "&lt;![CDATA[" and ends with "]]&gt;".
+       The CDATA SECTION prefix can be used with all the prefixes described above (just put the CDATA SECTION prefix first):
+       e.g. '=#', '=:', '=COLUMN_NAME' or '=^'.
+      </listitem>
+      <listitem>
        <emphasis>CONDITIONAL prefix ?</emphasis>: if the specification starts with a question mark ('?'),
        the whole element will be skipped if the value equals (==) an empty string. The CONDITIONAL prefix
-       can be combined with all types: if you do this you have to write the CONDITIONAL prefix first
-       e.g. '?#', '?:' or '?COLUMN_NAME'.
+       can be combined with all types described above: if you do this you have to write the CONDITIONAL
+       prefix first e.g. '?#', '?:', '?&amp;', '?=', '?^', or '?COLUMN_NAME'.
       </listitem>
      </itemizedlist>
      Note: for ovious reasons, the XML UNSERIALIZATION prefix and the CONDITIONAL prefix cannot be
@@ -2239,11 +2462,12 @@ print $dom->saveXML();
      {@link XML_Query2XML::_applyColumnStringToRecord()} is used in all cases.
    </para>
    <para>
-     The following example demonstrates the usage of all types. The comment element will be skipped if its value == "".
+     The following example demonstrates the usage of some of the types (for a full demonstration of all types
+     see the second example under {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}).
+     The comment element will be skipped if its value == "".
      Same holds true for the genre element which uses the trim'ed version of the value stored in the genre column. The comment
      tag has an attribute named type with a static value of "short text". The published_century element gets the century
      calculated using floor and has the attribute digitCount with a static value of 2.
-
      <programlisting role="php">
      <![CDATA[
 <?php
@@ -4740,6 +4964,73 @@ print $dom->saveXML();
   </para>
  </refsect1>
  
+ 
+ <refsect1 id="{@id binary_data}">
+  <title>Handling Binary Data</title>
+  <para>
+   If you want to include binary data (e.g. JPEG data) in XML data you should encode your binary data
+   to make sure that it does not include a sequence of bytes that represent the characters "&lt;/"
+   or a null byte (which usually denotes the end of a string). The most common binary data
+   encoding for XML is base64. The most straight foreward way to do base64 encoding for
+   an element or attribute value is to use the BASE64 ENCODING shortcut '^'.
+  </para>
+  <para>
+   In the following example we will assume that the column album.comment contains binary data:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+
+$mdb2 = MDB2::factory('mysql://root@localhost/Query2XML_Tests');
+$query2xml = XML_Query2XML::factory($mdb2);
+
+$dom = $query2xml->getXML(
+    'SELECT * FROM album',
+    array(
+        'idColumn' => 'albumid',
+        'rowTag' => 'album',
+        'rootTag' => 'music_store',
+        'elements' => array(
+            'albumid',
+            'title',
+            'comment' => '^comment'
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+   ]]>
+   </programlisting>
+   The resulting XML data looks like this:
+   <programlisting role="tutorial">
+   <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_store>
+  <album>
+    <albumid>1</albumid>
+    <title>New World Order</title>
+    <comment>dGhlIGJlc3QgZXZlciE=</comment>
+  </album>
+  <album>
+    <albumid>2</albumid>
+    <title>Curtis</title>
+    <comment>dGhhdCBtYW4ncyBnb3Qgc29tdGhpbicgdG8gc2F5</comment>
+  </album>
+  <album>
+    <albumid>3</albumid>
+    <title>Shaft</title>
+    <comment>aGUncyB0aGUgbWFu</comment>
+  </album>
+</music_store>
+   ]]>
+   </programlisting>
+  </para>
+ </refsect1>
+ 
  <refsect1 id="{@id dumpdatabase}">
   <title>Using dynamic $options to dump all data of your database</title>
   <para>
@@ -4753,7 +5044,7 @@ print $dom->saveXML();
 require_once 'XML/Query2XML.php';
 require_once 'MDB2.php';
 
-$mdb2 = MDB2::factory('mysql://root@localhost/world');
+$mdb2 = MDB2::factory('mysql://root@localhost/Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($mdb2);
 
 
@@ -4803,6 +5094,11 @@ print $dom->saveXML();
    We then loop over the names and create
    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements}
    at run time.
+  </para>
+  <para>
+   Side note: unfortunately MDB2's portability feature per default makes listTabes() return all table names lower-cased.
+   To circumvent this we have to temporarily change the portability option. See {@link http://pear.php.net/bugs/bug.php?id=11215}
+   which describes the issue in greater detail.
   </para>
   <para>
    Each table tag will have an attribute "name". We use the ':' prefix to indicate that
