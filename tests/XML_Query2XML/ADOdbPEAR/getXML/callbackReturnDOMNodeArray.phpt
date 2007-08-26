@@ -33,7 +33,7 @@ XML_Query2XML::getXML(): returning an array of DOMNode instances from a callback
         $unixtime->appendChild($dom->createTextNode(1170354732));
         
         $rfc2822date = $dom->createElement('rfc2822date');
-        $rfc2822date->appendChild($dom->createTextNode(date('r', 1170354732)));
+        $rfc2822date->appendChild($dom->createTextNode('Thu, 01 Feb 2007 19:32:12 +0100'));
         return array($unixtime, $rfc2822date);
     }
 ?>
