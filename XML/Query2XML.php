@@ -704,7 +704,9 @@ class XML_Query2XML
         
         
         //the default row tag name is 'row'
-        if (isset($options['rowTag'])) {
+        if (isset($options['dynamicRowTag'])) {
+            $rowTagName = $this->_applyColumnStringToRecord($options['dynamicRowTag'], $record, 'dynamicRowTag');
+        } elseif (isset($options['rowTag'])) {
             $rowTagName = $options['rowTag'];
         } else {
             $rowTagName = 'row';
@@ -1514,6 +1516,8 @@ class XML_Query2XML
         }
         
         $unserialize = false;
+        $cdata = false;
+        $base64 = false;
         if (strpos($columnStr, '&') === 0) {
             /*
             * unserialization is performed after processing the
@@ -1521,6 +1525,24 @@ class XML_Query2XML
             */
             $unserialize = true;
             $columnStr = substr($columnStr, 1);
+        } else {
+            if (strpos($columnStr, '=') === 0) {
+                /*
+                * if a CDATA section prefix is used it has to be placed
+                * before the prefixes "^", ":" or "#"
+                */
+                $cdata = true;
+                $columnStr = substr($columnStr, 1);
+            }
+            
+            if (strpos($columnStr, '^') === 0) {
+                /*
+                * base64 data encoding is performed after processing the
+                * ':' prefix, the '#' prefix or the plain column name.
+                */
+                $base64 = true;
+                $columnStr = substr($columnStr, 1);
+            }
         }
         
         if (strpos($columnStr, ':') === 0) {
@@ -1616,6 +1638,23 @@ class XML_Query2XML
                 */
                 $ret = null;
             }
+        } else {
+            if ($base64) {
+                $ret = base64_encode($ret);
+            }
+            
+            if ($cdata) {
+                if (strlen($ret) > 0) {
+                    /*
+                    * only create a CDATA section if $ret is
+                    * a string with a length greater than 0
+                    */
+                    $doc = new DOMDocument();
+                    $ret = $doc->createCDATASection($ret);
+                } else {
+                    $ret = null;
+                }
+            }
         }
         return $ret;
     }
@@ -1642,8 +1681,6 @@ class XML_Query2XML
             * $value is null or is a string with a length of zero.
             */
             return !(is_null($value) || (is_string($value) && strlen($value) == 0));
-        } elseif (strpos($spec, '&') === 0) {
-            //return $value instanceof DOMNode || is_array($value);
         }
         return true;
     }
