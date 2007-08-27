@@ -5131,6 +5131,234 @@ print $dom->saveXML();
   </para>
  </refsect1>
  
+ <refsect1 id="{@id without_prefixes}">
+  <title>Working without Shortcuts and Prefixes</title>
+  <para>
+   You think having to deal with all these different prefixes (e.g. #, ?, :, &amp;, ^ and =) when defining
+   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value} and
+   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
+   just makes things more complicated or your code less readable? In that case, just don't use them! Below is
+   way of getting almost the same functionality with a command object pattern implementation. If you have
+   to deal with some 10,000+ records in your XML, using command objects might even improve performance
+   a little bit (~1-3%).
+  </para>
+  <para>
+   The following example first provides command classes that implement the functionality
+   of the currently available prefixes.
+   <programlisting role="php">
+   <![CDATA[
+<?php
+/**All command objects have to implement the interface XML_Query2XML_Callback.
+*/
+require_once 'XML/Query2XML/Callback.php';
+
+/**All command classes that work on a single column value will extend this abstract class.
+* Classes extending this class will have to implement the execute(array $record) method
+* defined by the XML_Query2XML_Callback interface.
+*/
+abstract class Callback_SingleColumn implements XML_Query2XML_Callback
+{
+    /**The column name
+    * @var string
+    */
+    protected $_column = '';
+    
+    /**Constructor
+    * @param string $column The name of the column this instance will work on.
+    */
+    public function __construct($column)
+    {
+        $this->_column = $column;
+    }
+    
+    /**Get the value of the column passed to the constructor.
+    * @param array $record An associative array as it will be passed
+    *                      to the execute(array $record) method.
+    * @throws XML_Query2XML_Exception If the column name passed
+    *                      to the constructor was not found in $record.
+    */
+    protected function _getColumnValue(array $record)
+    {
+        if (array_key_exists($this->_column, $record)) {
+            return $record[$this->_column];
+        }
+        throw new XML_Query2XML_Exception(
+            'Column ' . $this->_column . ' was not found in the result set'
+        );
+    }
+}
+
+/**Use an instance of this class to get the base64 encoded value of a column.
+*/
+class Callback_Base64 extends Callback_SingleColumn
+{
+    /**Called by XML_Query2XML for every record.
+    * @param array $record An associative array.
+    * @return string
+    */
+    public function execute(array $record)
+    {
+        return base64_encode($this->_getColumnValue($record));
+    }
+}
+
+/**Use an instance of this class to unserialize XML data stored in a column.
+*/
+class Callback_Unserialization extends Callback_SingleColumn
+{
+    /**Called by XML_Query2XML for every record.
+    * @param array $record An associative array.
+    * @return DOMElement
+    * @throws XML_Query2XML_XMLException If unserialization fails.
+    */
+    public function execute(array $record)
+    {
+        $doc = new DOMDocument();
+        $xml = $this->_getColumnValue($record);
+        if (!@$doc->loadXML($xml)) {
+            throw new XML_Query2XML_XMLException(
+                'Could not unserialize the following XML data: '
+                . $xml
+            );
+        }
+        return $doc->documentElement;
+    }
+}
+
+/**Use an instance of this class to place a CDATA section around the value of a column.
+*/
+class Callback_CDATA extends Callback_SingleColumn
+{
+    /**Called by XML_Query2XML for every record.
+    * @param array $record An associative array.
+    * @return DOMCDATASection 
+    */
+    public function execute(array $record)
+    {
+        $doc = new DOMDocument();
+        return $doc->createCDATASection($this->_getColumnValue($record));
+    }
+}
+
+/**Use an instance of this class to return a static data.
+*/
+class Callback_StaticData implements XML_Query2XML_Callback
+{
+    /**The static data
+    * @var mixed
+    */
+    private $_data = null;
+    
+    /**Constructor
+    * @param mixed $data The static date to return for every record.
+    */
+    public function __construct($data)
+    {
+        $this->_data = $data;
+    }
+    
+    /**Called by XML_Query2XML for every record.
+    * This method will always return the same data, no matter what
+    * is passed as $record.
+    *
+    * @param array $record An associative array.
+    * @return mixed 
+    */
+    public function execute(array $record)
+    {
+        return $this->_data;
+    }
+}
+
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+
+$xml = $query2xml->getXML(
+    'SELECT * FROM store',
+    array(
+        'rootTag' => 'stores',
+        'rowTag' => 'store',
+        'idColumn' => 'storeid',
+        'elements' => array(
+            'base64' => new Callback_Base64('building_xmldata'),
+            'cdata' => new Callback_CDATA('building_xmldata'),
+            'static' => new Callback_StaticData('my static data'),
+            'unserialized' => new Callback_Unserialization('building_xmldata')
+        )
+    )
+);
+
+$xml->formatOutput = true;
+print $xml->saveXML();
+?>
+    ]]>
+    </programlisting>
+    Note that the above code is equivalent to
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+
+$xml = $query2xml->getXML(
+    'SELECT * FROM store',
+    array(
+        'rootTag' => 'stores',
+        'rowTag' => 'store',
+        'idColumn' => 'storeid',
+        'elements' => array(
+            'base64' => '?^building_xmldata',
+            'cdata' => '=building_xmldata',
+            'static' => ':my static data',
+            'unserialized' => '&building_xmldata'
+        )
+    )
+);
+
+$xml->formatOutput = true;
+print $xml->saveXML();
+?>
+    ]]>
+    </programlisting>
+    Both produce the following XML data:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<stores>
+  <store>
+    <base64>PGJ1aWxkaW5nPjxmbG9vcnM+NDwvZmxvb3JzPjxlbGV2YXRvcnM+MjwvZWxldmF0b3JzPjxzcXVhcmVfbWV0ZXJzPjMyMDA8L3NxdWFyZV9tZXRlcnM+PC9idWlsZGluZz4=</base64>
+    <cdata>< ![CDATA[<building><floors>4</floors><elevators>2</elevators><square_meters>3200</square_meters></building>]] ></cdata>
+    <static>my static data</static>
+    <unserialized>
+      <building>
+        <floors>4</floors>
+        <elevators>2</elevators>
+        <square_meters>3200</square_meters>
+      </building>
+    </unserialized>
+  </store>
+  <store>
+    <base64>PGJ1aWxkaW5nPjxmbG9vcnM+MjwvZmxvb3JzPjxlbGV2YXRvcnM+MTwvZWxldmF0b3JzPjxzcXVhcmVfbWV0ZXJzPjQwMDwvc3F1YXJlX21ldGVycz48L2J1aWxkaW5nPg==</base64>
+    <cdata>< ![CDATA[<building><floors>2</floors><elevators>1</elevators><square_meters>400</square_meters></building>]] ></cdata>
+    <static>my static data</static>
+    <unserialized>
+      <building>
+        <floors>2</floors>
+        <elevators>1</elevators>
+        <square_meters>400</square_meters>
+      </building>
+    </unserialized>
+  </store>
+</stores>
+    ]]>
+    </programlisting>
+  </para>
+ </refsect1>
+ 
  <refsect1 id="{@id global_options}">
   <title>Global Options</title>
   <para>
