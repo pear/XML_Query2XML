@@ -8,4 +8,4 @@ diff -ruN --exclude '*.php' --exclude Repository --exclude Entries MDB2/ DB/
 diff -ruN --exclude '*.php' --exclude Repository --exclude Entries MDB2/ ADOdbDefault/
 diff -ruN --exclude '*.php' --exclude Repository --exclude Entries MDB2/ ADOdbException/
 diff -ruN --exclude '*.php' --exclude Repository --exclude Entries MDB2/ ADOdbPEAR/
-
+diff -ruN --exclude '*.php' --exclude Repository --exclude Entries MDB2/ PDO/
