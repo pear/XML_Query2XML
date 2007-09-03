@@ -1,7 +1,17 @@
 --TEST--
 XML_Query2XML::getXML(): Case08
 --SKIPIF--
-<?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
+<?php
+require_once dirname(dirname(__FILE__)) . '/skipif.php';
+if (!@include_once 'I18N/UnicodeString.php') {
+    print 'skip could not find I18N/UnicodeString.php';
+    exit;
+}
+if (strpos(DSN, 'sqlite') === 0 && strpos(DSN, 'sqlite3') !== 0) {
+    echo 'skip sqlite before v3.1 does not support backreferences to fields in parent table - see http://www.sqlite.org/cvstrac/wiki?p=UnsupportedSql';
+    exit;
+}
+?>
 --FILE--
 <?php
 class Mappers
