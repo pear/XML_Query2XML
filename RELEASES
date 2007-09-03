@@ -3,6 +3,16 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.4.0
+------
+Release date: 2007-09-03
+Release notes: This sixth stable release contains a couple of new features:
+- PDO support - this also adds support for SQLite 3 (thanks to
+  John P. McCaskey for pointing out the lack of SQLite 3 support)
+- all unit tests now run with SQLite 2 by default; unit tests
+  for PDO and PEAR MDB2 will therefore work out of the box
+- XML_Query2XML now comes with 1084 phpt unit tests
+
 v1.3.0
 ------
 Release date: 2007-08-26

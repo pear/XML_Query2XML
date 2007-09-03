@@ -15,12 +15,12 @@ Major features:
 2. minimum effort necessary to get the simple jobs done
 3. highly configurable for more complex tasks
 4. ISO/IEC 9075-14:2005 support: mapping of SQL identifiers to XML names
-5. works with any database that is supported by PEAR DB, PEAR MDB2 or ADOdb
+5. works with any database that is supported by PDO, PEAR DB, PEAR MDB2 or ADOdb
 6. easy integration of other XML data sources (e.g. raw XML data stored in the DB)
 7. debugging, logging and profiling features
 8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 913 phpt unit tests
+10. 1084 phpt unit tests
  
  </description>
  <lead>
@@ -29,7 +29,7 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2007-08-29</date>
+ <date>2007-09-03</date>
  <version>
   <release>1.4.0</release>
   <api>1.4.0</api>
@@ -39,10 +39,11 @@ Major features:
   <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>This fith stable release contains a couple of new features:
-- PDO support (this also adds support for sqlite3)
-- all unit tests now run with sqlite2 by default; unit tests
-  for PDO, PEAR MDB2 and PEAR DB will therefore work out of the box
+ <notes>This sixth stable release contains a couple of new features:
+- PDO support - this also adds support for SQLite 3 (thanks to
+  John P. McCaskey for pointing out the lack of SQLite 3 support)
+- all unit tests now run with SQLite 2 by default; unit tests
+  for PDO and PEAR MDB2 will therefore work out of the box
 - XML_Query2XML now comes with 1084 phpt unit tests
  </notes>
  <contents>
@@ -1915,12 +1916,13 @@ The smaller changes include:
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2007-08-29</date>
+   <date>2007-09-03</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This fith stable release contains a couple of new features:
-- PDO support (this also adds support for sqlite3)
-- all unit tests now run with sqlite2 by default; unit tests
-  for PDO, PEAR MDB2 and PEAR DB work out of the box
+   <notes>This sixth stable release contains a couple of new features:
+- PDO support - this also adds support for SQLite 3 (thanks to
+  John P. McCaskey for pointing out the lack of SQLite 3 support)
+- all unit tests now run with SQLite 2 by default; unit tests
+  for PDO and PEAR MDB2 will therefore work out of the box
 - XML_Query2XML now comes with 1084 phpt unit tests
    </notes>
   </release>

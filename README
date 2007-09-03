@@ -35,28 +35,30 @@ of Profiling and Performance Tuning.
 |   +---case08 .......... Case 08: Case 06 revisited: Making use of Mappers
 +---XML ................. CONTAINS THE ACTUAL Query2XML.php that
 |                         will be installed in $PHP_PEAR_INSTALL_DIR/XML/
-+---tests ............... contains 913 phpt unit tests; all will be installed
++---tests ............... contains 1084 phpt unit tests; all will be installed
                           in $PHP_PEAR_TEST_DIR/XML_Query2XML/tests. Please
                           see 3. Testing.
 
 
 3. Testing
 ----------
-Before you can actually run the unit tests you should:
-- run the MySQL DDL from $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql
+The most straightforward way to run the unit tests is by using the following
+command:
+
+ `pear run-tests -p XML_Query2XML'
+
+This will use an SQLite 2 database. Therefore the unit tests for ADOdb
+and PEAR DB will skipped. If you want all unit tests to be ran, you have
+to:
+- run the MySQL DDL from $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql:
    `mysql -u root -p < $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql`
-  and/or run the PostgreSQL DDL from
-  $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.psql
+  or the PostgreSQL DDL from $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.psql:
    `psql -U postgres < $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.psql`
   
 - Edit $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/XML_Query2XML/settings.php
   to change the DSN used to connect to the MySQL database. Alternatively
   you can also set the environment variable PHP_PEAR_XML_QUERY2XML_TEST_DSN.
-  The default DSN is "mysql://root@localhost/Query2XML_Tests".
-
-You can run all phpt unit tests by executing the following command:
-
- `pear run-tests -p XML_Query2XML'
+  For MySQL the DSN would look like this: "mysql://root@localhost/Query2XML_Tests".
 
 Read on for more information about the php unit tests. After installation
 $PHP_PEAR_TEST_DIR/XML_Query2XML/tests will contain the following
@@ -64,6 +66,7 @@ $PHP_PEAR_TEST_DIR/XML_Query2XML/tests will contain the following
 
 ./Query2XML_Tests.sql ........... the MySQL DDL required to run the unit tests
 ./Query2XML_Tests.psql .......... the PosgreSQL DDL required to run the unit tests
+./Query2XML_Tests.sq2 ........... the SQLite 2 database used by default
 ./XML_Query2XML_ISO9075Mapper ... unit tests for XML_Query2XML_ISO9075Mapper
 ./XML_Query2XML/ ................ phpt unit tests for XML_Query2XML
 ./XML_Query2XML/DB .............. phpt unit tests for XML_Query2XML using PEAR DB
@@ -74,12 +77,13 @@ $PHP_PEAR_TEST_DIR/XML_Query2XML/tests will contain the following
                                   with Exceptions
 ./XML_Query2XML/ADOdbPEAR ....... phpt unit tests for XML_Query2XML using ADOdb
                                   with PEAR_Error
+./XML_Query2XML/PDO ............. phpt unit tests for XML_Query2XML using PDO
 
 Each of the ./XML_Query2XML/*/ directories contains subdirectories named
 like the class methods; the directories contain phpt unit tests for
 the respective method.
 
-If a specific database abstraction layer (DB/MDB2/ADOdb) is not installed
+If a specific database abstraction layer (DB/MDB2/ADOdb/PDO) is not installed
 the respective tests will be skipped. If I18N_UnicodeString is not installed
 all tests for XML_Query2XML_ISO9075Mapper will be skipped. Also all tests
 that require a database connection will be skipped if the connection fails.
