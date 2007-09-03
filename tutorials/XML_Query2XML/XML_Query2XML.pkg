@@ -17,8 +17,9 @@
  <refsect1 id="{@id intro}">
   <title>Introduction</title>
   <para>
-  	XML_Query2XML allows you to transform the records retrieved with one or more SQL SELECT queries into XML data.
-  	Very simple to highly complex transformations are supported. Is was written with performance in mind and
+  	XML_Query2XML allows you to transform the records retrieved with one or more 
+  	SQL SELECT queries into XML data. Very simple to highly complex 
+  	transformations are supported. Is was written with performance in mind and
   	can handle large amounts of data. No XSLT needed!
   </para>
   <para>
@@ -40,6 +41,7 @@
       <emphasis>PHP5's built-in DOM API</emphasis>
      </listitem>
      <listitem>
+      <emphasis>{@link http://www.php.net/PDO PDO} (PHP5's built-in database abstraction class)</emphasis>
       <emphasis>{@link http://pear.php.net/package/DB PEAR DB}</emphasis>, 
       <emphasis>{@link http://pear.php.net/package/MDB2 PEAR MDB2}</emphasis> or
       <emphasis>{@link http://adodb.sourceforge.net ADOdb}</emphasis>.
@@ -108,9 +110,22 @@
   <para>
    This is the factory method that will return a new instance of {@link XML_Query2XML}.
    The argument passed to the factory method can be an instance of
+   {@link http://www.php.net/PDO PDO},
    {@link http://pear.php.net/package/DB PEAR DB}, 
    {@link http://pear.php.net/package/MDB2 PEAR MDB2} or
    {@link http://adodb.sourceforge.net ADOdb}.
+  </para>
+  <para>
+   Using PDO with XML_Query2XML works like this:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+$pdo = new PDO('mysql://root@localhost/Query2XML_Tests');
+$query2xml = XML_Query2XML::factory($pdo);
+?>
+   ]]>
+   </programlisting>
   </para>
   <para>
    Using MDB2 with XML_Query2XML works like this:
@@ -159,9 +174,11 @@ $query2xml = XML_Query2XML::factory($adodb);
   </para>
   <para>
    I would recommend using MDB2 as it can be considered more advanced than DB
-   and much better designed and documented than ADOdb.
+   and much better designed and documented than ADOdb. MDB2 also provides more
+   flexibility than PDO. If you want to access a SQLite 3 database use PDO - MDB2
+   does only support SQLite 2 as of this writing.
    But use whichever you like - XML_Query2XML works with all of them.
-   For the sake of simplicity all the examples will use PEAR DB.
+   For the sake of simplicity all the examples will use PEAR MDB2.
   </para>
  </refsect1>
  
@@ -237,7 +254,7 @@ print $dom->saveXML();
    </para>
    <para>
     Next we use a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification}
-    and prevent SQL injections by using MDB2's/DB's/ADOdb's prepare() and execute() methods.
+    and prevent SQL injections by using PDO's/MDB2's/DB's/ADOdb's prepare() and execute() methods.
     <programlisting role="php">
     <![CDATA[
 <?php
@@ -2819,13 +2836,12 @@ function isGT1980($record)
     There are two ways of specifying $options['sql']:
     <itemizedlist>
      <listitem>
-      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification}: uses DB::query/MDB2::query - use it with care
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification}: uses the query() method provided by the database abstraction layer (PDO/MDB2/DB/ADOdb) - use it with care
      </listitem>
      <listitem>
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification}: uses
-      {@link http://pear.php.net/manual/en/package.database.db.intro-execute.php DB::prepare and DB::execute}
-      or MDB2::prepare and MDB2::execute and
-      therefore can prevent SQL injection and is also faster in most scenarios
+      the prepare() and execute() methods provided by the database abstraction layer and
+      can therefore prevent SQL injection and is also faster in most scenarios
      </listitem>
     </itemizedlist>
    </para>
@@ -2897,9 +2913,7 @@ print $dom->saveXML();
    <refsect3 id="{@id complexqueryspecification}">
     <title>Complex Query Specification</title>
     <para>
-    A Complex Query Specification uses
-    {@link http://pear.php.net/manual/en/package.database.db.intro-execute.php DB::prepare and DB::execute}
-    or MDB2::prepare and MDB2::execute
+    A Complex Query Specification uses the database abstraction layer's prepare() and execute() methods
     and therefore prevents SQL injection and is also faster
     than a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification} in most scenarios. It consists of
     two parts:
@@ -8949,6 +8963,12 @@ DB_DURATION:    0.016173124313354
        All tags and attributes directly related to columns of the table "artist" shall use
        a naming convention like "onetwothree" instead of "one_two_three";
        we'll the function mapArtist as the mapper and the 'FUNCTION' syntax.
+      </listitem>
+      <listitem>
+       Due to the fact that SQLite prior to 3.1 does not support
+       a subselect backreferencing to a field in its parent select
+       (see {@link http://www.sqlite.org/cvstrac/wiki?p=UnsupportedSql}) Case 08 will not work
+       with SQLite &lt; 3.1.
       </listitem>
      </itemizedlist>
      This certainly is not a very realistic scenario but it was chosen to demonstrate the
