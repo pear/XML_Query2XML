@@ -18,11 +18,14 @@
 * @version $Id$
 */
 
+require_once dirname(dirname(__FILE__)) . '/settings.php';
 if (!@include_once 'DB.php') {
     print 'skip could not find DB.php';
     exit;
+} elseif (strpos(DSN, 'sqlite:') === 0) {
+    print 'skip PEAR DB does not remove table part of "table.column" format returned by sqlite driver';
+    exit;
 } else {
-    require_once dirname(dirname(__FILE__)) . '/settings.php';
     $db = @DB::connect(DSN);
     if (PEAR::isError($db)) {
         print 'skip could not connect using DSN ' . DSN;
