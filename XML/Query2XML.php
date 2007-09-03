@@ -22,15 +22,17 @@
 */
 require_once 'PEAR/Exception.php';
 
-/**PEAR.php will get included by DB or MDB2 anyway. As the method
-* PEAR::isError() is used within XML_Query2XML we include it too.
+/**As the method PEAR::isError() is used within XML_Query2XML we require PEAR.php.
 */
 require_once 'PEAR.php';
 
 /**Create XML data from SQL queries.
 *
 * XML_Query2XML heavily uses exceptions and therefore requires PHP5.
-* PEAR DB, PEAR MDB2 or ADOdb is also required.
+* Additionally one of the following database abstraction layers is
+* required: PDO (compiled-in by default since PHP 5.1), PEAR DB,
+* PEAR MDB2, ADOdb.
+*
 * The two most important public methods this class provides are:
 *
 * <b>{@link XML_Query2XML::getFlatXML()}</b>
@@ -47,7 +49,7 @@ require_once 'PEAR.php';
 * <code>
 * <?php
 * require_once 'XML/Query2XML.php';
-* $query2xml = new XML_Query2XML(MDB2::connect($dsn));
+* $query2xml = new XML_Query2XML(MDB2::factory($dsn));
 * $dom = $query2xml->getXML($sql, $options);
 * header('Content-Type: application/xml');
 * print $dom->saveXML();
@@ -135,10 +137,7 @@ class XML_Query2XML
     */
     private function __construct($db)
     {        
-        if (
-            class_exists('DB_common') &&
-            $db instanceof DB_common
-        ) {
+        if (class_exists('DB_common') && $db instanceof DB_common) {
             $this->_dbLayer = 'DB';
             $this->_db = $db;
         } elseif (
@@ -147,10 +146,7 @@ class XML_Query2XML
         ) {
             $this->_dbLayer = 'MDB2';
             $this->_db = $db;
-        } elseif (
-            class_exists('ADOConnection') &&
-            $db instanceof ADOConnection
-        ) {    
+        } elseif (class_exists('ADOConnection') && $db instanceof ADOConnection) {
             $this->_dbLayer = 'ADOdb';
             if (!$db->IsConnected()) {
                 //unit test: Query2XMLTestADOdb::testFactoryNotConnectedException()
@@ -159,8 +155,11 @@ class XML_Query2XML
                 );
             }
             $this->_db = $db;
+        } elseif (class_exists('PDO') && $db instanceof PDO) {
+            $this->_dbLayer = 'PDO';
+            $this->_db = $db;
         } elseif (PEAR::isError($db)) {
-            // unit tests: factory/throwDBException.phpt
+            //unit tests: NoDBLayer/factory/throwDBException.phpt
             throw new XML_Query2XML_DBException(
                 'Could not connect to database: ' . $db->toString()
             );
@@ -178,6 +177,10 @@ class XML_Query2XML
             //SetFetchMode only returns the previous fetch mode
             $this->_db->SetFetchMode(ADODB_FETCH_ASSOC);
             $fetchModeError = null;
+        } elseif ($this->_dbLayer == 'PDO') {
+            //fetch mode cannot be set globally for PDO
+            $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $fetchModeError = null;
         } else {
             $fetchModeError = $this->_db->setFetchMode(DB_FETCHMODE_ASSOC);
         }
@@ -190,7 +193,16 @@ class XML_Query2XML
     }
     
     /**Factory method.
-    * As first argument pass an instance of PEAR DB, PEAR MDB2 or ADOdb:
+    * As first argument pass an instance of PDO, PEAR DB, PEAR MDB2 or ADOdb:
+    * <code>
+    * <?php
+    * require_once 'XML/Query2XML.php';
+    * $query2xml = XML_Query2XML::factory(
+    *   new PDO('mysql://root@localhost/Query2XML_Tests')
+    * );
+    * ?>
+    * </code>
+    *
     * <code>
     * <?php
     * require_once 'XML/Query2XML.php';
@@ -223,9 +235,9 @@ class XML_Query2XML
     *
     * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
     * @throws XML_Query2XML_ConfigException If $db is not an instance of a child
-    *                                       class of DB_common, MDB2_Driver_Common or
-    *                                       ADOConnection.
-    * @param mixed $db                      An instance of PEAR DB, PEAR MDB2 or ADOdb.
+    *                                       class of PDO, DB_common, MDB2_Driver_Common
+    *                                       or ADOConnection.
+    * @param mixed $db                      An instance of PDO, PEAR DB, PEAR MDB2 or ADOdb.
     * @return XML_Query2XML                 A new instance of XML_Query2XML
     */
     public static function factory($db)
@@ -1700,7 +1712,11 @@ class XML_Query2XML
     {
         $this->_debugStartQuery($sql);
         $result =& $this->_prepareAndExecute($sql);
-        $record =& $result->fetchRow();
+        if ($this->_dbLayer == 'PDO') {
+            $record =& $result->fetch();
+        } else {
+            $record =& $result->fetchRow();
+        }
         $this->_debugStopQuery($sql);
         if (PEAR::isError($record)) {
             //no unit test for this exception as it cannot be produced easily
@@ -1729,16 +1745,22 @@ class XML_Query2XML
         $this->_debugStartQuery($sql);
         $result =& $this->_prepareAndExecute($sql);
         $records = array();
-        while ($record =& $result->fetchRow()) {
-            if (PEAR::isError($record)) {
-                //no unit test for this exception as it cannot be produced easily
-                throw new XML_Query2XML_DBException(
-                    'Could not fetch rows for the following SQL query: '
-                    . $this->_extractQueryString($sql) . '; '
-                    . $record->toString()
-                );
+        if ($this->_dbLayer == 'PDO') {
+            while ($record = $result->fetch()) {
+                $records[] = $record;
             }
-            $records[] =& $record;
+        } else {
+            while ($record = $result->fetchRow()) {
+                if (PEAR::isError($record)) {
+                    //no unit test for this exception as it cannot be produced easily
+                    throw new XML_Query2XML_DBException(
+                        'Could not fetch rows for the following SQL query: '
+                        . $this->_extractQueryString($sql) . '; '
+                        . $record->toString()
+                    );
+                }
+                $records[] = $record;
+            }
         }
         $this->_debugStopQuery($sql);
         return $records;
@@ -1821,10 +1843,11 @@ class XML_Query2XML
     * @throws XML_Query2XML_ConfigException  Thrown if $sql is neither a string nor
     *                   an array with at least the element 'query'.
     * @param mixed $sql The SQL query to prepare (and the data to execute it with).
-    * @return mixed An instance of DB_result, MDB2_Result or ADORecordSet as it
-    *                   is returned by $this->_db->query() or $this->_db->execute().
+    * @return mixed An instance of PDOStatement, DB_result, MDB2_Result or ADORecordSet
+    *                   as it is returned by $this->_db->query() or $this->_db->execute().
     *                   Note that DB_result, MDB2_Result and ADORecordSet all
-    *                   support the fetchRow() method.
+    *                   support the fetchRow() method while fetch() has to be used
+    *                   for PDOStatement.
     */
     private function _prepareAndExecute($sql)
     {
@@ -1840,6 +1863,17 @@ class XML_Query2XML
                 } catch (ADODB_Exception $e) {
                     //unit test: ADOdbException/
                     // _prepareAndExecute/throwDBException_simpleQuery.phpt
+                    throw new XML_Query2XML_DBException(
+                        'Could not run the following SQL query: '
+                        . $query .  '; '
+                        . $e->getMessage()
+                    );
+                }
+            } elseif ($this->_dbLayer == 'PDO') {
+                try {
+                    $result = $this->_db->query($query);
+                } catch (PDOException $e) {
+                    //unit test: MISSING
                     throw new XML_Query2XML_DBException(
                         'Could not run the following SQL query: '
                         . $query .  '; '
@@ -1964,6 +1998,22 @@ class XML_Query2XML
                         $result = ADODB_Pear_Error();
                     }
                 }
+            } elseif ($this->_dbLayer == 'PDO') {
+                //$this->_db is PDO
+                try {
+                    if (isset($sql['data'])) {
+                        $queryHandle->execute($sql['data']);
+                    } else {
+                        $queryHandle->execute();
+                    }
+                } catch (PDOException $e) {
+                    throw new XML_Query2XML_DBException(
+                        'Could not execute the following SQL query: '
+                        . $query .  '; '
+                        . $e->getMessage()
+                    );
+                }
+                $result = $queryHandle;
             } else {
                 //$this->_db is DB
                 if (isset($sql['data'])) {
@@ -2009,6 +2059,9 @@ class XML_Query2XML
             );
         }
         
+        if ($this->_dbLayer == 'PDO') {
+            $result->setFetchMode(PDO::FETCH_ASSOC);
+        }
         return $result;
     }
 
