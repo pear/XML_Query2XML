@@ -43,4 +43,4 @@ XML_Query2XML::_applyColumnStringToRecord(): check for XML_Query2XML_ConfigExcep
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums][elements]: The column "albumid " used in the option "albumid" does not exist in the result set.
+XML_Query2XML_ConfigException: [elements][albums][elements][albumid]: The column "albumid " was not found in the result set.

@@ -45,4 +45,4 @@ XML_Query2XML::_getNestedXMLRecord(): check for XML_Query2XML_ConfigException - 
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums]: The method/function "Encoder::noSuchMethod" specified in the configuration option "encoder" is not callable.
+XML_Query2XML_ConfigException: [elements][albums][encoder]: The method/function "Encoder::noSuchMethod" is not callable.

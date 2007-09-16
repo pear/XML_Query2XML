@@ -35,4 +35,4 @@ XML_Query2XML::_createDOMElement(): check for XML_Query2XML_XMLException - encod
     }
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: Could not encode "Père Noël" using the encoder myEncoder: some error
+XML_Query2XML_XMLException: [encoder]: Could not encode "Père Noël": some error

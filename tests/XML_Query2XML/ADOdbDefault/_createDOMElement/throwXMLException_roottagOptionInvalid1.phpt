@@ -43,4 +43,4 @@ XML_Query2XML::_createDOMElement(): check for XML_Query2XML_XMLException - inval
     }
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: "music_library " is an invalid XML element name: Invalid Character Error
+XML_Query2XML_XMLException: [rootTag]: "music_library " is an invalid XML element name: Invalid Character Error

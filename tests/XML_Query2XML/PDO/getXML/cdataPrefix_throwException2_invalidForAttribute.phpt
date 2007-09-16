@@ -33,4 +33,4 @@ XML_Query2XML::getXML(): throw XML_Query2XML_XMLException when CDATA SECTION pre
     }
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: A value of the type object cannot be used for an attribute value
+XML_Query2XML_XMLException: [attributes][genre][value]: A value of the type object cannot be used for an attribute value.

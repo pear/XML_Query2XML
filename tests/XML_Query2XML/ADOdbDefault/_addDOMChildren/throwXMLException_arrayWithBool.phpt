@@ -27,7 +27,7 @@ XML_Query2XML::_addDOMChildren(): check for XML_Query2XML_XMLException when retu
             )
         );
     } catch (XML_Query2XML_XMLException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 101);
+        echo get_class($e) . ': ' . $e->getMessage();
     }
     
 function getNewArray()
@@ -37,4 +37,4 @@ function getNewArray()
 class Test {}
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: The array argument passed to XML_Query2XML::_addDOMChildren() has an element of a wrong type: boolean
+XML_Query2XML_XMLException: [elements][genre]: DOMNode, false or an array of the two expected, but boolean given (hint: check your callback).

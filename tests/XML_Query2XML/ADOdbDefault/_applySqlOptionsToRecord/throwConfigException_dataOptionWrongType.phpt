@@ -47,4 +47,4 @@ XML_Query2XML::_applySqlOptionsToRecord(): check for XML_Query2XML_ConfigExcepti
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums][sql]: The configuration option "data" is not an array.
+XML_Query2XML_ConfigException: [elements][albums][sql][data]: array expected, integer given.

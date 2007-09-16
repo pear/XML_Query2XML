@@ -44,4 +44,4 @@ XML_Query2XML::_processComplexElementSpecification(): check for XML_Query2XML_Co
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums][elements][sub1][elements][sub2][elements][sub3][sql]: The configuration option "data" is not an array.
+XML_Query2XML_ConfigException: [elements][albums][elements][sub1][elements][sub2][elements][sub3][sql][data]: array expected, integer given.

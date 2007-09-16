@@ -51,4 +51,4 @@ XML_Query2XML::_getNestedXMLRecord(): check for XML_Query2XML_ConfigException - 
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums]: The option "idColumn" must evaluate to a value that is not an object or an array
+XML_Query2XML_ConfigException: [elements][albums][idColumn]: Must evaluate to a value that is not an object or an array.

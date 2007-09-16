@@ -35,4 +35,4 @@ XML_Query2XML::_processComplexElementSpecification(): check for XML_Query2XML_Co
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [attributes][genre]: The option "value" is missing from the complex attribute specification
+XML_Query2XML_ConfigException: [attributes][genre][value]: Mandatory option "value" missing from the complex attribute specification.

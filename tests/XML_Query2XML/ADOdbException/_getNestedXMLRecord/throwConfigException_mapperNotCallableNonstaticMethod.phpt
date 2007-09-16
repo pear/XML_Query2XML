@@ -45,4 +45,4 @@ XML_Query2XML::_getNestedXMLRecord(): check for XML_Query2XML_ConfigException - 
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums]: The method/function "Mapper::noSuchMethod" specified in the configuration option "mapper" is not callable.
+XML_Query2XML_ConfigException: [elements][albums][mapper]: The method/function "Mapper::noSuchMethod" is not callable.

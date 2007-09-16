@@ -41,4 +41,4 @@ XML_Query2XML::_applyColumnStringToRecord(): check for XML_Query2XML_ConfigExcep
     }
 ?>
 --EXPECT--
-[elements][albums]: "idColumn" was not specified using a string, an array or an instance of XML_Query2XML_Callback
+[elements][albums][idColumn]: string or instance of XML_Query2XML_Callback expected, object given.

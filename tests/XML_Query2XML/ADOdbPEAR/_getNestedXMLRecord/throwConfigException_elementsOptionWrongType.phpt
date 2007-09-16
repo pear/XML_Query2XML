@@ -38,4 +38,4 @@ XML_Query2XML::_getNestedXMLRecord(): check for XML_Query2XML_ConfigException - 
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums]: The configuration option "elements" is not an array.
+XML_Query2XML_ConfigException: [elements][albums][elements]: array expected, integer given.

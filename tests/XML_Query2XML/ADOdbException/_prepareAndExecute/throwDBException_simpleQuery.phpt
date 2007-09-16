@@ -40,8 +40,8 @@ XML_Query2XML::_prepareAndExecute(): check for XML_Query2XML_DBException - Simpl
             )
         );
     } catch (XML_Query2XML_DBException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 71);
+        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 96);
     }
 ?>
 --EXPECT--
-XML_Query2XML_DBException: Could not run the following SQL query: SELECT * FROM non_existing_table
+XML_Query2XML_DBException: [elements][albums][sql]: Could not run the following SQL query: SELECT * FROM non_existing_table

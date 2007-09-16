@@ -23,7 +23,7 @@ XML_Query2XML::_setDOMAttribute(): check for XML_Query2XML_XMLException when ret
             )
         );
     } catch (XML_Query2XML_XMLException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 65);
+        echo get_class($e) . ': ' . $e->getMessage();
     }
     
 function getNewTestInstance()
@@ -33,4 +33,4 @@ function getNewTestInstance()
 class Test {}
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: A value of the type object cannot be used for an attribute value
+XML_Query2XML_XMLException: [attributes][genre]: A value of the type object cannot be used for an attribute value.

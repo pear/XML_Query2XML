@@ -28,4 +28,4 @@ XML_Query2XML::_getNestedXMLRecord(): check for XML_Query2XML_ConfigException - 
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [attributes]: "genre" was not specified using a string, an array or an instance of XML_Query2XML_Callback
+XML_Query2XML_ConfigException: [attributes][genre]: array, string or instance of XML_Query2XML_Callback expected, integer given.

@@ -27,7 +27,7 @@ XML_Query2XML::_appendTextChildNode(): check for XML_Query2XML_XMLException when
             )
         );
     } catch (XML_Query2XML_XMLException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 58);
+        echo get_class($e) . ': ' . $e->getMessage();
     }
     
 function getNewTestInstance()
@@ -37,4 +37,4 @@ function getNewTestInstance()
 class Test {}
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: A value of the type object cannot be used for a text node
+XML_Query2XML_XMLException: [elements][genre]: A value of the type object cannot be used for a text node.

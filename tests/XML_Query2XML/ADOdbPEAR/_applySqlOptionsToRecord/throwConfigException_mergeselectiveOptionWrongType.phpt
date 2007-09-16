@@ -53,5 +53,5 @@ XML_Query2XML::_applySqlOptionsToRecord(): check for XML_Query2XML_ConfigExcepti
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums][sql_options]: The configuration option "merge_selective" is not an array.
+XML_Query2XML_ConfigException: [elements][albums][sql_options][merge_selective]: array expected, integer given.
 

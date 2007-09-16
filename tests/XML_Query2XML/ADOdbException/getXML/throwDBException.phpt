@@ -39,11 +39,11 @@ XML_Query2XML::getXML(): check for XML_Query2XML_DBException - $sql argument con
             )
         );
     } catch (XML_Query2XML_DBException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 199);
+        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 206);
     }
 ?>
 --EXPECT--
-XML_Query2XML_DBException: Could not run the following SQL query: SELECT
+XML_Query2XML_DBException: [sql]: Could not run the following SQL query: SELECT
                 *
              FROM
                 artist

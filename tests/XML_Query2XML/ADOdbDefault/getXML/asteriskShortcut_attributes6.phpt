@@ -21,6 +21,7 @@ XML_Query2XML::getXML(): asterisk shortcut with attributes - supressing single a
             'attributes' => array(
                 '*' => '*',
                 'genre' => array(
+                    'value' => ':string',
                     'condition' => '#returnFalse'
                 )
             )

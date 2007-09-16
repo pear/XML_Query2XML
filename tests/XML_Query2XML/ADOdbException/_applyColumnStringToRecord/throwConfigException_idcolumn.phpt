@@ -43,4 +43,4 @@ XML_Query2XML::_applyColumnStringToRecord(): check for XML_Query2XML_ConfigExcep
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: The column "artistid " used in the option "idColumn" does not exist in the result set.
+XML_Query2XML_ConfigException: [idColumn]: The column "artistid " was not found in the result set.

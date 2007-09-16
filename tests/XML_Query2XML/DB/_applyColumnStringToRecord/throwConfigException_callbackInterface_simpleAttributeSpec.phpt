@@ -32,4 +32,4 @@ XML_Query2XML::_applyColumnStringToRecord(): check for XML_Query2XML_ConfigExcep
     }
 ?>
 --EXPECT--
-[attributes]: "title" was not specified using a string, an array or an instance of XML_Query2XML_Callback
+[attributes][title]: array, string or instance of XML_Query2XML_Callback expected, object given.

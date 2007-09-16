@@ -44,4 +44,4 @@ XML_Query2XML::_applySqlOptionsToRecord(): check for XML_Query2XML_ConfigExcepti
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums]: The configuration option "sql" is not an array or a string.
+XML_Query2XML_ConfigException: [elements][albums][sql]: array or string expected, integer given.

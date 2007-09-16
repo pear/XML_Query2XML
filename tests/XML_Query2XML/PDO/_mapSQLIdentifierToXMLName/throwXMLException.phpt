@@ -49,4 +49,4 @@ XML_Query2XML::_mapSQLIdentifierToXMLName(): check for XML_Query2XML_ConfigExcep
     }
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: Could not map "artistid" to an XML name using the mapper Helper::throwException: Throwing exception for artistid
+XML_Query2XML_XMLException: [elements][artistid]: Could not map "artistid" to an XML name using the mapper Helper::throwException: Throwing exception for artistid

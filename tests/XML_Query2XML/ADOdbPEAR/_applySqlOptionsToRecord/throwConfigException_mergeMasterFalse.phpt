@@ -52,4 +52,4 @@ XML_Query2XML::_applySqlOptionsToRecord(): check for XML_Query2XML_ConfigExcepti
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][albums][sql_options]: The column "genre " used in the option "merge_selective" does not exist in the result set.
+XML_Query2XML_ConfigException: [elements][albums][sql_options][merge_selective][0]: The column "genre " was not found in the result set.

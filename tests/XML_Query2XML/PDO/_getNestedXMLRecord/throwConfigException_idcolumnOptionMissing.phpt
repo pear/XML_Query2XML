@@ -43,4 +43,4 @@ XML_Query2XML::_getNestedXMLRecord(): check for XML_Query2XML_ConfigException - 
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: The configuration option "idColumn" is missing.
+XML_Query2XML_ConfigException: The configuration option "idColumn" is missing on the root level.
