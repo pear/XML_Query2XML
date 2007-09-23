@@ -42,6 +42,28 @@ class MyPDOStatement extends PDOStatement
         }
         return $newRecord;
     }
+    
+    /**Does what PDO::ATTR_FETCH_TABLE_NAMES was supposed to do.
+    */
+    public function fetchAll()
+    {
+        $records = parent::fetchAll();
+        if (is_array($records)) {
+            $newRecords = array();
+            for ($i = 0; $i < count($records); $i++) {
+                foreach ($records[$i] as $key => $value) {
+                    $newKey = $key;
+                    if (strpos($newKey, '.') !== false) {
+                        $newKey = substr($newKey, strpos($newKey, '.') + 1);
+                    }
+                    $newRecords[$i][$newKey] = $value;
+                }
+            }
+            return $newRecords;
+        } else {
+            return $records;
+        }
+    }
 }
 
 require_once dirname(dirname(__FILE__)) . '/settings.php';
