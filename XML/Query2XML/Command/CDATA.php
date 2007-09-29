@@ -16,6 +16,7 @@
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @package XML_Query2XML
 * @version $Id$
+* @access private
 */
 
 /**XML_Query2XML_Command_CDATA extends the class XML_Query2XML_Command_Chain.
@@ -34,6 +35,7 @@ require_once 'XML/Query2XML/Command/Chain.php';
 *   new XML_Query2XML_Command_ColumnValue('name')  //pre-processor
 * );
 *
+* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
@@ -56,10 +58,10 @@ class XML_Query2XML_Command_CDATA extends XML_Query2XML_Command_Chain
     public function execute(array $record)
     {
         $doc = new DOMDocument();
-        $data = $this->_runPreProcessor($record);
+        $data = $this->runPreProcessor($record);
         if (is_array($data) || is_object($data)) {
             throw new XML_Query2XML_ConfigException(
-                $this->_configPath . 'XML_Query2XML_Command_CDATA: string expected '
+                $this->configPath . 'XML_Query2XML_Command_CDATA: string expected '
                 . 'from pre-processor, but ' . gettype($data) . ' returned.'
             );
         }

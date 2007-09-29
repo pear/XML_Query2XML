@@ -16,6 +16,7 @@
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @package XML_Query2XML
 * @version $Id$
+* @access private
 */
 
 /**XML_Query2XML_Command_Unserialize extends the class XML_Query2XML_Command_Chain.
@@ -35,6 +36,7 @@ require_once 'XML/Query2XML/Command/Chain.php';
 * );
 * </code>
 *
+* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
@@ -57,17 +59,17 @@ class XML_Query2XML_Command_Unserialize extends XML_Query2XML_Command_Chain
     public function execute(array $record)
     {
         $doc = new DOMDocument();
-        $xml = $this->_runPreProcessor($record);
+        $xml = $this->runPreProcessor($record);
         if (is_array($xml) || is_object($xml)) {
             throw new XML_Query2XML_XMLException(
-                $this->_configPath . 'XML_Query2XML_Command_Unserialize: string '
+                $this->configPath . 'XML_Query2XML_Command_Unserialize: string '
                 . 'expected from pre-processor, but ' . gettype($xml) . ' returned.'
             );
         } else {
             if (strlen($xml)) {
                 if (!@$doc->loadXML($xml)) {
                     throw new XML_Query2XML_XMLException(
-                        $this->_configPath . 'XML_Query2XML_Command_Unserialize: '
+                        $this->configPath . 'XML_Query2XML_Command_Unserialize: '
                         . 'Could not unserialize the following XML data: "'
                         . $xml . '"'
                     );

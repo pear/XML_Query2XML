@@ -16,6 +16,7 @@
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @package XML_Query2XML
 * @version $Id$
+* @access private
 */
 
 /**XML_Query2XML_Command_Static extends the class XML_Query2XML_Command_Chain.
@@ -37,6 +38,7 @@ require_once 'XML/Query2XML/Command/Chain.php';
 * $commandObject = new XML_Query2XML_Command_Static(new DOMElement('test'));
 * </code>
 *
+* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006

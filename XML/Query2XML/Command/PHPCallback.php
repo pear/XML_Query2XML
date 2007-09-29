@@ -16,6 +16,7 @@
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @package XML_Query2XML
 * @version $Id$
+* @access private
 */
 
 /**XML_Query2XML_Command_PHPCallback extends the class XML_Query2XML_Command_Chain.
@@ -33,6 +34,7 @@ require_once 'XML/Query2XML/Command/Chain.php';
 * $commandObject = new XML_Query2XML_Command_PHPCallback('myFunction');
 * </code>
 *
+* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
@@ -65,9 +67,9 @@ class XML_Query2XML_Command_PHPCallback extends XML_Query2XML_Command_Chain impl
     */
     public function __construct($callback, $configPath)
     {
-        $this->_configPath = $configPath;
-        if ($this->_configPath) {
-            $this->_configPath .= ': ';
+        $this->configPath = $configPath;
+        if ($this->configPath) {
+            $this->configPath .= ': ';
         }
         
         $braceOpen = strpos($callback, '(');
@@ -95,7 +97,7 @@ class XML_Query2XML_Command_PHPCallback extends XML_Query2XML_Command_Chain impl
             *  throwConfigException_callback_method2.phpt
             */
             throw new XML_Query2XML_ConfigException(
-                $this->_configPath . 'The method/function "' . $callableName
+                $this->configPath . 'The method/function "' . $callableName
                 . '" is not callable.'
             );
         }

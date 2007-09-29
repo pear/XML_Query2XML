@@ -16,6 +16,7 @@
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @package XML_Query2XML
 * @version $Id$
+* @access private
 */
 
 /**XML_Query2XML_Command_NonEmpty extends the class XML_Query2XML_Command_Chain.
@@ -34,6 +35,7 @@ require_once 'XML/Query2XML/Command/Chain.php';
 * );
 * </code>
 *
+* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
@@ -50,7 +52,7 @@ class XML_Query2XML_Command_NonEmpty extends XML_Query2XML_Command_Chain impleme
     */
     public function execute(array $record)
     {
-        return $this->_runPreProcessor($record);
+        return $this->runPreProcessor($record);
     }
     
     /**As this class implements XML_Query2XML_Command_Conditional, XML_Query2XML

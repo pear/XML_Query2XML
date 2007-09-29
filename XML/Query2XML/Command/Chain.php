@@ -16,6 +16,7 @@
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @package XML_Query2XML
 * @version $Id$
+* @access private
 */
 
 /**XML_Query2XML_Command_Chain implements the interface XML_Query2XML_Callback.
@@ -25,6 +26,7 @@ require_once 'XML/Query2XML/Callback.php';
 /**Abstract class extended by all command classes that are part of the
 * XML_Query2XML package.
 *
+* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
@@ -36,12 +38,12 @@ abstract class XML_Query2XML_Command_Chain implements XML_Query2XML_Callback
     /**Another instance of XML_Query2XML_Command_Chain to process before this one.
     * @var XML_Query2XML_Command_Chain
     */
-    protected $_preProcessor = null;
+    protected $preProcessor = null;
     
     /**The configuration path; it is used for exception messages
     * @var string
     */
-    protected $_configPath = '';
+    protected $configPath = '';
     
     /**Constructor
     * @param XML_Query2XML_Command_Chain $preProcessor The pre-processor to be used.
@@ -51,10 +53,10 @@ abstract class XML_Query2XML_Command_Chain implements XML_Query2XML_Callback
     */
     public function __construct(XML_Query2XML_Command_Chain $preProcessor = null, $configPath = '')
     {
-        $this->_preProcessor = $preProcessor;
-        $this->_configPath = $configPath;
-        if ($this->_configPath) {
-            $this->_configPath .= ': ';
+        $this->preProcessor = $preProcessor;
+        $this->configPath = $configPath;
+        if ($this->configPath) {
+            $this->configPath .= ': ';
         }
     }
     
@@ -63,7 +65,7 @@ abstract class XML_Query2XML_Command_Chain implements XML_Query2XML_Callback
     */
     public function setPreProcessor(XML_Query2XML_Command_Chain $preProcessor)
     {
-        $this->_preProcessor = $preProcessor;
+        $this->preProcessor = $preProcessor;
     }
     
     /**Runs the pre-processor if one was defined and returns it's return value.
@@ -72,14 +74,14 @@ abstract class XML_Query2XML_Command_Chain implements XML_Query2XML_Callback
     * @param array $record The record to process - this is an associative array.
     * @return mixed Whatever was returned by the pre-processor
     */
-    protected function _runPreProcessor(array $record)
+    protected function runPreProcessor(array $record)
     {
-        if (!is_null($this->_preProcessor)) {
-            return $this->_preProcessor->execute($record);
+        if (!is_null($this->preProcessor)) {
+            return $this->preProcessor->execute($record);
         } else {
             require_once 'XML/Query2XML.php';
             throw new XML_Query2XML_ConfigException(
-                $this->_configPath . get_class($this) . ' requires a pre-processor.'
+                $this->configPath . get_class($this) . ' requires a pre-processor.'
             );
         }
     }
@@ -96,8 +98,8 @@ abstract class XML_Query2XML_Command_Chain implements XML_Query2XML_Callback
     */
     public function getFirstPreProcessor()
     {
-        if (!is_null($this->_preProcessor)) {
-            return $this->_preProcessor->getFirstPreProcessor();
+        if (!is_null($this->preProcessor)) {
+            return $this->preProcessor->getFirstPreProcessor();
         }
         return $this;
     }
@@ -109,8 +111,8 @@ abstract class XML_Query2XML_Command_Chain implements XML_Query2XML_Callback
     public function toString()
     {
         $str = get_class($this) . '(';
-        if (!is_null($this->_preProcessor)) {
-            $str .= $this->_preProcessor->toString();
+        if (!is_null($this->preProcessor)) {
+            $str .= $this->preProcessor->toString();
         }
         return $str . ')';
     }

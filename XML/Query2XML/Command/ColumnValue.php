@@ -16,6 +16,7 @@
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @package XML_Query2XML
 * @version $Id$
+* @access private
 */
 
 /**XML_Query2XML_Command_ColumnValue extends the class XML_Query2XML_Command_Chain.
@@ -31,6 +32,7 @@ require_once 'XML/Query2XML/Command/Chain.php';
 * $commandObject = new XML_Query2XML_Command_ColumnValue('name');
 * </code>
 *
+* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
@@ -51,9 +53,9 @@ class XML_Query2XML_Command_ColumnValue extends XML_Query2XML_Command_Chain impl
     public function __construct($column, $configPath)
     {
         $this->_column = $column;
-        $this->_configPath = $configPath;
-        if ($this->_configPath) {
-            $this->_configPath .= ': ';
+        $this->configPath = $configPath;
+        if ($this->configPath) {
+            $this->configPath .= ': ';
         }
     }
     
@@ -71,7 +73,7 @@ class XML_Query2XML_Command_ColumnValue extends XML_Query2XML_Command_Chain impl
             return $record[$this->_column];
         }
         throw new XML_Query2XML_ConfigException(
-            $this->_configPath . 'The column "' . $this->_column
+            $this->configPath . 'The column "' . $this->_column
             . '" was not found in the result set'
         );
     }
