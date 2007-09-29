@@ -74,7 +74,7 @@ class UppercaseColumnCommand implements XML_Query2XML_Callback
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case06.log', 'XML_Query2XML');
+$debugLogger = Log::factory('file', 'case06.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();

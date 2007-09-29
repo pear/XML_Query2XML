@@ -4,7 +4,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case07.log', 'Query2XML');
+$debugLogger = Log::factory('file', 'case07.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -29,12 +29,6 @@ $dom = $query2xml->getXML(
                         'artistid'
                     ),
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
-                ),
-                'sql_options' => array(
-                    'uncached'      => true,
-                    'single_record' => false,
-                    'merge'         => false,
-                    'merge_master'  => false
                 ),
                 'rootTag' => 'albums',
                 'rowTag' => 'album',

@@ -34,7 +34,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case08.log', 'XML_Query2XML');
+$debugLogger = Log::factory('file', 'case08.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
