@@ -3,6 +3,7 @@ XML_Query2XML::factory(): check for XML_Query2XML_DBException
 --FILE--
 <?php
     require_once 'XML/Query2XML.php';
+    require_once 'PEAR.php';
     $db = new PEAR_Error('error message');
     try {
         $query2xml =& XML_Query2XML::factory($db);
