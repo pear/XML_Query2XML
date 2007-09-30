@@ -25,8 +25,7 @@ XML_Query2XML::getXML(): $options['sql_options']['single_record'] = true; with a
                         'query' => 'SELECT * FROM album WHERE album.artist_id = ? AND 1=2'
                     ),
                     'sql_options' => array(
-                        'single_record' => true,
-                        'uncached' => true
+                        'single_record' => true
                     ),
                     'elements' => array(
                         'albumid',

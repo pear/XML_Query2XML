@@ -26,7 +26,7 @@ XML_Query2XML::getXML(): $options['sql_options']['single_record'] = true
                     ),
                     'sql_options' => array(
                         'single_record' => true,
-                        'uncached' => false
+                        'cached' => true
                     ),
                     'elements' => array(
                         'albumid',

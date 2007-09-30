@@ -32,7 +32,6 @@ $dom = $query2xml->getXML(
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
                 ),
                 'sql_options' => array(
-                    'uncached'        => true,
                     'merge_selective' => array('genre')
                 ),
                 'rootTag' => '',

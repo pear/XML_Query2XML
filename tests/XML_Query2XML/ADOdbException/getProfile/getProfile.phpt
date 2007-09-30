@@ -32,12 +32,6 @@ XML_Query2XML::getProfile()
                         ),
                         'query' => 'SELECT * FROM album WHERE artist_id = ? ORDER BY albumid'
                     ),
-                    'sql_options' => array(
-                        'uncached'      => true,
-                        'single_record' => false,
-                        'merge'         => false,
-                        'merge_master'  => false
-                    ),
                     'rootTag' => 'albums',
                     'rowTag' => 'album',
                     'idColumn' => 'albumid',

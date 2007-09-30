@@ -1,21 +1,28 @@
 --TEST--
-XML_Query2XML::stopProfiling()
+XML_Query2XML::enableDebugLog() with $options['sql_options']['cached'] = true
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
 <?php
+    class MyLogger
+    {
+        public $data = '';
+        public function log($str)
+        {
+            $this->data .= $str . "\n";
+        }
+    }
+
     require_once 'XML/Query2XML.php';
     require_once dirname(dirname(__FILE__)) . '/db_init.php';
     $query2xml =& XML_Query2XML::factory($db);
-    $query2xml->startProfiling();
-    $query2xml->stopProfiling();
+    $debugLogger = new MyLogger();
+    $query2xml->enableDebugLog($debugLogger);
     $dom =& $query2xml->getXML(
         "SELECT
             *
          FROM
-            artist
-         ORDER BY
-            artistid",
+            artist",
         array(
             'rootTag' => 'music_library',
             'rowTag' => 'artist',
@@ -31,7 +38,10 @@ XML_Query2XML::stopProfiling()
                         'data' => array(
                             'artistid'
                         ),
-                        'query' => 'SELECT * FROM album WHERE artist_id = ? ORDER BY albumid'
+                        'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                    ),
+                    'sql_options' => array(
+                        'cached' => true
                     ),
                     'rootTag' => 'albums',
                     'rowTag' => 'album',
@@ -46,8 +56,21 @@ XML_Query2XML::stopProfiling()
             )
         )
     );
-    $profile = $query2xml->getRawProfile();
-    print count($profile['queries'])
+    $query2xml->disableDebugLog();
+    echo $debugLogger->data;
 ?>
 --EXPECT--
-0
+QUERY: SELECT
+            *
+         FROM
+            artist
+DONE
+CACHING: SELECT * FROM album WHERE artist_id = ?
+QUERY: SELECT * FROM album WHERE artist_id = ?
+DONE
+CACHING: SELECT * FROM album WHERE artist_id = ?
+QUERY: SELECT * FROM album WHERE artist_id = ?
+DONE
+CACHING: SELECT * FROM album WHERE artist_id = ?
+QUERY: SELECT * FROM album WHERE artist_id = ?
+DONE
