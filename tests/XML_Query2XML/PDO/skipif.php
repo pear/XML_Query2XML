@@ -29,8 +29,15 @@ if (!class_exists('PDO')) {
         if ($protocol == 'sqlite') {
             $protocol .= '2';
         }
-        $address = ltrim($address, '/');
-        $db = new PDO($protocol . ':' . $address);
+        if (strpos($address, '/C:\\') === 0) {
+            $address = ltrim($address, '/');
+        }
+        try {
+            $db = new PDO($protocol . ':' . $address);
+        } catch (PDOException $e) {
+            print 'skip could not connect using DSN ' . DSN . ': ' . $e->getMessage();
+            exit;
+        }
     } else {
         list($credentials, $address) = split('@', $address);
             if (strpos($credentials, ':') === false) {

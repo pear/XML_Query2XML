@@ -72,7 +72,9 @@ if (strpos($address, '@') === false) {
     if ($protocol == 'sqlite') {
         $protocol .= '2';
     }
-    $address = ltrim($address, '/');
+    if (strpos($address, '/C:\\') === 0) {
+        $address = ltrim($address, '/');
+    }
     $db = new PDO($protocol . ':' . $address);
     $db->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('MyPDOStatement', array()));
 } else {
