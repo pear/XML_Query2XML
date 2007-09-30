@@ -943,20 +943,44 @@ print $dom->saveXML();
       </programlisting>  
      </para>
      <para>
-      Let's have a closer look at how this works: the records that were retrieved from the database look
-      like this (a little simplified):
+      As we want for every artist only a single tag we need to identify each artist by the primary
+      key of the table artist. Note that there is a second record for Curtis Mayfield (related to
+      the album Curtis), but we don't want something like
+      <programlisting role="tutorial">
       <![CDATA[
-artistid  name                birth_year  albumid album_title     album_published
--------------------------------------------------------------------------------
-1          Curtis Mayfield    1920        1        New World Order  1990          
-1          Curtis Mayfield    1920        2        Curtis           1970          
-2          Isaac Hayes        1942        3        Shaft            1972          
-3          Ray Charles        1930        NULL     NULL             NULL          
+<artist>
+  <name>Curtis Mayfield</name>
+  <album>
+    <name>New World Order</name>
+  </album>
+</artist>
+<artist>
+  <name>Curtis Mayfield</name>
+  <album>
+    <name>Curits</name>
+  </album>
+</artist> 
       ]]>
-      For every record {@link XML_Query2XML::getXML()} called the private method {@link XML_Query2XML::_getNestedXMLRecord()}.
-      It did not create two artist tags for Curtis Mayfield because $options['idColumn'] was set
-      to 'artistid' and _getNestedXMLRecord() therefore knew that there already was a tag for
-      Curtis Mayfield.
+      </programlisting>
+      but rather
+      <programlisting role="tutorial">
+      <![CDATA[
+<artist>
+  <name>Curtis Mayfield</name>
+  <albums>
+    <album>
+     <name>New World Order</name>
+    </album>
+    <albums>
+     <name>Curtis</name>
+    </albums>
+  </albums>
+</artist>
+      ]]>
+      </programlisting>
+      This is achieved by telling XML_Query2XML which entity to focus on (on this level): the artist, as it
+      is identified by the artist table's primary key. Once XML_Query2XML get's to the second Curtis Mayfield
+      record, it can tell by the artistid 1 that an XML element was already created for this artist.
      </para>
      <para>
       For a one more example and a detailed explanation of complex child elements that have
@@ -1314,6 +1338,10 @@ function returnFalse()
       </programlisting>
      </para>
      <para>
+      Another example of how to use the asterisk shortcut can be found in
+      {@tutorial XML_Query2XML.pkg#casestudies.case07}.
+     </para>
+     <para>
       One final note on the asterisk shortcut: if you explicitly specify a tag name (an array element key) it has to contain an asterisk. The following code
       would cause a {@link XML_Query2XML_ConfigException} to be thrown:
       <programlisting role="php">
@@ -1420,6 +1448,10 @@ print $dom->saveXML();
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification} and 
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications} because the private method
     {@link XML_Query2XML::_applyColumnStringToRecord()} is used in all cases.
+   </para>
+   <para>
+    For example and further discussion of {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}
+    please see {@tutorial XML_Query2XML.pkg#casestudies.case02}.
    </para>
    <refsect3 id="{@id multicolumn_pk}">
     <title>Handling Multi-Column Primary Keys</title>
@@ -1637,6 +1669,9 @@ print $dom->saveXML();
      <itemizedlist>
       <listitem>
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_condition}: condition for the inclusion of the attribute
+      </listitem>
+      <listitem>
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_encoder}: encoding of the attribute value
       </listitem>
       <listitem>
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}: allows you to fetch more data
@@ -1974,7 +2009,7 @@ print $dom->saveXML();
     </programlisting>
     Here 'rowTag' on the root level is set to 'artist' while ['elements']['albums']['rowTag']
     is set to 'album'. This example is taken from {@tutorial XML_Query2XML.pkg#casestudies.case02},
-    so please see there for the resulting XML data.
+    so please see there for the resulting XML data and further discussion.
    </para>
    <para>
     In some situations, 'rowTag' can be omitted all together:
@@ -2179,21 +2214,21 @@ print $dom->saveXML();
     <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <favorite_artists>
-    <artist>
-        <name>Curtis Mayfield</name>
-        <birth_year>1920</birth_year>
-        <genre>Soul</genre>
-    </artist>
-    <artist>
-        <name>Isaac Hayes</name>
-        <birth_year>1942</birth_year>
-        <genre>Soul</genre>
-    </artist>
-    <artist>
-        <name>Ray Charles</name>
-        <birth_year>1930</birth_year>
-        <genre>Country and Soul</genre>
-    </artist>
+<artist>
+  <name>Curtis Mayfield</name>
+  <birth_year>1920</birth_year>
+  <genre>Soul</genre>
+</artist>
+<artist>
+  <name>Isaac Hayes</name>
+  <birth_year>1942</birth_year>
+  <genre>Soul</genre>
+</artist>
+<artist>
+  <name>Ray Charles</name>
+  <birth_year>1930</birth_year>
+  <genre>Country and Soul</genre>
+</artist>
 </favorite_artists>
     ]]>
     </programlisting>
@@ -2245,7 +2280,8 @@ print $dom->saveXML();
     </programlisting>
     ['elements']['albums']['rootTag'] is set to 'albums'. Therefore all 'album' tags of a single
     artist will be enclosed by a singel 'albums' tag. This example is actually taken from
-    {@tutorial XML_Query2XML.pkg#casestudies.case02}, so please see there for the resulting XML data.
+    {@tutorial XML_Query2XML.pkg#casestudies.case02}, so please see there for the resulting XML data
+    and further discussion.
    </para>
    <para>
     As shown in {@tutorial XML_Query2XML.pkg#casestudies.case04} is is also possible to assign
@@ -3025,7 +3061,7 @@ print $dom->saveXML();
     handled. $options['sql_options'] is an associative array that can have the following fileds:
     <itemizedlist>
      <listitem>
-      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.uncached}
+      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.cached}
      </listitem>
      <listitem>
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.single_record}
@@ -3042,23 +3078,22 @@ print $dom->saveXML();
     </itemizedlist>
     Per default all options are set to the boolean value false.
    </para>
-   <refsect3 id="{@id uncached}">
-    <title>$options['sql_options']['uncached']</title>
+   <refsect3 id="{@id cached}">
+    <title>$options['sql_options']['cached']</title>
     <para>
-     Caching is activated by default. That means that the result of a query (that is represented
-     by an associative array) is stored in the private associative array {@link XML_Query2XML::$_recordCache}
-     using the SQL query string as key. If the exact same query needs to be executed a second time,
-     it can be retrieved from cache.
+     Since 1.5.0RC1 Caching is deactivated by default.
+     If caching is activated the result of a query is stored in the private associative array
+     {@link XML_Query2XML::$_recordCache} using the SQL query string as key. If the exact same
+     query needs to be executed a second time, its results can be retrieved from cache.
     </para>
     <para>
-     Before setting $options['sql_options']['uncached'] to true, do some
+     Before setting $options['sql_options']['cached'] to true, do some
      {@tutorial XML_Query2XML.pkg#profiling}. As documented in
      {@tutorial XML_Query2XML.pkg#profiling.getprofile} the CACHED column in the profile output will
      show 'true!' if caching is performed without being necessary.
     </para>
     <para>
-     Please see {@tutorial XML_Query2XML.pkg#casestudies.case03} for an example where caching is not
-     necessary and $options['sql_options']['uncached'] therefore set to true.
+     Caching only makes sense, if you have to run exactly the same query multiple times.
     </para>
    </refsect3>
    <refsect3 id="{@id single_record}">
@@ -3066,7 +3101,8 @@ print $dom->saveXML();
     <para>
      Use this option to make sure that the SQL query you specified in
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql} returns only a single record.
-     This option is, in fact of limited use.
+     This option is in fact of limited use. Do not use it to fetch only the first record
+     from a large result set. (SQL is your friend: use a better WHERE clause!)
     </para>
    </refsect3>
    <refsect3 id="{@id merge}">
@@ -3126,58 +3162,9 @@ print $dom->saveXML();
 ?>
      ]]>
      </programlisting>
-    </para>
-    <para>
-     As this produces quite some overhead you might be tempted to do something like this:
-     <programlisting role="php">
-     <![CDATA[
-<?php
-require_once 'XML/Query2XML.php';
-require_once 'MDB2.php';
-$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-$dom = $query2xml->getXML(
-    "SELECT
-        *
-     FROM
-        artist",
-    array(
-        'rootTag' => 'MUSIC_LIBRARY',
-        'rowTag' => 'ARTIST',
-        'idColumn' => 'artistid',
-        'elements' => array(
-            'NAME' => 'name',
-            'BIRTH_YEAR' => 'birth_year',
-            'GENRE' => 'genre',
-            'albums' => array(
-                'sql' => array(
-                    'data' => array('artistid'),
-                    'query' => "SELECT a.*, '{\$record['genre']}' AS genre FROM album a WHERE artist_id = ?"
-                ),
-                'rootTag' => '',
-                'rowTag' => 'ALBUM',
-                'idColumn' => 'albumid',
-                'elements' => array(
-                    'TITLE' => 'title',
-                    'PUBLISHED_YEAR' => 'published_year',
-                    'COMMENT' => 'comment',
-                    'GENRE' => 'genre'
-                )
-            )
-        )
-    )
-);
-
-header('Content-Type: application/xml');
-$dom->formatOutput = true;
-print $dom->saveXML();
-?>
-     ]]>
-     </programlisting>
-     Here the value of the genre column had to be available on the lower level. To circumvent the merging,
-     the required value was included the the lover level's sql query. ATTENTION: if you include a column
-     value in another query like this you have to make sure that no SQL injection is possible. Therefore it is
-     strongly recommended to use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.merge_selective}
-     instead.
+     This produces quite some overhead. It is therefore highly recommended to use 
+     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.merge_selective}
+     described in the next section.
     </para>
    </refsect3>
    <refsect3 id="{@id merge_selective}">
@@ -3185,9 +3172,9 @@ print $dom->saveXML();
     <para>
      As a full merge with the parent record might severly affect the performance, the sql option
      merge_selective allows you to only merge the current record with specific columns of the
-     parent record. This will also eliminate any SQL injection vulnerabilities. Just place
-     the names of all columns of the parent record you want to be available in the current record
-     in an array and assign it to the merge_selective option. Here goes an example:
+     parent record. Just place the names of all columns of the parent record you want to be
+     available in the current record in an array and assign it to the merge_selective option.
+     Here goes an example:
      <programlisting role="php">
      <![CDATA[
 <?php
@@ -3235,6 +3222,8 @@ print $dom->saveXML();
 ?>
      ]]>
      </programlisting>
+     Please see {@tutorial XML_Query2XML.pkg#casestudies.case04} for a similar example and
+     more discussion of {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.merge_selective}.
     </para>
    </refsect3>
    <refsect3 id="{@id merge_master}">
@@ -3245,7 +3234,7 @@ print $dom->saveXML();
      be resolved. By default, the record of the parent level is the master and overwrites the
      record(s) returned by {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}. If you want
      the new records to overwrite the record of the parent level, set
-     $options['sql_options']['merge_master'] to true. Note that is option only has an effect if
+     $options['sql_options']['merge_master'] to true. Note that this option only has an effect if
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.merge} is set to true or
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.merge_selective} is used.
     </para>
@@ -3811,13 +3800,13 @@ print $dom->saveXML();
        </programlisting>
       </listitem>
       <listitem>
-       <emphasis>null</emphasis>: use NULL to reset encoding to the builint default encoding.
+       <emphasis>null</emphasis>: use NULL to reset encoding to the built-in default encoding.
        This default assumes that all data is in ISO-8859-1 (Latin-1) and will encode it to
        UTF-8 using {@link http://at.php.net/mb_convert_encoding mb_convert_encoding()}
        or if not available using {@link http://at.php.net/utf8_encode utf8_encode()}.
        <programlisting role="php">
        <![CDATA[
-'encoder' => false
+'encoder' => null
        ]]>
        </programlisting>
       </listitem>
@@ -5567,7 +5556,7 @@ print $dom->saveXML();
   </refsect2>
  </refsect1>
  <refsect1 id="{@id debugging}">
-  <title>Debugging XML_Query2XML</title>
+  <title>Logging and Debugging XML_Query2XML</title>
   <para>
   	If you need to debug your XML_Query2XML or an application using it, use {@link XML_Query2XML::enableDebugLog()}
   	and {@link XML_Query2XML::disableDebugLog()}. It is recommended to use
@@ -5590,13 +5579,10 @@ print $dom->saveXML();
       </listitem>
      </itemizedlist>
      When using PEAR::Log, the date, time, a custom string and '[info]' will preceed every
-     entry. For a better readability SQL queries are not converted into a single line but may be
-     multi line.
+     entry.
   </para>
-  
-  <refsect2 id="{@id example}">
-   <title>Example</title>
-   <para>
+  <para>
+   Here is how it's done:
    <programlisting role="php">
    <![CDATA[
 <?php
@@ -5605,18 +5591,111 @@ $query2xml = XML_Query2XML::factory($db);
 
 //create a new instance of PEAR::Log
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'debug.log', 'XML_Query2XML');
+$debugLogger = Log::factory('file', 'debug.log', 'XML_Query2XML');
 
 //start debugging
 $query2xml->enableDebugLog($debugLogger);
 
-$dom = $query2xml->getXML(...);
+$dom = $query2xml->getXML(
+    "SELECT
+        *
+     FROM
+        artist
+     ORDER BY
+        artistid",
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'name',
+            'albums' => array(
+                'sql' => array(
+                    'data' => array(
+                        'artistid'
+                    ),
+                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                ),
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'elements' => array(
+                    'title'
+                )
+            )
+        )
+    )
+);
 print $dom->saveXML();
 ?>
-     ]]>
-     </programlisting>
-   </para>
-  </refsect2>
+   ]]>
+   </programlisting>
+   This will write the following to debug.log:
+   <![CDATA[
+Feb 03 15:46:17 Query2XML [info] QUERY: SELECT
+        *
+     FROM
+        artist
+     ORDER BY
+        artistid
+Feb 03 15:46:17 Query2XML [info] DONE
+Feb 03 15:46:17 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Feb 03 15:46:17 Query2XML [info] DONE
+Feb 03 15:46:17 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Feb 03 15:46:17 Query2XML [info] DONE
+Feb 03 15:46:17 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Feb 03 15:46:17 Query2XML [info] DONE
+Sep 29 10:56:51 Query2XML [info] QUERY: SELECT * FROM artist ORDER BY artistid
+Sep 29 10:56:52 Query2XML [info] DONE
+Sep 29 10:56:52 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Sep 29 10:56:52 Query2XML [info] DONE
+Sep 29 10:56:52 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Sep 29 10:56:52 Query2XML [info] DONE
+Sep 29 10:56:52 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Sep 29 10:56:52 Query2XML [info] DONE
+   ]]>
+   XML_Query2XML simply logs the SQL SELECT string the way it was passed to getXML(), including all
+   whitespace characters. If the query in question is a complex join over multiple tables this
+   might be a good thing. On the other hand you might just want to have a single line per log entry.
+   This is best achieved by building a wrapper around PEAR Log:
+   <programlisting role="php">
+   <![CDATA[
+class MyLogger {
+    private $_logger = null;
+    public function __construct($logger)
+    {
+        $this->_logger = $logger;
+    }
+    
+    public function log($msg)
+    {
+        $this->_logger->log(preg_replace('/\n\ +/m', ' ', $msg));
+    }
+}
+   ]]>
+   </programlisting>
+   Using this wrapper like this:
+   <programlisting role="php">
+   <![CDATA[
+$query2xml->enableDebugLog(
+    new MyLogger(
+        Log::factory('file', 'debug.log', 'XML_Query2XML')
+    )
+);
+   ]]>
+   </programlisting>
+   will make the log file from the prvious example look like this:
+   <![CDATA[
+Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM artist ORDER BY artistid
+Sep 29 11:03:20 Query2XML [info] DONE
+Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Sep 29 11:03:20 Query2XML [info] DONE
+Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Sep 29 11:03:20 Query2XML [info] DONE
+Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
+Sep 29 11:03:20 Query2XML [info] DONE
+   ]]>
+   Note how the first query is now placed on a single line.
+  </para>
   
   <refsect2 id="{@id enabledebuglog}">
    <title>XML_Query2XML::enableDebugLog()</title>
@@ -5819,8 +5898,16 @@ array('start' => microtime(true), 'stop' => 0);
   <refsect2 id="{@id case01}">
     <title>Case 01: simple SELECT with getFlatXML</title>
     <para>
-    Case 01 is as simple as it can get. We use {@link XML_Query2XML::getFlatXML()} to generate
-    flat XML data.
+     Case 01 will teach you:
+     <itemizedlist>
+      <listitem>
+       How to use {@link XML_Query2XML::getFlatXML()}.
+      </listitem>
+     </itemizedlist>
+    </para>
+    <para>
+     Case 01 is as simple as it can get. We use {@link XML_Query2XML::getFlatXML()} to generate
+     flat XML data.
     </para>
     
     <refsect3 id="{@id case01_php}">
@@ -5888,6 +5975,26 @@ print $dom->saveXML();
    <refsect2 id="{@id case02}">
     <title>Case 02: LEFT JOIN</title>
     <para>
+     Case 02 will teach you:
+     <itemizedlist>
+      <listitem>
+       The basics of {@link XML_Query2XML::getXML()}.
+      </listitem>
+      <listitem>
+       How to use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}.
+      </listitem>
+      <listitem>
+       How to use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_roottag}.
+      </listitem>
+      <listitem>
+       How to use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_rowtag}.
+      </listitem>
+      <listitem>
+       The basics of {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}.
+      </listitem>
+     </itemizedlist>
+    </para>
+    <para>
      Once you have to deal with LEFT JOINs and similar "complex" SQL queries, you have to use
      {@link XML_Query2XML::getXML()}. The challenge is to get the $options array
      (getXML's second argument) right:
@@ -5951,7 +6058,7 @@ print $dom->saveXML();
   	   </listitem>
   	   <listitem>
   	    <emphasis>'idColumn'</emphasis>: we set this to 'artistid' because this is the primary key column of the table
-  	    artis. At least at this point it should be clear why this option is essential: our LEFT JOIN
+  	    artist. At least at this point it should be clear why this option is essential: our LEFT JOIN
   	    returns something like this:
         <![CDATA[
 artistid  name                birth_year  albumid album_title     album_published
@@ -5961,7 +6068,44 @@ artistid  name                birth_year  albumid album_title     album_publishe
 2          Isaac Hayes        1942        3        Shaft            1972          
 3          Ray Charles        1930        NULL     NULL             NULL          
         ]]>
-        As we want artists to have only a single tag we need to identify them by their primary key.
+        As we want for every artist only a single tag we need to identify each artist by the primary
+        key of the table artist. Note that there is a second record for Curtis Mayfield (related to
+        the album Curtis), but we don't want something like
+        <programlisting role="tutorial">
+        <![CDATA[
+<artist>
+  <name>Curtis Mayfield</name>
+  <album>
+    <name>New World Order</name>
+  </album>
+</artist>
+<artist>
+  <name>Curtis Mayfield</name>
+  <album>
+    <name>Curits</name>
+  </album>
+</artist> 
+        ]]>
+        </programlisting>
+        but rather
+        <programlisting role="tutorial">
+        <![CDATA[
+<artist>
+  <name>Curtis Mayfield</name>
+  <albums>
+    <album>
+     <name>New World Order</name>
+    </album>
+    <albums>
+     <name>Curtis</name>
+    </albums>
+  </albums>
+</artist>
+        ]]>
+        </programlisting>
+        This is achieved by telling XML_Query2XML which entity to focus on (on this level): the artist, as it
+        is identified by the artist table's primary key. Once XML_Query2XML get's to the second Curtis Mayfield
+        record, it can tell by the artistid 1 that an XML element was already created for this artist.
   	   </listitem>
   	   <listitem>
   	    <emphasis>'elements'</emphasis>: this is a (not necessarily associative) array of child elements.
@@ -6066,7 +6210,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case02.log', 'Query2XML');
+$debugLogger = Log::factory('file', 'case02.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -6158,8 +6302,19 @@ DB_DURATION:    0.015194892883301
    <refsect2 id="{@id case03}">
     <title>Case 03: Two SELECTs instead of a LEFT JOIN</title>
     <para>
-     When your query is getting bigger and bigger (6 or more JOINs) you might want to (or have
-     to, if the maximum number of fields has been reached) split up the big join into multiple
+     Case 03 will teach you:
+     <itemizedlist>
+      <listitem>
+       How to use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}.
+      </listitem>
+      <listitem>
+       Prevent SQL injection.
+      </listitem>
+     </itemizedlist>
+    </para>
+    <para>
+     When your query is getting bigger and bigger (say, 6 or more JOINs) you might want to (or have
+     to, if the maximum number of fields your RDBMS will return has been reached) split up the big join into multiple
      smaller joins. Here we will just do exactly the same as in
      {@tutorial XML_Query2XML.pkg#casestudies.case02}, but with two separate SELECT queries.
     </para>
@@ -6195,12 +6350,6 @@ $dom = $query2xml->getXML(
                     ),
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
                 ),
-                'sql_options' => array(
-                    'uncached'      => true,
-                    'single_record' => false,
-                    'merge'         => false,
-                    'merge_master'  => false
-                ),
                 'rootTag' => 'albums',
                 'rowTag' => 'album',
                 'idColumn' => 'albumid',
@@ -6224,25 +6373,16 @@ print $dom->saveXML();
       </programlisting>
       We won't go over every option as we did for {@tutorial XML_Query2XML.pkg#casestudies.case02.case02_php}.
       We will only focus on the differences. The first argument to {@link XML_Query2XML::getXML()}
-      is a simple SELECT query over one table. What also changed in the complex element
-      specification of 'albums'. It has two new options:
+      is a simple SELECT query over one table. What also changed is the complex element
+      specification of 'albums'. It has a new option:
       <itemizedlist>
   	   <listitem>
   	    <emphasis>'sql'</emphasis>: ['sql']['query'] will be executed for every record retrieved with
   	    the first SELECT query. In our case, we want all albums for the current artist record.
   	    We use a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification} here:
-  	    ['sql']['data'] contains an array of values that will first be passed to the private method
-  	    {@link XML_Query2XML::_applyColumnStringToRecord()} and then be use in a call to
-  	    {@link http://pear.php.net/manual/en/package.database.db.intro-execute.php DB::execute}.
-  	    As we do not prefix 'artistid' with anything it is interpreted as a column name (of the parent
-  	    record) - which is just what we want. This completely prevents SQL injection attacks.
-  	   </listitem>
-  	   <listitem>
-  	    <emphasis>'sql_options'</emphasis>: this (optional) option allows you to overwrite a couple
-  	    of default settings (per default all are set to false) stored in an associative array.
-  	    Here we only overwrite 'uncached' by setting it to true. This is because our query
-  	    specified in 'sql' will only be executed once for every record. These things can be
-  	    easily revealed by doing some {@tutorial XML_Query2XML.pkg#profiling}.
+  	    ['sql']['data'] contains an array of values that will ultimately be passed to the database abstraction
+  	    layer's execute() method. As we do not prefix 'artistid' with anything it is interpreted as a column
+  	    name (of the parent record) - which is just what we want. This completely prevents SQL injection attacks.
   	   </listitem>
       </itemizedlist>
      </para>
@@ -6316,7 +6456,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case03.log', 'Query2XML');
+$debugLogger = Log::factory('file', 'case03.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -6344,12 +6484,6 @@ $dom = $query2xml->getXML(
                     ),
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
                 ),
-                'sql_options' => array(
-                    'uncached'      => true,
-                    'single_record' => false,
-                    'merge'         => false,
-                    'merge_master'  => false
-                ),
                 'rootTag' => 'albums',
                 'rowTag' => 'album',
                 'idColumn' => 'albumid',
@@ -6375,7 +6509,7 @@ $fp->write('case03.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
      ]]>
      </programlisting>
-     The lines 5-7 do the debugging, line 9 and 61-63 the profiling. This will create
+     The lines 6-8 do the debugging, line 10 and 54-56 the profiling. This will create
      case03.log and case03.profile.
      </para>
     </refsect3>
@@ -6401,7 +6535,8 @@ Feb 11 16:08:45 Query2XML [info] DONE
      The debug log shows what we expected: the first SELECT over the artist table runs once
      and the SELECT over the album table runs three times (once for every record found in
      the artist table). As the log shows no 'CACHING' entries we also know that no cashing
-     was performed (remember: we set the sql option uncached to true).
+     was performed ({@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.cached}
+     was not set to true).
     </refsect3>
     <refsect3 id="{@id case03_profile}">
      <title>case03.profile</title>
@@ -6426,7 +6561,24 @@ DB_DURATION:    0.024358034133911
     </refsect3>
    </refsect2>
    <refsect2 id="{@id case04}">
-    <title>Case 04: Case 03 with all the bells and whistles</title>
+    <title>Case 04: Case 03 with custom tag names, attributes, merge_selective and more</title>
+    <para>
+     Case 04 will teach you:
+     <itemizedlist>
+      <listitem>
+       How to use alternative tag names.
+      </listitem>
+      <listitem>
+       How to use callbacks with the '#' prefix.
+      </listitem>
+      <listitem>
+       How to define static node and attribute values using the ':' prefix.
+      </listitem>
+      <listitem>
+       How to prevent the creation of a root tag, using {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_roottag}.
+      </listitem>
+     </itemizedlist>
+    </para>
     <para>
      This is very much like {@tutorial XML_Query2XML.pkg#casestudies.case03}, but with a demonstration
      of some splecial features.
@@ -6447,7 +6599,28 @@ DB_DURATION:    0.024358034133911
       </listitem>
       <listitem>
        the ALBUM tags should not be contained in an ALBUMS tag but should be directly within the
-       ARTIST tag
+       ARTIST tag, e.g.
+       <programlisting role="tutorial">
+       <![CDATA[
+<artist>
+  ...
+  <album>...</album>
+  <album>...</album>
+</artist>
+       ]]>
+       </programlisting>
+       instead of
+       <programlisting role="tutorial">
+       <![CDATA[
+<artist>
+  ...
+  <album>
+    <album>...</album>
+    <album>...</album>
+  </albums>
+</artist>
+       ]]>
+       </programlisting>
       </listitem>
       <listitem>
        the ALBUM tag should have one attribute: ALBUMID
@@ -6491,7 +6664,6 @@ $dom = $query2xml->getXML(
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
                 ),
                 'sql_options' => array(
-                    'uncached'        => true,
                     'merge_selective' => array('genre')
                 ),
                 'rootTag' => '',
@@ -6547,8 +6719,10 @@ function firstTwoChars($record)
        returns the first two characters of the string stored in $record['birth_year'].
       </listitem>
       <listitem>
-       the ARTIST tag now has two attributes: they are specified in an array using the
-       'attributes' option. The ARTISTID attribute is simple. In the MAINTAINER attribute
+       the ARTIST tag now has two attributes: they are specified in an array using
+       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes the 'attribute' option}.
+       Both use a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes.simple_attribute_specifications}.
+       The ARTISTID attribute simply uses the column name 'artistid'. In the MAINTAINER attribute
        we specify a static value. This is done by prefixing it by a colon (':'). Without the
        colon, XML_Query2XML would treat it as a column name.
       </listitem>
@@ -6558,22 +6732,28 @@ function firstTwoChars($record)
        have omitted the rootTag option.
       </listitem>
       <listitem>
-       ALBUM's new attribute ALBUMID is again specified using the 'attribute' option.
+       ALBUM's new attribute ALBUMID is specified using 
+       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_attributes the 'attribute' option}.
       </listitem>
       <listitem>
        ALBUM's new child tag GENRE contains the value of a column of the table artist.
-       If we had been using the sql default options we would have seen a
+       If we had used the sql default options we would have seen a
        XML_Query2XML_ConfigException with the following message:
        <![CDATA[
-[elements][albums]: The column "genre" used in the option "elements" does not exist in the result set.
+[elements][albums][elements][GENRE]: The column "genre" was not found in the result set.
        ]]>
-       This is because the result of the first SQL query is not available at this level. It got
+       This is because the result of the first SQL query is not available at this level. As far as
+       this level is concerned, it got
        overwritten with the result of our second query. But as we need both to be present, we
        selectively merger them using {@link http://www.php.net/array_merge array_merge()}.
-       This is specified by setting the sql_option 'merge_selective' to an array that contains
+       This is achieved by setting
+       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.merge_selective the sql_option 'merge_selective'}
+       to an array that contains
        all columns of the parent record that should also be available on the current level.
-       As we do not have any confilicting column names, we just leave 'merge_master' set to
-       false which means that the results of the first query is 'master'.
+       As we do not have any confilicting column names, we just leave
+       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.merge_master the sql_option 'merge_master'}
+       set to false which means that the results of the parent level's query is the 'master', i.e. overwrite
+       the results from the query on this level.
       </listitem>
      </itemizedlist>
      </para>
@@ -6644,7 +6824,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case04.log', 'Query2XML');
+$debugLogger = Log::factory('file', 'case04.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -6673,7 +6853,6 @@ $dom = $query2xml->getXML(
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
                 ),
                 'sql_options' => array(
-                    'uncached'        => true,
                     'merge_selective' => array('genre')
                 ),
                 'rootTag' => '',
@@ -6713,7 +6892,7 @@ function firstTwoChars($record)
 ?>
      ]]>
      </programlisting>
-     The lines 5-7 do the debugging, line 9 and 66-68 the profiling. This will create
+     The lines 6-8 do the debugging, line 10 and 64-66 the profiling. This will create
      case04.log and case04.profile.
      </para>
     </refsect3>
@@ -6760,6 +6939,22 @@ DB_DURATION:    0.026465892791748
    </refsect2>
    <refsect2 id="{@id case05}">
     <title>Case 05: three LEFT JOINs</title>
+    <para>
+     Case 05 will teach you:
+     <itemizedlist>
+      <listitem>
+       How to write {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}
+       that in turn contain {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}.
+      </listitem>
+      <listitem>
+       How to use static methods for callbacks with the '#' prefix.
+      </listitem>
+      <listitem>
+       How to modify the {@link http://www.php.net/manual/en/ref.dom.php#dom.class.domdocument DOMDocument}
+       instance returned by getXML().
+      </listitem>
+     </itemizedlist>
+    </para>
     <para>
      Case 05 is a demonstration of complex element specifications.
     </para>
@@ -7341,7 +7536,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case05.log', 'Query2XML');
+$debugLogger = Log::factory('file', 'case05.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -7429,7 +7624,7 @@ class Callbacks
 ?>
      ]]>
      </programlisting>
-     The lines 5-7 do the debugging, line 9 and 77-79 the profiling. This will create
+     The lines 6-8 do the debugging, line 10 and 76-78 the profiling. This will create
      case05.log and case05.profile.
      </para>
     </refsect3>
@@ -7474,6 +7669,24 @@ DB_DURATION:    0.050441980361938
    
    <refsect2 id="{@id case06}">
     <title>Case 06: BIG join over 10 tables</title>
+    <para>
+     Case 06 will teach you:
+     <itemizedlist>
+      <listitem>
+       How to write nested {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}.
+      </listitem>
+      <listitem>
+       How to use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn} when
+       things get really complex.
+      </listitem>
+      <listitem>
+       How to use COMMAND OBJECTS implementing the {@link XML_Query2XML_Callback} interface.
+      </listitem>
+      <listitem>
+       How to use the CONDITIONAL prefix '?' in combination with the '#' prefix.
+      </listitem>
+     </itemizedlist>
+    </para>
     <para>
      Case 06 demonstrates how complex things can get :) First have a look at the
      {@link http://query2xml.sourceforge.net/docs/Query2XML_Tests.jpg ER diagram}.
@@ -7751,12 +7964,103 @@ print $dom->saveXML();
 ?>
      ]]>
      </programlisting>
-     We use a static class called Helper here. Note how Helper::summarizeComment() is called with a second argument.
+    </para>
+    <para>
+     Note how {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn} is used at the different
+     levels:
+     <itemizedlist>
+      <listitem>
+       on the root level we want a record for each store and therefore use the primary key of the table 'store' as
+       the idColumn:
+       <programlisting role="php">
+       <![CDATA[
+'idColumn' => 'storeid',
+       ]]>
+       </programlisting>
+      </listitem>
+      <listitem>
+       [elements][address] does not use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}
+       at all because all columns used at this level ('country',
+       'state', 'city', 'street' and 'phone') are all columns of the table 'store'.
+      </listitem>
+      <listitem>
+       on the level [elements][department] we want a record for each department (within the current store)
+       and therefore use the primary key of the table 'department' as the idColumn:
+       <programlisting role="php">
+       <![CDATA[
+'idColumn' => 'departmentid',
+       ]]>
+       </programlisting>
+       The reason we can use department.departmentid without listing all departments underneath all stores is of course that
+       our LEFT JOIN has the condition "LEFT JOIN department ON department.store_id = store.storeid".
+      </listitem>
+      <listitem>
+       on the level [elements][department][elements][employees] we want a record for each employee (within
+       the current department) and therefore use the primary key of the table 'employee' as the idColumn:
+       <programlisting role="php">
+       <![CDATA[
+'idColumn' => 'employeeid',
+       ]]>
+       </programlisting>
+       The reason we can use employee.employeeid without listing all employees underneath all departments is of course that
+       our LEFT JOIN does the trick for us (implementing a n:n relationship via the table employee_department).
+      </listitem>
+      <listitem>
+       on the level [elements][department][elements][employees][elements][sales] we want a record for each sale
+       (perfmormed by the current employee) and therefore use the primary key of the table 'sale' as the idColumn:
+       <programlisting role="php">
+       <![CDATA[
+'idColumn' => 'saleid',
+       ]]>
+       </programlisting>
+       The reason we can use sale.saleid without listing all sales underneath all employees is of course that
+       our LEFT JOIN has the condition "LEFT JOIN sale ON sale.employee_id = employee.employeeid".
+      </listitem>
+      <listitem>
+       on the level [elements][department][elements][employees][elements][sales][elements][customer] we want a
+       record for each customer (which was a party to the current sale) and therefore use the primary key of
+       the table 'customer' as the idColumn:
+       <programlisting role="php">
+       <![CDATA[
+'idColumn' => 'customerid',
+       ]]>
+       </programlisting>
+       Logically speaking we are of course using the foreign key sale.employee_id, but as the equality of
+       sale.employee_id and employee.employeeid is the condition for our LEFT JOIN, both are the same.
+      </listitem>
+      <listitem>
+       on the level [elements][department][elements][employees][elements][sales][elements][album] we want a
+       record for each album (which was subject to the current sale) and therefore use the primary key of
+       the table 'album' as the idColumn:
+       <programlisting role="php">
+       <![CDATA[
+'idColumn' => 'albumid',
+       ]]>
+       </programlisting>
+       Logically speaking we are of course using the foreign key sale.album_id, but as the equality of
+       sale.album_id and album.albumid is the condition for our LEFT JOIN, both are the same.
+      </listitem>
+      <listitem>
+       on the level [elements][department][elements][employees][elements][sales][elements][album][elements][artist]
+       we want a record for each artist (who permormed the current album) and therefore use the primary key of
+       the table 'artist' as the idColumn:
+       <programlisting role="php">
+       <![CDATA[
+'idColumn' => 'artistid',
+       ]]>
+       </programlisting>
+       Logically speaking we are of course using the foreign key album.artist_id, but as the equality of
+       album.artist_id and artist.artistid is the condition for our LEFT JOIN, both are the same.
+      </listitem>
+     </itemizedlist>
+    </para>
+    <para>
+     We also use a static class called Helper here. Note how Helper::summarizeComment() is called with a second argument.
      The current record is always passed as first argument to the callback function. So we specify the "comment"
      element as
      <programlisting role="php">
      <![CDATA[
-     'comment' => '?#Helper::summarizeComment(12)',
+'comment' => '?#Helper::summarizeComment(12)',
      ]]>
      </programlisting>
      which means that the string '12' will be passed as second argument to Helper::summarizeComment().
@@ -8367,7 +8671,7 @@ class UppercaseColumnCommand implements XML_Query2XML_Callback
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case06.log', 'XML_Query2XML');
+$debugLogger = Log::factory('file', 'case06.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -8551,7 +8855,7 @@ $fp->write('case06.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
      ]]>
      </programlisting>
-     The lines 76-78 do the debugging, line 80 and 255-257 the profiling. This will create
+     The lines 75-77 do the debugging, line 79 and 254-256 the profiling. This will create
      case06.log and case06.profile.
      </para>
     </refsect3>
@@ -8690,7 +8994,15 @@ DB_DURATION:    0.1554069519043
     </refsect3>
    </refsect2>
    <refsect2 id="{@id case07}">
-    <title>Case 07: Case 03 revisited: Simplifications with Asterisk Shortcuts</title>
+    <title>Case 07: Case 03 with Asterisk Shortcuts</title>
+    <para>
+     Case 07 will teach you:
+     <itemizedlist>
+      <listitem>
+       How to use the {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.asterisk_shortcut}
+      </listitem>
+     </itemizedlist>
+    </para>
     <para>
      As documented under {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.asterisk_shortcut}
      an asterisk can be used to treat all columns found in the result set the same.
@@ -8722,12 +9034,6 @@ $dom = $query2xml->getXML(
                         'artistid'
                     ),
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
-                ),
-                'sql_options' => array(
-                    'uncached'      => true,
-                    'single_record' => false,
-                    'merge'         => false,
-                    'merge_master'  => false
                 ),
                 'rootTag' => 'albums',
                 'rowTag' => 'album',
@@ -8824,7 +9130,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case07.log', 'Query2XML');
+$debugLogger = Log::factory('file', 'case07.log', 'Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -8847,12 +9153,6 @@ $dom = $query2xml->getXML(
                         'artistid'
                     ),
                     'query' => 'SELECT * FROM album WHERE artist_id = ?'
-                ),
-                'sql_options' => array(
-                    'uncached'      => true,
-                    'single_record' => false,
-                    'merge'         => false,
-                    'merge_master'  => false
                 ),
                 'rootTag' => 'albums',
                 'rowTag' => 'album',
@@ -8877,7 +9177,7 @@ $fp->write('case07.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
 ?>
      ]]>
      </programlisting>
-     The lines 6-8 do the debugging, line 10 and 56-58 the profiling. This will create
+     The lines 6-8 do the debugging, line 10 and 48-50 the profiling. This will create
      case07.log and case07.profile.
      </para>
     </refsect3>
@@ -8903,7 +9203,8 @@ Apr 17 00:54:36 Query2XML [info] DONE
      The debug log shows what we expected: the first SELECT over the artist table runs once
      and the SELECT over the album table runs three times (once for every record found in
      the artist table). As the log shows no 'CACHING' entries we also know that no cashing
-     was performed (remember: we set the sql option uncached to true).
+     was performed ({@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.cached}
+     was not set to true).
     </refsect3>
     <refsect3 id="{@id case07_profile}">
      <title>case07.profile</title>
@@ -8926,6 +9227,21 @@ DB_DURATION:    0.016173124313354
    </refsect2>
    <refsect2 id="{@id case08}">
     <title>Case 08: Case 06 revisited: Making use of Mappers</title>
+    <para>
+     Case 08 will teach you:
+     <itemizedlist>
+      <listitem>
+       How to do mapping of SQL identifiers to XML element names in accordenace with
+       {@link http://www.sqlx.org/SQL-XML-documents/5FCD-14-XML-2004-07.pdf ISO/IEC 9075-14:2005}.
+      </listitem>
+      <listitem>
+       How to write your own mappers.
+      </listitem>
+      <listitem>
+       How to use different mappers at different levels.
+      </listitem>
+     </itemizedlist>
+    </para>
     <para>
      Make sure you are familiar with {@tutorial XML_Query2XML.pkg#casestudies.case06}
      before proceeding. Case 08 is different from Case 06 in the following aspects:
@@ -9817,7 +10133,7 @@ require_once 'MDB2.php';
 $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
 
 require_once 'Log.php';
-$debugLogger = &Log::factory('file', 'case08.log', 'XML_Query2XML');
+$debugLogger = Log::factory('file', 'case08.log', 'XML_Query2XML');
 $query2xml->enableDebugLog($debugLogger);
 
 $query2xml->startProfiling();
@@ -10212,9 +10528,22 @@ DB_DURATION:    0.20340394973755
    	In all the examples a MySQL database created with the SQL DDL shown below is used.
    	You might also want to have a look at the
    	{@link http://query2xml.sourceforge.net/docs/Query2XML_Tests.jpg ER diagram}.
-   	Note: in order for the unit tests to run you have to install
+   	Note: the unit tests by default use the SQLite 2 database found at
+   	$PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests. If you want to run
+   	all unit tests you have to install
    	the MySQL DDL $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.sql
    	or the PostgreSQL DDL $PHP_PEAR_TEST_DIR/XML_Query2XML/tests/Query2XML_Tests.psql.
+   </para>
+   <para>
+    Please we use a certain naming convention for primary and foreign keys:
+    <itemizedlist>
+     <listitem>
+      For primary keys we use "&lt;table_name&gt;id".
+     </listitem>
+     <listitem>
+      For foreign keys we use "&lt;foreign_table_name&gt;_id".
+     </listitem>
+    </itemizedlist>
     <![CDATA[
 CREATE DATABASE Query2XML_Tests;
 USE Query2XML_Tests;
