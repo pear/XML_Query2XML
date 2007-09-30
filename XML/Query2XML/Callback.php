@@ -95,4 +95,44 @@ interface XML_Query2XML_Callback
     */
     public function execute(array $record);
 }
+
+/**This interface has to be implemented by all command classes that provide
+* a condition as to whether the returne value of execute() is to be used.
+*
+* @access private
+* @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
+* @version Release: @package_version@
+* @copyright Empowered Media 2007
+* @package XML_Query2XML
+* @since Interface available since Release 1.5.0RC1
+*/
+interface XML_Query2XML_Command_Conditional extends XML_Query2XML_Callback
+{
+    /**Returns a boolean value indicating whether the return value of execute()
+    * is to be used.
+    * @param string $string The return value of execute()
+    * @return boolean
+    */
+    public function evaluateCondition($string);
+}
+
+/**This interface has to be implemented by all command classes that function
+* as a data source and wish to provide support for the asterisk shortcut.
+*
+* @access private
+* @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
+* @version Release: @package_version@
+* @copyright Empowered Media 2007
+* @package XML_Query2XML
+* @since Interface available since Release 1.5.0RC1
+*/
+interface XML_Query2XML_Command_DataSource extends XML_Query2XML_Callback
+{
+    /**Replaces every occurence of an asterisk ('*') in the data source
+    * specification.
+    * @param string $columnName The name of the column that is to replace
+    *                           all occurences of '*'.
+    */
+    public function replaceAsterisks($columnName);
+}
 ?>
