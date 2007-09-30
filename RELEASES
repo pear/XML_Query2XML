@@ -10,10 +10,10 @@ Release notes: This release candidate comes after extensive re-factoring:
 - XML_Query2XML now does a lot of internal pre-processing
 - this improves performance by at least 30%
 - all exceptions now contain information that relates to the
-  configuration option that cause the exception to be thrown
+  configuration option that caused the exception to be thrown
 - caching is now deactivated by default as is not needed in
   most cases; see $options['sql_options']['cached']
-- XML_Query2XML now comes with 1132 phpt unit tests
+- XML_Query2XML now comes with 1144 phpt unit tests
 Note: if 1.5.0RC1 does not cause any problems for early adopters
 (which I consider very unlikely) 1.5.0 will be released next weekend.
 

@@ -20,7 +20,7 @@ Major features:
 7. debugging, logging and profiling features
 8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 1132 phpt unit tests
+10. 1144 phpt unit tests
  
  </description>
  <lead>
@@ -29,7 +29,7 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2007-09-03</date>
+ <date>2007-09-30</date>
  <version>
   <release>1.5.0RC1</release>
   <api>1.5.0RC1</api>
@@ -43,10 +43,10 @@ Major features:
 - XML_Query2XML now does a lot of internal pre-processing
 - this improves performance by at least 30%
 - all exceptions now contain information that relates to the
-  configuration option that cause the exception to be thrown
+  configuration option that caused the exception to be thrown
 - caching is now deactivated by default as is not needed in
   most cases; see $options['sql_options']['cached']
-- XML_Query2XML now comes with 1132 phpt unit tests
+- XML_Query2XML now comes with 1144 phpt unit tests
 Note: if 1.5.0RC1 does not cause any problems for early adopters
 (which I consider very unlikely) 1.5.0 will be released next weekend.
  </notes>
@@ -118,6 +118,8 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/disableDebugLog -->
       <dir name="enableDebugLog">
        <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/enableDebugLog -->
       <dir name="getFlatXML">
        <file baseinstalldir="/" name="case01.phpt" role="test" />
@@ -352,6 +354,8 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/disableDebugLog -->
       <dir name="enableDebugLog">
        <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbException/enableDebugLog -->
       <dir name="getFlatXML">
        <file baseinstalldir="/" name="case01.phpt" role="test" />
@@ -586,6 +590,8 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/disableDebugLog -->
       <dir name="enableDebugLog">
        <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/enableDebugLog -->
       <dir name="getFlatXML">
        <file baseinstalldir="/" name="case01.phpt" role="test" />
@@ -820,6 +826,8 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
       </dir> <!-- /tests/XML_Query2XML/DB/disableDebugLog -->
       <dir name="enableDebugLog">
        <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/DB/enableDebugLog -->
       <dir name="getFlatXML">
        <file baseinstalldir="/" name="case01.phpt" role="test" />
@@ -1054,6 +1062,8 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
       </dir> <!-- /tests/XML_Query2XML/MDB2/disableDebugLog -->
       <dir name="enableDebugLog">
        <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/MDB2/enableDebugLog -->
       <dir name="getFlatXML">
        <file baseinstalldir="/" name="case01.phpt" role="test" />
@@ -1288,6 +1298,8 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
       </dir> <!-- /tests/XML_Query2XML/PDO/disableDebugLog -->
       <dir name="enableDebugLog">
        <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
       </dir> <!-- /tests/XML_Query2XML/PDO/enableDebugLog -->
       <dir name="getFlatXML">
        <file baseinstalldir="/" name="case01.phpt" role="test" />
@@ -2039,16 +2051,16 @@ The smaller changes include:
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2007-09-03</date>
+   <date>2007-09-30</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>This release candidate comes after extensive re-factoring:
 - XML_Query2XML now does a lot of internal pre-processing
 - this improves performance by at least 30%
 - all exceptions now contain information that relates to the
-  configuration option that cause the exception to be thrown
+  configuration option that caused the exception to be thrown
 - caching is now deactivated by default as is not needed in
   most cases; see $options['sql_options']['cached']
-- XML_Query2XML now comes with 1132 phpt unit tests
+- XML_Query2XML now comes with 1144 phpt unit tests
 Note: if 1.5.0RC1 does not cause any problems for early adopters
 (which I consider very unlikely) 1.5.0 will be released next weekend.
    </notes>
