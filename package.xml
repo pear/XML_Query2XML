@@ -29,17 +29,17 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2007-09-30</date>
+ <date>2007-10-07</date>
  <version>
-  <release>1.5.0RC1</release>
-  <api>1.5.0RC1</api>
+  <release>1.5.0</release>
+  <api>1.5.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>This release candidate comes after extensive re-factoring:
+ <notes>This seventh stable release comes after extensive re-factoring:
 - XML_Query2XML now does a lot of internal pre-processing
 - this improves performance by at least 30%
 - all exceptions now contain information that relates to the
@@ -47,8 +47,7 @@ Major features:
 - caching is now deactivated by default as is not needed in
   most cases; see $options['sql_options']['cached']
 - XML_Query2XML now comes with 1144 phpt unit tests
-Note: if 1.5.0RC1 does not cause any problems for early adopters
-(which I consider very unlikely) 1.5.0 will be released next weekend.
+Note: No changes were introduced since 1.5.0RC1.
  </notes>
  <contents>
   <dir name="/">
@@ -2063,6 +2062,28 @@ The smaller changes include:
 - XML_Query2XML now comes with 1144 phpt unit tests
 Note: if 1.5.0RC1 does not cause any problems for early adopters
 (which I consider very unlikely) 1.5.0 will be released next weekend.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.0</release>
+    <api>1.5.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-10-07</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>This seventh stable release comes after extensive re-factoring:
+- XML_Query2XML now does a lot of internal pre-processing
+- this improves performance by at least 30%
+- all exceptions now contain information that relates to the
+  configuration option that caused the exception to be thrown
+- caching is now deactivated by default as is not needed in
+  most cases; see $options['sql_options']['cached']
+- XML_Query2XML now comes with 1144 phpt unit tests
+Note: No changes were introduced since 1.5.0RC1.
    </notes>
   </release>
  </changelog>
