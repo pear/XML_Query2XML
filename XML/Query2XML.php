@@ -62,10 +62,10 @@ require_once 'PEAR/Exception.php';
 */
 class XML_Query2XML
 {
-    /**An instance of PEAR DB, PEAR MDB2 or ADOdb
-    * @var mixed A subclass of DB_common, MDB2_Driver_Common or ADOConnection.
+    /**Primary driver.
+    * @var XML_Query2XML_Driver A subclass of XML_Query2XML_Driver.
     */
-    private $_db;
+    private $_driver;
     
     /**An associative, multi-dimensional arrray used by {@see _getAllRecordsCached}
     * to cache retrieved records.
@@ -117,18 +117,22 @@ class XML_Query2XML
     );
     
     /**Constructor
-    * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
-    * @throws XML_Query2XML_ConfigException If $db is not an instance of a child
-    *                  class of DB_common, MDB2_Driver_Common or ADOConnection.
-    * @param mixed $db An instance of PEAR DB, PEAR MDB2, ADOdb or PDO.
+    * @param mixed $backend A subclass of XML_Query2XML_Driver or
+    *                       an instance of PEAR DB, PEAR MDB2, ADOdb,
+    *                       PDO or Net_LDAP.
     */
-    private function __construct($db)
+    private function __construct($backend)
     {
-        $this->_db = XML_Query2XML_Driver::factory($db);
+        if ($backend instanceof XML_Query2XML_Driver) {
+            $this->_driver = $backend;
+        } else {
+            $this->_driver = XML_Query2XML_Driver::factory($backend);
+        }
     }
     
     /**Factory method.
-    * As first argument pass an instance of PDO, PEAR DB, PEAR MDB2 or ADOdb:
+    * As first argument pass an instance of PDO, PEAR DB, PEAR MDB2, ADOdb, Net_LDAP or
+    * an instance of any class that extends XML_Query2XML_Driver:
     * <code>
     * <?php
     * require_once 'XML/Query2XML.php';
@@ -168,16 +172,17 @@ class XML_Query2XML
     * ?>
     * </code>
     *
-    * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
-    * @throws XML_Query2XML_ConfigException If $db is not an instance of a child
-    *                                       class of PDO, DB_common, MDB2_Driver_Common
-    *                                       or ADOConnection.
-    * @param mixed $db                      An instance of PDO, PEAR DB, PEAR MDB2 or ADOdb.
-    * @return XML_Query2XML                 A new instance of XML_Query2XML
+    * @throws XML_Query2XML_DriverException If $backend already is a PEAR_Error.
+    * @throws XML_Query2XML_ConfigException If $backend is not an instance of a
+    *                  child class of DB_common, MDB2_Driver_Common, ADOConnection
+    *                  PDO, Net_LDAP or XML_Query2XML_Driver.
+    * @param mixed $backend An instance of PEAR DB, PEAR MDB2, ADOdb, PDO,
+    *                       Net_LDAP or a subclass of XML_Query2XML_Driver.
+    * @return XML_Query2XML A new instance of XML_Query2XML
     */
-    public static function factory($db)
+    public static function factory($backend)
     {
-        return new XML_Query2XML($db);
+        return new XML_Query2XML($backend);
     }
     
     /**Set a global option.
@@ -698,8 +703,17 @@ class XML_Query2XML
             }
         }
         
+        if (isset($options['query'])) {
+            $options['sql'] = $options['query'];
+        }
         if (isset($options['sql'])) {
             if (is_array($options['sql'])) {
+                if (!isset($options['sql']['query']) &&
+                    isset($options['sql']['base']))
+                {
+                    //simple LDAP query specification
+                    $options['sql'] = array('query' => $options['sql']);
+                }
                 if (!isset($options['sql']['query'])) {
                     /*
                     * unit test: _preprocessOptions/
@@ -753,6 +767,9 @@ class XML_Query2XML
                 );
             }
             
+            if (isset($options['query_options'])) {
+                $options['sql_options'] = $options['query_options'];
+            }
             if (!isset($options['sql_options'])) {
                 $options['sql_options'] = array();
             }
@@ -1583,7 +1600,14 @@ class XML_Query2XML
     private function &_getAllRecords($sql, $configPath)
     {
         $this->_debugStartQuery($sql);
-        $records = $this->_db->getAllRecords($sql, $configPath);
+        if (is_array($sql) &&
+            isset($sql['driver']) &&
+            $sql['driver'] instanceof XML_Query2XML_Driver
+        ) {
+            $records = $sql['driver']->getAllRecords($sql, $configPath);
+        } else {
+            $records = $this->_driver->getAllRecords($sql, $configPath);
+        }
         $this->_debugStopQuery($sql);
         return $records;
     }
@@ -1929,15 +1953,16 @@ class XML_Query2XML
                 $e
             );
         }
-        if ($value !== false && !is_null($value)) {
-            self::_appendTextChildNode($element, $value, $configPath);
-        }
+        self::_appendTextChildNode($element, $value, $configPath);
         return $element;
     }
     
     /**Append a new child text node to $element.
     * $value must already be UTF8-encoded; this is to be handled
     * by self::_executeEncoder() and $options['encoder'].
+    *
+    * This method will not create and append a child text node
+    * if $value === false || is_null($value).
     *
     * @throws XML_Query2XML_XMLException Any lower-level DOMException will be wrapped
     *                 and re-thrown as a XML_Query2XML_XMLException. This will happen
@@ -1950,7 +1975,9 @@ class XML_Query2XML
     */
     private static function _appendTextChildNode(DOMNode $element, $value, $configPath)
     {
-        if (is_object($value) || is_array($value)) {
+        if ($value === false || is_null($value)) {
+            return;
+        } elseif (is_object($value) || is_array($value)) {
             /*
             * Objects and arrays cannot be cast
             * to a string without an error.
@@ -2200,10 +2227,24 @@ class XML_Query2XML_Exception extends PEAR_Exception
     }
 }
 
+/**Exception for driver errors
+* @package XML_Query2XML
+*/
+class XML_Query2XML_DriverException extends XML_Query2XML_Exception
+{
+    /**Constructor
+    * @param string $message The error message.
+    */
+    public function __construct($message)
+    {
+        parent::__construct($message);
+    }
+}
+
 /**Exception for database errors
 * @package XML_Query2XML
 */
-class XML_Query2XML_DBException extends XML_Query2XML_Exception
+class XML_Query2XML_DBException extends XML_Query2XML_DriverException
 {
     /**Constructor
     * @param string $message The error message.
@@ -2251,14 +2292,13 @@ class XML_Query2XML_ConfigException extends XML_Query2XML_Exception
     }
 }
 
-/**Abstract driver class for different database abstraction layers.
+/**Abstract driver class.
 *
 * usage:
 * <code>
-* $driver = XML_Query2XML_Driver::factory($db);
+* $driver = XML_Query2XML_Driver::factory($backend);
 * </code>
 *
-* @access private
 * @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
 * @version Release: @package_version@
 * @copyright Empowered Media 2006
@@ -2267,24 +2307,12 @@ class XML_Query2XML_ConfigException extends XML_Query2XML_Exception
 */
 abstract class XML_Query2XML_Driver
 {
-    /**Execute a SQL SELECT stement and fetch all records from the result set.
+    /**This method, when implemented executes the query passed as the
+    * first argument and returns all records from the result set.
     *
-    * The first argument $sql can be a string (i.e. a simple query specification)
-    * <code>
-    * $sql = 'SELECT * FROM album';
-    * </code>
-    * or an associative array with the mandatory element 'query' and an optional
-    * element 'data', where 'query' has to be a string and data an indexed array:
-    * <code>
-    * $sql = array(
-    *   'data' => array(
-    *       '1'
-    *   ),
-    *   'query' => 'SELECT * FROM album WHERE albumid = ?'
-    * );
-    * </code>
+    * The format of the first argument depends on the driver being used.
     *
-    * @throws XML_Query2XML_DBException If some database related error occures.
+    * @throws XML_Query2XML_DriverException If some driver related error occures.
     * @param mixed  $sql The SQL query as a string or an array.
     * @param string $configPath The config path; used for exception messages.
     * @return array An array of records. Each record itself will be an
@@ -2308,39 +2336,43 @@ abstract class XML_Query2XML_Driver
     
     /**Factory method.
     *
-    * @throws XML_Query2XML_DBException     If $db already is a PEAR error.
-    * @throws XML_Query2XML_ConfigException If $db is not an instance of a child
-    *                  class of DB_common, MDB2_Driver_Common or ADOConnection.
-    * @param mixed $db An instance of MDB2_Driver_Common, PDO, DB_common
-    *                  or ADOConnection.
+    * @throws XML_Query2XML_DriverException If $backend already is a PEAR_Error.
+    * @throws XML_Query2XML_ConfigException If $backend is not an instance of a
+    *                  child class of MDB2_Driver_Common, PDO, DB_common,
+    *                  ADOConnection or Net_LDAP.
+    * @param mixed $backend An instance of MDB2_Driver_Common, PDO, DB_common,
+    *                  ADOConnection or Net_LDAP.
     * @return XML_Query2XML_Driver An instance of a driver class that
     *                  extends XML_Query2XML_Driver.
     */
-    public static function factory($db)
+    public static function factory($backend)
     {
-        if (class_exists('MDB2_Driver_Common') && $db instanceof MDB2_Driver_Common) {
+        if (class_exists('MDB2_Driver_Common') && $backend instanceof MDB2_Driver_Common) {
             require_once 'XML/Query2XML/Driver/MDB2.php';
-            return new XML_Query2XML_Driver_MDB2($db);
-        } elseif (class_exists('PDO') && $db instanceof PDO) {
+            return new XML_Query2XML_Driver_MDB2($backend);
+        } elseif (class_exists('PDO') && $backend instanceof PDO) {
             require_once 'XML/Query2XML/Driver/PDO.php';
-            return new XML_Query2XML_Driver_PDO($db);
-        } elseif (class_exists('DB_common') && $db instanceof DB_common) {
+            return new XML_Query2XML_Driver_PDO($backend);
+        } elseif (class_exists('DB_common') && $backend instanceof DB_common) {
             require_once 'XML/Query2XML/Driver/DB.php';
-            return new XML_Query2XML_Driver_DB($db);
-        } elseif (class_exists('ADOConnection') && $db instanceof ADOConnection) {
+            return new XML_Query2XML_Driver_DB($backend);
+        } elseif (class_exists('ADOConnection') && $backend instanceof ADOConnection) {
             require_once 'XML/Query2XML/Driver/ADOdb.php';
-            return new XML_Query2XML_Driver_ADOdb($db);
-        } elseif (class_exists('PEAR_Error') && $db instanceof PEAR_Error) {
+            return new XML_Query2XML_Driver_ADOdb($backend);
+        } elseif (class_exists('Net_LDAP') && $backend instanceof Net_LDAP) {
+            require_once 'XML/Query2XML/Driver/LDAP.php';
+            return new XML_Query2XML_Driver_LDAP($backend);
+        } elseif (class_exists('PEAR_Error') && $backend instanceof PEAR_Error) {
             //unit tests: NoDBLayer/factory/throwDBException.phpt
-            throw new XML_Query2XML_DBException(
-                'Could not connect to database: ' . $db->toString()
+            throw new XML_Query2XML_DriverException(
+                'Driver error: ' . $backend->toString()
             );
         } else {
             //unit test: NoDBLayer/factory/throwConfigException.phpt
             throw new XML_Query2XML_ConfigException(
                 'Argument passed to the XML_Query2XML constructor is not an '
-                . 'instance of DB_common, MDB2_Driver_Common, ADOConnection '
-                . 'or PDO.'
+                . 'instance of DB_common, MDB2_Driver_Common, ADOConnection'
+                . ', PDO or Net_LDAP.'
             );
         }
     }
