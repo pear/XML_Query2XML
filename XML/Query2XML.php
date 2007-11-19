@@ -1,126 +1,135 @@
 <?php
-/**This file contains the class XML_Query2XML and all exception classes.
-*
-* LICENSE:
-* This source file is subject to version 2.1 of the LGPL
-* that is bundled with this package in the file LICENSE.
-*
-* COPYRIGHT:
-* Empowered Media
-* http://www.empoweredmedia.com
-* 481 Eighth Avenue Suite 1530
-* New York, NY 10001
-*
-* @copyright Empowered Media 2006
-* @license http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
-* @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
-* @package XML_Query2XML
-* @version $Id$
-*/
+/**
+ * This file contains the class XML_Query2XML and all exception classes.
+ *
+ * PHP version 5
+ *
+ * @category  XML
+ * @package   XML_Query2XML
+ * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @copyright 2006 Lukas Feiler
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/XML_Query2XML
+ */
 
-/**PEAR_Exception is used as the parent for XML_Query2XML_Exception.
-*/
+/**
+ * PEAR_Exception is used as the parent for XML_Query2XML_Exception.
+ */
 require_once 'PEAR/Exception.php';
 
-/**Create XML data from SQL queries.
-*
-* XML_Query2XML heavily uses exceptions and therefore requires PHP5.
-* Additionally one of the following database abstraction layers is
-* required: PDO (compiled-in by default since PHP 5.1), PEAR DB,
-* PEAR MDB2, ADOdb.
-*
-* The two most important public methods this class provides are:
-*
-* <b>{@link XML_Query2XML::getFlatXML()}</b>
-* Transforms your SQL query into flat XML data.
-*
-* <b>{@link XML_Query2XML::getXML()}</b>
-* Very powerful and flexible method that can produce whatever XML data you want. It
-* was specifically written to also handle LEFT JOINS.
-*
-* They both return an instance of the class DOMDocument provided by PHP5's
-* built-in DOM API.
-*
-* A typical usage of XML_Query2XML looks like this:
-* <code>
-* <?php
-* require_once 'XML/Query2XML.php';
-* $query2xml = new XML_Query2XML(MDB2::factory($dsn));
-* $dom = $query2xml->getXML($sql, $options);
-* header('Content-Type: application/xml');
-* print $dom->saveXML();
-* ?>
-* </code>
-*
-* Please read the <b>{@tutorial XML_Query2XML.pkg tutorial}</b> for
-* detailed usage examples and more documentation.
-* 
-* @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
-* @version Release: @package_version@
-* @copyright Empowered Media 2006
-* @package XML_Query2XML
-*/
+/**
+ * Create XML data from SQL queries.
+ *
+ * XML_Query2XML heavily uses exceptions and therefore requires PHP5.
+ * Additionally one of the following database abstraction layers is
+ * required: PDO (compiled-in by default since PHP 5.1), PEAR DB,
+ * PEAR MDB2, ADOdb.
+ *
+ * The two most important public methods this class provides are:
+ *
+ * <b>{@link XML_Query2XML::getFlatXML()}</b>
+ * Transforms your SQL query into flat XML data.
+ *
+ * <b>{@link XML_Query2XML::getXML()}</b>
+ * Very powerful and flexible method that can produce whatever XML data you want. It
+ * was specifically written to also handle LEFT JOINS.
+ *
+ * They both return an instance of the class DOMDocument provided by PHP5's
+ * built-in DOM API.
+ *
+ * A typical usage of XML_Query2XML looks like this:
+ * <code>
+ * <?php
+ * require_once 'XML/Query2XML.php';
+ * $query2xml = new XML_Query2XML(MDB2::factory($dsn));
+ * $dom = $query2xml->getXML($sql, $options);
+ * header('Content-Type: application/xml');
+ * print $dom->saveXML();
+ * ?>
+ * </code>
+ *
+ * Please read the <b>{@tutorial XML_Query2XML.pkg tutorial}</b> for
+ * detailed usage examples and more documentation.
+ * 
+ * @category  XML
+ * @package   XML_Query2XML
+ * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @copyright 2006 Lukas Feiler
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/XML_Query2XML
+ */
 class XML_Query2XML
 {
-    /**Primary driver.
-    * @var XML_Query2XML_Driver A subclass of XML_Query2XML_Driver.
-    */
+    /**
+     * Primary driver.
+     * @var XML_Query2XML_Driver A subclass of XML_Query2XML_Driver.
+     */
     private $_driver;
     
-    /**An associative, multi-dimensional arrray used by {@see _getAllRecordsCached}
-    * to cache retrieved records.
-    * @var array An associative array; the query results are stored using the SQL
-    *            query as the key.
-    */
+    /**
+     * An associative, multi-dimensional arrray used by {@see _getAllRecordsCached}
+     * to cache retrieved records.
+     * @var array An associative array; the query results are stored using the SQL
+     *            query as the key.
+     */
     private $_recordCache = array();
     
-    /**An instance of PEAR Log
-    * @var mixed An object that has a method with the signature log(String $msg);
-    * preferably PEAR Log.
-    * @see enableDebugLog
-    * @see disableDebugLog
-    */
+    /**
+     * An instance of PEAR Log
+     * @var mixed An object that has a method with the signature log(String $msg);
+     *            preferably PEAR Log.
+     * @see enableDebugLog
+     * @see disableDebugLog
+     */
     private $_debugLogger;
     
-    /**Whether debug logging is to be performed
-    * @var boolean
-    * @see enableDebugLog
-    * @see disableDebugLog
-    */
+    /**
+     * Whether debug logging is to be performed
+     * @var boolean
+     * @see enableDebugLog
+     * @see disableDebugLog
+     */
     private $_debug = false;
     
-    /**Whether profiling is to be performed
-    * @var boolean
-    * @see startProfiling()
-    * @see stopProfiling()
-    */
+    /**
+     * Whether profiling is to be performed
+     * @var boolean
+     * @see startProfiling()
+     * @see stopProfiling()
+     */
     private $_profiling = false;
     
-    /**The profiling data.
-    * @var array A multi dimensional associative array
-    * @see startProfiling()
-    * @see stopProfiling()
-    * @see _debugStartQuery()
-    * @see _debugStopQuery()
-    * @see _debugCachedQuery()
-    * @see _debugCachingQuery()
-    * @see _stopDBProfiling()
-    */
+    /**
+     * The profiling data.
+     * @var array A multi dimensional associative array
+     * @see startProfiling()
+     * @see stopProfiling()
+     * @see _debugStartQuery()
+     * @see _debugStopQuery()
+     * @see _debugCachedQuery()
+     * @see _debugCachingQuery()
+     * @see _stopDBProfiling()
+     */
     private $_profile = array();
     
-    /**An associative array of global options.
-    * @var array An associative array
-    * @see setGlobalOption()
-    */
+    /**
+     * An associative array of global options.
+     * @var array An associative array
+     * @see setGlobalOption()
+     */
     private $_globalOptions = array(
         'hidden_container_prefix' => '__'
     );
     
-    /**Constructor
-    * @param mixed $backend A subclass of XML_Query2XML_Driver or
-    *                       an instance of PEAR DB, PEAR MDB2, ADOdb,
-    *                       PDO or Net_LDAP.
-    */
+    /**
+     * Constructor
+     *
+     * @param mixed $backend A subclass of XML_Query2XML_Driver or
+     *                       an instance of PEAR DB, PEAR MDB2, ADOdb,
+     *                       PDO or Net_LDAP.
+     */
     private function __construct($backend)
     {
         if ($backend instanceof XML_Query2XML_Driver) {
@@ -130,160 +139,177 @@ class XML_Query2XML
         }
     }
     
-    /**Factory method.
-    * As first argument pass an instance of PDO, PEAR DB, PEAR MDB2, ADOdb, Net_LDAP or
-    * an instance of any class that extends XML_Query2XML_Driver:
-    * <code>
-    * <?php
-    * require_once 'XML/Query2XML.php';
-    * $query2xml = XML_Query2XML::factory(
-    *   new PDO('mysql://root@localhost/Query2XML_Tests')
-    * );
-    * ?>
-    * </code>
-    *
-    * <code>
-    * <?php
-    * require_once 'XML/Query2XML.php';
-    * require_once 'DB.php';
-    * $query2xml = XML_Query2XML::factory(
-    *   DB::connect('mysql://root@localhost/Query2XML_Tests')
-    * );
-    * ?>
-    * </code>
-    * 
-    * <code>
-    * <?php
-    * require_once 'XML/Query2XML.php';
-    * require_once 'MDB2.php';
-    * $query2xml = XML_Query2XML::factory(
-    *   MDB2::factory('mysql://root@localhost/Query2XML_Tests')
-    * );
-    * ?>
-    * </code>
-    * 
-    * <code>
-    * <?php
-    * require_once 'XML/Query2XML.php';
-    * require_once 'adodb/adodb.inc.php';
-    * $adodb = ADONewConnection('mysql');
-    * $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
-    * $query2xml =& XML_Query2XML::factory($adodb);
-    * ?>
-    * </code>
-    *
-    * @throws XML_Query2XML_DriverException If $backend already is a PEAR_Error.
-    * @throws XML_Query2XML_ConfigException If $backend is not an instance of a
-    *                  child class of DB_common, MDB2_Driver_Common, ADOConnection
-    *                  PDO, Net_LDAP or XML_Query2XML_Driver.
-    * @param mixed $backend An instance of PEAR DB, PEAR MDB2, ADOdb, PDO,
-    *                       Net_LDAP or a subclass of XML_Query2XML_Driver.
-    * @return XML_Query2XML A new instance of XML_Query2XML
-    */
+    /**
+     * Factory method.
+     * As first argument pass an instance of PDO, PEAR DB, PEAR MDB2, ADOdb,
+     * Net_LDAP or an instance of any class that extends XML_Query2XML_Driver:
+     * <code>
+     * <?php
+     * require_once 'XML/Query2XML.php';
+     * $query2xml = XML_Query2XML::factory(
+     *   new PDO('mysql://root@localhost/Query2XML_Tests')
+     * );
+     * ?>
+     * </code>
+     *
+     * <code>
+     * <?php
+     * require_once 'XML/Query2XML.php';
+     * require_once 'DB.php';
+     * $query2xml = XML_Query2XML::factory(
+     *   DB::connect('mysql://root@localhost/Query2XML_Tests')
+     * );
+     * ?>
+     * </code>
+     * 
+     * <code>
+     * <?php
+     * require_once 'XML/Query2XML.php';
+     * require_once 'MDB2.php';
+     * $query2xml = XML_Query2XML::factory(
+     *   MDB2::factory('mysql://root@localhost/Query2XML_Tests')
+     * );
+     * ?>
+     * </code>
+     * 
+     * <code>
+     * <?php
+     * require_once 'XML/Query2XML.php';
+     * require_once 'adodb/adodb.inc.php';
+     * $adodb = ADONewConnection('mysql');
+     * $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
+     * $query2xml =& XML_Query2XML::factory($adodb);
+     * ?>
+     * </code>
+     *
+     * @param mixed $backend An instance of PEAR DB, PEAR MDB2, ADOdb, PDO,
+     *                       Net_LDAP or a subclass of XML_Query2XML_Driver.
+     *
+     * @return XML_Query2XML A new instance of XML_Query2XML
+     * @throws XML_Query2XML_DriverException If $backend already is a PEAR_Error.
+     * @throws XML_Query2XML_ConfigException If $backend is not an instance of a
+     *                  child class of DB_common, MDB2_Driver_Common, ADOConnection
+     *                  PDO, Net_LDAP or XML_Query2XML_Driver.
+     */
     public static function factory($backend)
     {
         return new XML_Query2XML($backend);
     }
     
-    /**Set a global option.
-    * Currently the following global options are available:
-    *
-    * hidden_container_prefix: The prefix to use for container elements that are
-    *   to be removed before the DOMDocument before it is returned by
-    *   {@link XML_Query2XML::getXML()}. This has to be a non-empty string.
-    *   The default value is '__'.
-    *
-    * @throws XML_Query2XML_ConfigException If the configuration option
-    *         does not exist or if the value is invalid for that option
-    * @param string $option The name of the option
-    * @param mixed $value The option value
-    */
+    /**
+     * Set a global option.
+     * Currently the following global options are available:
+     *
+     * hidden_container_prefix: The prefix to use for container elements that are
+     *   to be removed before the DOMDocument before it is returned by
+     *   {@link XML_Query2XML::getXML()}. This has to be a non-empty string.
+     *   The default value is '__'.
+     *
+     * @param string $option The name of the option
+     * @param mixed  $value  The option value
+     *
+     * @return void
+     * @throws XML_Query2XML_ConfigException If the configuration option
+     *         does not exist or if the value is invalid for that option
+     */
     public function setGlobalOption($option, $value)
     {
         switch ($option) {
-            case 'hidden_container_prefix':
-                if (is_string($value) && strlen($value) > 0) {
-                    //unit test: setGlobalOption/hidden_container_prefix.phpt
-                    $this->_globalOptions[$option] = $value;
-                } else {
-                    /*
-                    * unit test: setGlobalOption/
-                    * configException_hidden_container_prefix_wrongTypeObject.phpt
-                    * configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
-                    */
-                    throw new XML_Query2XML_ConfigException(
-                        'The value for the hidden_container_prefix option '
-                        . 'has to be a non-empty string'
-                    );
-                }
-                break;
-
-            default:
-                //unit tests: setGlobalOption/configException_noSuchOption.phpt
+        case 'hidden_container_prefix':
+            if (is_string($value) && strlen($value) > 0) {
+                // unit test: setGlobalOption/hidden_container_prefix.phpt
+                $this->_globalOptions[$option] = $value;
+            } else {
+                /*
+                 * unit test: setGlobalOption/
+                 * configException_hidden_container_prefix_wrongTypeObject.phpt
+                 * configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
+                 */
                 throw new XML_Query2XML_ConfigException(
-                    'No such global option: ' . $option
+                    'The value for the hidden_container_prefix option '
+                    . 'has to be a non-empty string'
                 );
-        }
-    }
-    
-    /**Returns the current value for a global option.
-    * See {@link XML_Query2XML::setGlobalOption()} for a list
-    * of available options.
-    *
-    * @throws XML_Query2XML_ConfigException If the option does not exist
-    * @param string $option The name of the option
-    * @return mixed The option's value
-    */
-    public function getGlobalOption($option)
-    {
-        if (!isset($this->_globalOptions[$option])) {
-            //unit test: getGlobalOption/configException_noSuchOption.phpt
+            }
+            break;
+
+        default:
+            // unit tests: setGlobalOption/configException_noSuchOption.phpt
             throw new XML_Query2XML_ConfigException(
                 'No such global option: ' . $option
             );
         }
-        //unit test: getGlobalOption/hidden_container_prefix.phpt
+    }
+    
+    /**
+     * Returns the current value for a global option.
+     * See {@link XML_Query2XML::setGlobalOption()} for a list
+     * of available options.
+     *
+     * @param string $option The name of the option
+     *
+     * @return mixed The option's value
+     * @throws XML_Query2XML_ConfigException If the option does not exist
+     */
+    public function getGlobalOption($option)
+    {
+        if (!isset($this->_globalOptions[$option])) {
+            // unit test: getGlobalOption/configException_noSuchOption.phpt
+            throw new XML_Query2XML_ConfigException(
+                'No such global option: ' . $option
+            );
+        }
+        // unit test: getGlobalOption/hidden_container_prefix.phpt
         return $this->_globalOptions[$option];
     }
     
-    /**Enable the logging of debug messages.
-    * This will include all queries sent to the database.
-    * Example:
-    * <code>
-    * <?php
-    * require_once 'Log.php';
-    * require_once 'XML/Query2XML.php';
-    * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
-    * $debugLogger = Log::factory('file', 'out.log', 'XML_Query2XML');
-    * $query2xml->enableDebugLog($debugLogger);
-    * ?>
-    * </code>
-    * Please see {@link http://pear.php.net/package/Log} for details on PEAR Log.
-    *
-    * @param mixed $log  Most likely an instance of PEAR Log but any object
-    *                    that provides a method named 'log' is accepted.
-    */
+    /**
+     * Enable the logging of debug messages.
+     * This will include all queries sent to the database.
+     * Example:
+     * <code>
+     * <?php
+     * require_once 'Log.php';
+     * require_once 'XML/Query2XML.php';
+     * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
+     * $debugLogger = Log::factory('file', 'out.log', 'XML_Query2XML');
+     * $query2xml->enableDebugLog($debugLogger);
+     * ?>
+     * </code>
+     * Please see {@link http://pear.php.net/package/Log} for details on PEAR Log.
+     *
+     * @param mixed $log Most likely an instance of PEAR Log but any object
+     *                   that provides a method named 'log' is accepted.
+     *
+     * @return void
+     */
     public function enableDebugLog($log)
     {
-        //unit test: enableDebugLog/enableDebugLog.phpt
+        // unit test: enableDebugLog/enableDebugLog.phpt
         $this->_debugLogger = $log;
-        $this->_debug = true;
+        $this->_debug       = true;
     }
     
-    /**Disable the logging of debug messages
-    */
+    /**
+     * Disable the logging of debug messages
+     *
+     * @return void
+     */
     public function disableDebugLog()
     {
-        //unit test: disableDebugLog/disableDebugLog.phpt
+        // unit test: disableDebugLog/disableDebugLog.phpt
         $this->_debug = false;
     }
     
-    /**Start profiling.
-    */
+    /**
+     * Start profiling.
+     *
+     * @return void
+     */
     public function startProfiling()
     {
-        //unit tests: startProfile/startProfile.phpt
-        $this->_profile = array(
+        // unit tests: startProfile/startProfile.phpt
+        $this->_profiling = true;
+        $this->_profile   = array(
             'queries'    => array(),
             'start'      => microtime(1),
             'stop'       => 0,
@@ -291,55 +317,61 @@ class XML_Query2XML
             'dbStop'     => 0,
             'dbDuration' => 0
         );
-        $this->_profiling = true;
     }
     
-    /**Stop profiling.
-    */
+    /**
+     * Stop profiling.
+     *
+     * @return void
+     */
     public function stopProfiling()
     {
-        //unit test: stopProfile/stopProfile.phpt
+        // unit test: stopProfile/stopProfile.phpt
         $this->_profiling = false;
         if (isset($this->_profile['start']) && $this->_profile['stop'] == 0) {
-            $this->_profile['stop'] = microtime(1);
+            $this->_profile['stop']     = microtime(1);
             $this->_profile['duration'] =
                 $this->_profile['stop'] - $this->_profile['start'];
         }
     }
     
-    /**Returns all raw profiling data.
-    * In 99.9% of all cases you will want to use getProfile()
-    * @see getProfile()
-    * @return array
-    */
+    /**
+     * Returns all raw profiling data.
+     * In 99.9% of all cases you will want to use getProfile().
+     *
+     * @see getProfile()
+     * @return array
+     */
     public function getRawProfile()
     {
-        //unit test: getRawProfile/getRawProfile.phpt
+        // unit test: getRawProfile/getRawProfile.phpt
         $this->stopProfiling();
         return $this->_profile;
     }
     
-    /**Returns the profile as a single multi line string.
-    * @return string The profiling data.
-    */
+    /**
+     * Returns the profile as a single multi line string.
+     *
+     * @return string The profiling data.
+     */
     public function getProfile()
     {
-        //unit test: getProfile/getProfile.phpt
+        // unit test: getProfile/getProfile.phpt
         $this->stopProfiling();
         if (count($this->_profile) === 0) {
             return '';
         }
         $ret = 'FROM_DB FROM_CACHE CACHED AVG_DURATION DURATION_SUM SQL' . "\n";
         foreach ($this->_profile['queries'] as $sql => $value) {
-            $durationSum = 0.0;
+            $durationSum   = 0.0;
             $durationCount = 0;
-            $runTimes =& $this->_profile['queries'][$sql]['runTimes'];
+            $runTimes      =& $this->_profile['queries'][$sql]['runTimes'];
             foreach ($runTimes as $runTime) {
                 $durationSum += ($runTime['stop'] - $runTime['start']);
                 ++$durationCount;
             }
             if ($durationCount == 0) {
-                //so that division does not fail
+                // so that division does not fail
                 $durationCount = 1;
             }
             $durationAverage = $durationSum / $durationCount;
@@ -357,7 +389,7 @@ class XML_Query2XML
                 $cached .= '!';
             }
             $cached = str_pad($cached, 6);
-            $ret .= str_pad($this->_profile['queries'][$sql]['fromDB'], 7)
+            $ret   .= str_pad($this->_profile['queries'][$sql]['fromDB'], 7)
                     . ' '
                     . str_pad($this->_profile['queries'][$sql]['fromCache'], 10)
                     . ' '
@@ -373,58 +405,63 @@ class XML_Query2XML
         return $ret;
     }
     
-    /**Calls {@link XML_Query2XML::stopProfiling()} and then clears the profiling
-    * data by resetting a private property.
-    */
+    /**
+     * Calls {@link XML_Query2XML::stopProfiling()} and then clears the profiling
+     * data by resetting a private property.
+     *
+     * @return void
+     */
     public function clearProfile()
     {
-        //unit test: clearProfile/clearProfile.phpt
+        // unit test: clearProfile/clearProfile.phpt
         $this->stopProfiling();
         $this->_profile = array();
     }
     
-    /**Transforms the data retrieved by a single SQL query into flat XML data.
-    *
-    * This method will return a new instance of DOMDocument. The column names
-    * will be used as element names.
-    *
-    * Example:
-    * <code>
-    * <?php
-    * require_once 'XML/Query2XML.php';
-    * $query2xml = XML_Query2XML::factory(MDB2::connect($dsn));
-    * $dom = $query2xml->getFlatXML(
-    *   'SELECT * FROM artist',
-    *   'music_library',
-    *   'artist'
-    * );
-    * ?>
-    * </code>
-    *
-    * @throws XML_Query2XML_Exception This is the base class for the exception
-    *                            types XML_Query2XML_DBException and
-    *                            XML_Query2XML_XMLException. By catching
-    *                            XML_Query2XML_Exception you can catch all
-    *                            exceptions this method will ever throw.
-    * @throws XML_Query2XML_DBException If a database error occurrs.
-    * @throws XML_Query2XML_XMLException If an XML error occurrs - most likely
-    *                            $rootTagName or $rowTagName is not a valid
-    *                            element name.
-    * @param string $sql         The query string.
-    * @param string $rootTagName The name of the root tag; this argument is optional
-    *                            (default: 'root').
-    * @param string $rowTagName  The name of the tag used for each row; this
-    *                            argument is optional (default: 'row').
-    * @return DOMDocument        A new instance of DOMDocument.
-    */
+    /**
+     * Transforms the data retrieved by a single SQL query into flat XML data.
+     *
+     * This method will return a new instance of DOMDocument. The column names
+     * will be used as element names.
+     *
+     * Example:
+     * <code>
+     * <?php
+     * require_once 'XML/Query2XML.php';
+     * $query2xml = XML_Query2XML::factory(MDB2::connect($dsn));
+     * $dom = $query2xml->getFlatXML(
+     *   'SELECT * FROM artist',
+     *   'music_library',
+     *   'artist'
+     * );
+     * ?>
+     * </code>
+     *
+     * @param string $sql         The query string.
+     * @param string $rootTagName The name of the root tag; this argument is optional
+     *                            (default: 'root').
+     * @param string $rowTagName  The name of the tag used for each row; this
+     *                            argument is optional (default: 'row').
+     *
+     * @return DOMDocument        A new instance of DOMDocument.
+     * @throws XML_Query2XML_Exception This is the base class for the exception
+     *                            types XML_Query2XML_DBException and
+     *                            XML_Query2XML_XMLException. By catching
+     *                            XML_Query2XML_Exception you can catch all
+     *                            exceptions this method will ever throw.
+     * @throws XML_Query2XML_DBException If a database error occurrs.
+     * @throws XML_Query2XML_XMLException If an XML error occurrs - most likely
+     *                            $rootTagName or $rowTagName is not a valid
+     *                            element name.
+     */
     public function getFlatXML($sql, $rootTagName = 'root', $rowTagName = 'row')
     {
         /*
-        * unit tests: getFlatXML/*.phpt
-        */
-        $dom = self::_createDOMDocument();
+         * unit tests: getFlatXML/*.phpt
+         */
+        $dom     = self::_createDOMDocument();
         $rootTag = self::_addNewDOMChild($dom, $rootTagName, 'getFlatXML');
-        $records = $this->_getAllRecords($sql, 'getFlatXML');
+        $records = $this->_getAllRecords(array('query' => $sql), 'getFlatXML', $sql);
         foreach ($records as $record) {
             $rowTag = self::_addNewDOMChild($rootTag, $rowTagName, 'getFlatXML');
             foreach ($record as $field => $value) {
@@ -439,44 +476,47 @@ class XML_Query2XML
         return $dom;
     }
     
-    /**Transforms your SQL data retrieved by one or more queries into complex and
-    * highly configurable XML data.
-    *
-    * This method will return a new instance of DOMDocument.
-    * Please see the <b>{@tutorial XML_Query2XML.pkg tutorial}</b> for details.
-    * 
-    * @throws XML_Query2XML_Exception This is the base class for the exception types
-    *                       XML_Query2XML_DBException, XML_Query2XML_XMLException
-    *                       and XML_Query2XML_ConfigException. By catching
-    *                       XML_Query2XML_Exception you can catch all exceptions
-    *                       this method will ever throw.
-    * @throws XML_Query2XML_DBException If a database error occurrs.
-    * @throws XML_Query2XML_XMLException If an XML error occurrs - most likely
-    *                       an invalid XML element name.
-    * @throws XML_Query2XML_ConfigException If some configuration options passed
-    *                       as second argument are invalid or missing.
-    * @param array $options Options for the creation of the XML data stored in an
-    *                       associative, potentially mutli-dimensional array
-    *                       (please see the tutorial).
-    * @return DOMDocument   The XML data as a new instance of DOMDocument.
-    */
+    /**
+     * Transforms your SQL data retrieved by one or more queries into complex and
+     * highly configurable XML data.
+     *
+     * This method will return a new instance of DOMDocument.
+     * Please see the <b>{@tutorial XML_Query2XML.pkg tutorial}</b> for details.
+     * 
+     * @param mixed $sql     A string an array or the boolean value false.
+     * @param array $options Options for the creation of the XML data stored in an
+     *                       associative, potentially mutli-dimensional array
+     *                       (please see the tutorial).
+     *
+     * @return DOMDocument   The XML data as a new instance of DOMDocument.
+     * @throws XML_Query2XML_Exception This is the base class for the exception types
+     *                       XML_Query2XML_DBException, XML_Query2XML_XMLException
+     *                       and XML_Query2XML_ConfigException. By catching
+     *                       XML_Query2XML_Exception you can catch all exceptions
+     *                       this method will ever throw.
+     * @throws XML_Query2XML_DBException If a database error occurrs.
+     * @throws XML_Query2XML_XMLException If an XML error occurrs - most likely
+     *                       an invalid XML element name.
+     * @throws XML_Query2XML_ConfigException If some configuration options passed
+     *                       as second argument are invalid or missing.
+     */
     public function getXML($sql, $options)
     {
         /*
         * unit tests: getXML/*.phpt
         */
         
-        //the default root tag name is 'root'
+        // the default root tag name is 'root'
         if (isset($options['rootTag'])) {
             $rootTagName = $options['rootTag'];
         } else {
             $rootTagName = 'root';
         }
         
-        $dom = self::_createDOMDocument();
+        $dom     = self::_createDOMDocument();
         $rootTag = self::_addNewDOMChild($dom, $rootTagName, '[rootTag]');
         
-        $options['sql'] = $sql;
+        $options['sql']         = $sql;
         $options['sql_options'] = array('cached' => false);
         
         if ($options['sql'] === false) {
@@ -492,7 +532,10 @@ class XML_Query2XML
         if ($sql === false) {
             $records = array(array()); // one empty record
         } else {
-            $records = $this->_applySqlOptionsToRecord($options, $emptyRecord = array());
+            $records = $this->_applySqlOptionsToRecord(
+                $options,
+                $emptyRecord = array()
+            );
         }
         
         foreach ($records as $key => $record) {
@@ -516,20 +559,23 @@ class XML_Query2XML
         return $dom;
     }
     
-    /**Perform pre-processing on $options.
-    * This is a recursive method; it will call itself for every complex element
-    * specification and every complex attribute specification found.
-    *
-    * @throws XML_Query2XML_ConfigException If a mandatory option is missing
-    *                       or any option is defined incorrectly.
-    * @param array $options An associative array
-    * @param string $context Indecates whether an element or an attribute is
-    *                        to be processed.
-    */
+    /**
+     * Perform pre-processing on $options.
+     * This is a recursive method; it will call itself for every complex element
+     * specification and every complex attribute specification found.
+     *
+     * @param array  &$options An associative array
+     * @param string $context  Indecates whether an element or an attribute is
+     *                         to be processed.
+     *
+     * @return void
+     * @throws XML_Query2XML_ConfigException If a mandatory option is missing
+     *                       or any option is defined incorrectly.
+     */
     private function _preprocessOptions(&$options, $context = 'elements')
     {
         if (!isset($options['--q2x--path'])) {
-            //things to do only at the root level
+            // things to do only at the root level
             $options['--q2x--path'] = '';
             
             if (!isset($options['rowTag'])) {
@@ -542,7 +588,8 @@ class XML_Query2XML
                 *  throwConfigException_idcolumnOptionMissing.phpt
                 */
                 throw new XML_Query2XML_ConfigException(
-                    'The configuration option "idColumn" is missing on the root level.'
+                    'The configuration option "idColumn" '
+                    . 'is missing on the root level.'
                 );
             }
         }
@@ -607,48 +654,74 @@ class XML_Query2XML
                         */
                         throw new XML_Query2XML_ConfigException(
                             $options['--q2x--path'] . '[' . $option . ']: '
-                            . 'array expected, ' . gettype($options[$option]) . ' given.'
+                            . 'array expected, ' . gettype($options[$option])
+                            . ' given.'
                         );
                     }
                     foreach ($options[$option] as $key => $columnStr) {
                         $configPath = $options['--q2x--path'] . '[' . $option
                                       . '][' . $key . ']';
                         if (is_string($columnStr)) {
-                            $options[$option][$key] = self::_buildCommandChain($columnStr, $configPath);
+                            $options[$option][$key] =
+                                self::_buildCommandChain($columnStr, $configPath);
                         } elseif (is_array($columnStr)) {
                             $options[$option][$key]['--q2x--path'] = $configPath;
                             
-                            //encoder option is used by elements as well as attributes
-                            if (!array_key_exists('encoder', $options[$option][$key])) {
-                                $options[$option][$key]['encoder'] = $options['encoder'];
+                            // encoder option used by elements as well as attributes
+                            if (
+                                !array_key_exists(
+                                    'encoder',
+                                    $options[$option][$key]
+                                 )
+                            ) {
+                                $options[$option][$key]['encoder'] =
+                                    $options['encoder'];
                             }
                             if ($option == 'elements') {
-                                //these options are only used by elements
-                                if (!isset($options[$option][$key]['rootTag']) || $options[$option][$key]['rootTag'] == '')  {
-                                    /* If rootTag is not set or an empty string: create a
-                                    *  hidden root tag
-                                    */
+                                // these options are only used by elements
+                                if (
+                                    !isset($options[$option][$key]['rootTag']) ||
+                                    $options[$option][$key]['rootTag'] == ''
+                                ) {
+                                    /*
+                                     * If rootTag is not set or an empty string:
+                                     * create a hidden root tag
+                                     */
                                     $options[$option][$key]['rootTag'] = 
-                                        $this->getGlobalOption('hidden_container_prefix')
-                                        . $key;
+                                        $this->getGlobalOption(
+                                            'hidden_container_prefix'
+                                        ) . $key;
                                 }
                                 if (!isset($options[$option][$key]['rowTag'])) {
                                     $options[$option][$key]['rowTag'] = $key;
                                 }
         
-                                foreach(array('mapper', 'idColumn') as $option2) {
-                                    if (!array_key_exists($option2, $options[$option][$key])) {
-                                        $options[$option][$key][$option2] = $options[$option2];
+                                foreach (array('mapper', 'idColumn') as $option2) {
+                                    if (
+                                        !array_key_exists(
+                                            $option2,
+                                            $options[$option][$key]
+                                        )
+                                    ) {
+                                        $options[$option][$key][$option2] =
+                                            $options[$option2];
                                     }
                                 }
                             }
-                            $this->_preprocessOptions($options[$option][$key], $option);
+                            $this->_preprocessOptions(
+                                $options[$option][$key],
+                                $option
+                            );
                         } elseif (!self::_isCallback($columnStr)) {
                             /*
-                            * unit tests: _preprocessOptions/
-                            *   throwConfigException_callbackInterface_complexAttributeSpec.phpt
-                            *   throwConfigException_callbackInterface_simpleAttributeSpec.phpt
-                            *   throwConfigException_callbackInterface_simpleElementSpec.phpt
+                            * unit tests:
+                            *  _getNestedXMLRecord/
+                            *   throwConfigException_attributeSpecWrongType.phpt
+                            *  _preprocessOptions/
+                            *   throwConfigException_callbackInterface_
+                            *    complexAttributeSpec.phpt
+                            *    simpleAttributeSpec.phpt
+                            *    simpleElementSpec.phpt
                             */
                             throw new XML_Query2XML_ConfigException(
                                 $configPath . ': array, string or instance of'
@@ -659,7 +732,7 @@ class XML_Query2XML
                         }
                     }
                 }
-            } //end of foreach (array('elements', 'attributes'))
+            } // end of foreach (array('elements', 'attributes'))
         } else {
             // $context == 'attributes'
             if (!isset($options['value'])) {
@@ -675,7 +748,8 @@ class XML_Query2XML
             }
         }
         
-        foreach (array('value', 'condition', 'dynamicRowTag', 'idColumn') as $option) {
+        $opt = array('value', 'condition', 'dynamicRowTag', 'idColumn');
+        foreach ($opt as $option) {
             if (isset($options[$option])) {
                 if (is_string($options[$option])) {
                     $options[$option] = self::_buildCommandChain(
@@ -689,9 +763,10 @@ class XML_Query2XML
                     /*
                     * unit tests:
                     *  _preprocessOptions/
-                    *   throwConfigException_callbackInterface_complexElementSpec.phpt
-                    *   throwConfigException_callbackInterface_condition.phpt
-                    *   throwConfigException_callbackInterface_idColumn.phpt
+                    *   throwConfigException_callbackInterface_
+                    *    complexElementSpec.phpt
+                    *    condition.phpt
+                    *    idColumn.phpt
                     */
                     throw new XML_Query2XML_ConfigException(
                         $options['--q2x--path'] . '[' . $option . ']: string or'
@@ -707,40 +782,44 @@ class XML_Query2XML
             $options['sql'] = $options['query'];
         }
         if (isset($options['sql'])) {
+            if (
+                is_array($options['sql']) && 
+                isset($options['sql']['driver']) &&
+                $options['sql']['driver'] instanceof XML_Query2XML_Driver
+            ) {
+                $query = $options['sql']['driver']->preprocessQuery(
+                    $options['sql'],
+                    $options['--q2x--path'] . '[sql]'
+                );
+            } else {
+                $query = $this->_driver->preprocessQuery(
+                    $options['sql'],
+                    $options['--q2x--path'] . '[sql]'
+                );
+            }
+            $options['--q2x--query_statement'] = $query;
+            
             if (is_array($options['sql'])) {
-                if (!isset($options['sql']['query']) &&
-                    isset($options['sql']['base']))
-                {
-                    //simple LDAP query specification
-                    $options['sql'] = array('query' => $options['sql']);
-                }
-                if (!isset($options['sql']['query'])) {
-                    /*
-                    * unit test: _preprocessOptions/
-                    *  throwConfigException_queryOptionMissing.phpt
-                    */
-                    throw new XML_Query2XML_ConfigException(
-                        $options['--q2x--path'] . '[sql]: The configuration option'
-                        . ' "query" is missing.'
-                    );
-                }
                 if (isset($options['sql']['data'])) {
                     if (is_array($options['sql']['data'])) {
                         foreach ($options['sql']['data'] as $key => $data) {
                             if (is_string($data)) {
-                                $options['sql']['data'][$key] = self::_buildCommandChain(
-                                    $options['sql']['data'][$key],
-                                    $options['--q2x--path'] . '[sql][data][' . $key . ']'
-                                );
+                                $options['sql']['data'][$key] =
+                                    self::_buildCommandChain(
+                                        $options['sql']['data'][$key],
+                                        $options['--q2x--path']
+                                            . '[sql][data][' . $key . ']'
+                                    );
                             } elseif (!self::_isCallback($data)) {
                                 /*
                                 * unit tests: _preprocessOptions/
                                 *   throwConfigException_callbackInterface_data.phpt
                                 */
                                 throw new XML_Query2XML_ConfigException(
-                                    $options['--q2x--path'] . '[sql][data][' . $key . ']: string or'
-                                    . ' instance of XML_Query2XML_Callback expected, '
-                                    . gettype($options['sql']['data'][$key])
+                                    $options['--q2x--path'] . '[sql][data][' . $key
+                                    . ']: string or'
+                                    . ' instance of XML_Query2XML_Callback expected,'
+                                    . ' ' . gettype($options['sql']['data'][$key])
                                     . ' given.'
                                 );
                             }
@@ -756,15 +835,6 @@ class XML_Query2XML
                         );
                     }
                 }
-            } elseif (!is_string($options['sql'])) {
-                /*
-                * unit test: _preprocessOptions/
-                *  throwConfigException_sqlOptionWrongType.phpt
-                */
-                throw new XML_Query2XML_ConfigException(
-                    $options['--q2x--path'] . '[sql]: array or string expected, '
-                    . gettype($options['sql']) . ' given.'
-                );
             }
             
             if (isset($options['query_options'])) {
@@ -773,14 +843,17 @@ class XML_Query2XML
             if (!isset($options['sql_options'])) {
                 $options['sql_options'] = array();
             }
-            $sql_options = array('cached', 'single_record', 'merge', 'merge_master', 'merge_selective');
+            $sql_options = array(
+                'cached', 'single_record', 'merge', 'merge_master', 'merge_selective'
+            );
             foreach ($sql_options as $option) {
                 if (!isset($options['sql_options'][$option])) {
                     $options['sql_options'][$option] = false;
                 }
             }
             if (isset($options['sql_options']['uncached'])) {
-                $options['sql_options']['cached'] = !$options['sql_options']['uncached'];
+                $options['sql_options']['cached'] =
+                    !$options['sql_options']['uncached'];
             }
             
             if (
@@ -800,112 +873,113 @@ class XML_Query2XML
         } // end of if (isset($options['sql'])
     }
     
-    /**Private recursive method that creates the nested XML elements from a record.
-    *
-    * getXML calls this method for every row in the initial result set.
-    * The $tree argument deserves some more explanation. All DOMNodes are stored
-    * in $tree the way they appear in the XML document. The same hirachy needs to be
-    * built so that we can know if a DOMNode that corresponds to a column ID of 2 is
-    * already a child node of a certain XML element. Let's have a look at an example
-    * to clarify this:
-    * <code>
-    * <music_library>
-    *   <artist>
-    *     <artistid>1</artistid>
-    *     <albums>
-    *       <album>
-    *         <albumid>1</albumid>
-    *       </album>
-    *       <album>
-    *         <albumid>2</albumid>
-    *       </album>
-    *     </albums>
-    *   </artist>
-    *   <artist>
-    *     <artistid>3</artistid>
-    *     <albums />
-    *   </artist>
-    * </music_library>
-    * </code>
-    * would be represended in the $tree array as something like this:
-    * <code>
-    * array (
-    *   [1] => array (
-    *     [tag] => DOMElement Object
-    *     [elements] => array (
-    *       [albums] => array (
-    *         [1] => array (
-    *           [tag] => DOMElement Object
-    *         )
-    *         [2] => array (
-    *           [tag] => DOMElement Object
-    *         )
-    *       )
-    *     )
-    *   )
-    *   [2] => array (
-    *     [tag] => DOMElement Object
-    *     [elements] => array
-    *     (
-    *       [albums] => array ()
-    *     )
-    *   )
-    * )
-    * </code>
-    * The numbers in the square brackets are column ID values.
-    *
-    * @see getXML()
-    * @throws XML_Query2XML_DBException  Bubbles up through this method if thrown by
-    *                         - _processComplexElementSpecification()
-    * @throws XML_Query2XML_XMLException Bubbles up through this method if thrown by
-    *                         - _createDOMElement()
-    *                         - _setDOMAttribute
-    *                         - _appendTextChildNode()
-    *                         - _addNewDOMChild()
-    *                         - _addDOMChildren()
-    *                         - _processComplexElementSpecification()
-    *                         - _expandShortcuts()
-    *                         - _executeEncoder()
-    * @throws XML_Query2XML_ConfigException  Thrown if
-    *                         - $options['idColumn'] is not set
-    *                         - $options['elements'] is set but not an array
-    *                         - $options['attributes'] is set but not an array
-    *                         Bubbles up through this method if thrown by
-    *                         - _applyColumnStringToRecord()
-    *                         - _processComplexElementSpecification()
-    *                         - _expandShortcuts()
-    * @throws XML_Query2XML_Exception  Bubbles up through this method if thrown by
-    *                         - _expandShortcuts()
-    *                         - _applyColumnStringToRecord()
-    * @param array $record    An associative array representing a record; column
-    *                         names must be used as keys.
-    * @param array $options   An array containing the options for this nested 
-    *                         element; this will be a subset of the array originally
-    *                         passed to getXML().
-    * @param DOMDocument $dom An instance of DOMDocument.
-    * @param array $tree      An associative multi-dimensional array, that is
-    *                         used to store the information which tag has already
-    *                         been created for a certain ID column value. It's
-    *                         format is:
-    *                         Array(
-    *                           "$id1" => Array(
-    *                             'tag' => DOMElement,
-    *                             'elements' => Array(
-    *                               "$id2" => Array(
-    *                                 'tag' => DOMElement,
-    *                                 'elements' => Array( ... )
-    *                               ),
-    *                               "$id3" => ...
-    *                             )
-    *                           )
-    *                         )
-    * @return mixed           The XML element's representation as a new instance of
-    *                         DOMNode or the boolean value false (meaning no
-    *                         new tag was created).
-    */
+    /**
+     * Private recursive method that creates the nested XML elements from a record.
+     *
+     * getXML calls this method for every row in the initial result set.
+     * The $tree argument deserves some more explanation. All DOMNodes are stored
+     * in $tree the way they appear in the XML document. The same hirachy needs to be
+     * built so that we can know if a DOMNode that corresponds to a column ID of 2 is
+     * already a child node of a certain XML element. Let's have a look at an example
+     * to clarify this:
+     * <code>
+     * <music_library>
+     *   <artist>
+     *     <artistid>1</artistid>
+     *     <albums>
+     *       <album>
+     *         <albumid>1</albumid>
+     *       </album>
+     *       <album>
+     *         <albumid>2</albumid>
+     *       </album>
+     *     </albums>
+     *   </artist>
+     *   <artist>
+     *     <artistid>3</artistid>
+     *     <albums />
+     *   </artist>
+     * </music_library>
+     * </code>
+     * would be represended in the $tree array as something like this:
+     * <code>
+     * array (
+     *   [1] => array (
+     *     [tag] => DOMElement Object
+     *     [elements] => array (
+     *       [albums] => array (
+     *         [1] => array (
+     *           [tag] => DOMElement Object
+     *         )
+     *         [2] => array (
+     *           [tag] => DOMElement Object
+     *         )
+     *       )
+     *     )
+     *   )
+     *   [2] => array (
+     *     [tag] => DOMElement Object
+     *     [elements] => array
+     *     (
+     *       [albums] => array ()
+     *     )
+     *   )
+     * )
+     * </code>
+     * The numbers in the square brackets are column ID values.
+     *
+     * @param array       $record   An associative array representing a record;
+     *                              column names must be used as keys.
+     * @param array       &$options An array containing the options for this nested 
+     *                              element; this will be a subset of the array
+     *                              originally passed to getXML().
+     * @param DOMDocument $dom      An instance of DOMDocument.
+     * @param array       &$tree    An associative multi-dimensional array, that is
+     *                              used to store the information which tag has
+     *                              already been created for a certain ID column
+     *                              value. It's format is:
+     *                              Array(
+     *                                "$id1" => Array(
+     *                                  'tag' => DOMElement,
+     *                                  'elements' => Array(
+     *                                    "$id2" => Array(
+     *                                      'tag' => DOMElement,
+     *                                      'elements' => Array( ... )
+     *                                    ),
+     *                                    "$id3" => ...
+     *                                  )
+     *                                )
+     *                              )
+     *
+     * @return mixed           The XML element's representation as a new instance of
+     *                         DOMNode or the boolean value false (meaning no
+     *                         new tag was created).
+     * @throws XML_Query2XML_DBException  Bubbles up through this method if thrown by
+     *                         - _processComplexElementSpecification()
+     * @throws XML_Query2XML_XMLException Bubbles up through this method if thrown by
+     *                         - _createDOMElement()
+     *                         - _setDOMAttribute
+     *                         - _appendTextChildNode()
+     *                         - _addNewDOMChild()
+     *                         - _addDOMChildren()
+     *                         - _processComplexElementSpecification()
+     *                         - _expandShortcuts()
+     *                         - _executeEncoder()
+     * @throws XML_Query2XML_ConfigException  Thrown if
+     *                         - $options['idColumn'] is not set
+     *                         - $options['elements'] is set but not an array
+     *                         - $options['attributes'] is set but not an array
+     *                         Bubbles up through this method if thrown by
+     *                         - _applyColumnStringToRecord()
+     *                         - _processComplexElementSpecification()
+     *                         - _expandShortcuts()
+     * @throws XML_Query2XML_Exception  Bubbles up through this method if thrown by
+     *                         - _expandShortcuts()
+     *                         - _applyColumnStringToRecord()
+     */
     private function _getNestedXMLRecord($record, &$options, $dom, &$tree)
     {
-        //the default row tag name is 'row'
+        // the default row tag name is 'row'
         if (isset($options['dynamicRowTag'])) {
             $rowTagName = $this->_applyColumnStringToRecord(
                 $options['dynamicRowTag'],
@@ -927,7 +1001,7 @@ class XML_Query2XML
             );
         
             if ($id === null) {
-                //the ID column is NULL
+                // the ID column is NULL
                 return false;
             } elseif (is_object($id) || is_array($id)) {
                 /*
@@ -973,7 +1047,7 @@ class XML_Query2XML
                     $options['--q2x--path'] . '[value]'
                 );
                 if (!$this->_evaluateCondition($parsedValue, $options['value'])) {
-                    //this element is to be skipped
+                    // this element is to be skipped
                     return false;
                 }
             }
@@ -984,7 +1058,7 @@ class XML_Query2XML
                     $options['--q2x--path'] . '[condition]'
                 );
                 if (!$continue) {
-                    //this element is to be skipped
+                    // this element is to be skipped
                     return false;
                 }
             }
@@ -996,7 +1070,7 @@ class XML_Query2XML
 
             $tag = $tree[$id]['tag'];
             
-            //add attributes
+            // add attributes
             if (isset($options['attributes'])) {
                 if (!isset($options['processed'])) {
                     $options['attributes'] = self::_expandShortcuts(
@@ -1008,16 +1082,17 @@ class XML_Query2XML
                 }
                 foreach ($options['attributes'] as $attributeName => $column) {
                     if (is_array($column)) {
-                        //complex attribute specification
+                        // complex attribute specification
                         $this->_processComplexAttributeSpecification(
                             $attributeName, $record, $column, $tree[$id]['tag']
                         );
                     } else {
-                        //simple attribute specifications
+                        // simple attribute specifications
                         $attributeValue = $this->_applyColumnStringToRecord(
                             $column,
                             $record,
-                            $options['--q2x--path'] . '[attributes][' . $attributeName . ']'
+                            $options['--q2x--path']
+                            . '[attributes][' . $attributeName . ']'
                         );
                         if ($this->_evaluateCondition($attributeValue, $column)) {
                             self::_setDOMAttribute(
@@ -1027,7 +1102,8 @@ class XML_Query2XML
                                     $attributeValue,
                                     $options
                                 ),
-                                $options['--q2x--path'] . '[attributes][' . $attributeName . ']'
+                                $options['--q2x--path']
+                                . '[attributes][' . $attributeName . ']'
                             );
                         }
                     }
@@ -1061,7 +1137,7 @@ class XML_Query2XML
                 }
             }
             
-            //add child elements
+            // add child elements
             if (isset($options['elements'])) {
                 if (!isset($options['processed'])) {
                     $options['elements'] = self::_expandShortcuts(
@@ -1073,7 +1149,7 @@ class XML_Query2XML
                 }
                 foreach ($options['elements'] as $tagName => $column) {
                     if (is_array($column)) {
-                        //complex element specification
+                        // complex element specification
                         $this->_processComplexElementSpecification(
                             $record,
                             $options['elements'][$tagName],
@@ -1081,35 +1157,42 @@ class XML_Query2XML
                             $tagName
                         );
                     } else {
-                        //simple element specification
+                        // simple element specification
                         $tagValue = $this->_applyColumnStringToRecord(
                             $column,
                             $record,
                             $options['--q2x--path'] . '[elements][' . $tagName . ']'
                         );
                         if ($this->_evaluateCondition($tagValue, $column)) {
-                            if ($tagValue instanceof DOMNode || is_array($tagValue)) {
+                            if (
+                                $tagValue instanceof DOMNode ||
+                                is_array($tagValue)
+                            ) {
                                 /*
-                                * The value returned from _applyColumnStringToRecord()
-                                * and stored in $tagValue is an instance of DOMNode or
-                                * an array of DOMNode instances.
-                                * self::_addDOMChildren() will handle both.
+                                * The value returned from
+                                * _applyColumnStringToRecord() and stored in
+                                * $tagValue is an instance of DOMNode or an array
+                                * of DOMNode instances. self::_addDOMChildren()
+                                * will handle both.
                                 */
                                 self::_addDOMChildren(
                                     self::_addNewDOMChild(
                                         $tree[$id]['tag'],
                                         $tagName,
-                                        $options['--q2x--path'] . '[elements][' . $tagName . ']'
+                                        $options['--q2x--path']
+                                        . '[elements][' . $tagName . ']'
                                     ),
                                     $tagValue,
-                                    $options['--q2x--path'] . '[elements][' . $tagName . ']',
+                                    $options['--q2x--path']
+                                    . '[elements][' . $tagName . ']',
                                     true
                                 );
                             } else {
                                 self::_addNewDOMChild(
                                     $tree[$id]['tag'],
                                     $tagName,
-                                    $options['--q2x--path'] . '[elements][' . $tagName . ']',
+                                    $options['--q2x--path']
+                                    . '[elements][' . $tagName . ']',
                                     self::_executeEncoder(
                                         $tagValue,
                                         $options
@@ -1121,7 +1204,7 @@ class XML_Query2XML
                 }
             }
             
-            //some things only need to be done once
+            // some things only need to be done once
             $options['processed'] = true;
             
             /*
@@ -1133,31 +1216,34 @@ class XML_Query2XML
         }
     }
     
-    /**Private method that will expand asterisk characters in an array
-    * of simple element specifications.
-    *
-    * This method gets called to handle arrays specified using the 'elements'
-    * or the 'attributes' option. An element specification that contains an
-    * asterisk will be duplicated for each column present in $record.
-    * Please see the {@tutorial XML_Query2XML.pkg tutorial} for details.
-    *
-    * @throws XML_Query2XML_ConfigException If only the column part but not the
-    *                        explicitly defined tagName part contains an asterisk.
-    * @throws XML_Query2XML_Exception Will bubble up if it is thrown by
-    *                        _mapSQLIdentifierToXMLName(). This should never
-    *                        happen as _getNestedXMLRecord() already checks if
-    *                        $mapper is callable.
-    * @throws XML_Query2XML_XMLException Will bubble up if it is thrown by
-    *                        _mapSQLIdentifierToXMLName() which will happen if the
-    *                        $mapper function called, throws any exception.
-    * @param Array $elements An array of simple element specifications.
-    * @param Array $record   An associative array that represents a single record.
-    * @param mixed $mapper   A valid argument for call_user_func(), a full method
-    *                        method name (e.g. "MyMapperClass::map") or a value
-    *                        that == false for no special mapping at all.
-    * @param string $configPath The config path; used for exception messages.
-    * @return Array The extended array.
-    */
+    /**
+     * Private method that will expand asterisk characters in an array
+     * of simple element specifications.
+     *
+     * This method gets called to handle arrays specified using the 'elements'
+     * or the 'attributes' option. An element specification that contains an
+     * asterisk will be duplicated for each column present in $record.
+     * Please see the {@tutorial XML_Query2XML.pkg tutorial} for details.
+     *
+     * @param Array  &$elements  An array of simple element specifications.
+     * @param Array  &$record    An associative array that represents a single
+     *                           record.
+     * @param mixed  $mapper     A valid argument for call_user_func(), a full method
+     *                           method name (e.g. "MyMapperClass::map") or a value
+     *                           that == false for no special mapping at all.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return Array The extended array.
+     * @throws XML_Query2XML_ConfigException If only the column part but not the
+     *                        explicitly defined tagName part contains an asterisk.
+     * @throws XML_Query2XML_Exception Will bubble up if it is thrown by
+     *                        _mapSQLIdentifierToXMLName(). This should never
+     *                        happen as _getNestedXMLRecord() already checks if
+     *                        $mapper is callable.
+     * @throws XML_Query2XML_XMLException Will bubble up if it is thrown by
+     *                        _mapSQLIdentifierToXMLName() which will happen if the
+     *                        $mapper function called, throws any exception.
+     */
     private function _expandShortcuts(&$elements, &$record, $mapper, $configPath)
     {
         $newElements = array();
@@ -1166,7 +1252,7 @@ class XML_Query2XML
                 $tagName = $column;
             }
             if (!is_array($column) && strpos($tagName, '*') !== false) {
-                //expand all occurences of '*' to all column names
+                // expand all occurences of '*' to all column names
                 foreach ($record as $columnName => $value) {
                     $newTagName = str_replace('*', $columnName, $tagName);
                     if (is_string($column)) {
@@ -1176,7 +1262,7 @@ class XML_Query2XML
                         $column instanceof XML_Query2XML_Command_Chain
                     ) {
                         $newColumn = clone $column;
-                        $callback = $newColumn->getFirstPreProcessor();
+                        $callback  = $newColumn->getFirstPreProcessor();
                         if (
                             interface_exists('XML_Query2XML_Command_DataSource') &&
                             $callback instanceof XML_Query2XML_Command_DataSource
@@ -1186,14 +1272,14 @@ class XML_Query2XML
                     } else {
                         $newColumn =& $column;
                     }
-                    //do the mapping
+                    // do the mapping
                     $newTagName = self::_mapSQLIdentifierToXMLName(
                         $newTagName,
                         $mapper,
                         $configPath . '[' . $tagName . ']'
                     );
                     if (!isset($newElements[$newTagName])) {
-                        //only if the tagName hasn't already been used
+                        // only if the tagName hasn't already been used
                         $newElements[$newTagName] = $newColumn;
                     }
                 }
@@ -1205,7 +1291,7 @@ class XML_Query2XML
                 */
             
                 if (!is_array($column)) {
-                    //do the mapping but not for complex element specifications
+                    // do the mapping but not for complex element specifications
                     $tagName = self::_mapSQLIdentifierToXMLName(
                         $tagName,
                         $mapper,
@@ -1213,8 +1299,10 @@ class XML_Query2XML
                     );
                 }
                     
-                //explicit specification without an asterisk;
-                //this always overrules an expanded asterisk
+                /*
+                 * explicit specification without an asterisk;
+                 * this always overrules an expanded asterisk
+                 */
                 unset($newElements[$tagName]);
                 $newElements[$tagName] = $column;
             }
@@ -1222,24 +1310,27 @@ class XML_Query2XML
         return $newElements;
     }
     
-    /**Maps an SQL identifier to an XML name using the supplied $mapper.
-    *
-    * @throws XML_Query2XML_Exception If $mapper is not callable. This should never
-    *                               happen as _getNestedXMLRecord() already checks
-    *                               if $mapper is callable.
-    * @throws XML_Query2XML_XMLException If the $mapper function called, throws any
-    *                                    exception.
-    * @param string $sqlIdentifier The SQL identifier as a string.
-    * @param mixed $mapper   A valid argument for call_user_func(), a full method
-    *                        method name (e.g. "MyMapperClass::map") or a value
-    *                        that == false for no special mapping at all.
-    * @param string $configPath The config path; used for exception messages.
-    * @return string The mapped XML name.
-    */
+    /**
+     * Maps an SQL identifier to an XML name using the supplied $mapper.
+     *
+     * @param string $sqlIdentifier The SQL identifier as a string.
+     * @param mixed  $mapper        A valid argument for call_user_func(), a full
+     *                              method method name (e.g. "MyMapperClass::map")
+     *                              or a value that == false for no special mapping
+     *                              at all.
+     * @param string $configPath    The config path; used for exception messages.
+     *
+     * @return string The mapped XML name.
+     * @throws XML_Query2XML_Exception If $mapper is not callable. This should never
+     *                              happen as _getNestedXMLRecord() already checks
+     *                              if $mapper is callable.
+     * @throws XML_Query2XML_XMLException If the $mapper function called, throws any
+     *                              exception.
+     */
     private function _mapSQLIdentifierToXMLName($sqlIdentifier, $mapper, $configPath)
     {
         if (!$mapper) {
-            //no mapper was defined
+            // no mapper was defined
             $xmlName = $sqlIdentifier;
         } else {
             if (is_callable($mapper, false, $callableName)) {
@@ -1265,33 +1356,37 @@ class XML_Query2XML
                 * can be provided for this exception.
                 */
                 throw new XML_Query2XML_ConfigException(
-                    $configPath . ': The mapper "' . $callableName . '" is not callable.'
+                    $configPath . ': The mapper "' . $callableName
+                    . '" is not callable.'
                 );
             }
         }
         return $xmlName;
     }
     
-    /**Private method that processes a complex element specification
-    * for {@link XML_Query2XML::_getNestedXMLRecord()}.
-    *
-    * @throws XML_Query2XML_XMLException This exception will bubble up
-    *                          if it is thrown by _getNestedXMLRecord(),
-    *                          _applySqlOptionsToRecord() or _addDOMChildren().
-    * @throws XML_Query2XML_DBException  This exception will bubble up
-    *                          if it is thrown by _applySqlOptionsToRecord()
-    *                          or _getNestedXMLRecord().
-    * @throws XML_Query2XML_ConfigException This exception will bubble up
-    *                          if it is thrown by _applySqlOptionsToRecord()
-    *                          or _getNestedXMLRecord().
-    * @throws XML_Query2XML_Exception  This exception will bubble up if it
-    *                          is thrown by _getNestedXMLRecord().
-    * @param array $record     The current record.
-    * @param array $options    The current options.
-    * @param array $tree       associative multi-dimensional array, that is used to
-    *                          store which tags have already been created
-    * @param string $tagName  The element's name.
-    */
+    /**
+     * Private method that processes a complex element specification
+     * for {@link XML_Query2XML::_getNestedXMLRecord()}.
+     *
+     * @param array  &$record  The current record.
+     * @param array  &$options The current options.
+     * @param array  &$tree    Associative multi-dimensional array, that is used to
+     *                         store which tags have already been created
+     * @param string $tagName  The element's name.
+     *
+     * @return void
+     * @throws XML_Query2XML_XMLException This exception will bubble up
+     *                        if it is thrown by _getNestedXMLRecord(),
+     *                        _applySqlOptionsToRecord() or _addDOMChildren().
+     * @throws XML_Query2XML_DBException  This exception will bubble up
+     *                        if it is thrown by _applySqlOptionsToRecord()
+     *                        or _getNestedXMLRecord().
+     * @throws XML_Query2XML_ConfigException This exception will bubble up
+     *                        if it is thrown by _applySqlOptionsToRecord()
+     *                        or _getNestedXMLRecord().
+     * @throws XML_Query2XML_Exception  This exception will bubble up if it
+     *                        is thrown by _getNestedXMLRecord().
+     */
     private function _processComplexElementSpecification(&$record, &$options, &$tree,
         $tagName)
     {
@@ -1300,7 +1395,7 @@ class XML_Query2XML
             $tree['elements'] = array();
         }
         if (!isset($tree['elements'][$tagName])) {
-            $tree['elements'][$tagName] = array();
+            $tree['elements'][$tagName]            = array();
             $tree['elements'][$tagName]['rootTag'] = self::_addNewDOMChild(
                 $tag,
                 $options['rootTag'],
@@ -1324,29 +1419,33 @@ class XML_Query2XML
         }
     }
     
-    /**Private method that processes a complex attribute specification
-    * for {@link XML_Query2XML::_getNestedXMLRecord()}.
-    *
-    * A complex attribute specification consists of an associative array
-    * with the keys 'value' (mandatory), 'condition', 'sql' and 'sql_options'.
-    *
-    * @throws XML_Query2XML_XMLException This exception will bubble up
-    *                          if it is thrown by _setDOMAttribute(),
-    *                          _applyColumnStringToRecord(),
-    *                          _applySqlOptionsToRecord() or _executeEncoder().
-    * @throws XML_Query2XML_DBException  This exception will bubble up
-    *                          if it is thrown by _applySqlOptionsToRecord().
-    * @throws XML_Query2XML_ConfigException This exception will bubble up
-    *                          if it is thrown by _applySqlOptionsToRecord() or
-    *                          _applyColumnStringToRecord(). It will also be thrown 
-    *                          by this method if $options['value'] is not set.
-    * @param string $attributeName The name of the attribute as it was specified
-    *                          using the array key of the complex attribute
-    *                          specification.
-    * @param array $record     The current record.
-    * @param array $options    The complex attribute specification itself.
-    * @param DOMNode $tag      The DOMNode to which the attribute is to be added.
-    */
+    /**
+     * Private method that processes a complex attribute specification
+     * for {@link XML_Query2XML::_getNestedXMLRecord()}.
+     *
+     * A complex attribute specification consists of an associative array
+     * with the keys 'value' (mandatory), 'condition', 'sql' and 'sql_options'.
+     *
+     * @param string  $attributeName The name of the attribute as it was specified
+     *                               using the array key of the complex attribute
+     *                               specification.
+     * @param array   &$record       The current record.
+     * @param array   &$options      The complex attribute specification itself.
+     * @param DOMNode $tag           The DOMNode to which the attribute is to be
+     *                               added.
+     *
+     * @return void
+     * @throws XML_Query2XML_XMLException This exception will bubble up
+     *                          if it is thrown by _setDOMAttribute(),
+     *                          _applyColumnStringToRecord(),
+     *                          _applySqlOptionsToRecord() or _executeEncoder().
+     * @throws XML_Query2XML_DBException  This exception will bubble up
+     *                          if it is thrown by _applySqlOptionsToRecord().
+     * @throws XML_Query2XML_ConfigException This exception will bubble up
+     *                          if it is thrown by _applySqlOptionsToRecord() or
+     *                          _applyColumnStringToRecord(). It will also be thrown 
+     *                          by this method if $options['value'] is not set.
+     */
     private function _processComplexAttributeSpecification($attributeName, &$record,
         &$options, $tag)
     {
@@ -1357,13 +1456,14 @@ class XML_Query2XML
                 $options['--q2x--path'] . '[condition]'
             );
             if (!$continue) {
-                //this element is to be skipped
+                // this element is to be skipped
                 return;
             }
         }
         
-        //only fetching a single record makes sense for a single attribute
+        // only fetching a single record makes sense for a single attribute
         $options['sql_options']['single_record'] = true;
+        
         $records = $this->_applySqlOptionsToRecord($options, $record);
         if (count($records) == 0) {
             /*
@@ -1389,32 +1489,34 @@ class XML_Query2XML
         }
     }
                     
-    /**Private method to apply the givenen sql option to a record.
-    *
-    * This method handles the sql options 'uncached', 'single_record',
-    * 'merge', 'merge_master' and 'merge_selective'. Please see the
-    * {@tutorial XML_Query2XML.pkg tutorial} for details.
-    * 
-    * @throws XML_Query2XML_ConfigException This exception is thrown if
-    *                         - merge_selective is set but not an array
-    *                         - sql is set but not an array or a string
-    *                         - sql is an array but $sql['query'] is missing
-    *                         - $sql['data'] is set but not an array
-    *                         - a column specified in merge_selective does not exist
-    *                           in the result set
-    *                         - it bubbles up from _applyColumnStringToRecord()
-    * @throws XML_Query2XML_DBException This exception will bubble up
-    *                         if it is thrown by _getRecord(), _getAllRecords(),
-    *                         _getRecordCached() or _getAllRecordsCached()
-    * @throws XML_Query2XML_XMLException It will bubble up if it is thrown
-    *                         by _applyColumnStringToRecord(). This can only
-    *                         happen if the '&' operator is (ab)used within an
-    *                         element of the array $options['sql']['data']
-    * @param array $options   An associative multidimensional array of options.
-    * @param array $record    The current record as an associative array.
-    * @return array           An indexed array of records that are themselves
-    *                         represented as associative arrays.
-    */
+    /**
+     * Private method to apply the givenen sql option to a record.
+     *
+     * This method handles the sql options 'uncached', 'single_record',
+     * 'merge', 'merge_master' and 'merge_selective'. Please see the
+     * {@tutorial XML_Query2XML.pkg tutorial} for details.
+     * 
+     * @param array &$options An associative multidimensional array of options.
+     * @param array &$record  The current record as an associative array.
+     *
+     * @return array          An indexed array of records that are themselves
+     *                        represented as associative arrays.
+     * @throws XML_Query2XML_ConfigException This exception is thrown if
+     *                        - merge_selective is set but not an array
+     *                        - sql is set but not an array or a string
+     *                        - sql is an array but $sql['query'] is missing
+     *                        - $sql['data'] is set but not an array
+     *                        - a column specified in merge_selective does not exist
+     *                          in the result set
+     *                        - it bubbles up from _applyColumnStringToRecord()
+     * @throws XML_Query2XML_DBException This exception will bubble up
+     *                        if it is thrown by _getRecord(), _getAllRecords(),
+     *                        _getRecordCached() or _getAllRecordsCached()
+     * @throws XML_Query2XML_XMLException It will bubble up if it is thrown
+     *                        by _applyColumnStringToRecord(). This can only
+     *                        happen if the '&' operator is (ab)used within an
+     *                        element of the array $options['sql']['data']
+     */
     private function _applySqlOptionsToRecord(&$options, &$record)
     {
         if (!isset($options['sql'])) {
@@ -1442,21 +1544,29 @@ class XML_Query2XML
         
         $sqlConfigPath = $options['--q2x--path'] . '[sql]';
         if ($cached) {
-            $records =& $this->_getAllRecordsCached($sql, $sqlConfigPath);
+            $records =& $this->_getAllRecordsCached(
+                $sql,
+                $sqlConfigPath,
+                $options['--q2x--query_statement']
+            );
             if ($single_record && isset($records[0])) {
                 $records = array($records[0]);
             }
         } else {
-            $records =& $this->_getAllRecords($sql, $sqlConfigPath);
+            $records =& $this->_getAllRecords(
+                $sql,
+                $sqlConfigPath,
+                $options['--q2x--query_statement']
+            );
             if ($single_record && isset($records[0])) {
                 $records = array($records[0]);
             }
         }
         
         if (is_array($merge_selective)) {
-            //selective merge
+            // selective merge
             if ($merge_master) {
-                //current records are master
+                // current records are master
                 for ($ii = 0; $ii < count($merge_selective); $ii++) {
                     for ($i = 0; $i < count($records); $i++) {
                         if (!array_key_exists($merge_selective[$ii], $record)) {
@@ -1473,14 +1583,14 @@ class XML_Query2XML
                             );
                         }
                         if (!array_key_exists($merge_selective[$ii], $records[$i])) {
-                            //we are the master, so only if it does not yet exist
+                            // we are the master, so only if it does not yet exist
                             $records[$i][$merge_selective[$ii]] =
                                 $record[$merge_selective[$ii]];
                         }
                     }
                 }
             } else {
-                //parent record is master
+                // parent record is master
                 for ($ii = 0; $ii < count($merge_selective); $ii++) {
                     for ($i = 0; $i < count($records); $i++) {
                         if (!array_key_exists($merge_selective[$ii], $record)) {
@@ -1496,14 +1606,14 @@ class XML_Query2XML
                                 . 'was not found in the result set.'
                             );
                         }
-                        //parent is master!
+                        // parent is master!
                         $records[$i][$merge_selective[$ii]] =
                             $record[$merge_selective[$ii]];
                     }
                 }
             }
         } elseif ($merge) {
-            //regular merge
+            // regular merge
             if ($merge_master) {
                 for ($i = 0; $i < count($records); $i++) {
                     $records[$i] = array_merge($record, $records[$i]);
@@ -1517,28 +1627,23 @@ class XML_Query2XML
         return $records;
     }
     
-    /**Private method to apply a column string to a record.
-    * Please see the tutorial for details on the different column strings.
-    *
-    * @throws XML_Query2XML_ConfigException  Thrown if $columnStr is not
-    *               a string or an instance of XML_Query2XML_Callback or if
-    *               $record[$columnStr] does not exist (and $columnStr has
-    *               no special prefix).
-    * @throws XML_Query2XML_XMLException     Thrown if the '&' prefix was used
-    *               but the data was not unserializeable, i.e. not valid XML data.
-    * @param string $columnStr  One of the following: if prefixed by ':' it means
-    *               that $columnStr will be returned as is (the prefix removed of
-    *               course); if prefixed by '#' $columnStr is passed to the
-    *               native method call_user_func(); in any other case, $columnStr must
-    *               be a valid column name or XML_Query2XML_ConfigException
-    *               will be thrown. If the prifix '&' is used (with any other prefix
-    *               or in conjunction with the ':' or '#' prefix, the resulting data
-    *               is expected to be a string holding XML data. If the data cannot
-    *               be unserialized an XML_Query2XML_XMLException will be thrown.
-    * @param array $record The record as an associative array.
-    * @param string $configPath The config path; used for exception messages.
-    * @return mixed A value that can be cast to a string or an instance of DOMNode.
-    */
+    /**
+     * Private method to apply a column string to a record.
+     * Please see the tutorial for details on the different column strings.
+     *
+     * @param string $columnStr  A valid column name or an instance of a class
+     *                           implementing XML_Query2XML_Callback.
+     * @param array  &$record    The record as an associative array.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return mixed A value that can be cast to a string or an instance of DOMNode.
+     * @throws XML_Query2XML_ConfigException  Thrown if $columnStr is not
+     *               a string or an instance of XML_Query2XML_Callback or if
+     *               $record[$columnStr] does not exist (and $columnStr has
+     *               no special prefix).
+     * @throws XML_Query2XML_XMLException     Thrown if the '&' prefix was used
+     *               but the data was not unserializeable, i.e. not valid XML data.
+     */
     private function _applyColumnStringToRecord($columnStr, &$record, $configPath)
     {
         if (self::_isCallback($columnStr)) {
@@ -1560,47 +1665,50 @@ class XML_Query2XML
                 
             }
         } else {
-            /*
-            * //SHOULD NEVER BE REACHED
-            * unit tests:
-            *  _getNestedXMLRecord/
-            *   throwConfigException_attributeSpecWrongType.phpt
-            */
+            // should never be reached
             throw new XML_Query2XML_ConfigException(
                 $configPath . ': string or instance of XML_Query2XML_Callback'
-                . ' expected, ' . gettype($columnStr) . ' given__.'
+                . ' expected, ' . gettype($columnStr) . ' given.'
             );
         }
         return $value;
     }
     
-    /**Returns whether $value is to be included in the output.
-    * If $spec is a string an is prefixed by a question mark this method will
-    * return false if $value is null or is a string with a length of zero. In
-    * any other case, this method will return the true.
-    *
-    * @param string $value The value.
-    * @param mixed $spec The value specification. This can be a string
-    *                    or an instance of XML_Query2XML_Callback.
-    * @return boolean Whether $value is to be included in the output.
-    */
+    /**
+     * Returns whether $value is to be included in the output.
+     * If $spec is a string an is prefixed by a question mark this method will
+     * return false if $value is null or is a string with a length of zero. In
+     * any other case, this method will return the true.
+     *
+     * @param string $value The value.
+     * @param mixed  $spec  The value specification. This can be a string
+     *                      or an instance of XML_Query2XML_Callback.
+     *
+     * @return boolean Whether $value is to be included in the output.
+     */
     private function _evaluateCondition($value, $spec)
     {
         return !interface_exists('XML_Query2XML_Command_Conditional') ||
-            !$spec instanceof XML_Query2XML_Command_Conditional ||
-            $spec->evaluateCondition($value);
+               !$spec instanceof XML_Query2XML_Command_Conditional ||
+               $spec->evaluateCondition($value);
     }
             
-    /**Private method to fetch all records from a result set.
-    * @param mixed $sql The SQL query as a string or an array.
-    * @param string $configPath The config path; used for exception messages.
-    * @return array An array of records. Each record itself will be an
-    *                   associative array.
-    */
-    private function &_getAllRecords($sql, $configPath)
+    /**
+     * Private method to fetch all records from a result set.
+     *
+     * @param mixed  $sql            The SQL query as a string or an array.
+     * @param string $configPath     The config path; used for exception messages.
+     * @param string $queryStatement The query as a string; it will be used for
+     *                               logging, profiling and caching.
+     *
+     * @return array An array of records. Each record itself will be an
+     *                   associative array.
+     */
+    private function &_getAllRecords($sql, $configPath, $queryStatement)
     {
-        $this->_debugStartQuery($sql);
-        if (is_array($sql) &&
+        $this->_debugStartQuery($queryStatement);
+        if (
+            is_array($sql) &&
             isset($sql['driver']) &&
             $sql['driver'] instanceof XML_Query2XML_Driver
         ) {
@@ -1608,58 +1716,50 @@ class XML_Query2XML
         } else {
             $records = $this->_driver->getAllRecords($sql, $configPath);
         }
-        $this->_debugStopQuery($sql);
+        $this->_debugStopQuery($queryStatement);
         return $records;
     }
     
-    /**Private method to fetch all records and cache the results.
-    * @throws XML_Query2XML_DBException  This exception will bubble up
-    *                   if it is thrown by _getAllRecords().
-    * @throws XML_Query2XML_ConfigException  This exception will bubble up
-    *                   if it is thrown by _extractQueryString().
-    * @param mixed $sql The SQL query as a string or an array.
-    * @param string $configPath The config path; used for exception messages.
-    * @return array An array of records. Each record itself will be an
-    *                   associative array.
-    */
-    private function &_getAllRecordsCached($sql, $configPath)
+    /**
+     * Private method to fetch all records and cache the results.
+     *
+     * @param mixed  $sql            The SQL query as a string or an array.
+     * @param string $configPath     The config path; used for exception messages.
+     * @param string $queryStatement The query as a string; it will be used for
+     *                               logging, profiling and caching.
+     *
+     * @return array An array of records. Each record itself will be an
+     *                   associative array.
+     * @throws XML_Query2XML_DBException  This exception will bubble up
+     *                   if it is thrown by _getAllRecords().
+     */
+    private function &_getAllRecordsCached($sql, $configPath, $queryStatement)
     {
-        $query = $this->_extractQueryString($sql);
-        $queryUnchanged = $query;
+        $cacheQueryStatement = $queryStatement;
         if (is_array($sql) && isset($sql['data']) && is_array($sql['data'])) {
-            $query .= '; DATA:' . implode(', ', $sql['data']);
+            $cacheQueryStatement .= '; DATA:' . implode(', ', $sql['data']);
         }
-        if (isset($this->_recordCache[$query])) {
-            $this->_debugCachedQuery($queryUnchanged);
-            return $this->_recordCache[$query];
+        if (isset($this->_recordCache[$cacheQueryStatement])) {
+            $this->_debugCachedQuery($queryStatement);
+            return $this->_recordCache[$cacheQueryStatement];
         }
-        $this->_debugCachingQuery($queryUnchanged);
-        $this->_recordCache[$query] =& $this->_getAllRecords($sql, $configPath);
-        return $this->_recordCache[$query];
+        $this->_debugCachingQuery($queryStatement);
+        $this->_recordCache[$cacheQueryStatement] =& $this->_getAllRecords(
+            $sql,
+            $configPath,
+            $queryStatement
+        );
+        return $this->_recordCache[$cacheQueryStatement];
     }
     
-    /**Extract the query string - no matter whether a simple or complex definition
-    * was used.
-    *
-    * If $sql is defined as array('query' => ... , 'data' => ...) this method will
-    * return $sql['query']. If $sql is a string it will return $sql.
-    *
-    * @param mixed $sql A string or an associative array.
-    * @return String The SQL query.
-    */
-    private function &_extractQueryString($sql)
-    {
-        if (is_string($sql)) {
-            return $sql;
-        } else {
-            return $sql['query'];
-        }
-    }
-    
-    /**Initializes a query's profile (only used if profiling is turned on).
-    * @see startProfiling()
-    * @param mixed $sql The SQL query as a string or an array.
-    */
+    /**
+     * Initializes a query's profile (only used if profiling is turned on).
+     *
+     * @param mixed &$sql The SQL query as a string or an array.
+     *
+     * @return void
+     * @see startProfiling()
+     */
     private function _initQueryProfile(&$sql)
     {
         if (!isset($this->_profile['queries'][$sql])) {
@@ -1672,15 +1772,15 @@ class XML_Query2XML
         }
     }
     
-    /**Starts the debugging and profiling of the query passed as argument
-    * @see _extractQueryString()
-    * @throws XML_Query2XML_ConfigException This exception will bubble up
-    *                       if it is thrown by _extractQueryString().
-    * @param mixed $sql     The SQL query as a string or an array.
-    */
-    private function _debugStartQuery($sql)
+    /**
+     * Starts the debugging and profiling of the query passed as argument.
+     *
+     * @param string $query The query statement as a string.
+     *
+     * @return void
+     */
+    private function _debugStartQuery($query)
     {
-        $query = $this->_extractQueryString($sql);
         $this->_debug('QUERY: ' . $query);
         if ($this->_profiling) {
             $this->_initQueryProfile($query);
@@ -1692,35 +1792,35 @@ class XML_Query2XML
         }
     }
     
-    /**Ends the debugging and profiling of the query passed as argument
-    * @see _extractQueryString()
-    * @throws XML_Query2XML_ConfigException This exception will bubble up
-    *                       if it is thrown by _extractQueryString().
-    * @param mixed $sql The SQL query as a string or an array.
-    */
-    private function _debugStopQuery($sql)
+    /**
+     * Ends the debugging and profiling of the query passed as argument.
+     *
+     * @param string $query The query statement as a string.
+     *
+     * @return void
+     */
+    private function _debugStopQuery($query)
     {
         $this->_debug('DONE');
         if ($this->_profiling) {
-            $query = $this->_extractQueryString($sql);
             $this->_initQueryProfile($query);
             $lastIndex = count($this->_profile['queries'][$query]['runTimes']) - 1;
+            
             $this->_profile['queries'][$query]['runTimes'][$lastIndex]['stop'] =
                 microtime(true);
         }
     }
     
-    /**Does the debugging and profiling of the query passed as argument which
-    * was cached before
-    *
-    * @see _extractQueryString()
-    * @throws XML_Query2XML_ConfigException This exception will bubble up
-    *                       if it is thrown by _extractQueryString().
-    * @param mixed $sql The SQL query as a string or an array.
-    */
-    private function _debugCachedQuery($sql)
+    /**
+     * Does the debugging and profiling of the query passed as argument which
+     * was cached before.
+     *
+     * @param string $query The query statement as a string.
+     *
+     * @return void
+     */
+    private function _debugCachedQuery($query)
     {
-        $query = $this->_extractQueryString($sql);
         $this->_debug('CACHED: ' . $query);
         if ($this->_profiling) {
             $this->_initQueryProfile($query);
@@ -1728,17 +1828,16 @@ class XML_Query2XML
         }
     }
     
-    /**Does the debugging and profiling of the query passed as argument
-    * which will be cached for the first time
-    * @see _extractQueryString()
-    * 
-    * @throws XML_Query2XML_ConfigException This exception will bubble up
-    *                       if it is thrown by _extractQueryString().
-    * @param mixed $sql The SQL query as a string or an array.
-    */
-    private function _debugCachingQuery($sql)
+    /**
+     * Does the debugging and profiling of the query passed as argument
+     * which will be cached for the first time
+     *
+     * @param string $query The query statement as a string.
+     *
+     * @return void
+     */
+    private function _debugCachingQuery($query)
     {
-        $query = $this->_extractQueryString($sql);
         $this->_debug('CACHING: ' . $query);
         if ($this->_profiling) {
             $this->_initQueryProfile($query);
@@ -1746,33 +1845,42 @@ class XML_Query2XML
         }
     }
     
-    /**Stops the DB profiling.
-    * This will set $this->_profile['dbDuration'].
-    */
+    /**
+     * Stops the DB profiling.
+     * This will set $this->_profile['dbDuration'].
+     *
+     * @return void
+     */
     private function _stopDBProfiling()
     {
         if ($this->_profiling && isset($this->_profile['start'])) {
-            $this->_profile['dbStop'] = microtime(1);
+            $this->_profile['dbStop']     = microtime(1);
             $this->_profile['dbDuration'] =
                 $this->_profile['dbStop'] - $this->_profile['start'];
         }
     }
     
-    /**Clears the record cache.
-    * @see _recordCache
-    */
+    /**
+     * Clears the record cache.
+     *
+     * @return void
+     * @see _recordCache
+     */
     private function _clearRecordCache()
     {
         $this->_recordCache = array();
     }
     
-    /**Private method used to log debug messages.
-    * This method will do no logging if $this->_debug is set to false.
-    *
-    * @param string $msg The message to log.
-    * @see _debugLogger
-    * @see _debug
-    */
+    /**
+     * Private method used to log debug messages.
+     * This method will do no logging if $this->_debug is set to false.
+     *
+     * @param string $msg The message to log.
+     *
+     * @return void
+     * @see _debugLogger
+     * @see _debug
+     */
     private function _debug($msg)
     {
         if ($this->_debug) {
@@ -1780,10 +1888,13 @@ class XML_Query2XML
         }
     }
     
-    /**Returns whether $object is an instance of XML_Query2XML_Callback.
-    * @param mixed $object
-    * @return boolean
-    */
+    /**
+     * Returns whether $object is an instance of XML_Query2XML_Callback.
+     *
+     * @param mixed $object The variable to check.
+     *
+     * @return boolean
+     */
     private static function _isCallback($object)
     {
         return is_object($object) &&
@@ -1791,17 +1902,19 @@ class XML_Query2XML
                $object instanceof XML_Query2XML_Callback;
     }
     
-    /**Parse specifications that use the prifixes ?, &, =, ^, :,  or #.
-    *
-    * This method will produce a number of chained command object all of which
-    * be an instance of the abstract class XML_Query2XML_Command_Chain.
-    *
-    * @throws XML_Query2XML_ConfigException Bubbles up through this method if
-    *                          thrown by any of the command class constructors.
-    * @param string $columnStr The original specification.
-    * @param string $configPath The config path; used for exception messages.
-    * @return XML_Query2XML_Command_Chain A class extending this abstract class.
-    */
+    /**
+     * Parse specifications that use the prifixes ?, &, =, ^, :,  or #.
+     *
+     * This method will produce a number of chained command object all of which
+     * be an instance of the abstract class XML_Query2XML_Command_Chain.
+     *
+     * @param string $columnStr  The original specification.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return XML_Query2XML_Command_Chain A class extending this abstract class.
+     * @throws XML_Query2XML_ConfigException Bubbles up through this method if
+     *                          thrown by any of the command class constructors.
+     */
     private static function _buildCommandChain($columnStr, $configPath)
     {
         if (ltrim($columnStr, '?&=^:#') == $columnStr) {
@@ -1810,12 +1923,12 @@ class XML_Query2XML
         
         $callback = null;
         if (substr($columnStr, 0, 1) == '?') {
-            require_once 'XML/Query2XML/Command/NonEmpty.php';
-            $callback = new XML_Query2XML_Command_NonEmpty();
+            include_once 'XML/Query2XML/Command/NonEmpty.php';
+            $callback  = new XML_Query2XML_Command_NonEmpty();
             $columnStr = substr($columnStr, 1);
         }
         if (substr($columnStr, 0, 1) == '&') {
-            require_once 'XML/Query2XML/Command/Unserialize.php';
+            include_once 'XML/Query2XML/Command/Unserialize.php';
             if (is_null($callback)) {
                 $callback = new XML_Query2XML_Command_Unserialize();
             } else {
@@ -1826,7 +1939,7 @@ class XML_Query2XML
             $columnStr = substr($columnStr, 1);
         } else {
             if (substr($columnStr, 0, 1) == '=') {
-                require_once 'XML/Query2XML/Command/CDATA.php';
+                include_once 'XML/Query2XML/Command/CDATA.php';
                 if (is_null($callback)) {
                     $callback = new XML_Query2XML_Command_CDATA();
                 } else {
@@ -1838,7 +1951,7 @@ class XML_Query2XML
             }
             
             if (substr($columnStr, 0, 1) == '^') {
-                require_once 'XML/Query2XML/Command/Base64.php';
+                include_once 'XML/Query2XML/Command/Base64.php';
                 if (is_null($callback)) {
                     $callback = new XML_Query2XML_Command_Base64();
                 } else {
@@ -1851,26 +1964,26 @@ class XML_Query2XML
         }
         
         switch (substr($columnStr, 0, 1)) {
-            case ':':
-                require_once 'XML/Query2XML/Command/Static.php';
-                $dataSource = new XML_Query2XML_Command_Static(
-                    substr($columnStr, 1)
-                );
-                break;
-            case '#':
-                require_once 'XML/Query2XML/Command/PHPCallback.php';
-                $dataSource = new XML_Query2XML_Command_PHPCallback(
-                    substr($columnStr, 1),
-                    $configPath
-                );
-                break;
-            default:
-                require_once 'XML/Query2XML/Command/ColumnValue.php';
-                $dataSource = new XML_Query2XML_Command_ColumnValue(
-                    $columnStr,
-                    $configPath
-                );
-                break;
+        case ':':
+            include_once 'XML/Query2XML/Command/Static.php';
+            $dataSource = new XML_Query2XML_Command_Static(
+                substr($columnStr, 1)
+            );
+            break;
+        case '#':
+            include_once 'XML/Query2XML/Command/PHPCallback.php';
+            $dataSource = new XML_Query2XML_Command_PHPCallback(
+                substr($columnStr, 1),
+                $configPath
+            );
+            break;
+        default:
+            include_once 'XML/Query2XML/Command/ColumnValue.php';
+            $dataSource = new XML_Query2XML_Command_ColumnValue(
+                $columnStr,
+                $configPath
+            );
+            break;
         }
         if (is_null($callback)) {
             $callback = $dataSource;
@@ -1882,30 +1995,35 @@ class XML_Query2XML
         return $callback;
     }
     
-    /**Creates a new instance of DOMDocument.
-    * '1.0' is passed as first argument and 'UTF-8' as second to the
-    * DOMDocument constructor.
-    * @return DOMDocument The new instance.
-    */
+    /**
+     * Creates a new instance of DOMDocument.
+     * '1.0' is passed as first argument and 'UTF-8' as second to the
+     * DOMDocument constructor.
+     *
+     * @return DOMDocument The new instance.
+     */
     private static function _createDOMDocument()
     {
         return new DOMDocument('1.0', 'UTF-8');
     }
     
-    /**Create and then add a new child element.
-    *
-    * @throws XML_Query2XML_XMLException This exception will bubble up if it is
-    *                          thrown by _createDOMElement().
-    * @param DOMNode $element  The parent DOMNode the new DOM element should be
-    *                          appended to.
-    * @param string $name      The tag name of the new element.
-    * @param string $configPath The config path; used for exception messages.
-    * @param string $value     The value of a child text node. This argument is
-    *                          optional. The default is the boolean value false,
-    *                          which means that no child text node will be appended.
-    * @return DOMNode          The newly created DOMNode instance that was appended
-    *                          to $element.
-    */
+    /**
+     * Create and then add a new child element.
+     *
+     * @param DOMNode $element    The parent DOMNode the new DOM element should be
+     *                            appended to.
+     * @param string  $name       The tag name of the new element.
+     * @param string  $configPath The config path; used for exception messages.
+     * @param string  $value      The value of a child text node. This argument is
+     *                            optional. The default is the boolean value false,
+     *                            which means that no child text node will be
+     *                            appended.
+     *
+     * @return DOMNode The newly created DOMNode instance that was appended
+     *                 to $element.
+     * @throws XML_Query2XML_XMLException This exception will bubble up if it is
+     *                 thrown by _createDOMElement().
+     */
     private static function _addNewDOMChild(DOMNode $element, $name, $configPath,
         $value = false)
     {
@@ -1919,20 +2037,24 @@ class XML_Query2XML
         return $child;
     }
     
-    /**Helper method to create a new instance of DOMNode
-    *
-    * @throws XML_Query2XML_XMLException If $name is an invalid XML identifier.
-    *                          Also it will bubble up if it is thrown by
-    *                          _appendTextChildNode().
-    * @param DOMDocument $dom  An instance of DOMDocument. It's createElement()
-    *                          method is used to create the new DOMNode instance.
-    * @param string name       The tag name of the new element.
-    * @param string $configPath The config path; used for exception messages.
-    * @param string $value     The value of a child text node. This argument is
-    *                          optional. The default is the boolean value false,
-    *                          which means that no child text node will be appended.
-    * @return DOMNode An instance of DOMNode.
-    */
+    /**
+     * Helper method to create a new instance of DOMNode
+     *
+     * @param DOMDocument $dom        An instance of DOMDocument. It's
+     *                                createElement() method is used to create the
+     *                                new DOMNode instance.
+     * @param string      $name       The tag name of the new element.
+     * @param string      $configPath The config path; used for exception messages.
+     * @param string      $value      The value of a child text node. This argument
+     *                                is optional. The default is the boolean value
+     *                                false, which means that no child text node will
+     *                                be appended.
+     *
+     * @return DOMNode An instance of DOMNode.
+     * @throws XML_Query2XML_XMLException If $name is an invalid XML identifier.
+     *                                    Also it will bubble up if it is thrown by
+     *                                    _appendTextChildNode().
+     */
     private static function _createDOMElement(DOMDocument $dom, $name, $configPath,
         $value = false)
     {
@@ -1957,23 +2079,28 @@ class XML_Query2XML
         return $element;
     }
     
-    /**Append a new child text node to $element.
-    * $value must already be UTF8-encoded; this is to be handled
-    * by self::_executeEncoder() and $options['encoder'].
-    *
-    * This method will not create and append a child text node
-    * if $value === false || is_null($value).
-    *
-    * @throws XML_Query2XML_XMLException Any lower-level DOMException will be wrapped
-    *                 and re-thrown as a XML_Query2XML_XMLException. This will happen
-    *                 if $value cannot be UTF8-encoded for some reason. It will also
-    *                 be thrown if $value is an object or an array (and can therefore
-    *                 not be converted into a string).
-    * @param DOMNode $element An instance of DOMNode
-    * @param string $value The value of the text node.
-    * @param string $configPath The config path; used for exception messages.
-    */
-    private static function _appendTextChildNode(DOMNode $element, $value, $configPath)
+    /**
+     * Append a new child text node to $element.
+     * $value must already be UTF8-encoded; this is to be handled
+     * by self::_executeEncoder() and $options['encoder'].
+     *
+     * This method will not create and append a child text node
+     * if $value === false || is_null($value).
+     *
+     * @param DOMNode $element    An instance of DOMNode
+     * @param string  $value      The value of the text node.
+     * @param string  $configPath The config path; used for exception messages.
+     *
+     * @return void
+     * @throws XML_Query2XML_XMLException Any lower-level DOMException will 
+     *                 wrapped and re-thrown as a XML_Query2XML_XMLException. This 
+     *                 will happen if $value cannot be UTF8-encoded for some reason.
+     *                 It will also be thrown if $value is an object or an array
+     *                 (and can therefore not be converted into a string).
+     */
+    private static function _appendTextChildNode(DOMNode $element,
+                                                 $value,
+                                                 $configPath)
     {
         if ($value === false || is_null($value)) {
             return;
@@ -1994,7 +2121,7 @@ class XML_Query2XML
         try {
             $element->appendChild($dom->createTextNode($value));
         } catch(DOMException $e) {
-            //this should never happen as $value is UTF-8 encoded
+            // this should never happen as $value is UTF-8 encoded
             throw new XML_Query2XML_XMLException(
                 $configPath . ': "' . $value . '" is not a vaild text node: '
                 . $e->getMessage(),
@@ -2003,21 +2130,27 @@ class XML_Query2XML
         }
     }
     
-    /**Set the attribute $name with a value of $value for $element.
-    * $value must already be UTF8-encoded; this is to be handled
-    * by self::_executeEncoder() and $options['encoder'].
-    *
-    * @throws XML_Query2XML_XMLException Any lower-level DOMException will be wrapped
-    *                 and re-thrown as a XML_Query2XML_XMLException. This will happen
-    *                 if $name is not a valid attribute name. It will also be thrown
-    *                 if $value is an object or an array (and can therefore
-    *                 not be converted into a string).
-    * @param DOMNode $element An instance of DOMNode
-    * @param string $name The name of the attribute to set.
-    * @param string $value The value of the attribute to set.
-    * @param string $configPath The config path; used for exception messages.
-    */
-    private static function _setDOMAttribute(DOMNode $element, $name, $value, $configPath)
+    /**
+     * Set the attribute $name with a value of $value for $element.
+     * $value must already be UTF8-encoded; this is to be handled
+     * by self::_executeEncoder() and $options['encoder'].
+     *
+     * @param DOMNode $element    An instance of DOMNode
+     * @param string  $name       The name of the attribute to set.
+     * @param string  $value      The value of the attribute to set.
+     * @param string  $configPath The config path; used for exception messages.
+     *
+     * @return void
+     * @throws XML_Query2XML_XMLException Any lower-level DOMException will be
+     *                 wrapped and re-thrown as a XML_Query2XML_XMLException. This
+     *                 will happen if $name is not a valid attribute name. It will
+     *                 also be thrown if $value is an object or an array (and can
+     *                 therefore not be converted into a string).
+     */
+    private static function _setDOMAttribute(DOMNode $element,
+                                             $name,
+                                             $value,
+                                             $configPath)
     {
         if (is_object($value) || is_array($value)) {
             /*
@@ -2036,7 +2169,7 @@ class XML_Query2XML
         try {
             $element->setAttribute($name, $value);
         } catch(DOMException $e) {
-            //no unit test available for this one
+            // no unit test available for this one
             throw new XML_Query2XML_XMLException(
                 $configPath . ': "' . $name . '" is an invalid XML attribute name: '
                 . $e->getMessage(),
@@ -2045,31 +2178,36 @@ class XML_Query2XML
         }
     }
     
-    /*Adds one or more child nodes to an existing DOMNode instance.
-    *
-    * @throws XML_Query2XML_XMLException If one of the specified children
-    *                         is not one of the following: an instance of DOMNode,
-    *                         the boolean value false, or an array containing
-    *                         these two.
-    * @param DOMNode $base    An instance of DOMNode.
-    * @param mixed $children  An array of DOMNode instances or
-    *                         just a single DOMNode instance.
-    *                         Boolean values of false are always ignored.
-    * @param string $configPath The config path; used for exception messages.
-    * @param boolean $import  Whether DOMDocument::importNode() should be called for
-    *                         $children. This is necessary if the instance(s) passed
-    *                         as $children was/were created using a different
-    *                         DOMDocument instance. This argument is optional.
-    *                         The default is false.
-    */
-    private static function _addDOMChildren(DOMNode $base, $children, $configPath,
-        $import = false)
+    /**
+     * Adds one or more child nodes to an existing DOMNode instance.
+     *
+     * @param DOMNode $base       An instance of DOMNode.
+     * @param mixed   $children   An array of DOMNode instances or
+     *                            just a single DOMNode instance.
+     *                            Boolean values of false are always ignored.
+     * @param string  $configPath The config path; used for exception messages.
+     * @param boolean $import     Whether DOMDocument::importNode() should be called
+     *                            for $children. This is necessary if the instance(s)
+     *                            passed as $children was/were created using a
+     *                            different DOMDocument instance. This argument is
+     *                            optional. The default is false.
+     *
+     * @return void
+     * @throws XML_Query2XML_XMLException If one of the specified children
+     *                         is not one of the following: an instance of DOMNode,
+     *                         the boolean value false, or an array containing
+     *                         these two.
+     */
+    private static function _addDOMChildren(DOMNode $base,
+                                            $children,
+                                            $configPath,
+                                            $import = false)
     {
         if ($children === false) {
-            //don't do anything
+            // don't do anything
             return;
         } elseif ($children instanceof DOMNode) {
-            //$children is a single complex child
+            // $children is a single complex child
             if ($import) {
                 $children = $base->ownerDocument->importNode($children, true);
             }
@@ -2077,7 +2215,7 @@ class XML_Query2XML
         } elseif (is_array($children)) {
             for ($i = 0; $i < count($children); $i++) {
                 if ($children[$i] === false) {
-                    //don't do anything
+                    // don't do anything
                 } elseif ($children[$i] instanceof DOMNode) {
                     if ($import) {
                         $children[$i] = $base->ownerDocument->importNode(
@@ -2104,9 +2242,9 @@ class XML_Query2XML
             }
         } else {
             /*
-            * This should never happen because _addDOMChildren() is only called
-            * for arrays and instances of DOMNode.
-            */
+             * This should never happen because _addDOMChildren() is only called
+             * for arrays and instances of DOMNode.
+             */
             throw new XML_Query2XML_XMLException(
                 $configPath . ': DOMNode, false or an array of the two '
                 . 'expected, but ' . gettype($children) . ' given '
@@ -2115,31 +2253,40 @@ class XML_Query2XML
         }
     }
     
-    /**Remove all container elements created by XML_Query2XML to ensure that all
-    * elements are correctly ordered.
-    *
-    * This is a recursive method. This method calls
-    * {@link XML_Query2XML::_replaceParentWithChildren()}. For the concept of
-    * container elements please see the {@tutorial XML_Query2XML.pkg tutorial}.
-    *
-    * @param DOMNode $element An instance of DOMNode.
-    * @param string $hiddenContainerPrefix The containers that will be removed
-    *                         all start with this string.
-    */
+    /**
+     * Remove all container elements created by XML_Query2XML to ensure that all
+     * elements are correctly ordered.
+     *
+     * This is a recursive method. This method calls
+     * {@link XML_Query2XML::_replaceParentWithChildren()}. For the concept of
+     * container elements please see the {@tutorial XML_Query2XML.pkg tutorial}.
+     *
+     * @param DOMNode $element               An instance of DOMNode.
+     * @param string  $hiddenContainerPrefix The containers that will be removed
+     *                                       all start with this string.
+     *
+     * @return void
+     */
     private static function _removeContainers($element, $hiddenContainerPrefix)
     {
-        $xpath = new DOMXPath($element);
-        $containers = $xpath->query('//*[starts-with(name(),\'' . $hiddenContainerPrefix . '\')]');
-        foreach($containers as $container) {
+        $xpath      = new DOMXPath($element);
+        $containers = $xpath->query(
+            '//*[starts-with(name(),\'' . $hiddenContainerPrefix . '\')]'
+        );
+        foreach ($containers as $container) {
             if (!is_null($container->parentNode)) {
                 self::_replaceParentWithChildren($container);
             }
         }
     }
     
-    /**Replace a certain node with its child nodes.
-    * @param DOMNode $parent An instance of DOMNode.
-    */
+    /**
+     * Replace a certain node with its child nodes.
+     *
+     * @param DOMNode $parent An instance of DOMNode.
+     *
+     * @return void
+     */
     private static function _replaceParentWithChildren(DOMNode $parent)
     {
         
@@ -2153,19 +2300,23 @@ class XML_Query2XML
         $parent->parentNode->removeChild($parent);
     }
     
-    /**Calls an encoder for XML node and attribute values
-    * $options['encoder'] can be one of the following:
-    * - null: self::_utf8encode() will be used
-    * - false: no encoding will be performed
-    * - callback: a string or an array as defined by the
-    *   callback pseudo-type; please see
-    *   http://www.php.net/manual/en/language.pseudo-types.php#language.types.callback
-    *
-    * @throws XML_Query2XML_XMLException If the $options['encoder'] is a callback
-    *                                    function that threw an exception.
-    * @param string $str The string to encode
-    * @param array $options An associative array with $options['encoder'] set.
-    */
+    /**
+     * Calls an encoder for XML node and attribute values
+     * $options['encoder'] can be one of the following:
+     * - null: self::_utf8encode() will be used
+     * - false: no encoding will be performed
+     * - callback: a string or an array as defined by the
+     *   callback pseudo-type; please see
+     *   http://www.php.net/manual/en/
+     *   language.pseudo-types.php#language.types.callback
+     *
+     * @param string $str     The string to encode
+     * @param array  $options An associative array with $options['encoder'] set.
+     *
+     * @return void
+     * @throws XML_Query2XML_XMLException If the $options['encoder'] is a callback
+     *                                    function that threw an exception.
+     */
     private static function _executeEncoder($str, $options)
     {
         if (!is_string($str) || $options['encoder'] === false) {
@@ -2190,12 +2341,14 @@ class XML_Query2XML
         }
     }
     
-    /**UTF-8 encode $str using mb_conver_encoding or if that is not
-    * present, utf8_encode.
-    *
-    * @param string $str The string to encode
-    * @return String The UTF-8 encoded version of $str
-    */
+    /**
+     * UTF-8 encode $str using mb_conver_encoding or if that is not
+     * present, utf8_encode.
+     *
+     * @param string $str The string to encode
+     *
+     * @return String The UTF-8 encoded version of $str
+     */
     private static function _utf8encode($str)
     {
         if (function_exists('mb_convert_encoding')) {
@@ -2207,160 +2360,237 @@ class XML_Query2XML
     }
 }
 
-/**Parent class for ALL exceptions thrown by this package.
-* By catching XML_Query2XML_Exception you will catch all exceptions
-* thrown by XML_Query2XML.
-*
-* @package XML_Query2XML
-*/
+/**
+ * Parent class for ALL exceptions thrown by this package.
+ * By catching XML_Query2XML_Exception you will catch all exceptions
+ * thrown by XML_Query2XML.
+ *
+ * @category XML
+ * @package  XML_Query2XML
+ * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @link     http://pear.php.net/package/XML_Query2XML
+ */
 class XML_Query2XML_Exception extends PEAR_Exception
 {
     
-    /**Constructor method
-    * @param string $message       The error message.
-    * @param Exception $exception  The Exception that caused this exception 
-    *                              to be thrown. This argument is optional.
-    */
+    /**
+     * Constructor method
+     *
+     * @param string    $message   The error message.
+     * @param Exception $exception The Exception that caused this exception 
+     *                             to be thrown. This argument is optional.
+     */
     public function __construct($message, $exception = null)
     {
         parent::__construct($message, $exception);
     }
 }
 
-/**Exception for driver errors
-* @package XML_Query2XML
-*/
+/**
+ * Exception for driver errors
+ *
+ * @category XML
+ * @package  XML_Query2XML
+ * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @link     http://pear.php.net/package/XML_Query2XML
+ */
 class XML_Query2XML_DriverException extends XML_Query2XML_Exception
 {
-    /**Constructor
-    * @param string $message The error message.
-    */
+    /**
+     * Constructor
+     *
+     * @param string $message The error message.
+     */
     public function __construct($message)
     {
         parent::__construct($message);
     }
 }
 
-/**Exception for database errors
-* @package XML_Query2XML
-*/
+/**
+ * Exception for database errors
+ *
+ * @category XML
+ * @package  XML_Query2XML
+ * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @link     http://pear.php.net/package/XML_Query2XML
+ */
 class XML_Query2XML_DBException extends XML_Query2XML_DriverException
 {
-    /**Constructor
-    * @param string $message The error message.
-    */
+    /**
+     * Constructor
+     *
+     * @param string $message The error message.
+     */
     public function __construct($message)
     {
         parent::__construct($message);
     }
 }
 
-/**Exception for XML errors
-* In most cases this exception will be thrown if a DOMException occurs.
-* @package XML_Query2XML
-*/
+/**
+ * Exception for XML errors
+ * In most cases this exception will be thrown if a DOMException occurs.
+ *
+ * @category XML
+ * @package  XML_Query2XML
+ * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @link     http://pear.php.net/package/XML_Query2XML
+ */
 class XML_Query2XML_XMLException extends XML_Query2XML_Exception
 {
-    /**Constructor
-    * @param string $message         The error message.
-    * @param DOMException $exception The DOMException that caused this exception 
-    *                                to be thrown. This argument is optional.
-    */
+    /**
+     * Constructor
+     *
+     * @param string       $message   The error message.
+     * @param DOMException $exception The DOMException that caused this exception 
+     *                                to be thrown. This argument is optional.
+     */
     public function __construct($message, DOMException $exception = null)
     {
         parent::__construct($message, $exception);
     }
 }
 
-/**Exception that handles configuration errors.
-*
-* This exception handels errors in the $options array passed to
-* XML_Query2XML::getXML() and wrong arguments passed to the constructor via
-* XML_Query2XML::factory().
-*
-* @see XML_Query2XML::getXML()
-* @package XML_Query2XML
-*/
+/**
+ * Exception that handles configuration errors.
+ *
+ * This exception handels errors in the $options array passed to
+ * XML_Query2XML::getXML() and wrong arguments passed to the constructor via
+ * XML_Query2XML::factory().
+ *
+ * @category XML
+ * @package  XML_Query2XML
+ * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @link     http://pear.php.net/package/XML_Query2XML
+ * @see      XML_Query2XML::getXML()
+ */
 class XML_Query2XML_ConfigException extends XML_Query2XML_Exception
-{      
-    /**Constructor method
-    * @param string $message A detailed error message.
-    */
+{
+    /**
+     * Constructor method
+     *
+     * @param string $message A detailed error message.
+     */
     public function __construct($message)
     {
         parent::__construct($message);
     }
 }
 
-/**Abstract driver class.
-*
-* usage:
-* <code>
-* $driver = XML_Query2XML_Driver::factory($backend);
-* </code>
-*
-* @author Lukas Feiler <lukas.feiler@lukasfeiler.com>
-* @version Release: @package_version@
-* @copyright Empowered Media 2006
-* @package XML_Query2XML
-* @since Release 1.5.0RC1
-*/
+/**
+ * Abstract driver class.
+ *
+ * usage:
+ * <code>
+ * $driver = XML_Query2XML_Driver::factory($backend);
+ * </code>
+ *
+ * @category XML
+ * @package  XML_Query2XML
+ * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
+ * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
+ * @version  Release: @package_version@
+ * @link     http://pear.php.net/package/XML_Query2XML
+ * @since    Release 1.5.0RC1
+ */
 abstract class XML_Query2XML_Driver
 {
-    /**This method, when implemented executes the query passed as the
-    * first argument and returns all records from the result set.
-    *
-    * The format of the first argument depends on the driver being used.
-    *
-    * @throws XML_Query2XML_DriverException If some driver related error occures.
-    * @param mixed  $sql The SQL query as a string or an array.
-    * @param string $configPath The config path; used for exception messages.
-    * @return array An array of records. Each record itself will be an
-    *               associative array.
-    */
-    abstract public function &getAllRecords($sql, $configPath);
+    /**
+     * This method, when implemented executes the query passed as the
+     * first argument and returns all records from the result set.
+     *
+     * The format of the first argument depends on the driver being used.
+     *
+     * @param mixed  $sql        The SQL query as a string or an array.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return array An array of records. Each record itself will be an
+     *               associative array.
+     * @throws XML_Query2XML_DriverException If some driver related error occures.
+     */
+    abstract public function getAllRecords($sql, $configPath);
     
-    /**Helper function that extracts the query string if from
-    * a complex element specification
-    * @param mixed $sql A string or an array.
-    * @return string The query string.
-    */
-    protected function &extractQueryString($sql)
+    /**
+     * Pre-processes a query specification and returns a string representation
+     * of the query.
+     * If $query is a string, it will be changed to array('query' => $query).
+     *
+     * @param mixed  &$query     A string or an array containing the element 'query'.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return string The query statement as a string.
+     * @throws XML_Query2XML_ConfigException If $query is an array but does not
+     *                                       contain the element 'query'.
+     */
+    public function preprocessQuery(&$query, $configPath)
     {
-        if (is_string($sql)) {
-            return $sql;
-        } else {
-            return $sql['query'];
+        if (is_string($query)) {
+            $query = array('query' => $query);
+        } elseif (is_array($query)) {
+            if (!isset($query['query'])) {
+                /*
+                * unit test: _preprocessOptions/
+                *  throwConfigException_queryOptionMissing.phpt
+                */
+                throw new XML_Query2XML_ConfigException(
+                    $configPath . ': The configuration option'
+                    . ' "query" is missing.'
+                );
+            }
+        } else { //neither a string nor an array
+            /*
+            * unit test: _preprocessOptions/
+            *  throwConfigException_sqlOptionWrongType.phpt
+            */
+            throw new XML_Query2XML_ConfigException(
+                $configPath . ': array or string expected, '
+                . gettype($query) . ' given.'
+            );
         }
+        return $query['query'];
     }
     
-    /**Factory method.
-    *
-    * @throws XML_Query2XML_DriverException If $backend already is a PEAR_Error.
-    * @throws XML_Query2XML_ConfigException If $backend is not an instance of a
-    *                  child class of MDB2_Driver_Common, PDO, DB_common,
-    *                  ADOConnection or Net_LDAP.
-    * @param mixed $backend An instance of MDB2_Driver_Common, PDO, DB_common,
-    *                  ADOConnection or Net_LDAP.
-    * @return XML_Query2XML_Driver An instance of a driver class that
-    *                  extends XML_Query2XML_Driver.
-    */
+    /**
+     * Factory method.
+     *
+     * @param mixed $backend An instance of MDB2_Driver_Common, PDO, DB_common,
+     *                  ADOConnection or Net_LDAP.
+     *
+     * @return XML_Query2XML_Driver An instance of a driver class that
+     *                  extends XML_Query2XML_Driver.
+     * @throws XML_Query2XML_DriverException If $backend already is a PEAR_Error.
+     * @throws XML_Query2XML_ConfigException If $backend is not an instance of a
+     *                  child class of MDB2_Driver_Common, PDO, DB_common,
+     *                  ADOConnection or Net_LDAP.
+     */
     public static function factory($backend)
     {
-        if (class_exists('MDB2_Driver_Common') && $backend instanceof MDB2_Driver_Common) {
-            require_once 'XML/Query2XML/Driver/MDB2.php';
+        if (
+            class_exists('MDB2_Driver_Common') &&
+            $backend instanceof MDB2_Driver_Common
+        ) {
+            include_once 'XML/Query2XML/Driver/MDB2.php';
             return new XML_Query2XML_Driver_MDB2($backend);
         } elseif (class_exists('PDO') && $backend instanceof PDO) {
-            require_once 'XML/Query2XML/Driver/PDO.php';
+            include_once 'XML/Query2XML/Driver/PDO.php';
             return new XML_Query2XML_Driver_PDO($backend);
         } elseif (class_exists('DB_common') && $backend instanceof DB_common) {
-            require_once 'XML/Query2XML/Driver/DB.php';
+            include_once 'XML/Query2XML/Driver/DB.php';
             return new XML_Query2XML_Driver_DB($backend);
-        } elseif (class_exists('ADOConnection') && $backend instanceof ADOConnection) {
-            require_once 'XML/Query2XML/Driver/ADOdb.php';
+        } elseif (
+            class_exists('ADOConnection') &&
+            $backend instanceof ADOConnection
+        ) {
+            include_once 'XML/Query2XML/Driver/ADOdb.php';
             return new XML_Query2XML_Driver_ADOdb($backend);
         } elseif (class_exists('Net_LDAP') && $backend instanceof Net_LDAP) {
-            require_once 'XML/Query2XML/Driver/LDAP.php';
+            include_once 'XML/Query2XML/Driver/LDAP.php';
             return new XML_Query2XML_Driver_LDAP($backend);
         } elseif (class_exists('PEAR_Error') && $backend instanceof PEAR_Error) {
             //unit tests: NoDBLayer/factory/throwDBException.phpt
