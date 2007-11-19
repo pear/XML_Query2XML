@@ -7,9 +7,9 @@ XML_Query2XML::factory(): check for XML_Query2XML_DBException
     $db = new PEAR_Error('error message');
     try {
         $query2xml =& XML_Query2XML::factory($db);
-    } catch (XML_Query2XML_DBException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 30);
+    } catch (XML_Query2XML_DriverException $e) {
+        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 13);
     }
 ?>
 --EXPECT--
-XML_Query2XML_DBException: Could not connect to database:
+XML_Query2XML_DriverException: Driver error:
