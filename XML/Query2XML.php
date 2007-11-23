@@ -798,6 +798,18 @@ class XML_Query2XML
                 );
             }
             $options['--q2x--query_statement'] = $query;
+            if (
+                is_array($options['sql']) && 
+                isset($options['sql']['driver']) &&
+                !($options['sql']['driver'] instanceof XML_Query2XML_Driver)
+            ) {
+                // unit test: MISSING
+                throw new XML_Query2XML_ConfigException(
+                    $options['--q2x--path'] . '[sql][driver]: '
+                    . 'instance of XML_Query2XML_Driver expected, '
+                    . gettype($options['sql']['driver']) . ' given.'
+                );
+            }
             
             if (is_array($options['sql'])) {
                 if (isset($options['sql']['data'])) {
@@ -1707,11 +1719,7 @@ class XML_Query2XML
     private function &_getAllRecords($sql, $configPath, $queryStatement)
     {
         $this->_debugStartQuery($queryStatement);
-        if (
-            is_array($sql) &&
-            isset($sql['driver']) &&
-            $sql['driver'] instanceof XML_Query2XML_Driver
-        ) {
+        if (is_array($sql) && isset($sql['driver'])) {
             $records = $sql['driver']->getAllRecords($sql, $configPath);
         } else {
             $records = $this->_driver->getAllRecords($sql, $configPath);
@@ -1736,8 +1744,13 @@ class XML_Query2XML
     private function &_getAllRecordsCached($sql, $configPath, $queryStatement)
     {
         $cacheQueryStatement = $queryStatement;
-        if (is_array($sql) && isset($sql['data']) && is_array($sql['data'])) {
-            $cacheQueryStatement .= '; DATA:' . implode(', ', $sql['data']);
+        if (is_array($sql)) {
+            if (isset($sql['data']) && is_array($sql['data'])) {
+                $cacheQueryStatement .= '; DATA:' . implode(', ', $sql['data']);
+            }
+            if (isset($sql['driver'])) {
+                $cacheQueryStatement = $configPath . ': ' . $cacheQueryStatement;
+            }
         }
         if (isset($this->_recordCache[$cacheQueryStatement])) {
             $this->_debugCachedQuery($queryStatement);
