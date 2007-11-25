@@ -123,15 +123,15 @@ class XML_Query2XML_Driver_LDAP extends XML_Query2XML_Driver
     }
     
     /**
-    * Execute a LDAP query stement and fetch all results.
-    *
-    * @param mixed  $query      The SQL query as a string or an array.
-    * @param string $configPath The config path; used for exception messages.
-    *
-    * @return array An array of records.
-    * @throws XML_Query2XML_LDAPException If Net_LDAP::search() returns an error.
-    * @see XML_Query2XML_Driver::getAllRecords()
-    */
+     * Execute a LDAP query stement and fetch all results.
+     *
+     * @param mixed  $query      The SQL query as a string or an array.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return array An array of records.
+     * @throws XML_Query2XML_LDAPException If Net_LDAP::search() returns an error.
+     * @see XML_Query2XML_Driver::getAllRecords()
+     */
     public function getAllRecords($query, $configPath)
     {
         $base    = null;
@@ -179,7 +179,7 @@ class XML_Query2XML_Driver_LDAP extends XML_Query2XML_Driver
         
         $records = self::_processMultiValueAttributes($records);
         
-        //set missing attriubtes to null
+        // set missing attriubtes to null
         if (isset($options['attributes']) && is_array($options['attributes'])) {
             foreach ($options['attributes'] as $attribute) {
                 for ($i = 0; $i < count($records); $i++) {
@@ -304,15 +304,15 @@ class XML_Query2XML_Driver_LDAP extends XML_Query2XML_Driver
     }
     
     /**
-    * Replaces all placeholder strings (e.g. '?') with replacement strings.
-    *
-    * @param string $string        The string in which to replace the placeholder
-    *                              strings.
-    * @param array  &$replacements An array of replacement strings.
-    * @param string $placeholder   The placeholder string.
-    *
-    * @return string The modified version of $string.
-    */
+     * Replaces all placeholder strings (e.g. '?') with replacement strings.
+     *
+     * @param string $string        The string in which to replace the placeholder
+     *                              strings.
+     * @param array  &$replacements An array of replacement strings.
+     * @param string $placeholder   The placeholder string.
+     *
+     * @return string The modified version of $string.
+     */
     private static function _replacePlaceholders($string,
                                                  &$replacements,
                                                  $placeholder)
