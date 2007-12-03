@@ -42,7 +42,7 @@ require_once 'PEAR/Exception.php';
  * <code>
  * <?php
  * require_once 'XML/Query2XML.php';
- * $query2xml = new XML_Query2XML(MDB2::factory($dsn));
+ * $query2xml = XML_Query2XML::factory(MDB2::factory($dsn));
  * $dom = $query2xml->getXML($sql, $options);
  * header('Content-Type: application/xml');
  * print $dom->saveXML();
@@ -178,7 +178,7 @@ class XML_Query2XML
      * require_once 'adodb/adodb.inc.php';
      * $adodb = ADONewConnection('mysql');
      * $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
-     * $query2xml =& XML_Query2XML::factory($adodb);
+     * $query2xml = XML_Query2XML::factory($adodb);
      * ?>
      * </code>
      *
@@ -270,7 +270,7 @@ class XML_Query2XML
      * <?php
      * require_once 'Log.php';
      * require_once 'XML/Query2XML.php';
-     * $query2xml = new XML_Query2XML(MDB2::connect($dsn));
+     * $query2xml = XML_Query2XML::factory(MDB2::connect($dsn));
      * $debugLogger = Log::factory('file', 'out.log', 'XML_Query2XML');
      * $query2xml->enableDebugLog($debugLogger);
      * ?>
@@ -803,7 +803,10 @@ class XML_Query2XML
                 isset($options['sql']['driver']) &&
                 !($options['sql']['driver'] instanceof XML_Query2XML_Driver)
             ) {
-                // unit test: MISSING
+                /*
+                 * unit test: _preprocessOptions
+                 *  throwConfigException_sqlOptionWrongType.phpt
+                 */
                 throw new XML_Query2XML_ConfigException(
                     $options['--q2x--path'] . '[sql][driver]: '
                     . 'instance of XML_Query2XML_Driver expected, '
