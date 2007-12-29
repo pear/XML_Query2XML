@@ -11,7 +11,7 @@
   	 {@link mailto:lukas.feiler@lukasfeiler.com lukas.feiler@lukasfeiler.com}
   	</authorblurb>
   </author>
-  <copyright>Copyright 2006 by {@link http://www.empoweredmedia.com Empowered Media}</copyright>
+  <copyright>Copyright 2006 by Lukas Feiler</copyright>
  </refsynopsisdiv>
  {@toc}  
  <refsect1 id="{@id intro}">
@@ -64,7 +64,7 @@
   	The release 0.8.0 of XML_Query2XML is not backward compatible!
   	Due to security considerations XML_Query2XML does not use the
   	native function eval() anymore. Therefore
-  	<itemizedlist>
+    <itemizedlist>
      <listitem>
       the "!" prefix is not supported anymore; this affects
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}, 
@@ -112,51 +112,58 @@
    The argument passed to the factory method can be an instance of
    {@link http://www.php.net/PDO PDO},
    {@link http://pear.php.net/package/DB PEAR DB}, 
-   {@link http://pear.php.net/package/MDB2 PEAR MDB2} or
-   {@link http://adodb.sourceforge.net ADOdb}.
+   {@link http://pear.php.net/package/MDB2 PEAR MDB2},
+   {@link http://adodb.sourceforge.net ADOdb},
+   {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP} or
+   any class that extends {@link XML_Query2XML_Driver}
   </para>
-  <para>
-   Using PDO with XML_Query2XML works like this:
-   <programlisting role="php">
-   <![CDATA[
+  <refsect2 id="{@id database_drivers}">
+   <title>Database Drivers for PDO, PEAR MDB2, PEAR DB, ADOdb</title>
+   <para>
+    XML_Query2XML has drivers for the database abstraction layers PDO, PEAR MDB2, PEAR DB and ADOdb.
+   </para>
+   <para>
+    Using PDO with XML_Query2XML works like this:
+    <programlisting role="php">
+    <![CDATA[
 <?php
 require_once 'XML/Query2XML.php';
 $pdo = new PDO('mysql://root@localhost/Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($pdo);
 ?>
-   ]]>
-   </programlisting>
-  </para>
-  <para>
-   Using MDB2 with XML_Query2XML works like this:
-   <programlisting role="php">
-   <![CDATA[
+    ]]>
+    </programlisting>
+   </para>
+   <para>
+    Using MDB2 with XML_Query2XML works like this:
+    <programlisting role="php">
+    <![CDATA[
 <?php
 require_once 'XML/Query2XML.php';
 require_once 'MDB2.php';
 $mdb2 = MDB2::factory('mysql://root@localhost/Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($mdb2);
 ?>
-   ]]>
-   </programlisting>
-  </para>
-  <para>
-   The same thing with PEAR DB looks like that:
-   <programlisting role="php">
-   <![CDATA[
+    ]]>
+    </programlisting>
+   </para>
+   <para>
+    The same thing with PEAR DB looks like that:
+    <programlisting role="php">
+    <![CDATA[
 <?php
 require_once 'XML/Query2XML.php';
 require_once 'DB.php';
 $db = DB::connect('mysql://root@localhost/Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($db);
 ?>
-   ]]>
-   </programlisting>
-  </para>
-  <para>
-   And again the same thing with ADOdb:
-   <programlisting role="php">
-   <![CDATA[
+    ]]>
+    </programlisting>
+   </para>
+   <para>
+    And again the same thing with ADOdb:
+    <programlisting role="php">
+    <![CDATA[
 <?php
 require_once 'XML/Query2XML.php';
 require_once 'adodb/adodb.inc.php';
@@ -166,20 +173,60 @@ $adodb = ADONewConnection('mysql');
 $adodb->Connect('localhost', 'root', '', 'Query2XML_Tests');
 $query2xml = XML_Query2XML::factory($adodb);
 ?>
-   ]]>
-   </programlisting>
-   Note that XML_Query2XML works with ADOdb with the default error handling (no additional include file),
-   error handling using exceptions (adodb-exceptions.inc.php) and error handling using PEAR_Error
-   (adodb-pear.inc.php).
-  </para>
-  <para>
-   I would recommend using MDB2 as it can be considered more advanced than DB
-   and much better designed and documented than ADOdb. MDB2 also provides more
-   flexibility than PDO. If you want to access a SQLite 3 database use PDO - MDB2
-   does only support SQLite 2 as of this writing.
-   But use whichever you like - XML_Query2XML works with all of them.
-   For the sake of simplicity all the examples will use PEAR MDB2.
-  </para>
+    ]]>
+    </programlisting>
+    Note that XML_Query2XML works with ADOdb with the default error handling (no additional include file),
+    error handling using exceptions (adodb-exceptions.inc.php) and error handling using PEAR_Error
+    (adodb-pear.inc.php).
+   </para>
+   <para>
+    I would recommend using MDB2 as it can be considered more advanced than DB
+    and much better designed and documented than ADOdb. MDB2 also provides more
+    flexibility than PDO. If you want to access a SQLite 3 database use PDO - MDB2
+    does only support SQLite 2 as of this writing.
+    But use whichever you like - XML_Query2XML works with all of them.
+    For the sake of simplicity all the examples will use PEAR MDB2.
+   </para>
+  </refsect2>
+  <refsect2 id="{@id ldap_driver}">
+   <title>LDAP Driver for PEAR Net_LDAP</title>
+   <para>
+    Since v1.6.0 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
+   </para>
+   <para>
+    Using Net_LDAP with XML_Query2XML works like this:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+$ldap = Net_LDAP::connect(
+    'host'     => 'ldap.example.com',
+    'port'     => 389,
+    'version'  => 3,
+    'starttls' => true,
+    'binddn'   => 'cn=Manager,ou=people,dc=example,dc=com',
+    'bindpw'   => 'secret'
+);
+$query2xml = XML_Query2XML::factory($ldap);
+?>
+    ]]>
+    </programlisting>
+    The driver for Net_LDAP uses a diffrent format for
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql}. Instead of
+    a string it expects an associative array with the following elements:
+    <itemizedlist>
+     <listitem>
+      <emphasis>'base'</emphasis>: the base search DN
+     </listitem>
+     <listitem>
+      <emphasis>'filter'</emphasis>: the query filter that determines which results are returned
+     </listitem>
+     <listitem>
+      <emphasis>'options'</emphasis>: an array of configuration options for the current query
+     </listitem>
+    </itemizedlist>
+   </para>
+  </refsect2>
  </refsect1>
  
  <refsect1 id="{@id query2xml_getflatxml}">
@@ -191,8 +238,10 @@ $query2xml = XML_Query2XML::factory($adodb);
     This method transforms the data retrieved by a single SQL query into flat XML data. Pass the SQL SELECT statement
     as first, the root tag's name as second and the row tag's name as third argument.
   </para>
+  <para>
     In most cases you will want to use {@tutorial XML_Query2XML.pkg#query2xml_getxml} instead.
     Please see {@tutorial XML_Query2XML.pkg#casestudies.case01} for an example usage of getFlatXML().
+  </para>
  </refsect1>
 
  <refsect1 id="{@id query2xml_getxml}">
@@ -2844,6 +2893,10 @@ function isGT1980($record)
    
   <refsect2 id="{@id options_sql}">
    <title>$options['sql']</title>
+   <para>
+    <emphasis>Note:</emphasis> This option is driver-specific. The following discussion is limited
+    to the database-related drivers.
+   </para>
    <para>
     This and {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options} are the only options
     that can only be present within
@@ -5861,10 +5914,1000 @@ array('start' => microtime(true), 'stop' => 0);
    <para>
     Please see the API docs at {@link XML_Query2XML::clearProfile()}.
    </para>
-  </refsect2>
-  
+  </refsect2> 
  </refsect1>
-  
+ 
+ <refsect1 id="{@id output_caching}">
+  <title>Output Caching</title>
+  <para>
+   If your XML data is rather static in nature, i.e. exactely the same XML
+   data is created over and over again you might want to use some kind of output caching.
+   I will demonstrate the usage of {@link http://pear.php.net/package/Cache_Lite PEAR Cache_Lite} here:
+  </para>
+  <para>
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once('Cache/Lite.php');
+/*
+* Set a id for this cache; if you generate the XML data based
+* on values passed via POST/GET/COOKIE, include these values
+* in $id. This does not need to be an integer; it's md5sum
+* will be used.
+*/
+$id = '123';
+
+//set a few options
+$options = array(
+    'cacheDir' => "/tmp/",
+    'lifeTime' => 3600
+);
+
+//create a Cache_Lite object
+$cache = new Cache_Lite($options);
+
+// content type for xml data
+header('Content-Type: application/xml');
+
+//test if there is a valide cache for this id
+if ($data = $cache->get($id)) {
+    print $data;
+} else {
+    //no valid cache found
+    require_once 'XML/Query2XML.php';
+    require_once 'MDB2.php';
+    $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+    $dom = $query2xml->getXML(...);
+    $dom->formatOutput = true;
+    
+    //cache the XML data
+    $data = $dom->saveXML();
+    $cache->save($data, $id);
+    
+    print $data;
+}
+?>
+   ]]>
+   </programlisting>
+   For more information on PEAR Cache_Lite, please see the
+   {@link http://pear.php.net/manual/en/package.caching.cache-lite.php Cache_Lite manual}.
+  </para>
+ </refsect1>
+ 
+ <refsect1 id="{@id ldap}">
+  <title>The LDAP Driver</title>
+  <para>
+   Since v1.6.0 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
+   This allows you to use LDAP instead of an RDBMS as your primary data source. To use the PEAR Net_LDAP
+   driver you can pass an instance of Net_LDAP to {@tutorial XML_Query2XML.pkg#query2xml_factory}. The only
+   thing that changes is the format of {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} and
+   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}.
+  </para>
+  <refsect2 id="{@id simplequeryspecification}">
+   <title>Simple LDAP Query Specification</title>
+   <para>
+    A simple LDAP query specification as it can be used
+    for {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} and
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}
+    looks as follows:
+    <programlisting role="php">
+    <![CDATA[
+array(
+    'base' => 'ou=peopole,dc=example,dc=com',
+    'filter' => '(objectclass=inetOrgPerson)',
+    'options' => array(...)
+)
+    ]]>
+    </programlisting>
+    These are the arguments as they will be passed to
+    {@link http://pear.php.net/package/Net_LDAP/docs/latest/Net_LDAP/Net_LDAP.html#methodsearch Net_LDAP::search()}.
+    Please see the {@link http://pear.php.net/manual/en/package.networking.net-ldap.search.php Net_LDAP manual}
+    for details.
+   </para>
+   <para>
+    Note that the option 'attributes' will be used by the LDAP driver if it is present. It allows the driver
+    to set the specified attributes to null if they are not present in the returned records.
+    It is therefore highly recommended to always set the option 'attributes'.
+    See {@tutorial XML_Query2XML.pkg#ldap.optionalattributes} for details.
+    <programlisting role="php">
+    <![CDATA[
+array(
+    'base' => 'ou=peopole,dc=example,dc=com',
+    'filter' => '(objectclass=inetOrgPerson)',
+    'options' => array(
+        'attributes' => array(
+            'cn',
+            'mobile'
+        )
+    )
+)
+    ]]>
+    </programlisting>
+   </para>
+   <para>
+    Now let's look at an example. We want all entris from ou=people,dc=example,dc=com that
+    have an objectclass of inetOrgPerson. For each of these entries we want to output
+    the attributes cn and mobile.
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'Net/LDAP.php';
+
+/*
+* just pass an instance of Net_LDAP to the factory method
+* as you would do it with an MDB2 or PDO instance.
+*/
+$query2xml = XML_Query2XML::factory(Net_LDAP::connect());
+
+$dom = $query2xml->getXML(
+    array(  //this is different than what you're used to from the other drivers
+        'base' => 'ou=people,dc=example,dc=com',
+        'filter' => '(objectclass=inetOrgPerson)',
+        'options' => array(
+            'attributes' => array( //to tell the LDAP driver which columns to watch out for
+                'cn',
+                'mobile',
+            )
+        )
+    ),
+    array(
+        'rootTag' => 'employees',
+        'idColumn' => 'cn',
+        'rowTag' => 'employee',
+        'elements' => array(
+            'cn',
+            'mobile'
+        )
+    )
+);
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    This would produce the following XML data:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+  <employee>
+    <cn>John Doe</cn>
+    <mobile>666-777-888</mobile>
+  </employee>
+  <employee>
+    <cn>Jane Doe</cn>
+    <mobile>555-777-888</mobile>
+  </employee>
+</employees>
+    ]]>
+    </programlisting>
+   </para>
+  </refsect2>
+  <refsect2 id="{@id complexqueryspecification}">
+   <title>Complex LDAP Query Specification</title>
+   <para>
+    A complex LDAP query specification as it can be used
+    for {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} and
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}
+    looks as follows:
+    <programlisting role="php">
+    <![CDATA[
+array(
+    'data' => array(':John Doe'),
+    'base' => 'ou=peopole,dc=example,dc=com',
+    'filter' => '(&(objectclass=inetOrgPerson)(cn=?))',
+    'options' => array(
+        'attributes' => array(
+            'cn',
+            'mobile'
+        ),
+        'query2xml_placeholder' => '?'
+    )
+)
+    ]]>
+    </programlisting>
+    A complex LDAP query specification provides a prepare&amp;execute-like funktionality: a placeholder
+    (by default a question mark) can be used in ['base'] and ['filter'].
+    That placeholder will be replaced by the LDAP driver with the values from ['data'].
+   </para>
+   <para>
+    Note that when using a complex LDAP query specification, there is another option the LDAP driver will understand:
+    'query2xml_placeholder'. It allows you to define the placeholder used in 'base' and 'filter'. The default
+    is a question mark ('?').
+   </para>
+   <para>
+    Let's have a look at a full example: we want all entries of the class inetOrgPerson that have a cn attribute
+    that contains the string submitted vi $_GET['cn']:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'Net/LDAP.php';
+
+$query2xml = XML_Query2XML::factory(Net_LDAP::connect());
+
+$dom = $query2xml->getXML(
+    array(
+        'data' => array(':' . $_GET['cn']),
+        'base' => 'ou=people,dc=example,dc=com',
+        'filter' => '(&(objectclass=inetOrgPerson)(cn=*?*))', //the question mark will be replace
+                                                              //with the contents of $_GET['cn']
+        'options' => array(
+            'attributes' => array( //to tell the LDAP driver which columns to watch out for
+                'cn',
+                'mobile',
+            )
+        )
+    ),
+    array(
+        'rootTag' => 'employees',
+        'idColumn' => 'cn',
+        'rowTag' => 'employee',
+        'elements' => array(
+            'cn',
+            'mobile'
+        )
+    )
+);
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    if $_GET['cn'] was set to 'John' the following XML data would be produced:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+  <employee>
+    <cn>John Doe</cn>
+    <mobile>666-777-888</mobile>
+  </employee>
+</employees>
+    ]]>
+    </programlisting>
+   </para>
+  </refsect2>
+  <refsect2 id="{@id optionalattributes}">
+   <title>Handling Optional Attributes - $options['query']['options']['attributes']</title>
+   <para>
+    In an LDAP directory an entry does not have to use all attributes that are
+    provided by the entry's objectClass. In the following example the attributes
+    'mail' and 'mobile' (among others) are missing from the first entry.
+    <![CDATA[
+dn: cn=Jane Doe,ou=people,dc=example,dc=com
+cn: Jane Doe
+objectClass: inetOrgPerson
+
+dn: cn=John Doe,ou=people,dc=example,dc=com
+cn: John Doe
+mail: john.doe@example.com
+mobile: 555-666-777
+objectClass: inetOrgPerson
+    ]]>
+    This would potentially lead to problems
+    as it is contrary to what is possible in a RDBMS, where every record has to have a value for each
+    column (even if it's NULL). XML_Query2XML was primarily built with an RDBMS in mind and therefore
+    expects all data returned by a driver to be records represented as an array of associative arrays
+    (where each associative array uses the same keys).
+   </para>
+   <para>
+    To solve this problem the columns corresponding
+    to missing attributes have to be set to null. But to tell the LDAP driver which columns to check for, you
+    have to use the $options['query']['options']['attributes']. (Note: $options['query'] is
+    an alias for $options['sql'])
+   </para>
+   <para>
+    $options['query']['options']['attributes'] will be used by Net_LDAP to limit the
+    attributes returned for each record (see the
+    {@link http://pear.php.net/manual/en/package.networking.net-ldap.search.php Net_LDAP manual}).
+    In addition to this, XML_Query2XML's LDAP driver will look at this option to
+    determine which columns to set to null if they do not exist in the returned records.
+   </para>
+   <para>
+    Let's look at what happens if you do not specify the 'attributes' option:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'Net/LDAP.php';
+
+/*
+* just pass an instance of Net_LDAP to the factory method
+* as you would do it with an MDB2 or PDO instance.
+*/
+$query2xml = XML_Query2XML::factory(Net_LDAP::connect());
+
+$dom = $query2xml->getXML(
+    array(
+        'base' => 'ou=people,dc=example,dc=com',
+        'filter' => '(objectclass=inetOrgPerson)'
+        //we completely omit 'options' here
+    ),
+    array(
+        'rootTag' => 'employees',
+        'idColumn' => 'cn',
+        'rowTag' => 'employee',
+        'elements' => array(
+            'cn',
+            'pager'
+        )
+    )
+);
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    You would get something like this:
+    <![CDATA[
+Fatal error: Uncaught XML_Query2XML_ConfigException: [elements][pager]: The column "pager" was not found in the result set.
+    ]]>
+    This is because Jane Doe does not have a pager. As the LDAP driver was not told
+    that the 'pager' attribute might be missing from some entries, it returned Jane
+    Doe's record without the column 'pager'.
+    An LDAP query specification should therefore always use the 'attributes' option!
+   </para>
+  </refsect2>
+  <refsect2 id="{@id multivalueattributes}">
+   <title>Handling Multi-Value Attributes</title>
+   <para>
+    In an LDAP directory, attributes are mutli-valued, that is they can hold multiple values.
+    This is nice because it allows you to easily store, say not just one email
+    address, but as many as you like. This is contrary to what you can usually
+    do in an RDBMS. As XML_Query2XML was built primarily with an RDBMS in mind,
+    it expects simple records, each represented by a one-dimensional array to be
+    returned by the LDAP driver.
+   </para>
+   <para>
+    The LDAP driver therefore creates multiple records for each entry that
+    has multi-value attributes. An entry like
+    <![CDATA[
+## LDIF entry for "John Doe"
+dn: cn=John Doe,ou=people,dc=example,dc=com
+cn: John Doe
+sn: Doe
+mail: john@example.com
+mail: johndoe@example.com
+mail: john.doe@example.com
+telephoneNumber: 555-111-222
+telephoneNumber: 555-222-333
+mobile: 666-777-888
+    ]]>
+    therefore has to be converted into multiple one-dimensional associative
+    arrays (i.e. records):
+    <![CDATA[
+    cn        mail                  telephoneNumber  mobile
+    -------------------------------------------------------
+    John Doe  john@example.com      555-111-222      666-777-888
+    John Doe  johndoe@example.com   555-222-333      666-777-888
+    John Doe  john.doe@example.com  555-111-222      666-777-888
+    ]]>
+    Note that no cartasian product of the mail-values and the mobile-values
+    is produced (that would result in six instead of three records in the
+    above example). The number of records returned is equal to the number
+    values assigned to the attribute that has the most values (here
+    it's the mail attribute that has 3 values). To make sure that every
+    record has valid values for all attributes/columns, we continiusly loop
+    over the available value until the attribute with the most values
+    is done. In the above example the attribute telephoneNumber had only
+    two values while the mail attribute had three. The record for
+    the third mail attribute value therefore contains the first value of
+    the telephoneNumber attribute.
+   </para>
+   <para>
+    So what does that mean for $options (the second argument passed to getXML())?
+    It means that not much changes compared to how you would define $options
+    when using a database-related driver. As shown above, using
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.simple_element_specifications}
+    will work, but will only produce the first value for each attribute:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'Net/LDAP.php';
+
+$query2xml = XML_Query2XML::factory(Net_LDAP::connect());
+
+$dom = $query2xml->getXML(
+    array(
+        'base' => 'ou=people,dc=example,dc=com',
+        'filter' => '(objectclass=inetOrgPerson)',
+        'options' => array(
+            'attributes' => array( //to tell the LDAP driver which columns to watch out for
+                'cn',
+                'mail',
+            )
+        )
+    ),
+    array(
+        'rootTag' => 'employees',
+        'idColumn' => 'cn',
+        'rowTag' => 'employee',
+        'elements' => array(
+            'cn',     //simple element specification
+            'mail'    //simple element specification
+        )
+    )
+);
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    notice how the resulting XML only shows the first value of the mail attribute:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+  <employee>
+    <cn>John Doe</cn>
+    <mail>john@example.com</mail>
+  </employee>
+  <employee>
+    <cn>Jane Doe</cn>
+    <mail>jane@example.com</mail>
+  </employee>
+</employees>
+    ]]>
+    </programlisting>
+    To get a "mail" XML element for each value of the "mail" LDAP attribute, we have
+    to use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_elements.complex_element_specifications}
+    and set {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}:
+    <programlisting role="php">
+    <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'Net/LDAP.php';
+
+$query2xml = XML_Query2XML::factory(Net_LDAP::connect());
+
+$dom = $query2xml->getXML(
+    array(
+        'base' => 'ou=people,dc=example,dc=com',
+        'filter' => '(objectclass=inetOrgPerson)',
+        'options' => array(
+            'attributes' => array( //to tell the LDAP driver which columns to watch out for
+                'cn',
+                'mail',
+            )
+        )
+    ),
+    array(
+        'rootTag' => 'employees',
+        'idColumn' => 'cn',
+        'rowTag' => 'employee',
+        'elements' => array(
+            'cn',     //simple element specification
+            'mail' => array(
+                'idColumn' => 'mail',
+                'value' => 'mail'
+            )
+        )
+    )
+);
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    This produces the following XML data:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+  <employee>
+    <cn>John Doe</cn>
+    <mail>john@example.com</mail>
+    <mail>johndoe@example.com</mail>
+    <mail>john.doe@example.com</mail>
+  </employee>
+  <employee>
+    <cn>Jane Doe</cn>
+    <mail>jane@example.com</mail>
+    <mail>jane.doe@example.com</mail>
+  </employee>
+</employees>
+    ]]>
+    </programlisting>
+    This is because we set {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}
+    within the complex element specification to "mail". Every record with a unique value
+    for the column "mail" is therefore processed.
+   </para>
+   <para>
+    As all LDAP attributes can have multiple values it is therefore highly recommended to
+    always use a complex element specification with $options['idColumn'] as described above.
+    The only exception is when you just want a single value (and don't care which one).
+   </para>
+  </refsect2>
+ </refsect1>
+ 
+ <refsect1 id="{@id multipledrivers}">
+  <title>Using Multiple Drivers</title>
+  <para>
+   There might be a situation where you want to genearte your XML data from multiple RDBMSes or
+   an RDBMS and an LDAP server. By using the option 'driver' within a
+   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification},
+   {@tutorial XML_Query2XML.pkg#ldap.complexqueryspecification}, or a
+   {@tutorial XML_Query2XML.pkg#ldap.simplequeryspecification} you can specify any driver you want.
+   To create an instance of one of the drivers that come with XML_Query2XML use
+   {@link XML_Query2XML_Driver::factory()}. If you want to write your own driver, please see
+   {@tutorial XML_Query2XML.pkg#yourdriver}. Let's start with an example that pulls data
+   from a MySQL and a ProstgreSQL database:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+
+$pgsqlDriver = XML_Query2XML_Driver::factory(MDB2::factory('pgsql://postgres:test@localhost/query2xml_tests'));
+$dom = $query2xml->getXML(
+    'SELECT * FROM artist',
+    array(
+        'rootTag' => 'artists',
+        'idColumn' => 'artistid',
+        'rowTag' => 'artist',
+        'elements' => array(
+            'name',
+            'genre',
+            'album' => array(
+                'sql' => array(
+                    'driver' => $pgsqlDriver,
+                    'data' => array(
+                        'artistid'
+                    ),
+                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                ),
+                'idColumn' => 'albumid',
+                'elements' => array(
+                    'title',
+                    'published_year'
+                )
+            )
+        )
+    )
+);
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    The resulting XML being:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<artists>
+  <artist>
+    <name>Curtis Mayfield</name>
+    <genre>Soul</genre>
+    <album>
+      <title>New World Order</title>
+      <published_year>1990</published_year>
+    </album>
+    <album>
+      <title>Curtis</title>
+      <published_year>1970</published_year>
+    </album>
+  </artist>
+  <artist>
+    <name>Isaac Hayes</name>
+    <genre>Soul</genre>
+    <album>
+      <title>Shaft</title>
+      <published_year>1972</published_year>
+    </album>
+  </artist>
+  <artist>
+    <name>Ray Charles</name>
+    <genre>Country and Soul</genre>
+  </artist>
+</artists>
+    ]]>
+    </programlisting>
+  </para>
+  <para>
+   Now let's combine an RDBMS with the data from an LDAP server:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'Net/LDAP.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+
+$dom = $query2xml->getXML(
+  "SELECT * FROM employee",
+  array(
+    'rootTag' => 'employees',
+    'idColumn' => 'employeeid',
+    'rowTag' => 'employee',
+    'elements' => array(
+        'name' => 'employeename',
+        'contact_details' => array(
+            'query' => array(
+                'driver' => XML_Query2XML_Driver::factory(Net_LDAP::connect()),
+                'data' => array(
+                    'employeename'
+                ),
+                'base' => 'ou=people,dc=example,dc=com',
+                'filter' => '(&(objectclass=inetOrgPerson)(cn=?))',
+                'options' => array(
+                    'attributes' => array(
+                        'cn',
+                        'telephoneNumber',
+                        'mobile',
+                        'mail',
+                        'labeledURI'
+                    )
+                )
+            ),
+            'idColumn' => 'cn',
+            'elements' => array(
+                'telephoneNumber' => array(
+                    'idColumn' => 'telephoneNumber',
+                    'value' => 'telephoneNumber'
+                ),
+                'mobile' => array(
+                    'idColumn' => 'mobile',
+                    'value' => 'mobile'
+                ),
+                'mail' => array(
+                    'idColumn' => 'mail',
+                    'value' => 'mail'
+                ),
+                'labeledURI' => array(
+                    'idColumn' => 'labeledURI',
+                    'value' => 'labeledURI'
+                )
+            )
+        )
+    ),
+  )
+);
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+   ]]>
+   </programlisting>
+   As we only have corresponsing entries in the LDAP directory for two of our
+   employees in the mysql database the resulting XML looks like this:
+   <programlisting role="tutorial">
+   <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+  <employee>
+    <name>Michael Jones</name>
+  </employee>
+  <employee>
+    <name>Susi Weintraub</name>
+    <contact_details>
+      <telephoneNumber>555-111-222</telephoneNumber>
+      <mobile>555-666-777</mobile>
+      <mobile>555-777-888</mobile>
+      <mail>susi@example.com</mail>
+      <labeledURI>http://susi.example.com</labeledURI>
+      <labeledURI>http://susiweintraub.example.com</labeledURI>
+      <labeledURI>http://susi.weintraub.example.com</labeledURI>
+    </contact_details>
+  </employee>
+  <employee>
+    <name>Steve Hack</name>
+  </employee>
+  <employee>
+    <name>Joan Kerr</name>
+  </employee>
+  <employee>
+    <name>Marcus Roth</name>
+  </employee>
+  <employee>
+    <name>Jack Mack</name>
+  </employee>
+  <employee>
+    <name>Rita Doktor</name>
+  </employee>
+  <employee>
+    <name>David Til</name>
+  </employee>
+  <employee>
+    <name>Pia Eist</name>
+  </employee>
+  <employee>
+    <name>Hanna Poll</name>
+  </employee>
+  <employee>
+    <name>Jim Wells</name>
+    <contact_details>
+      <telephoneNumber>555-444-888</telephoneNumber>
+      <mobile>555-666-777</mobile>
+      <mail>jim@example.com</mail>
+      <mail>jim.wells@example.com</mail>
+      <mail>jimwells@example.com</mail>
+      <mail>jwells@example.com</mail>
+      <labeledURI>http://jimwells.example.com</labeledURI>
+      <labeledURI>http://jim.wells.example.com</labeledURI>
+    </contact_details>
+  </employee>
+  <employee>
+    <name>Sandra Wilson</name>
+  </employee>
+</employees>
+   ]]>
+   </programlisting>
+  </para>
+ </refsect1>
+ 
+ <refsect1 id="{@id yourdriver}">
+  <title>Writing Your Own Driver</title>
+  <para>
+   If you want to work with a primary data source other than
+   PDO, MDB2, DB, ADOdb or Net_LDAP, you might want to write
+   your own driver.
+  </para>
+  <para>
+   Start out by extending the abstract class
+   {@link XML_Query2XML_Driver} and implementing its abstract method
+   getAllRecords():
+   <programlisting role="php">
+   <![CDATA[
+/**Contains the abstract class XML_Query2XML_Driver and the
+* exception class XML_Query2XML_DBException.
+*/
+require_once 'XML/Query2XML.php';
+
+class MyFirebirdDriver extends XML_Query2XML_Driver
+{
+    /*This method is defined as an abstract method within
+    * XML_Query2XML_Driver and therefore has to be implemented.
+    */
+    public function getAllRecords($sql, $configPath)
+    {
+    }
+}
+?>
+   ]]>
+   </programlisting>
+   For the sake of example, we'll be building a Firebird driver using
+   PHP's native interbase API.
+  </para>
+  <para>
+   Now let's add a constructor method that accepts the arguments needed to
+   set up an Interbase/Firebird connection:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+public function __construct($database, $username, $password)
+{
+    $this->_dbh = @ibase_pconnect($database, $username, $password);
+    if ($this->_dbh === false) {
+        throw new XML_Query2XML_DBException(
+            'Could not connect to database: ' . ibase_errmsg()
+            . '(error code: ' . ibase_errcode() . ')'
+        );
+    }
+}
+?>
+   ]]>
+   </programlisting>
+  </para>
+  <para>
+   Before we code the body of our getAllRecords() method, we have to
+   decide whether to overwrite the method {@link XML_Query2XML_Driver::preprocessQuery()}.
+   This method does two things:
+   <itemizedlist>
+  	<listitem>
+  	 pre-process {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}
+  	</listitem>
+  	<listitem>
+  	 return the query statement as a string that will be used by XML_Query2XML
+  	 for logging, profiling and caching
+  	</listitem>
+   </itemizedlist>
+   The importance of preprocessQuery() lies in the fact that it determines
+   the format of {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}.
+   As implemented in XML_Query2XML_Driver $options['sql'] can be either
+   a string or an array containing the element 'query'. If it is a string
+   it will be transformed to an array with the element 'query' holding
+   the string. This means that getAllRecords() only needs to deal with
+   a first argument that is a string and has a 'query' element. In this
+   example we will not overwrite preprocessQuery().
+  </para>
+  <para>
+   One aspect that is not controlled by preprocessQuery() is $options['sql']['data'].
+   If it is set, XML_Query2XML requires it to be an array of strings or instances of
+   classes that implement XML_Query2XML_Callback. The evaluations of the specifications
+   in $options['sql']['data'] are entirely handled by XML_Query2XML.
+  </para>
+  <para>
+   All that is left now is writing the body of the getAllRecords() method.
+   Regarding its first argument, {@link XML_Query2XML_Driver::preprocessQuery()} enforces the following rules
+   <itemizedlist>
+  	<listitem>
+  	 It will be an associative array.
+  	</listitem>
+  	<listitem>
+  	 The array will have a key named 'query'.
+  	</listitem>
+   </itemizedlist>
+  </para>
+  <para>
+   A first version of getAllRecords() might therefore look like this:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+public function getAllRecords($sql, $configPath)
+{
+    if (!isset($sql['data'])) {
+        //do not presume that $sql['data'] is present
+        $sql['data'] = array();
+    }
+    
+    //prepare
+    $statement = @ibase_prepare($this->_dbh, $sql['query']);
+    
+    //execute
+    $args = $sql['data'];
+    array_unshift($args, $statement);
+    $result = call_user_func_array('ibase_execute', $args);
+    
+    //fetch all records
+    while ($record = ibase_fetch_assoc($result, IBASE_TEXT)) {
+        $records[] = $record;
+    }
+    ibase_free_result($result);
+    
+    return $records;
+}
+?>
+   ]]>
+   </programlisting>
+   The above code is already functional but is still missings some important
+   error checking. Below is the final version of our MyFirebirdDriver class,
+   that includes a more robust version of getAllRecords(). Note how getAllRecords()'s
+   second argument, $configPath is used for the exception messages.
+   <programlisting role="php">
+   <![CDATA[
+<?php
+/**Contains the abstract class XML_Query2XML_Driver and the
+* exception class XML_Query2XML_DBException.
+*/
+require 'XML/Query2XML.php';
+class MyFirebirdDriver extends XML_Query2XML_Driver
+{
+    private $_dhb = null;
+    
+    public function __construct($database, $username, $password)
+    {
+        $this->_dbh = @ibase_pconnect($database, $username, $password);
+        if ($this->_dbh === false) {
+            throw new XML_Query2XML_DBException(
+                'Could not connect to database: ' . ibase_errmsg()
+                . '(error code: ' . ibase_errcode() . ')'
+            );
+        }
+    }
+    
+    /**Returns are records retrieved by running an SQL query.
+    * @param mixed $sql A query string or an array with the elements
+    *                   'query' (and optionally 'data').
+    * @param string $configPath Where in $options the query was defined.
+    * @return array All records as a two-dimensional array.
+    */
+    public function &getAllRecords($sql, $configPath)
+    {
+        if (!isset($sql['data'])) {
+            //do not presume that $sql['data'] is present
+            $sql['data'] = array();
+        }
+        
+        /*
+        * prepare
+        */
+        $statement = @ibase_prepare($this->_dbh, $sql['query']);
+        if ($statement === false) {
+            throw new XML_Query2XML_DBException(
+                /*
+                * Note how we use $configPath here. This will make
+                * the exception message tell you where in $options
+                * the error needs to be fixed.
+                */
+                $configPath . ': Could not prepare query "' . $sql['query'] . '": '
+                . ibase_errmsg() . '(error code: ' . ibase_errcode() . ')'
+            );
+        }
+        
+        /*
+        * execute
+        */
+        $args = $sql['data'];
+        array_unshift($args, $statement);
+        $result = call_user_func_array(
+            'ibase_execute',
+            $args
+        );
+        if ($result === false) {
+            throw new XML_Query2XML_DBException(
+                /*
+                * Note again how we use $configPath here.
+                */
+                $configPath . ': Could not execute query: "' . $sql['query'] . '": '
+                . ibase_errmsg() . '(error code: ' . ibase_errcode() . ')'
+            );
+        } elseif ($result === true) {
+            //empty result set
+            $records = array();
+        } else {
+            //fetch all records
+            while ($record = ibase_fetch_assoc($result, IBASE_TEXT)) {
+                $records[] = $record;
+            }
+            ibase_free_result($result);
+        }
+        
+        /*
+        * return a two dimensional array: numeric indexes in the first
+        * and associative arrays in the second dimension
+        */
+        return $records;
+    }
+}
+
+//test the driver directly
+$driver = new MyFirebirdDriver('localhost:/tmp/test.fdb', 'SYSDBA', 'test');
+$records = $driver->getAllRecords(
+    array(
+        'data' => array(1),
+        'query' => 'SELECT * FROM test WHERE id = ?'
+    ),
+    '[config]'
+);
+print_r($records);
+?>
+   ]]>
+   </programlisting>
+  </para>
+  <para>
+   Using XML_Query2XML_DBException for a database-related driver makes sense of course.
+   But when your driver has nothing to do with an RDBMS, it is recommended to create
+   your own exception class by extending {@link XML_Query2XML_DriverException}:
+<programlisting role="php">
+   <![CDATA[
+<?php
+/**Exception for MyDriver errors
+*/
+class MyDriverException extends XML_Query2XML_DriverException
+{
+    /**Constructor
+    * @param string $message The error message.
+    */
+    public function __construct($message)
+    {
+        parent::__construct($message);
+    }
+}
+?>
+   ]]>
+   </programlisting>
+   Note: it is in no way required but I would recommend that
+   all exceptions your driver throws extend {@link XML_Query2XML_DriverException}. That way
+   you can catch driver related exceptions in a consistent way - no matter what driver is used.
+  </para>
+ </refsect1>
+ 
  <refsect1 id="{@id casestudies}">
   <title>Case Studies</title>
   <para>
@@ -5932,7 +6975,7 @@ header('Content-Type: application/xml');
 $dom->formatOutput = true;
 print $dom->saveXML();
 ?>
-    ]]>
+     ]]>
      </programlisting>
      </para>
     </refsect3>
@@ -10716,16 +11759,10 @@ INSERT INTO sale (saleid, customer_id, album_id, employee_id, store_id, timestam
  <refsect1 id="{@id copyright_notice}">
   <title>Copyright Notice</title>
   <para>
-  	<emphasis>LICENSE:</emphasis> This source file is subject to version 2.1 of the LGPL that is bundled with this package in the file LICENSE.
+   Copyright: Lukas Feiler 2006
   </para>
   <para>
-    <emphasis>COPYRIGHT:</emphasis>
-    <![CDATA[
-Empowered Media
-http://www.empoweredmedia.com
-481 Eighth Avenue Suite 1530
-New York, NY 10001
-    ]]>
+  	<emphasis>LICENSE:</emphasis>This source file is subject to version 2.1 of the LGPL that is bundled with this package in the file LICENSE.
   </para>
  </refsect1>
 </refentry>
