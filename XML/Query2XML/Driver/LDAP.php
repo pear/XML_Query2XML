@@ -95,8 +95,9 @@ class XML_Query2XML_Driver_LDAP extends XML_Query2XML_Driver
     {
         if (!is_array($query)) {
             /*
-            * unit test: MISSING
-            */
+             * unit test: XML_Query2XML_Driver_LDAP-preprocessQuery/
+             *  throwConfigException_queryNotAnArray.phpt
+             */
             throw new XML_Query2XML_ConfigException(
                 $configPath . ': array expected, ' . gettype($query) . ' given.'
             );
@@ -164,6 +165,9 @@ class XML_Query2XML_Driver_LDAP extends XML_Query2XML_Driver
         $search = $this->_ldap->search($base, $filter, $options);
         
         if (PEAR::isError($search)) {
+            /*
+             * unit test: getXML/throwLDAPException_queryError.phpt
+             */
             throw new XML_Query2XML_LDAPException(
                 $configPath . ': Could not run LDAP search query: '
                 . $search->toString()
@@ -232,11 +236,11 @@ class XML_Query2XML_Driver_LDAP extends XML_Query2XML_Driver
         foreach ($entries as $entry) {
             $multiValueAttributes = array();
             
-            //will hold the name of the attribute with the most values
+            // will hold the name of the attribute with the most values
             $maxValuesAttribute = null;
             $maxValues          = 0;
             
-            //loop over all attributes
+            // loop over all attributes
             foreach ($entry as $attributeName => $attribute) {
                 if (is_array($attribute)) {
                     $multiValueAttributes[$attributeName] = array($attribute, 0);
@@ -256,13 +260,13 @@ class XML_Query2XML_Driver_LDAP extends XML_Query2XML_Driver
                  *     array(
                  *       'john.doe@example.com'
                  *     ),
-                 *     0 //index used to keep track of where we are
+                 *     0  // index used to keep track of where we are
                  *   ['telephoneNumber'] => array(
                  *     array(
                  *       '555-111-222',
                  *       '555-222-333'
                  *     ),
-                 *     0 //index used to keep track of where we are
+                 *     0  // index used to keep track of where we are
                  *   )
                  * )
                  */
