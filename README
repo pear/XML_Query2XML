@@ -35,7 +35,7 @@ of Profiling and Performance Tuning.
 |   +---case08 .......... Case 08: Case 06 revisited: Making use of Mappers
 +---XML ................. CONTAINS THE ACTUAL Query2XML.php that
 |                         will be installed in $PHP_PEAR_INSTALL_DIR/XML/
-+---tests ............... contains 1144 phpt unit tests; all will be installed
++---tests ............... contains 1159 phpt unit tests; all will be installed
                           in $PHP_PEAR_TEST_DIR/XML_Query2XML/tests. Please
                           see 3. Testing.
 
@@ -108,14 +108,8 @@ Please see http://www.lukasfeiler.com or write to lukas.feiler@lukasfeiler.com.
 
 6. Copyright Notice
 -------------------
-Copyright 2006 Empowered Media
+Copyright 2006 Lukas Feiler
 
 LICENSE:
 This source file is subject to version 2.1 of the LGPL
 that is bundled with this package in the file LICENSE.
-
-COPYRIGHT:
-Empowered Media
-http://www.empoweredmedia.com
-481 Eighth Avenue Suite 1530
-New York, NY 10001

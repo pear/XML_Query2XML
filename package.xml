@@ -12,15 +12,15 @@ highly complex transformations are supported. Is was written with
 performance in mind and can handle large amounts of data. No XSLT needed!
 Major features:
 1. XML_Query2XML works with the classes provided by PHP5&apos;s built-in DOM API
-2. minimum effort necessary to get the simple jobs done
-3. highly configurable for more complex tasks
+2. open driver architecture
+3. comes with drivers for PDO, PEAR DB, PEAR MDB2, ADOdb and PEAR Net_LDAP
 4. ISO/IEC 9075-14:2005 support: mapping of SQL identifiers to XML names
-5. works with any database that is supported by PDO, PEAR DB, PEAR MDB2 or ADOdb
+5. highly configurable
 6. easy integration of other XML data sources (e.g. raw XML data stored in the DB)
 7. debugging, logging and profiling features
 8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 1144 phpt unit tests
+10. 1159 phpt unit tests
  
  </description>
  <lead>
@@ -29,25 +29,26 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2007-10-07</date>
+ <date>2008-01-02</date>
  <version>
-  <release>1.5.0</release>
-  <api>1.5.0</api>
+  <release>1.6.0RC1</release>
+  <api>1.6.0RC1</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
- <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>This seventh stable release comes after extensive re-factoring:
-- XML_Query2XML now does a lot of internal pre-processing
-- this improves performance by at least 30%
-- all exceptions now contain information that relates to the
-  configuration option that caused the exception to be thrown
-- caching is now deactivated by default as is not needed in
-  most cases; see $options['sql_options']['cached']
-- XML_Query2XML now comes with 1144 phpt unit tests
-Note: No changes were introduced since 1.5.0RC1.
+ <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
+ <notes>This release candidate contains the following new features:
+- LDAP support: the new LDAP driver uses PEAR Net_LDAP
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
+- new open driver architecture allows you to implement your own drivers
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#yourdriver
+- $options['sql']['driver'] now allows you to use different drivers for each query
+- fixed documentation bug #12568
+- PEAR Coding Standard fixes
+- correction of copyright notice
+- XML_Query2XML now comes with 1159 phpt unit tests
  </notes>
  <contents>
   <dir name="/">
@@ -318,6 +319,7 @@ Note: No changes were introduced since 1.5.0RC1.
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
@@ -554,6 +556,7 @@ Note: No changes were introduced since 1.5.0RC1.
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
@@ -790,6 +793,7 @@ Note: No changes were introduced since 1.5.0RC1.
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
@@ -1026,6 +1030,7 @@ Note: No changes were introduced since 1.5.0RC1.
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
@@ -1052,6 +1057,23 @@ Note: No changes were introduced since 1.5.0RC1.
       <file baseinstalldir="/" name="db_init.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/DB -->
+     <dir name="LDAP">
+      <dir name="getXML">
+       <file baseinstalldir="/" name="complexElementSpecification_multiValueLDAPAttributes.phpt" role="test" />
+       <file baseinstalldir="/" name="placeholders.phpt" role="test" />
+       <file baseinstalldir="/" name="placeholders_alternative.phpt" role="test" />
+       <file baseinstalldir="/" name="placeholders_alternative_multichar.phpt" role="test" />
+       <file baseinstalldir="/" name="simpleElementSpecification.phpt" role="test" />
+       <file baseinstalldir="/" name="simpleElementSpecification_optionalLDAPAttributes.phpt" role="test" />
+       <file baseinstalldir="/" name="throwLDAPException_queryError.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/LDAP/getXML -->
+      <dir name="XML_Query2XML_Driver_LDAP-preprocessQuery">
+       <file baseinstalldir="/" name="regularOperation.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_queryNotAnArray.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/LDAP/XML_Query2XML_Driver_LDAP-preprocessQuery -->
+      <file baseinstalldir="/" name="ldap_init.php" role="test" />
+      <file baseinstalldir="/" name="skipif.php" role="test" />
+     </dir> <!-- /tests/XML_Query2XML/LDAP -->
      <dir name="MDB2">
       <dir name="clearProfile">
        <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
@@ -1262,6 +1284,7 @@ Note: No changes were introduced since 1.5.0RC1.
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
@@ -1498,6 +1521,7 @@ Note: No changes were introduced since 1.5.0RC1.
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
@@ -1614,6 +1638,9 @@ Note: No changes were introduced since 1.5.0RC1.
       <file baseinstalldir="/" name="PDO.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="LDAP.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
      </dir> <!-- /XML/Query2XML/Driver -->
     </dir> <!-- /XML/Query2XML -->
     <file baseinstalldir="/" name="Query2XML.php" role="php">
@@ -1639,7 +1666,7 @@ Note: No changes were introduced since 1.5.0RC1.
   </required>
   <optional>
    <package>
-    <name>DB</name>
+    <name>Net_LDAP</name>
     <channel>pear.php.net</channel>
    </package>
    <package>
@@ -2084,6 +2111,29 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
   most cases; see $options['sql_options']['cached']
 - XML_Query2XML now comes with 1144 phpt unit tests
 Note: No changes were introduced since 1.5.0RC1.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.6.0RC1</release>
+    <api>1.6.0RC1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2008-01-02</date>
+   <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
+   <notes>This release candidate contains the following new features:
+- LDAP support: the new LDAP driver uses PEAR Net_LDAP
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
+- new open driver architecture allows you to implement your own drivers
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#yourdriver
+- $options['sql']['driver'] now allows you to use different drivers for each query
+- fixed documentation bug #12568
+- PEAR Coding Standard fixes
+- correction of copyright notice
+- XML_Query2XML now comes with 1159 phpt unit tests
    </notes>
   </release>
  </changelog>

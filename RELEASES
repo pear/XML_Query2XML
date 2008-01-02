@@ -3,9 +3,23 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.6.0RC1
+---------
+Release date: 2008-01-02
+Release notes: This release candidate contains the following new features:
+- LDAP support: the new LDAP driver uses PEAR Net_LDAP
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
+- new open driver architecture allows you to implement your own drivers
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#yourdriver
+- $options['sql']['driver'] now allows you to use different drivers for each query
+- fixed documentation bug #12568
+- PEAR Coding Standard fixes
+- correction of copyright notice
+- XML_Query2XML now comes with 1159 phpt unit tests
+
 v1.5.0
 ---------
-Release date: 2007-09-30
+Release date: 2007-10-07
 Release notes: This seventh stable release comes after extensive re-factoring:
 - XML_Query2XML now does a lot of internal pre-processing
 - this improves performance by at least 30%
