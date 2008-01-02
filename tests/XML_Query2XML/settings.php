@@ -25,4 +25,13 @@ if (getenv('PHP_PEAR_XML_QUERY2XML_TEST_DSN') != '') {
     //define('DSN', 'pgsql://postgres:test@localhost/query2xml_tests');
     define('DSN', 'sqlite:///' . dirname(dirname(__FILE__)) . '/Query2XML_Tests.sq2');
 }
+
+$ldapConfig = array(
+    'host'     => 'localhost',
+    'port'     => 389,
+    'version'  => 3,
+    'starttls' => false,
+    'binddn'   => '',
+    'bindpw'   => ''
+);
 ?>
