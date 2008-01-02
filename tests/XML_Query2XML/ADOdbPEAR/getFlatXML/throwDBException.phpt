@@ -10,9 +10,9 @@ XML_Query2XML::getFlatXML(): check for XML_Query2XML_DBException
         $query2xml =& XML_Query2XML::factory($db);
         $query2xml->getFlatXML('SELECT * FROM non_existing_table');
     } catch (XML_Query2XML_DBException $e) {
-        echo get_class($e) . ': ' . substr($e->getMessage(), 0, 83);
+        echo get_class($e) . ': ' . str_replace(' prepare ', ' execute ', substr($e->getMessage(), 0, 87));
     }
     
 ?>
 --EXPECT--
-XML_Query2XML_DBException: getFlatXML: Could not run the following SQL query: SELECT * FROM non_existing_table
+XML_Query2XML_DBException: getFlatXML: Could not execute the following SQL query: SELECT * FROM non_existing_table
