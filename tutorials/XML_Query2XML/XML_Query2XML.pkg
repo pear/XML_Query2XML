@@ -191,7 +191,7 @@ $query2xml = XML_Query2XML::factory($adodb);
   <refsect2 id="{@id ldap_driver}">
    <title>LDAP Driver for PEAR Net_LDAP</title>
    <para>
-    Since v1.6.0 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
+    Since v1.6.0RC1 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
    </para>
    <para>
     Using Net_LDAP with XML_Query2XML works like this:
@@ -3005,7 +3005,7 @@ print $dom->saveXML();
     A Complex Query Specification uses the database abstraction layer's prepare() and execute() methods
     and therefore prevents SQL injection and is also faster
     than a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification} in most scenarios. It consists of
-    two parts:
+    two mandatory and one obligatory part:
     <itemizedlist>
      <listitem>
       <emphasis>$options['sql']['data']</emphasis>: an indexed array of values. The specification can be of the following types:
@@ -3050,6 +3050,12 @@ print $dom->saveXML();
      <listitem>
       <emphasis>$options['sql']['query']</emphasis>: the SQL query as a string that contains a placeholder
       for each element of $options['sql']['data'].
+     </listitem>
+     <listitem>
+      <emphasis>$options['sql']['driver']</emphasis>: allows you to use a different XML_Query2XML_Driver 
+      for this complex query than the one passed to
+      {@tutorial XML_Query2XML.pkg#query2xml_factory}. Please see
+      {@tutorial XML_Query2XML.pkg#multipledrivers} for details. $options['sql']['driver'] is optional.
      </listitem>
     </itemizedlist>
     Here is a simple example similar to {@tutorial XML_Query2XML.pkg#casestudies.case03}:
@@ -5977,25 +5983,30 @@ if ($data = $cache->get($id)) {
  <refsect1 id="{@id ldap}">
   <title>The LDAP Driver</title>
   <para>
-   Since v1.6.0 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
+   Since v1.6.0RC1 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
    This allows you to use LDAP instead of an RDBMS as your primary data source. To use the PEAR Net_LDAP
    driver you can pass an instance of Net_LDAP to {@tutorial XML_Query2XML.pkg#query2xml_factory}. The only
    thing that changes is the format of {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} and
    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}.
   </para>
-  <refsect2 id="{@id simplequeryspecification}">
-   <title>Simple LDAP Query Specification</title>
+  <refsect2 id="{@id queryspecification}">
+   <title>LDAP Query Specification</title>
    <para>
-    A simple LDAP query specification as it can be used
+    All LDAP queries have to be specified as an array.
+    LDAP query specifications can be used
     for {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} and
-    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}
-    looks as follows:
+    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}. They look as follows:
     <programlisting role="php">
     <![CDATA[
 array(
+    'data' => array(...),  // optional; only relevant if placeholders are used in 'base' or 'filter'
     'base' => 'ou=peopole,dc=example,dc=com',
     'filter' => '(objectclass=inetOrgPerson)',
-    'options' => array(...)
+    'options' => array(
+        'attributes' => array(
+            ...
+        ), ...
+    )
 )
     ]]>
     </programlisting>
@@ -6005,7 +6016,7 @@ array(
     for details.
    </para>
    <para>
-    Note that the option 'attributes' will be used by the LDAP driver if it is present. It allows the driver
+    Note that $ldapQuery['options']['attributes'] will be used by the LDAP driver if it is present. It allows the driver
     to set the specified attributes to null if they are not present in the returned records.
     It is therefore highly recommended to always set the option 'attributes'.
     See {@tutorial XML_Query2XML.pkg#ldap.optionalattributes} for details.
@@ -6025,7 +6036,7 @@ array(
     </programlisting>
    </para>
    <para>
-    Now let's look at an example. We want all entris from ou=people,dc=example,dc=com that
+    Now let's look at an example. We want all entries from ou=people,dc=example,dc=com that
     have an objectclass of inetOrgPerson. For each of these entries we want to output
     the attributes cn and mobile.
     <programlisting role="php">
@@ -6085,14 +6096,8 @@ print $dom->saveXML();
     ]]>
     </programlisting>
    </para>
-  </refsect2>
-  <refsect2 id="{@id complexqueryspecification}">
-   <title>Complex LDAP Query Specification</title>
    <para>
-    A complex LDAP query specification as it can be used
-    for {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} and
-    {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql}
-    looks as follows:
+    An LDAP Query Specification that makes use of placeholders and the option 'data' looks like this:
     <programlisting role="php">
     <![CDATA[
 array(
@@ -6109,18 +6114,23 @@ array(
 )
     ]]>
     </programlisting>
-    A complex LDAP query specification provides a prepare&amp;execute-like funktionality: a placeholder
+    An LDAP query specification provides a prepare&amp;execute-like funktionality: a placeholder
     (by default a question mark) can be used in ['base'] and ['filter'].
-    That placeholder will be replaced by the LDAP driver with the values from ['data'].
+    That placeholder will be replaced with the values from ['data'].
+    Please note that a placeholder will only be treated as such if there is a corresponsing element
+    in the 'data' array. That means that if the 'data' array has only one element and 'base' and
+    'filter' contain more than one quesion mark, all but the first quesion mark will not be replaced.
    </para>
    <para>
-    Note that when using a complex LDAP query specification, there is another option the LDAP driver will understand:
+    Also note that there is another option the LDAP driver will understand:
     'query2xml_placeholder'. It allows you to define the placeholder used in 'base' and 'filter'. The default
-    is a question mark ('?').
+    is a question mark ('?'). The placeholder you define can also consist of multiple chracters.
    </para>
    <para>
     Let's have a look at a full example: we want all entries of the class inetOrgPerson that have a cn attribute
-    that contains the string submitted vi $_GET['cn']:
+    that contains the string submitted vi $_GET['cn']. Please note that the LDAP driver internally uses
+    {@link http://pear.php.net/package/Net_LDAP/docs/latest/Net_LDAP/Net_LDAP_Util.html#methodescape_filter_value Net_LDAP_Util::escape_filter_value()}
+    for all elements of the 'data' array to prevent injection attacks.
     <programlisting role="php">
     <![CDATA[
 <?php
@@ -6438,9 +6448,8 @@ print $dom->saveXML();
   <para>
    There might be a situation where you want to genearte your XML data from multiple RDBMSes or
    an RDBMS and an LDAP server. By using the option 'driver' within a
-   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification},
-   {@tutorial XML_Query2XML.pkg#ldap.complexqueryspecification}, or a
-   {@tutorial XML_Query2XML.pkg#ldap.simplequeryspecification} you can specify any driver you want.
+   {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification} or a
+   {@tutorial XML_Query2XML.pkg#ldap.queryspecification} you can specify any driver you want.
    To create an instance of one of the drivers that come with XML_Query2XML use
    {@link XML_Query2XML_Driver::factory()}. If you want to write your own driver, please see
    {@tutorial XML_Query2XML.pkg#yourdriver}. Let's start with an example that pulls data
