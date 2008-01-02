@@ -9,7 +9,7 @@ XML_Query2XML_Driver_LDAP::preprocessQuery(): check for XML_Query2XML_ConfigExce
     
     $ldapDriver = XML_Query2XML_Driver::factory($ldap);
     try {
-        $query = 'basedn:ou=people,dc=example,dc=com';
+        $query = 'some_string';
         echo $ldapDriver->preprocessQuery($query, '[config]');
     } catch (XML_Query2XML_ConfigException $e) {
         print $e->getMessage();
