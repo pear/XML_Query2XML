@@ -2411,6 +2411,7 @@ class XML_Query2XML_Exception extends PEAR_Exception
  * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
  * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @link     http://pear.php.net/package/XML_Query2XML
+ * @since    Release 1.6.0RC1
  */
 class XML_Query2XML_DriverException extends XML_Query2XML_Exception
 {
