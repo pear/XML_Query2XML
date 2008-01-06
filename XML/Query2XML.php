@@ -664,6 +664,14 @@ class XML_Query2XML
                         if (is_string($columnStr)) {
                             $options[$option][$key] =
                                 self::_buildCommandChain($columnStr, $configPath);
+                            if (is_numeric($key) && is_object($options[$option][$key])) {
+                                // unit test: MISSING
+                                throw new XML_Query2XML_ConfigException(
+                                    $configPath . ': the element name has to be specified '
+                                    . 'as the array key when prefixes are used within the '
+                                    . 'value specification'
+                                );
+                            }
                         } elseif (is_array($columnStr)) {
                             $options[$option][$key]['--q2x--path'] = $configPath;
                             
@@ -712,17 +720,29 @@ class XML_Query2XML
                                 $options[$option][$key],
                                 $option
                             );
-                        } elseif (!self::_isCallback($columnStr)) {
+                        } elseif (self::_isCallback($columnStr)) {
+                            if (is_numeric($key)) {
+                                // unit test: MISSING
+                                throw new XML_Query2XML_ConfigException(
+                                    $configPath . ': the element name has to be specified '
+                                    . 'as the array key when the value is specified using '
+                                    . 'an instance of XML_Query2XML_Callback.'
+                                );
+                            }
+                        } else {
                             /*
-                            * unit tests:
-                            *  _getNestedXMLRecord/
-                            *   throwConfigException_attributeSpecWrongType.phpt
-                            *  _preprocessOptions/
-                            *   throwConfigException_callbackInterface_
-                            *    complexAttributeSpec.phpt
-                            *    simpleAttributeSpec.phpt
-                            *    simpleElementSpec.phpt
-                            */
+                             * $columnStr is neither a string, an array or an instance
+                             * of XML_Query2XML_Callback.
+                             *
+                             * unit tests:
+                             *  _getNestedXMLRecord/
+                             *   throwConfigException_attributeSpecWrongType.phpt
+                             *  _preprocessOptions/
+                             *   throwConfigException_callbackInterface_
+                             *    complexAttributeSpec.phpt
+                             *    simpleAttributeSpec.phpt
+                             *    simpleElementSpec.phpt
+                             */
                             throw new XML_Query2XML_ConfigException(
                                 $configPath . ': array, string or instance of'
                                 . ' XML_Query2XML_Callback expected, '
