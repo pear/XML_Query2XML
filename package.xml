@@ -29,17 +29,17 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2008-01-02</date>
+ <date>2008-01-06</date>
  <version>
-  <release>1.6.0RC1</release>
-  <api>1.6.0RC1</api>
+  <release>1.6.0</release>
+  <api>1.6.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
- <notes>This release candidate contains the following new features:
+ <notes>This stable release implements the following new features:
 - LDAP support: the new LDAP driver uses PEAR Net_LDAP
   see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
 - new open driver architecture allows you to implement your own drivers
@@ -49,6 +49,7 @@ Major features:
 - PEAR Coding Standard fixes
 - correction of copyright notice
 - XML_Query2XML now comes with 1159 phpt unit tests
+Note: No changes were introduced since 1.6.0RC1.
  </notes>
  <contents>
   <dir name="/">
@@ -2134,6 +2135,30 @@ Note: No changes were introduced since 1.5.0RC1.
 - PEAR Coding Standard fixes
 - correction of copyright notice
 - XML_Query2XML now comes with 1159 phpt unit tests
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.6.0</release>
+    <api>1.6.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-01-06</date>
+   <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
+   <notes>This stable release implements the following new features:
+- LDAP support: the new LDAP driver uses PEAR Net_LDAP
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
+- new open driver architecture allows you to implement your own drivers
+  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#yourdriver
+- $options['sql']['driver'] now allows you to use different drivers for each query
+- fixed documentation bug #12568
+- PEAR Coding Standard fixes
+- correction of copyright notice
+- XML_Query2XML now comes with 1159 phpt unit tests
+Note: No changes were introduced since 1.6.0RC1.
    </notes>
   </release>
  </changelog>
