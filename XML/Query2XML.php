@@ -2662,7 +2662,7 @@ abstract class XML_Query2XML_Driver
             return new XML_Query2XML_Driver_LDAP($backend);
         } elseif (class_exists('Net_LDAP2') && $backend instanceof Net_LDAP2) {
             include_once 'XML/Query2XML/Driver/LDAP2.php';
-            return new XML_Query2XML_Driver_LDAP($backend);
+            return new XML_Query2XML_Driver_LDAP2($backend);
         } elseif (class_exists('PEAR_Error') && $backend instanceof PEAR_Error) {
             //unit tests: NoDBLayer/factory/throwDBException.phpt
             throw new XML_Query2XML_DriverException(
