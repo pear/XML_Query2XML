@@ -128,7 +128,7 @@ class XML_Query2XML
      *
      * @param mixed $backend A subclass of XML_Query2XML_Driver or
      *                       an instance of PEAR DB, PEAR MDB2, ADOdb,
-     *                       PDO or Net_LDAP.
+     *                       PDO, Net_LDAP2 or Net_LDAP.
      */
     private function __construct($backend)
     {
@@ -665,7 +665,10 @@ class XML_Query2XML
                             $options[$option][$key] =
                                 self::_buildCommandChain($columnStr, $configPath);
                             if (is_numeric($key) && is_object($options[$option][$key])) {
-                                // unit test: MISSING
+                                /*
+                                 * unit test: _preprocessOptions/
+                                 *  throwConfigException_prefix_noArrayKey.phpt
+                                 */
                                 throw new XML_Query2XML_ConfigException(
                                     $configPath . ': the element name has to be specified '
                                     . 'as the array key when prefixes are used within the '
@@ -722,7 +725,10 @@ class XML_Query2XML
                             );
                         } elseif (self::_isCallback($columnStr)) {
                             if (is_numeric($key)) {
-                                // unit test: MISSING
+                                /*
+                                 * unit test: _preprocessOptions/
+                                 *  throwConfigException_callbackInterface_noArrayKey.phpt
+                                 */
                                 throw new XML_Query2XML_ConfigException(
                                     $configPath . ': the element name has to be specified '
                                     . 'as the array key when the value is specified using '
@@ -1567,11 +1573,11 @@ class XML_Query2XML
         $sql = $options['sql'];
         if (is_array($sql)) {
             if (isset($sql['data'])) {
-                for ($i = 0; $i < count($sql['data']); $i++) {
-                    $sql['data'][$i] = $this->_applyColumnStringToRecord(
-                        $sql['data'][$i],
+                foreach ($sql['data'] as $key => $columnStr) {
+                    $sql['data'][$key] = $this->_applyColumnStringToRecord(
+                        $columnStr,
                         $record,
-                        $options['--q2x--path'] . '[sql][data][' . $i . ']'
+                        $options['--q2x--path'] . '[sql][data][' . $key . ']'
                     );
                 }
             }
@@ -1741,7 +1747,12 @@ class XML_Query2XML
      */
     private function &_getAllRecords($sql, $configPath, $queryStatement)
     {
-        $this->_debugStartQuery($queryStatement);
+        // $queryStatement will be used for profiling
+        $loggingQuery = $queryStatement;
+        if (is_array($sql) && isset($sql['data']) && is_array($sql['data'])) {
+            $loggingQuery .= '; DATA:' . implode(',', $sql['data']);
+        }
+        $this->_debugStartQuery($loggingQuery, $queryStatement);
         if (is_array($sql) && isset($sql['driver'])) {
             $records = $sql['driver']->getAllRecords($sql, $configPath);
         } else {
@@ -1766,20 +1777,26 @@ class XML_Query2XML
      */
     private function &_getAllRecordsCached($sql, $configPath, $queryStatement)
     {
-        $cacheQueryStatement = $queryStatement;
+        /*
+         * $cacheQueryStatement: used for caching - DATA and driver info
+         * $loggingQueryStatement: used for logging - DATA info
+         * $queryStatement: used for profiling - no DATA, no driver info
+         */
+        $loggingQueryStatement = $cacheQueryStatement = $queryStatement;
         if (is_array($sql)) {
             if (isset($sql['data']) && is_array($sql['data'])) {
-                $cacheQueryStatement .= '; DATA:' . implode(', ', $sql['data']);
+                $cacheQueryStatement .= '; DATA:' . implode(',', $sql['data']);
+                $loggingQueryStatement = $cacheQueryStatement;
             }
             if (isset($sql['driver'])) {
                 $cacheQueryStatement = $configPath . ': ' . $cacheQueryStatement;
             }
         }
         if (isset($this->_recordCache[$cacheQueryStatement])) {
-            $this->_debugCachedQuery($queryStatement);
+            $this->_debugCachedQuery($loggingQueryStatement, $queryStatement);
             return $this->_recordCache[$cacheQueryStatement];
         }
-        $this->_debugCachingQuery($queryStatement);
+        $this->_debugCachingQuery($loggingQueryStatement, $queryStatement);
         $this->_recordCache[$cacheQueryStatement] =& $this->_getAllRecords(
             $sql,
             $configPath,
@@ -1811,17 +1828,19 @@ class XML_Query2XML
     /**
      * Starts the debugging and profiling of the query passed as argument.
      *
-     * @param string $query The query statement as a string.
+     * @param string $loggingQuery   The query statement as it will be logged.
+     * @param string $profilingQuery The query statement as it will be used for
+     *                               profiling.
      *
      * @return void
      */
-    private function _debugStartQuery($query)
+    private function _debugStartQuery($loggingQuery, $profilingQuery)
     {
-        $this->_debug('QUERY: ' . $query);
+        $this->_debug('QUERY: ' . $loggingQuery);
         if ($this->_profiling) {
-            $this->_initQueryProfile($query);
-            ++$this->_profile['queries'][$query]['fromDB'];
-            $this->_profile['queries'][$query]['runTimes'][] = array(
+            $this->_initQueryProfile($profilingQuery);
+            ++$this->_profile['queries'][$profilingQuery]['fromDB'];
+            $this->_profile['queries'][$profilingQuery]['runTimes'][] = array(
                 'start' => microtime(true),
                 'stop' => 0
             );
@@ -1831,18 +1850,22 @@ class XML_Query2XML
     /**
      * Ends the debugging and profiling of the query passed as argument.
      *
-     * @param string $query The query statement as a string.
+     * @param string $profilingQuery The query statement as it will be used for
+     *                               profiling.
      *
      * @return void
      */
-    private function _debugStopQuery($query)
+    private function _debugStopQuery($profilingQuery)
     {
         $this->_debug('DONE');
         if ($this->_profiling) {
-            $this->_initQueryProfile($query);
-            $lastIndex = count($this->_profile['queries'][$query]['runTimes']) - 1;
+            $this->_initQueryProfile($profilingQuery);
+            $lastIndex =
+                count(
+                    $this->_profile['queries'][$profilingQuery]['runTimes']
+                ) - 1;
             
-            $this->_profile['queries'][$query]['runTimes'][$lastIndex]['stop'] =
+            $this->_profile['queries'][$profilingQuery]['runTimes'][$lastIndex]['stop'] =
                 microtime(true);
         }
     }
@@ -1851,16 +1874,18 @@ class XML_Query2XML
      * Does the debugging and profiling of the query passed as argument which
      * was cached before.
      *
-     * @param string $query The query statement as a string.
+     * @param string $loggingQuery   The query statement as it will be logged.
+     * @param string $profilingQuery The query statement as it will be used for
+     *                               profiling.
      *
      * @return void
      */
-    private function _debugCachedQuery($query)
+    private function _debugCachedQuery($loggingQuery, $profilingQuery)
     {
-        $this->_debug('CACHED: ' . $query);
+        $this->_debug('CACHED: ' . $loggingQuery);
         if ($this->_profiling) {
-            $this->_initQueryProfile($query);
-            ++$this->_profile['queries'][$query]['fromCache'];
+            $this->_initQueryProfile($profilingQuery);
+            ++$this->_profile['queries'][$profilingQuery]['fromCache'];
         }
     }
     
@@ -1868,16 +1893,18 @@ class XML_Query2XML
      * Does the debugging and profiling of the query passed as argument
      * which will be cached for the first time
      *
-     * @param string $query The query statement as a string.
+     * @param string $loggingQuery   The query statement as it will be logged.
+     * @param string $profilingQuery The query statement as it will be used for
+     *                               profiling.
      *
      * @return void
      */
-    private function _debugCachingQuery($query)
+    private function _debugCachingQuery($loggingQuery, $profilingQuery)
     {
-        $this->_debug('CACHING: ' . $query);
+        $this->_debug('CACHING: ' . $loggingQuery);
         if ($this->_profiling) {
-            $this->_initQueryProfile($query);
-            $this->_profile['queries'][$query]['cached'] = true;
+            $this->_initQueryProfile($profilingQuery);
+            $this->_profile['queries'][$profilingQuery]['cached'] = true;
         }
     }
     
@@ -2556,6 +2583,10 @@ abstract class XML_Query2XML_Driver
     /**
      * Pre-processes a query specification and returns a string representation
      * of the query.
+     *
+     * The returned string will be used for logging purposes. It
+     * does not need to be valid SQL.
+     *
      * If $query is a string, it will be changed to array('query' => $query).
      *
      * @param mixed  &$query     A string or an array containing the element 'query'.
@@ -2597,14 +2628,14 @@ abstract class XML_Query2XML_Driver
      * Factory method.
      *
      * @param mixed $backend An instance of MDB2_Driver_Common, PDO, DB_common,
-     *                  ADOConnection or Net_LDAP.
+     *                  ADOConnection, Net_LDAP2 or Net_LDAP.
      *
      * @return XML_Query2XML_Driver An instance of a driver class that
      *                  extends XML_Query2XML_Driver.
      * @throws XML_Query2XML_DriverException If $backend already is a PEAR_Error.
      * @throws XML_Query2XML_ConfigException If $backend is not an instance of a
      *                  child class of MDB2_Driver_Common, PDO, DB_common,
-     *                  ADOConnection or Net_LDAP.
+     *                  ADOConnection, Net_LDAP2 or Net_LDAP.
      */
     public static function factory($backend)
     {
@@ -2629,6 +2660,9 @@ abstract class XML_Query2XML_Driver
         } elseif (class_exists('Net_LDAP') && $backend instanceof Net_LDAP) {
             include_once 'XML/Query2XML/Driver/LDAP.php';
             return new XML_Query2XML_Driver_LDAP($backend);
+        } elseif (class_exists('Net_LDAP2') && $backend instanceof Net_LDAP2) {
+            include_once 'XML/Query2XML/Driver/LDAP2.php';
+            return new XML_Query2XML_Driver_LDAP($backend);
         } elseif (class_exists('PEAR_Error') && $backend instanceof PEAR_Error) {
             //unit tests: NoDBLayer/factory/throwDBException.phpt
             throw new XML_Query2XML_DriverException(
@@ -2639,7 +2673,7 @@ abstract class XML_Query2XML_Driver
             throw new XML_Query2XML_ConfigException(
                 'Argument passed to the XML_Query2XML constructor is not an '
                 . 'instance of DB_common, MDB2_Driver_Common, ADOConnection'
-                . ', PDO or Net_LDAP.'
+                . ', PDO, Net_LDAP or Net_LDAP2.'
             );
         }
     }
