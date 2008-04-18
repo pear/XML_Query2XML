@@ -3004,11 +3004,36 @@ print $dom->saveXML();
     <para>
     A Complex Query Specification uses the database abstraction layer's prepare() and execute() methods
     and therefore prevents SQL injection and is also faster
-    than a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification} in most scenarios. It consists of
-    two mandatory and one obligatory part:
+    than a {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.simplequeryspecification} in most scenarios.
+    It can consist of multiple parts (only $options['sql']['query'] is mandatory):
     <itemizedlist>
      <listitem>
-      <emphasis>$options['sql']['data']</emphasis>: an indexed array of values. The specification can be of the following types:
+      <emphasis>$options['sql']['query']</emphasis>: the SQL query as a string that contains a placeholder
+      for each element of $options['sql']['data'].
+     </listitem>
+     <listitem>
+      <emphasis>$options['sql']['driver']</emphasis>: allows you to use a different XML_Query2XML_Driver 
+      for this complex query than the one passed to
+      {@tutorial XML_Query2XML.pkg#query2xml_factory}. Please see
+      {@tutorial XML_Query2XML.pkg#multipledrivers} for details. $options['sql']['driver'] is optional.
+     </listitem>
+     <listitem>
+      <emphasis>$options['sql']['limit']</emphasis>: allows you to limit the number of records returned from the
+      query. It has to be a numeric value. Please note that a value of 0 (or '0') is equivalent to not
+      setting $options['sql']['limit'] at all. $options['sql']['limit'] and $options['sql']['offset'] are
+      only interpreted by the drivers for PEAR MDB2 and PEAR DB. All other drivers simply ignore these two
+      options.
+     </listitem>
+     <listitem>
+      <emphasis>$options['sql']['offset']</emphasis>: allows you to set the number of the first record
+      to retrieve. This has to be a numeric value. The default is 0. Please note that this option will
+      be ignored unless $options['sql']['limit'] is set. $options['sql']['offset'] and
+      $options['sql']['limit'] are only interpreted by the drivers for PEAR MDB2 and PEAR DB.
+      All other drivers simply ignore these two options.
+     </listitem>
+     <listitem>
+      <emphasis>$options['sql']['data']</emphasis>: an indexed array of values. This is optional.
+      The specification can be of the following types:
       <itemizedlist>
        <listitem>
         <emphasis>COLUMN NAME</emphasis>: this is the default if not preceeded by ':' or '#'.
@@ -3046,16 +3071,6 @@ print $dom->saveXML();
       {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn} because the private method
       {@link XML_Query2XML::_applyColumnStringToRecord()} is used in all cases.
       <emphasis>Note:</emphasis> $options['sql']['data'] is optional!
-     </listitem>
-     <listitem>
-      <emphasis>$options['sql']['query']</emphasis>: the SQL query as a string that contains a placeholder
-      for each element of $options['sql']['data'].
-     </listitem>
-     <listitem>
-      <emphasis>$options['sql']['driver']</emphasis>: allows you to use a different XML_Query2XML_Driver 
-      for this complex query than the one passed to
-      {@tutorial XML_Query2XML.pkg#query2xml_factory}. Please see
-      {@tutorial XML_Query2XML.pkg#multipledrivers} for details. $options['sql']['driver'] is optional.
      </listitem>
     </itemizedlist>
     Here is a simple example similar to {@tutorial XML_Query2XML.pkg#casestudies.case03}:
