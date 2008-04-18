@@ -1,4 +1,4 @@
-Feb 03 15:46:32 Query2XML [info] QUERY: SELECT
+Apr 18 19:01:01 Query2XML [info] QUERY: SELECT
         *
      FROM
         artist
@@ -6,4 +6,4 @@ Feb 03 15:46:32 Query2XML [info] QUERY: SELECT
      ORDER BY
         artist.artistid,
         album.albumid
-Feb 03 15:46:32 Query2XML [info] DONE
+Apr 18 19:01:01 Query2XML [info] DONE

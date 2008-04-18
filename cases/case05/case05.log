@@ -1,4 +1,4 @@
-Feb 03 15:45:48 Query2XML [info] QUERY: SELECT
+Apr 18 19:01:52 Query2XML [info] QUERY: SELECT
          *
      FROM
          customer c
@@ -10,4 +10,4 @@ Feb 03 15:45:48 Query2XML [info] QUERY: SELECT
          s.saleid,
          al.albumid,
          ar.artistid
-Feb 03 15:45:48 Query2XML [info] DONE
+Apr 18 19:01:52 Query2XML [info] DONE

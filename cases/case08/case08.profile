@@ -1,5 +1,5 @@
 FROM_DB FROM_CACHE CACHED AVG_DURATION DURATION_SUM SQL
-1       0          false  0.0268111228 0.0268111228 SELECT
+1       0          false  0.0315830707 0.0315830707 SELECT
          s.*,
          manager.employeeid AS manager_employeeid,
          manager.employeename AS manager_employeename,
@@ -67,5 +67,5 @@ FROM_DB FROM_CACHE CACHED AVG_DURATION DURATION_SUM SQL
         al.albumid,
         ar.artistid
 
-TOTAL_DURATION: 0.26544785499573
-DB_DURATION:    0.22003793716431
+TOTAL_DURATION: 0.15052819252014
+DB_DURATION:    0.13506817817688

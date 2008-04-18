@@ -1,4 +1,4 @@
-Feb 03 15:44:57 XML_Query2XML [info] QUERY: SELECT
+Apr 18 19:03:16 XML_Query2XML [info] QUERY: SELECT
          s.*,
          manager.employeeid AS manager_employeeid,
          manager.employeename AS manager_employeename,
@@ -65,4 +65,4 @@ Feb 03 15:44:57 XML_Query2XML [info] QUERY: SELECT
         c.customerid,
         al.albumid,
         ar.artistid
-Feb 03 15:44:57 XML_Query2XML [info] DONE
+Apr 18 19:03:16 XML_Query2XML [info] DONE
