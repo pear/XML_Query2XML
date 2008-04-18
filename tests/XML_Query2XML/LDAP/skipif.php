@@ -15,15 +15,42 @@
  * @access    private
  */
 
-if (!@include_once 'Net/LDAP.php') {
-    print 'skip could not find Net/LDAP.php';
-    exit;
-} else {
-    include_once dirname(dirname(__FILE__)) . '/settings.php';
-    $ldap = Net_LDAP::connect($ldapConfig);
-    if (PEAR::isError($ldap)) {
-        print 'skip could not connect to LDAP directory';
+if (!defined('LDAP_LAYER')) {
+    if (getenv('PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER') != '') {
+        define('LDAP_LAYER', getenv('PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER'));
+    } else {
+        if (@include_once 'Net/LDAP2.php') {
+            define('LDAP_LAYER', 'LDAP2');
+        } else {
+            define('LDAP_LAYER', 'LDAP');
+        }
+    }
+}
+
+
+if (LDAP_LAYER == 'LDAP2') {
+    if (!@include_once 'Net/LDAP2.php') {
+        print 'skip could not find Net/LDAP2.php';
         exit;
+    } else {
+        include_once dirname(dirname(__FILE__)) . '/settings.php';
+        $ldap = Net_LDAP2::connect($ldapConfig);
+        if (PEAR::isError($ldap)) {
+            print 'skip could not connect to LDAP directory';
+            exit;
+        }
+    }
+} else {
+    if (!@include_once 'Net/LDAP.php') {
+        print 'skip could not find Net/LDAP.php';
+        exit;
+    } else {
+        include_once dirname(dirname(__FILE__)) . '/settings.php';
+        $ldap = Net_LDAP::connect($ldapConfig);
+        if (PEAR::isError($ldap)) {
+            print 'skip could not connect to LDAP directory';
+            exit;
+        }
     }
 }
 ?>

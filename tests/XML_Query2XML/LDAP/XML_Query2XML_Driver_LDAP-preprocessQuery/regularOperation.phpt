@@ -22,7 +22,7 @@ $query1 = array(
 $query2 = array(
     'data' => ':inetOrgPerson',
     'base' => 'ou=people,dc=example,dc=com',
-    'filter' => Net_LDAP_Filter::create('objectclass', 'equals', 'inetOrgPerson'),
+    'filter' => XML_Query2XML_TESTS_LDAP_Helper::LDAP_Filter_factory($ldap, 'objectclass', 'equals', 'inetOrgPerson'),
     'options' => array(
         'attributes' => array(
             'cn',
@@ -32,7 +32,7 @@ $query2 = array(
 );
 
 $query3 = array(
-    'filter' => Net_LDAP_Filter::create('objectclass', 'equals', 'inetOrgPerson'),
+    'filter' => XML_Query2XML_TESTS_LDAP_Helper::LDAP_Filter_factory($ldap, 'objectclass', 'equals', 'inetOrgPerson'),
     'options' => array(
         'attributes' => array(
             'cn',

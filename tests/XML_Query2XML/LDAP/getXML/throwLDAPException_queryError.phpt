@@ -28,7 +28,7 @@ XML_Query2XML_Driver_LDAP::preprocessQuery(): check for XML_Query2XML_ConfigExce
         $dom->formatOutput = true;
         print $dom->saveXML();
     } catch (XML_Query2XML_LDAPException $e) {
-        echo get_class($e) . ': ' . $e->getMessage();
+        echo get_class($e) . ': ' . str_replace('net_ldap2_error', 'net_ldap_error', $e->getMessage());
     }
 ?>
 --EXPECT--
