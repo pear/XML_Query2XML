@@ -1794,7 +1794,7 @@ function lessThan($record, $columnName, $num)
     </para>
     <para>
      In the next example we want a "firstAlbumTitle" attribute for each artist.
-     For the purpose of the example we will not use a single left join but a complex attribute specification with the "sql" option.
+     For the purpose of the example we will not use a single left outer join but a complex attribute specification with the "sql" option.
      As retrieving more than one record for a single attribute makes no sense 
      {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql_options.single_record} is always automatically set to true when fetching records
      for attributes.
@@ -3988,7 +3988,7 @@ function utf8ToLatin1($str)
       have to do is to disable the encoding by using a boolean value of false:
       <programlisting role="php">
       <![CDATA[
-'encoder' => 'false'
+'encoder' => false
       ]]>
       </programlisting>
      </para>
@@ -5625,7 +5625,9 @@ print $dom->saveXML();
   	The following information is logged:
      <itemizedlist>
       <listitem>
-       the beginning of the execution of a SQL query in the database
+       the beginning of the execution of a SQL query in the database:
+       this includes the SQL statement itself followed by the values used
+       when executing a prepared statement.
       </listitem>
       <listitem>
        the end of the execution of a SQL query in the database
@@ -5690,27 +5692,19 @@ print $dom->saveXML();
    </programlisting>
    This will write the following to debug.log:
    <![CDATA[
-Feb 03 15:46:17 Query2XML [info] QUERY: SELECT
+Apr 18 20:54:30 XML_Query2XML [info] QUERY: SELECT
         *
      FROM
         artist
      ORDER BY
         artistid
-Feb 03 15:46:17 Query2XML [info] DONE
-Feb 03 15:46:17 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 03 15:46:17 Query2XML [info] DONE
-Feb 03 15:46:17 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 03 15:46:17 Query2XML [info] DONE
-Feb 03 15:46:17 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 03 15:46:17 Query2XML [info] DONE
-Sep 29 10:56:51 Query2XML [info] QUERY: SELECT * FROM artist ORDER BY artistid
-Sep 29 10:56:52 Query2XML [info] DONE
-Sep 29 10:56:52 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Sep 29 10:56:52 Query2XML [info] DONE
-Sep 29 10:56:52 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Sep 29 10:56:52 Query2XML [info] DONE
-Sep 29 10:56:52 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Sep 29 10:56:52 Query2XML [info] DONE
+Apr 18 20:54:30 XML_Query2XML [info] DONE
+Apr 18 20:54:30 XML_Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:1
+Apr 18 20:54:30 XML_Query2XML [info] DONE
+Apr 18 20:54:30 XML_Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:2
+Apr 18 20:54:30 XML_Query2XML [info] DONE
+Apr 18 20:54:30 XML_Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:3
+Apr 18 20:54:30 XML_Query2XML [info] DONE
    ]]>
    XML_Query2XML simply logs the SQL SELECT string the way it was passed to getXML(), including all
    whitespace characters. If the query in question is a complex join over multiple tables this
@@ -5744,14 +5738,14 @@ $query2xml->enableDebugLog(
    </programlisting>
    will make the log file from the prvious example look like this:
    <![CDATA[
-Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM artist ORDER BY artistid
-Sep 29 11:03:20 Query2XML [info] DONE
-Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Sep 29 11:03:20 Query2XML [info] DONE
-Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Sep 29 11:03:20 Query2XML [info] DONE
-Sep 29 11:03:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Sep 29 11:03:20 Query2XML [info] DONE
+Apr 18 20:55:51 XML_Query2XML [info] QUERY: SELECT * FROM artist ORDER BY artistid
+Apr 18 20:55:51 XML_Query2XML [info] DONE
+Apr 18 20:55:51 XML_Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:1
+Apr 18 20:55:51 XML_Query2XML [info] DONE
+Apr 18 20:55:51 XML_Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:2
+Apr 18 20:55:51 XML_Query2XML [info] DONE
+Apr 18 20:55:51 XML_Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:3
+Apr 18 20:55:51 XML_Query2XML [info] DONE
    ]]>
    Note how the first query is now placed on a single line.
   </para>
@@ -6660,6 +6654,412 @@ print $dom->saveXML();
   </para>
  </refsect1>
  
+ <refsect1 id="{@id x_to_n}">
+  <title>Implementing 1:N and N:N relationships</title>
+  <para>
+   Often times you will have a one-to-many (1:N) or many-to-many (N:N) relationship between
+   two tables. For example, the
+   {@link http://query2xml.sourceforge.net/docs/Query2XML_Tests.jpg ER diagram}
+   of our sample applications shows an 1:N relationship between the tables artist and album
+   (<emphasis>one</emphasis> artist can perform <emphasis>many</emphasis> albums). For
+   the sake of simplicity we will be using this 1:N relationship in this section (note that
+   the intersection table employee_department implements an N:N relationship between employee
+   and department).
+  </para>
+  <para>
+   When dealing with 1:N or N:N relationships there are two basic questions that determine
+   how you will use XML_Query2XML to implement your solution:
+   <itemizedlist>
+  	<listitem>
+  	 Do you want to use {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_queries}
+  	</listitem>
+  	<listitem>
+  	 Do you want to produce {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_elements}
+  	</listitem>
+   </itemizedlist>
+  </para>
+  <refsect2 id="{@id one_or_many_queries}">
+   <title>One or Many Queries?</title>
+   <para>
+    In almost every situation you will be better of using one big query than running
+    multiple smaller queries. Anyway, XML_Query2XML gives you the option of
+    <itemizedlist>
+  	 <listitem>
+  	  {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_queries.join} (one query)
+  	 </listitem>
+  	 <listitem>
+  	  {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_queries.options_sql} (multiple queries)
+  	 </listitem>
+    </itemizedlist>
+   </para>
+   <refsect3 id="{@id join}">
+    <title>Using an SQL JOIN</title>
+    <para>
+     The best way to query two tables is to JOIN them together using an SQL JOIN.
+     If you are new to SQL check out first what wikipedia has to say about {@link http://en.wikipedia.org/wiki/Join_(SQL) Joins}.
+     I could also recommend
+     {@link http://www.amazon.com/Learning-SQL-Alan-Beaulieu/dp/0596007272/ref=pd_bbs_sr_1?ie=UTF8&amp;s=books&amp;qid=1206554386&amp;sr=1-1 Learning SQL}
+     by Alan Beaulieu.
+    </para>
+    <para>
+     Use {@link XML_Query2XML::getXML()}'s first argument {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql}
+     to pass the SQL JOIN to XML_Query2XML.
+    </para>
+    <para>
+     A very important thing to keep in mind is the correct specification of
+     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_idcolumn}. On
+     the root level it is set to 'artistid' (the parent entity's primary key) while
+     on the level of $options['elements']['albums'] it is set to 'albumid'
+     (the child entity's primary key). Here goes the code:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    'SELECT
+        *
+     FROM
+        artist, album
+     WHERE
+        album.artist_id = artist.artistid',
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'artistid',
+            'name',
+            'albums' => array(
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'elements' => array(
+                    'albumid',
+                    'title'
+                )
+            )
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     And the resulting XML data looks as follows:
+     <programlisting role="tutorial">
+     <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_library>
+  <artist>
+    <artistid>1</artistid>
+    <name>Curtis Mayfield</name>
+    <albums>
+      <album>
+        <albumid>1</albumid>
+        <title>New World Order</title>
+      </album>
+      <album>
+        <albumid>2</albumid>
+        <title>Curtis</title>
+      </album>
+    </albums>
+  </artist>
+  <artist>
+    <artistid>2</artistid>
+    <name>Isaac Hayes</name>
+    <albums>
+      <album>
+        <albumid>3</albumid>
+        <title>Shaft</title>
+      </album>
+    </albums>
+  </artist>
+</music_library>
+     ]]>
+     </programlisting>
+     Note: as we used a traditional join (and therefore implecitely an INNER JOIN) only those
+     artists are included that also have albums in our database. To also get those artists
+     that don't have any albums we would have to use a LEFT OUTER JOIN.
+    </para>
+   </refsect3>
+   <refsect3 id="{@id options_sql}">
+    <title>Using $options['sql']</title>
+    <para>
+     If for whatever reason you cannot join the two tables, you can use
+     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql} to specify
+     a separate query for the second table. This will however result in the
+     second query being executed as many times as the there are records in
+     the first table. It is therefore highly recommended to use a JOIN
+     whenever possible.
+    </para>
+    <para>
+     To produce a similar XML as with the JOIN above we have to use a
+     {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_sql.complexqueryspecification}
+     with artist.artistid for $options['elements']['albums']['sql']['data'] and
+     'SELECT * FROM album WHERE artist_id = ?' for $options['elements']['albums']['sql']['query']:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    'SELECT * FROM artist',
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'artistid',
+            'name',
+            'albums' => array(
+                'rootTag' => 'albums',
+                'rowTag' => 'album',
+                'idColumn' => 'albumid',
+                'sql' => array(
+                    'data' => array(
+                        'artistid'
+                    ),
+                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                ),
+                'elements' => array(
+                    'albumid',
+                    'title'
+                )
+            )
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     Note that $options['elements']['albums']['idColumn'] is again set to 'albumid'.
+    </para>
+    <para>
+     The difference to the above XML is that it also includes artists that have no albums in our database.
+     This is because using two separate queries is like using an OUTER JOIN while in the above
+     example we were using an INNER JOIN.
+     <programlisting role="tutorial">
+     <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_library>
+  <artist>
+    <artistid>1</artistid>
+    <name>Curtis Mayfield</name>
+    <albums>
+      <album>
+        <albumid>1</albumid>
+        <title>New World Order</title>
+      </album>
+      <album>
+        <albumid>2</albumid>
+        <title>Curtis</title>
+      </album>
+    </albums>
+  </artist>
+  <artist>
+    <artistid>2</artistid>
+    <name>Isaac Hayes</name>
+    <albums>
+      <album>
+        <albumid>3</albumid>
+        <title>Shaft</title>
+      </album>
+    </albums>
+  </artist>
+  <artist>
+    <artistid>3</artistid>
+    <name>Ray Charles</name>
+    <albums/>
+  </artist>
+</music_library>
+     ]]>
+     </programlisting>
+    </para>
+   </refsect3>
+  </refsect2>
+  <refsect2 id="{@id one_or_many_elements}">
+   <title>One or Many Elements Per Related Entity?</title>
+   <para>
+    Depending on whether you want one or multiple XML element per related entity,
+    you have two options here:
+    <itemizedlist>
+  	 <listitem>
+      {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_elements.options_elements}.
+     </listitem>
+     <listitem>
+      {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_elements.options_value}.
+     </listitem>  
+    </itemizedlist>
+   </para>
+   <refsect3 id="{@id options_elements}">
+    <title>Multiple Elements Per Entity - $options['elements']</title>
+    <para>
+     In most cases you will need to create multiple XML elements for each
+     related entity. In our example we might want the albumid and the title
+     for each album. This means that we have to assign
+     <programlisting role="php">
+     <![CDATA[
+array(
+    'albumid',
+    'title'
+);
+     ]]>
+     </programlisting>
+     to $options['elements']['albums']['elements'].
+    </para>
+    <para>
+     Please see the {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_queries} section above
+     for two example - one using a JOIN and the second using two queries.
+    </para>
+   </refsect3>
+   <refsect3 id="{@id options_value}">
+    <title>One Element Per Entity - $options['value']</title>
+    <para>
+     In our example, if you want just a single XML element for each album like below,
+     we can use {@tutorial XML_Query2XML.pkg#query2xml_getxml.options_value}.
+     <programlisting role="tutorial">
+     <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_library>
+  <artist>
+    <name>Curtis Mayfield</name>
+    <album>New World Order</album>
+    <album>Curtis</album>
+  </artist>
+  <artist>
+    <name>Isaac Hayes</name>
+    <album>Shaft</album>
+  </artist>
+</music_library>
+     ]]>
+     </programlisting>
+     The code to generate the above XML would look like this:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    'SELECT
+        *
+     FROM
+        artist, album
+     WHERE
+        album.artist_id = artist.artistid',
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'name',
+            'album' => array(
+                'idColumn' => 'albumid',
+                'value' => 'title'
+            )
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     The critical part here is $options['elements']['albums']['idColumn'].
+     It is set to 'albumid'. This means that an XML element will be created
+     for $options['elements']['albums'] for each unique albumid.
+    </para>
+    <para>
+     The above example uses a JOIN which is most efficient.
+     But as shown above under
+     {@tutorial XML_Query2XML.pkg#x_to_n.one_or_many_queries.options_sql}
+     there might be situations where you want to use multiple SQL queries
+     instead of a single JOIN:
+     <programlisting role="php">
+     <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'MDB2.php';
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$dom = $query2xml->getXML(
+    'SELECT * FROM artist',
+    array(
+        'rootTag' => 'music_library',
+        'rowTag' => 'artist',
+        'idColumn' => 'artistid',
+        'elements' => array(
+            'name',
+            'album' => array(
+                'sql' => array(
+                    'data' => array(
+                        'artistid'
+                    ),
+                    'query' => 'SELECT * FROM album WHERE artist_id = ?'
+                ),
+                'idColumn' => 'albumid',
+                'value' => 'title'
+            )
+        )
+    )
+);
+
+header('Content-Type: application/xml');
+
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+     ]]>
+     </programlisting>
+     The resulting XML is similar to the one generated above. There is just
+     one difference: artists that have no albums are included as well:
+     <programlisting role="tutorial">
+     <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<music_library>
+  <artist>
+    <name>Curtis Mayfield</name>
+    <album>New World Order</album>
+    <album>Curtis</album>
+  </artist>
+  <artist>
+    <name>Isaac Hayes</name>
+    <album>Shaft</album>
+  </artist>
+  <artist>
+    <name>Ray Charles</name>
+  </artist>
+</music_library>
+     ]]>
+     </programlisting>
+    </para>
+   </refsect3>
+  </refsect2>
+  <refsect2 id="{@id joins}">
+   <title>A last word on JOINs</title>
+   <para>
+    As a general rule, it is wise to use as few SQL queries as possible.
+    This means that you have to JOIN you tables. It is essential to understand
+    the differences between INNER and OUTER joins and how they affect your
+    result set.
+   </para>
+  </refsect2>
+ </refsect1>
+ 
  <refsect1 id="{@id yourdriver}">
   <title>Writing Your Own Driver</title>
   <para>
@@ -7025,7 +7425,7 @@ print $dom->saveXML();
    </refsect2>
    
    <refsect2 id="{@id case02}">
-    <title>Case 02: LEFT JOIN</title>
+    <title>Case 02: LEFT OUTER JOIN</title>
     <para>
      Case 02 will teach you:
      <itemizedlist>
@@ -7352,7 +7752,7 @@ DB_DURATION:    0.015194892883301
    </refsect2>
    
    <refsect2 id="{@id case03}">
-    <title>Case 03: Two SELECTs instead of a LEFT JOIN</title>
+    <title>Case 03: Two SELECTs instead of a LEFT OUTER JOIN</title>
     <para>
      Case 03 will teach you:
      <itemizedlist>
@@ -7571,17 +7971,19 @@ $fp->write('case03.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
      The format of a debug log file is documented at {@tutorial XML_Query2XML.pkg#debugging}.
      Our debug log now contains 4 queries:
      <![CDATA[
-Feb 11 16:08:45 Query2XML [info] QUERY: SELECT
+Apr 18 19:00:20 Query2XML [info] QUERY: SELECT
         *
      FROM
         artist
-Feb 11 16:08:45 Query2XML [info] DONE
-Feb 11 16:08:45 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 16:08:45 Query2XML [info] DONE
-Feb 11 16:08:45 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 16:08:45 Query2XML [info] DONE
-Feb 11 16:08:45 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 16:08:45 Query2XML [info] DONE
+     ORDER BY
+        artistid
+Apr 18 19:00:20 Query2XML [info] DONE
+Apr 18 19:00:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:1
+Apr 18 19:00:20 Query2XML [info] DONE
+Apr 18 19:00:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:2
+Apr 18 19:00:20 Query2XML [info] DONE
+Apr 18 19:00:20 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:3
+Apr 18 19:00:20 Query2XML [info] DONE
      ]]>
      </para>
      The debug log shows what we expected: the first SELECT over the artist table runs once
@@ -7955,17 +8357,19 @@ function firstTwoChars($record)
      Our debug log now contains 4 queries and is exactly the same as
      {@tutorial XML_Query2XML.pkg#casestudies.case03.case03_log}:
      <![CDATA[
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT
+Apr 18 19:01:25 Query2XML [info] QUERY: SELECT
         *
      FROM
         artist
-Feb 11 17:05:03 Query2XML [info] DONE
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 17:05:03 Query2XML [info] DONE
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 17:05:03 Query2XML [info] DONE
-Feb 11 17:05:03 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Feb 11 17:05:03 Query2XML [info] DONE
+     ORDER BY
+        artistid
+Apr 18 19:01:25 Query2XML [info] DONE
+Apr 18 19:01:25 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:1
+Apr 18 19:01:25 Query2XML [info] DONE
+Apr 18 19:01:25 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:2
+Apr 18 19:01:25 Query2XML [info] DONE
+Apr 18 19:01:25 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:3
+Apr 18 19:01:25 Query2XML [info] DONE
      ]]>
      </para>
     </refsect3>
@@ -7990,7 +8394,7 @@ DB_DURATION:    0.026465892791748
     </refsect3>
    </refsect2>
    <refsect2 id="{@id case05}">
-    <title>Case 05: three LEFT JOINs</title>
+    <title>Case 05: three LEFT OUTER JOINs</title>
     <para>
      Case 05 will teach you:
      <itemizedlist>
@@ -10239,17 +10643,19 @@ $fp->write('case07.profile', $query2xml->getProfile(), FILE_MODE_WRITE);
      The format of a debug log file is documented at {@tutorial XML_Query2XML.pkg#debugging}.
      Our debug log now contains 4 queries:
      <![CDATA[
-Apr 17 00:54:36 Query2XML [info] QUERY: SELECT
+Apr 18 19:02:48 Query2XML [info] QUERY: SELECT
         *
      FROM
         artist
-Apr 17 00:54:36 Query2XML [info] DONE
-Apr 17 00:54:36 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Apr 17 00:54:36 Query2XML [info] DONE
-Apr 17 00:54:36 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Apr 17 00:54:36 Query2XML [info] DONE
-Apr 17 00:54:36 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?
-Apr 17 00:54:36 Query2XML [info] DONE
+     ORDER BY
+        artistid
+Apr 18 19:02:48 Query2XML [info] DONE
+Apr 18 19:02:48 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:1
+Apr 18 19:02:48 Query2XML [info] DONE
+Apr 18 19:02:48 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:2
+Apr 18 19:02:48 Query2XML [info] DONE
+Apr 18 19:02:48 Query2XML [info] QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:3
+Apr 18 19:02:48 Query2XML [info] DONE
      ]]>
      </para>
      The debug log shows what we expected: the first SELECT over the artist table runs once
