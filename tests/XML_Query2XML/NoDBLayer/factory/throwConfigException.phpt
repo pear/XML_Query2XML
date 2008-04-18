@@ -10,4 +10,4 @@ XML_Query2XML::factory(): check for XML_Query2XML_DBException
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: Argument passed to the XML_Query2XML constructor is not an instance of DB_common, MDB2_Driver_Common, ADOConnection, PDO or Net_LDAP.
+XML_Query2XML_ConfigException: Argument passed to the XML_Query2XML constructor is not an instance of DB_common, MDB2_Driver_Common, ADOConnection, PDO, Net_LDAP or Net_LDAP2.
