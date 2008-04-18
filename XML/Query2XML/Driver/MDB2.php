@@ -72,6 +72,58 @@ class XML_Query2XML_Driver_MDB2 extends XML_Query2XML_Driver
     }
     
     /**
+     * Pre-processes a query specification and returns a string representation
+     * of the query.
+     * This method will call parent::preprocessQuery(). Additionally it will
+     * verify $query['limit'] and $query['offset'].
+     *
+     * @param mixed  &$query     A string or an array containing the element 'query'.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return string The query statement as a string.
+     * @throws XML_Query2XML_ConfigException If $query['limit'] or $query['offset']
+     *                                       is set but not numeric. This exception
+     *                                       might also bubble up from
+     *                                       parent::preprocessQuery().
+     */
+    public function preprocessQuery(&$query, $configPath)
+    {
+        // will make $query an array if it is not already
+        $queryString = parent::preprocessQuery($query, $configPath);
+        
+        foreach (array('limit', 'offset') as $sqlOption) {
+            if (isset($query[$sqlOption])) {
+                if (!is_numeric($query[$sqlOption])) {
+                    /*
+                     * unit test: getXML/
+                     *  offsetlimit_throwConfigException_limit_not_numeric.phpt
+                     *  offsetlimit_throwConfigException_offset_not_numeric.phpt
+                     */
+                    throw new XML_Query2XML_ConfigException(
+                        $configPath . '[' . $sqlOption
+                        . ']: integer expected, '
+                        . gettype($query[$sqlOption]) . ' given.'
+                    );
+                }
+            }
+        }
+        if (isset($query['limit'])) {
+            if ($query['limit'] == 0) {
+                // setting limit to 0 is like not setting it at all
+                unset($query['limit']);
+            } else {
+                if (!isset($query['offset'])) {
+                    // offset defaults to 0
+                    $query['offset'] = 0;
+                }
+                $queryString .= '; LIMIT:' . $query['limit'];
+                $queryString .= '; OFFSET:' . $query['offset'];
+            }
+        }
+        return $queryString;
+    }
+    
+    /**
      * Execute a SQL SELECT stement and fetch all records from the result set.
      *
      * @param mixed  $sql        The SQL query as a string or an array.
@@ -83,6 +135,9 @@ class XML_Query2XML_Driver_MDB2 extends XML_Query2XML_Driver
      */
     public function getAllRecords($sql, $configPath)
     {
+        if (isset($sql['limit']) && $sql['limit'] < 0) {
+            return array();
+        }
         $result  =& $this->_prepareAndExecute($sql, $configPath);
         $records = array();
         while ($record = $result->fetchRow()) {
@@ -113,12 +168,18 @@ class XML_Query2XML_Driver_MDB2 extends XML_Query2XML_Driver
      */
     private function _prepareAndExecute($sql, $configPath)
     {
-        $query =& $sql['query'];
-        if (isset($this->_preparedQueries[$query])) {
-            $queryHandle = $this->_preparedQueries[$query];
+        $preparedQuery = $sql['query'];
+        if (isset($sql['limit'])) {
+            $preparedQuery .= '; LIMIT:' . $sql['limit'];
+            $preparedQuery .= '; OFFSET:' . $sql['offset'];
+            $this->_db->setLimit($sql['limit'], $sql['offset']);
+        }
+        
+        if (isset($this->_preparedQueries[$preparedQuery])) {
+            $queryHandle = $this->_preparedQueries[$preparedQuery];
         } else {
             // PREPARE
-            $queryHandle = $this->_db->prepare($query);
+            $queryHandle = $this->_db->prepare($sql['query']);
             
             if (PEAR::isError($queryHandle)) {
                 /*
@@ -127,10 +188,10 @@ class XML_Query2XML_Driver_MDB2 extends XML_Query2XML_Driver
                  */
                 throw new XML_Query2XML_DBException(
                     $configPath . ': Could not prepare the following SQL query: '
-                    . $query . '; ' . $queryHandle->toString()
+                    . $sql['query'] . '; ' . $queryHandle->toString()
                 );
             }
-            $this->_preparedQueries[$query] =& $queryHandle;
+            $this->_preparedQueries[$preparedQuery] =& $queryHandle;
         }
         
         // EXECUTE
@@ -151,7 +212,7 @@ class XML_Query2XML_Driver_MDB2 extends XML_Query2XML_Driver
              */
             throw new XML_Query2XML_DBException(
                 $configPath . ': Could not execute the following SQL query: '
-                . $query . '; ' . $result->toString()
+                . $sql['query'] . '; ' . $result->toString()
             );
         }
         return $result;

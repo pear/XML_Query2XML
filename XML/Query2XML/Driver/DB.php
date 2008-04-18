@@ -73,6 +73,67 @@ class XML_Query2XML_Driver_DB extends XML_Query2XML_Driver
     }
     
     /**
+     * Pre-processes a query specification and returns a string representation
+     * of the query.
+     * This method will call parent::preprocessQuery(). Additionally it will
+     * verify $query['limit'] and $query['offset'].
+     *
+     * @param mixed  &$query     A string or an array containing the element 'query'.
+     * @param string $configPath The config path; used for exception messages.
+     *
+     * @return string The query statement as a string.
+     * @throws XML_Query2XML_ConfigException If $query['limit'] or $query['offset']
+     *                                       is set but not numeric. This exception
+     *                                       might also bubble up from
+     *                                       parent::preprocessQuery().
+     */
+    public function preprocessQuery(&$query, $configPath)
+    {
+        /*
+         * This will make $query an array if it is not already.
+         * We'll ignore preprocessQuery()'s return value here.
+         */
+        parent::preprocessQuery($query, $configPath);        
+        
+        foreach (array('limit', 'offset') as $sqlOption) {
+            if (isset($query[$sqlOption])) {
+                if (!is_numeric($query[$sqlOption])) {
+                    /*
+                     * unit test: getXML/
+                     *  offsetlimit_throwConfigException_limit_not_numeric.phpt
+                     *  offsetlimit_throwConfigException_offset_not_numeric.phpt
+                     */
+                    throw new XML_Query2XML_ConfigException(
+                        $configPath . '[' . $sqlOption
+                        . ']: integer expected, '
+                        . gettype($query[$sqlOption]) . ' given.'
+                    );
+                }
+            }
+        }
+        $queryString = $query['query'];
+        if (isset($query['limit'])) {
+            if ($query['limit'] == 0) {
+                // setting limit to 0 is like not setting it at all
+                unset($query['limit']);
+            } else {
+                if (!isset($query['offset'])) {
+                    // offset defaults to 0
+                    $query['offset'] = 0;
+                }
+                $queryString .= '; LIMIT:' . $query['limit'];
+                $queryString .= '; OFFSET:' . $query['offset'];
+                $query['query'] = $this->_db->modifyLimitQuery(
+                    $query['query'],
+                    $query['offset'],
+                    $query['limit']
+                );
+            }
+        }
+        return $queryString;
+    }
+    
+    /**
      * Execute a SQL SELECT stement and fetch all records from the result set.
      *
      * @param mixed  $sql        The SQL query as an array containing the
@@ -85,6 +146,9 @@ class XML_Query2XML_Driver_DB extends XML_Query2XML_Driver
      */
     public function getAllRecords($sql, $configPath)
     {
+        if (isset($sql['limit']) && $sql['limit'] < 0) {
+            return array();
+        }
         $result  =& $this->_prepareAndExecute($sql, $configPath);
         $records = array();
         while ($record = $result->fetchRow()) {
@@ -114,7 +178,8 @@ class XML_Query2XML_Driver_DB extends XML_Query2XML_Driver
      */
     private function _prepareAndExecute($sql, $configPath)
     {
-        $query =& $sql['query'];
+        $query = $sql['query'];
+        
         if (isset($this->_preparedQueries[$query])) {
             $queryHandle = $this->_preparedQueries[$query];
         } else {
