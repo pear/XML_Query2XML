@@ -20,7 +20,7 @@ Major features:
 7. debugging, logging and profiling features
 8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 1159 phpt unit tests
+10. 238 phpt unit tests
  
  </description>
  <lead>
@@ -29,27 +29,29 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2008-01-06</date>
+ <date>2008-04-18</date>
  <version>
-  <release>1.6.0</release>
-  <api>1.6.0</api>
+  <release>1.7.0RC1</release>
+  <api>1.7.0RC1</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
- <notes>This stable release implements the following new features:
-- LDAP support: the new LDAP driver uses PEAR Net_LDAP
-  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
-- new open driver architecture allows you to implement your own drivers
-  see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#yourdriver
-- $options['sql']['driver'] now allows you to use different drivers for each query
-- fixed documentation bug #12568
-- PEAR Coding Standard fixes
-- correction of copyright notice
-- XML_Query2XML now comes with 1159 phpt unit tests
-Note: No changes were introduced since 1.6.0RC1.
+ <notes>This feature release brings the following additions:
+- new driver for PEAR Net_LDAP2: XML_Query2XML_Driver_LDAP2
+- options 'limit' and 'offset' now supported by the MDB2 and DB drivers;
+  thanks to Johnny Cheng from openflyers.org for this feature request
+- improved logging: now also logs the variables with which a prepared
+  statement is executed
+- consolidation of unit tests for different database drivers; use
+  the environment variable PHP_PEAR_XML_QUERY2XML_TEST_DBLAYER to
+  set the database driver to be used (MDB2,DB,PDO,ADOdbDefault,
+  ADOdbPEAR or ADOdbException). Also use the environment variable
+  PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
+  to be used (LDAP or LDAP2). Then simply run
+  'pear run-tests -p XML_Query2XML'
  </notes>
  <contents>
   <dir name="/">
@@ -110,33 +112,34 @@ Note: No changes were introduced since 1.6.0RC1.
    </dir> <!-- /cases -->
    <dir name="tests">
     <dir name="XML_Query2XML">
-     <dir name="ADOdbDefault">
+     <dir name="AllDBLayers">
       <dir name="clearProfile">
        <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/clearProfile -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/clearProfile -->
       <dir name="disableDebugLog">
        <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/disableDebugLog -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/disableDebugLog -->
       <dir name="enableDebugLog">
        <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
        <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="enableDebugLog_twoVars.phpt" role="test" />
        <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/enableDebugLog -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/enableDebugLog -->
       <dir name="getFlatXML">
        <file baseinstalldir="/" name="case01.phpt" role="test" />
        <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getFlatXML -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getFlatXML -->
       <dir name="getGlobalOption">
        <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
        <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getGlobalOption -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getGlobalOption -->
       <dir name="getProfile">
        <file baseinstalldir="/" name="getProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getProfile -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getProfile -->
       <dir name="getRawProfile">
        <file baseinstalldir="/" name="getRawProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getRawProfile -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getRawProfile -->
       <dir name="getXML">
        <file baseinstalldir="/" name="asteriskShortcut_attributes1.phpt" role="test" />
        <file baseinstalldir="/" name="asteriskShortcut_attributes2.phpt" role="test" />
@@ -156,6 +159,13 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
        <file baseinstalldir="/" name="base64Prefix_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
+       <file baseinstalldir="/" name="caching_cached.phpt" role="test" />
+       <file baseinstalldir="/" name="caching_cached_different_drivers.phpt" role="test" />
+       <file baseinstalldir="/" name="caching_cached_limit.phpt" role="test" />
+       <file baseinstalldir="/" name="caching_cached_limits.phpt" role="test" />
+       <file baseinstalldir="/" name="caching_cached_multiple_queries.phpt" role="test" />
+       <file baseinstalldir="/" name="caching_cached_offset.phpt" role="test" />
+       <file baseinstalldir="/" name="caching_uncached.phpt" role="test" />
        <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
@@ -164,9 +174,9 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
        <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
+       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
        <file baseinstalldir="/" name="case02.phpt" role="test" />
        <file baseinstalldir="/" name="case03.phpt" role="test" />
        <file baseinstalldir="/" name="case04.phpt" role="test" />
@@ -174,6 +184,7 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="case06.phpt" role="test" />
        <file baseinstalldir="/" name="case07.phpt" role="test" />
        <file baseinstalldir="/" name="case08.phpt" role="test" />
+       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
        <file baseinstalldir="/" name="cdataPrefix_callback.phpt" role="test" />
        <file baseinstalldir="/" name="cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
        <file baseinstalldir="/" name="cdataPrefix_columnName.phpt" role="test" />
@@ -183,7 +194,6 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
        <file baseinstalldir="/" name="cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
        <file baseinstalldir="/" name="cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
        <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
@@ -191,14 +201,14 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
        <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
+       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
        <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
        <file baseinstalldir="/" name="dynamicRowTag_callback.phpt" role="test" />
        <file baseinstalldir="/" name="dynamicRowTag_columnName.phpt" role="test" />
@@ -208,12 +218,17 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="dynamicRowTag_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
        <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
+       <file baseinstalldir="/" name="offsetlimit.phpt" role="test" />
+       <file baseinstalldir="/" name="offsetlimit_driver.phpt" role="test" />
+       <file baseinstalldir="/" name="offsetlimit_limit_zero.phpt" role="test" />
+       <file baseinstalldir="/" name="offsetlimit_throwConfigException_limit_not_numeric.phpt" role="test" />
+       <file baseinstalldir="/" name="offsetlimit_throwConfigException_offset_not_numeric.phpt" role="test" />
        <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
        <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
        <file baseinstalldir="/" name="sql_options_single_record.phpt" role="test" />
        <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
        <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
+       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
@@ -234,29 +249,29 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
        <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/getXML -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getXML -->
       <dir name="setGlobalOption">
        <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
        <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
        <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
        <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/setGlobalOption -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/setGlobalOption -->
       <dir name="startProfiling">
        <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/startProfiling -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/startProfiling -->
       <dir name="stopProfiling">
        <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/stopProfiling -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/stopProfiling -->
       <dir name="_addDOMChildren">
        <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_addDOMChildren -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_addDOMChildren -->
       <dir name="_appendTextChildNode">
        <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_appendTextChildNode -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_appendTextChildNode -->
       <dir name="_applyColumnStringToRecord">
        <file baseinstalldir="/" name="callbacks.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
@@ -267,49 +282,49 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_applyColumnStringToRecord -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord -->
       <dir name="_applySqlOptionsToRecord">
        <file baseinstalldir="/" name="throwConfigException_mergeMasterFalse.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mergeMasterTrue.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_applySqlOptionsToRecord -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_applySqlOptionsToRecord -->
       <dir name="_createDOMElement">
        <file baseinstalldir="/" name="throwXMLException_elementInvalid1.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_elementInvalid2.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid1.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
        <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_createDOMElement -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_createDOMElement -->
       <dir name="_executeEncoder">
-       <file baseinstalldir="/" name="basics.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_executeEncoder -->
+       <file baseinstalldir="/" name="basics.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_default.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_false.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_function.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_null.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test" />
+       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test" />
+       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
+       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test" />
+       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test" />
+       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test" />
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_executeEncoder -->
       <dir name="_getNestedXMLRecord">
        <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_getNestedXMLRecord -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_getNestedXMLRecord -->
       <dir name="_mapSQLIdentifierToXMLName">
        <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_mapSQLIdentifierToXMLName -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_mapSQLIdentifierToXMLName -->
       <dir name="_prepareAndExecute">
        <file baseinstalldir="/" name="throwDBException_complexQuery.phpt" role="test" />
        <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_prepareAndExecute -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_prepareAndExecute -->
       <dir name="_preprocessOptions">
        <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
@@ -317,6 +332,7 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_callbackInterface_noArrayKey.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
@@ -332,732 +348,34 @@ Note: No changes were introduced since 1.6.0RC1.
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
+       <file baseinstalldir="/" name="throwConfigException_prefix_noArrayKey.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_queryOptionMissing.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_sqlOptionWrongType.phpt" role="test" />
        <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_preprocessOptions -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_preprocessOptions -->
       <dir name="_processComplexElementSpecification">
        <file baseinstalldir="/" name="condition_function.phpt" role="test" />
        <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
        <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_processComplexElementSpecification -->
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_processComplexElementSpecification -->
       <dir name="_setDOMAttribute">
        <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbDefault/_setDOMAttribute --> 
+      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_setDOMAttribute -->
+      <file baseinstalldir="/" name="ADOdbDefault_db_init.php" role="test" />
+      <file baseinstalldir="/" name="ADOdbDefault_skipif.php" role="test" />
+      <file baseinstalldir="/" name="ADOdbException_db_init.php" role="test" />
+      <file baseinstalldir="/" name="ADOdbException_skipif.php" role="test" />
+      <file baseinstalldir="/" name="ADOdbPEAR_db_init.php" role="test" />
+      <file baseinstalldir="/" name="ADOdbPEAR_skipif.php" role="test" />
+      <file baseinstalldir="/" name="DB_db_init.php" role="test" />
       <file baseinstalldir="/" name="db_init.php" role="test" />
+      <file baseinstalldir="/" name="DB_skipif.php" role="test" />
+      <file baseinstalldir="/" name="MDB2_db_init.php" role="test" />
+      <file baseinstalldir="/" name="MDB2_skipif.php" role="test" />
+      <file baseinstalldir="/" name="PDO_db_init.php" role="test" />
+      <file baseinstalldir="/" name="PDO_skipif.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/ADOdbDefault -->
-     <dir name="ADOdbException">
-      <dir name="clearProfile">
-       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/clearProfile -->
-      <dir name="disableDebugLog">
-       <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/disableDebugLog -->
-      <dir name="enableDebugLog">
-       <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/enableDebugLog -->
-      <dir name="getFlatXML">
-       <file baseinstalldir="/" name="case01.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/getFlatXML -->
-      <dir name="getGlobalOption">
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/getGlobalOption -->
-      <dir name="getProfile">
-       <file baseinstalldir="/" name="getProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/getProfile -->
-      <dir name="getRawProfile">
-       <file baseinstalldir="/" name="getRawProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/getRawProfile -->
-      <dir name="getXML">
-       <file baseinstalldir="/" name="asteriskShortcut_attributes1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes6.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="case02.phpt" role="test" />
-       <file baseinstalldir="/" name="case03.phpt" role="test" />
-       <file baseinstalldir="/" name="case04.phpt" role="test" />
-       <file baseinstalldir="/" name="case05.phpt" role="test" />
-       <file baseinstalldir="/" name="case06.phpt" role="test" />
-       <file baseinstalldir="/" name="case07.phpt" role="test" />
-       <file baseinstalldir="/" name="case08.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_emptyCdata.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_ignoreRowTag.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_onRootLevel.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_commandObject.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/getXML -->
-      <dir name="setGlobalOption">
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/setGlobalOption -->
-      <dir name="startProfiling">
-       <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/startProfiling -->
-      <dir name="stopProfiling">
-       <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/stopProfiling -->
-      <dir name="_addDOMChildren">
-       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_addDOMChildren -->
-      <dir name="_appendTextChildNode">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_appendTextChildNode -->
-      <dir name="_applyColumnStringToRecord">
-       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_applyColumnStringToRecord -->
-      <dir name="_applySqlOptionsToRecord">
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterFalse.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterTrue.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_applySqlOptionsToRecord -->
-      <dir name="_createDOMElement">
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_createDOMElement -->
-      <dir name="_executeEncoder">
-       <file baseinstalldir="/" name="basics.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_executeEncoder -->
-      <dir name="_getNestedXMLRecord">
-       <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_getNestedXMLRecord -->
-      <dir name="_mapSQLIdentifierToXMLName">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_mapSQLIdentifierToXMLName -->
-      <dir name="_prepareAndExecute">
-       <file baseinstalldir="/" name="throwDBException_complexQuery.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_prepareAndExecute -->
-      <dir name="_preprocessOptions">
-       <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_queryOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_sqlOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_preprocessOptions -->
-      <dir name="_processComplexElementSpecification">
-       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
-       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_processComplexElementSpecification -->
-      <dir name="_setDOMAttribute">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbException/_setDOMAttribute --> 
-      <file baseinstalldir="/" name="db_init.php" role="test" />
-      <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/ADOdbException -->
-     <dir name="ADOdbPEAR">
-      <dir name="clearProfile">
-       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/clearProfile -->
-      <dir name="disableDebugLog">
-       <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/disableDebugLog -->
-      <dir name="enableDebugLog">
-       <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/enableDebugLog -->
-      <dir name="getFlatXML">
-       <file baseinstalldir="/" name="case01.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getFlatXML -->
-      <dir name="getGlobalOption">
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getGlobalOption -->
-      <dir name="getProfile">
-       <file baseinstalldir="/" name="getProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getProfile -->
-      <dir name="getRawProfile">
-       <file baseinstalldir="/" name="getRawProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getRawProfile -->
-      <dir name="getXML">
-       <file baseinstalldir="/" name="asteriskShortcut_attributes1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes6.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="case02.phpt" role="test" />
-       <file baseinstalldir="/" name="case03.phpt" role="test" />
-       <file baseinstalldir="/" name="case04.phpt" role="test" />
-       <file baseinstalldir="/" name="case05.phpt" role="test" />
-       <file baseinstalldir="/" name="case06.phpt" role="test" />
-       <file baseinstalldir="/" name="case07.phpt" role="test" />
-       <file baseinstalldir="/" name="case08.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_emptyCdata.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_ignoreRowTag.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_onRootLevel.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_commandObject.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/getXML -->
-      <dir name="setGlobalOption">
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/setGlobalOption -->
-      <dir name="startProfiling">
-       <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/startProfiling -->
-      <dir name="stopProfiling">
-       <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/stopProfiling -->
-      <dir name="_addDOMChildren">
-       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_addDOMChildren -->
-      <dir name="_appendTextChildNode">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_appendTextChildNode -->
-      <dir name="_applyColumnStringToRecord">
-       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_applyColumnStringToRecord -->
-      <dir name="_applySqlOptionsToRecord">
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterFalse.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterTrue.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_applySqlOptionsToRecord -->
-      <dir name="_createDOMElement">
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_createDOMElement -->
-      <dir name="_executeEncoder">
-       <file baseinstalldir="/" name="basics.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_executeEncoder -->
-      <dir name="_getNestedXMLRecord">
-       <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_getNestedXMLRecord -->
-      <dir name="_mapSQLIdentifierToXMLName">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_mapSQLIdentifierToXMLName -->
-      <dir name="_prepareAndExecute">
-       <file baseinstalldir="/" name="throwDBException_complexQuery.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_prepareAndExecute -->
-      <dir name="_preprocessOptions">
-       <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_queryOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_sqlOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_preprocessOptions -->
-      <dir name="_processComplexElementSpecification">
-       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
-       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_processComplexElementSpecification -->
-      <dir name="_setDOMAttribute">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR/_setDOMAttribute --> 
-      <file baseinstalldir="/" name="db_init.php" role="test" />
-      <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/ADOdbPEAR -->
-     <dir name="DB">
-      <dir name="clearProfile">
-       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/clearProfile -->
-      <dir name="disableDebugLog">
-       <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/disableDebugLog -->
-      <dir name="enableDebugLog">
-       <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/enableDebugLog -->
-      <dir name="getFlatXML">
-       <file baseinstalldir="/" name="case01.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/getFlatXML -->
-      <dir name="getGlobalOption">
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/getGlobalOption -->
-      <dir name="getProfile">
-       <file baseinstalldir="/" name="getProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/getProfile -->
-      <dir name="getRawProfile">
-       <file baseinstalldir="/" name="getRawProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/getRawProfile -->
-      <dir name="getXML">
-       <file baseinstalldir="/" name="asteriskShortcut_attributes1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes6.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="case02.phpt" role="test" />
-       <file baseinstalldir="/" name="case03.phpt" role="test" />
-       <file baseinstalldir="/" name="case04.phpt" role="test" />
-       <file baseinstalldir="/" name="case05.phpt" role="test" />
-       <file baseinstalldir="/" name="case06.phpt" role="test" />
-       <file baseinstalldir="/" name="case07.phpt" role="test" />
-       <file baseinstalldir="/" name="case08.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_emptyCdata.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_ignoreRowTag.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_onRootLevel.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_commandObject.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/getXML -->
-      <dir name="setGlobalOption">
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/setGlobalOption -->
-      <dir name="startProfiling">
-       <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/startProfiling -->
-      <dir name="stopProfiling">
-       <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/stopProfiling -->
-      <dir name="_addDOMChildren">
-       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_addDOMChildren -->
-      <dir name="_appendTextChildNode">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_appendTextChildNode -->
-      <dir name="_applyColumnStringToRecord">
-       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_applyColumnStringToRecord -->
-      <dir name="_applySqlOptionsToRecord">
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterFalse.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterTrue.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_applySqlOptionsToRecord -->
-      <dir name="_createDOMElement">
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_createDOMElement -->
-      <dir name="_executeEncoder">
-       <file baseinstalldir="/" name="basics.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
-      </dir> <!-- /tests/XML_Query2XML/DB/_executeEncoder -->
-      <dir name="_getNestedXMLRecord">
-       <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_getNestedXMLRecord -->
-      <dir name="_mapSQLIdentifierToXMLName">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_mapSQLIdentifierToXMLName -->
-      <dir name="_prepareAndExecute">
-       <file baseinstalldir="/" name="throwDBException_complexQuery.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_prepareAndExecute -->
-      <dir name="_preprocessOptions">
-       <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_queryOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_sqlOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_preprocessOptions -->
-      <dir name="_processComplexElementSpecification">
-       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
-       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_processComplexElementSpecification -->
-      <dir name="_setDOMAttribute">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/DB/_setDOMAttribute --> 
-      <file baseinstalldir="/" name="db_init.php" role="test" />
-      <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/DB -->
+     </dir> <!-- /tests/XML_Query2XML/AllDBLayers -->
      <dir name="LDAP">
       <dir name="getXML">
        <file baseinstalldir="/" name="complexElementSpecification_multiValueLDAPAttributes.phpt" role="test" />
@@ -1075,480 +393,6 @@ Note: No changes were introduced since 1.6.0RC1.
       <file baseinstalldir="/" name="ldap_init.php" role="test" />
       <file baseinstalldir="/" name="skipif.php" role="test" />
      </dir> <!-- /tests/XML_Query2XML/LDAP -->
-     <dir name="MDB2">
-      <dir name="clearProfile">
-       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/clearProfile -->
-      <dir name="disableDebugLog">
-       <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/disableDebugLog -->
-      <dir name="enableDebugLog">
-       <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/enableDebugLog -->
-      <dir name="getFlatXML">
-       <file baseinstalldir="/" name="case01.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/getFlatXML -->
-      <dir name="getGlobalOption">
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/getGlobalOption -->
-      <dir name="getProfile">
-       <file baseinstalldir="/" name="getProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/getProfile -->
-      <dir name="getRawProfile">
-       <file baseinstalldir="/" name="getRawProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/getRawProfile -->
-      <dir name="getXML">
-       <file baseinstalldir="/" name="asteriskShortcut_attributes1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes6.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="case02.phpt" role="test" />
-       <file baseinstalldir="/" name="case03.phpt" role="test" />
-       <file baseinstalldir="/" name="case04.phpt" role="test" />
-       <file baseinstalldir="/" name="case05.phpt" role="test" />
-       <file baseinstalldir="/" name="case06.phpt" role="test" />
-       <file baseinstalldir="/" name="case07.phpt" role="test" />
-       <file baseinstalldir="/" name="case08.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_emptyCdata.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_ignoreRowTag.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_onRootLevel.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_commandObject.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/getXML -->
-      <dir name="setGlobalOption">
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/setGlobalOption -->
-      <dir name="startProfiling">
-       <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/startProfiling -->
-      <dir name="stopProfiling">
-       <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/stopProfiling -->
-      <dir name="_addDOMChildren">
-       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_addDOMChildren -->
-      <dir name="_appendTextChildNode">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_appendTextChildNode -->
-      <dir name="_applyColumnStringToRecord">
-       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_applyColumnStringToRecord -->
-      <dir name="_applySqlOptionsToRecord">
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterFalse.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterTrue.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_applySqlOptionsToRecord -->
-      <dir name="_createDOMElement">
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_createDOMElement -->
-      <dir name="_executeEncoder">
-       <file baseinstalldir="/" name="basics.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_executeEncoder -->
-      <dir name="_getNestedXMLRecord">
-       <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_getNestedXMLRecord -->
-      <dir name="_mapSQLIdentifierToXMLName">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_mapSQLIdentifierToXMLName -->
-      <dir name="_prepareAndExecute">
-       <file baseinstalldir="/" name="throwDBException_complexQuery.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_prepareAndExecute -->
-      <dir name="_preprocessOptions">
-       <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_queryOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_sqlOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_preprocessOptions -->
-      <dir name="_processComplexElementSpecification">
-       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
-       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_processComplexElementSpecification -->
-      <dir name="_setDOMAttribute">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/MDB2/_setDOMAttribute --> 
-      <file baseinstalldir="/" name="db_init.php" role="test" />
-      <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/MDB2 -->
-     <dir name="PDO">
-      <dir name="clearProfile">
-       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/clearProfile -->
-      <dir name="disableDebugLog">
-       <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/disableDebugLog -->
-      <dir name="enableDebugLog">
-       <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/enableDebugLog -->
-      <dir name="getFlatXML">
-       <file baseinstalldir="/" name="case01.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/getFlatXML -->
-      <dir name="getGlobalOption">
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/getGlobalOption -->
-      <dir name="getProfile">
-       <file baseinstalldir="/" name="getProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/getProfile -->
-      <dir name="getRawProfile">
-       <file baseinstalldir="/" name="getRawProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/getRawProfile -->
-      <dir name="getXML">
-       <file baseinstalldir="/" name="asteriskShortcut_attributes1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes6.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="case02.phpt" role="test" />
-       <file baseinstalldir="/" name="case03.phpt" role="test" />
-       <file baseinstalldir="/" name="case04.phpt" role="test" />
-       <file baseinstalldir="/" name="case05.phpt" role="test" />
-       <file baseinstalldir="/" name="case06.phpt" role="test" />
-       <file baseinstalldir="/" name="case07.phpt" role="test" />
-       <file baseinstalldir="/" name="case08.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_emptyCdata.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_ignoreRowTag.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_onRootLevel.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_commandObject.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/getXML -->
-      <dir name="setGlobalOption">
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/setGlobalOption -->
-      <dir name="startProfiling">
-       <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/startProfiling -->
-      <dir name="stopProfiling">
-       <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/stopProfiling -->
-      <dir name="_addDOMChildren">
-       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_addDOMChildren -->
-      <dir name="_appendTextChildNode">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_appendTextChildNode -->
-      <dir name="_applyColumnStringToRecord">
-       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_applyColumnStringToRecord -->
-      <dir name="_applySqlOptionsToRecord">
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterFalse.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterTrue.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_applySqlOptionsToRecord -->
-      <dir name="_createDOMElement">
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_createDOMElement -->
-      <dir name="_executeEncoder">
-       <file baseinstalldir="/" name="basics.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_default.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_null.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test"/>
-       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test"/>
-       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test"/>
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test"/>
-      </dir> <!-- /tests/XML_Query2XML/PDO/_executeEncoder -->
-      <dir name="_getNestedXMLRecord">
-       <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_getNestedXMLRecord -->
-      <dir name="_mapSQLIdentifierToXMLName">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_mapSQLIdentifierToXMLName -->
-      <dir name="_prepareAndExecute">
-       <file baseinstalldir="/" name="throwDBException_complexQuery.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_prepareAndExecute -->
-      <dir name="_preprocessOptions">
-       <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_queryOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_sqlOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_preprocessOptions -->
-      <dir name="_processComplexElementSpecification">
-       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
-       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_processComplexElementSpecification -->
-      <dir name="_setDOMAttribute">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/PDO/_setDOMAttribute --> 
-      <file baseinstalldir="/" name="db_init.php" role="test" />
-      <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/PDO -->
      <dir name="NoDBLayer">
       <dir name="factory">
        <file baseinstalldir="/" name="throwConfigException.phpt" role="test" />
@@ -1640,6 +484,9 @@ Note: No changes were introduced since 1.6.0RC1.
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="LDAP.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="LDAP2.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir> <!-- /XML/Query2XML/Driver -->
@@ -2159,6 +1006,32 @@ Note: No changes were introduced since 1.5.0RC1.
 - correction of copyright notice
 - XML_Query2XML now comes with 1159 phpt unit tests
 Note: No changes were introduced since 1.6.0RC1.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.7.0RC1</release>
+    <api>1.7.0RC1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2008-04-18</date>
+   <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
+   <notes>This feature release brings the following additions:
+- new driver for PEAR Net_LDAP2: XML_Query2XML_Driver_LDAP2
+- options 'limit' and 'offset' now supported by the MDB2 and DB drivers;
+  thanks to Johnny Cheng from openflyers.org for this feature request
+- improved logging: now also logs the variables with which a prepared
+  statement is executed
+- consolidation of unit tests for different database drivers; use
+  the environment variable PHP_PEAR_XML_QUERY2XML_TEST_DBLAYER to
+  set the database driver to be used (MDB2,DB,PDO,ADOdbDefault,
+  ADOdbPEAR or ADOdbException). Also use the environment variable
+  PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
+  to be used (LDAP or LDAP2). Then simply run
+  'pear run-tests -p XML_Query2XML'
    </notes>
   </release>
  </changelog>
