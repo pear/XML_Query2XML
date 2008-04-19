@@ -123,6 +123,7 @@ class XML_Query2XML_Driver_DB extends XML_Query2XML_Driver
                 }
                 $queryString .= '; LIMIT:' . $query['limit'];
                 $queryString .= '; OFFSET:' . $query['offset'];
+                
                 $query['query'] = $this->_db->modifyLimitQuery(
                     $query['query'],
                     $query['offset'],
