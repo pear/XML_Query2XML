@@ -26,12 +26,20 @@ if (getenv('PHP_PEAR_XML_QUERY2XML_TEST_DSN') != '') {
     define('DSN', 'sqlite:///' . dirname(dirname(__FILE__)) . '/Query2XML_Tests.sq2');
 }
 
-$ldapConfig = array(
-    'host'     => 'localhost',
-    'port'     => 389,
-    'version'  => 3,
-    'starttls' => false,
-    'binddn'   => '',
-    'bindpw'   => ''
-);
+if (getenv('PHP_PEAR_XML_QUERY2XML_TEST_LDAPCONFIG') != '') {
+    $keyValuePairs = split(',', getenv('PHP_PEAR_XML_QUERY2XML_TEST_LDAPCONFIG'));
+    for ($i = 0; $i < count($keyValuePairs); $i++) {
+        $keyValue = split('=', $keyValuePairs[$i]);
+        $ldapConfig[$keyValue[0]] = $keyValue[1];
+    }
+} else {
+    $ldapConfig = array(
+        'host'     => 'localhost',
+        'port'     => 389,
+        'version'  => 3,
+        'starttls' => false,
+        'binddn'   => '',
+        'bindpw'   => ''
+    );
+}
 ?>
