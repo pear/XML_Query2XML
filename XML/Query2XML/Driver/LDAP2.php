@@ -130,7 +130,7 @@ class XML_Query2XML_Driver_LDAP2 extends XML_Query2XML_Driver
      * @param string $configPath The config path; used for exception messages.
      *
      * @return array An array of records.
-     * @throws XML_Query2XML_LDAPException If Net_LDAP2::search() returns an error.
+     * @throws XML_Query2XML_LDAP2Exception If Net_LDAP2::search() returns an error.
      * @see XML_Query2XML_Driver::getAllRecords()
      */
     public function getAllRecords($query, $configPath)
@@ -168,7 +168,7 @@ class XML_Query2XML_Driver_LDAP2 extends XML_Query2XML_Driver
             /*
              * unit test: getXML/throwLDAPException_queryError.phpt
              */
-            throw new XML_Query2XML_LDAPException(
+            throw new XML_Query2XML_LDAP2Exception(
                 $configPath . ': Could not run LDAP search query: '
                 . $search->toString()
             );
@@ -344,7 +344,7 @@ class XML_Query2XML_Driver_LDAP2 extends XML_Query2XML_Driver
  * @link     http://pear.php.net/package/XML_Query2XML
  * @access   private
  */
-class XML_Query2XML_LDAPException extends XML_Query2XML_DriverException
+class XML_Query2XML_LDAP2Exception extends XML_Query2XML_DriverException
 {
     /**
      * Constructor
