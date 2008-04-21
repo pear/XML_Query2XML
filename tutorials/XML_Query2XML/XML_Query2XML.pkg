@@ -114,7 +114,8 @@
    {@link http://pear.php.net/package/DB PEAR DB}, 
    {@link http://pear.php.net/package/MDB2 PEAR MDB2},
    {@link http://adodb.sourceforge.net ADOdb},
-   {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP} or
+   {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP},
+   {@link http://pear.php.net/package/Net_LDAP2 PEAR Net_LDAP2} or
    any class that extends {@link XML_Query2XML_Driver}
   </para>
   <refsect2 id="{@id database_drivers}">
@@ -192,9 +193,10 @@ $query2xml = XML_Query2XML::factory($adodb);
    <title>LDAP Driver for PEAR Net_LDAP</title>
    <para>
     Since v1.6.0RC1 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
+    The driver for {@link http://pear.php.net/package/Net_LDAP2 PEAR Net_LDAP2} is available since v1.7.0RC1.
    </para>
    <para>
-    Using Net_LDAP with XML_Query2XML works like this:
+    Using Net_LDAP(2) with XML_Query2XML works like this:
     <programlisting role="php">
     <![CDATA[
 <?php
@@ -211,7 +213,7 @@ $query2xml = XML_Query2XML::factory($ldap);
 ?>
     ]]>
     </programlisting>
-    The driver for Net_LDAP uses a diffrent format for
+    The driver for Net_LDAP(2) uses a diffrent format for
     {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql}. Instead of
     a string it expects an associative array with the following elements:
     <itemizedlist>
@@ -225,6 +227,8 @@ $query2xml = XML_Query2XML::factory($ldap);
       <emphasis>'options'</emphasis>: an array of configuration options for the current query
      </listitem>
     </itemizedlist>
+    More information on how to use the LDAP drivers can be found under
+    {@tutorial XML_Query2XML.pkg#ldap}
    </para>
   </refsect2>
  </refsect1>
@@ -5993,6 +5997,7 @@ if ($data = $cache->get($id)) {
   <title>The LDAP Driver</title>
   <para>
    Since v1.6.0RC1 XML_Query2XML comes with a driver for {@link http://pear.php.net/package/Net_LDAP PEAR Net_LDAP}.
+   The driver for {@link http://pear.php.net/package/Net_LDAP2 PEAR Net_LDAP2} is available since v1.7.0RC1.
    This allows you to use LDAP instead of an RDBMS as your primary data source. To use the PEAR Net_LDAP
    driver you can pass an instance of Net_LDAP to {@tutorial XML_Query2XML.pkg#query2xml_factory}. The only
    thing that changes is the format of {@tutorial XML_Query2XML.pkg#query2xml_getxml.sql} and
