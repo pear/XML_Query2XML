@@ -13,7 +13,7 @@ performance in mind and can handle large amounts of data. No XSLT needed!
 Major features:
 1. XML_Query2XML works with the classes provided by PHP5&apos;s built-in DOM API
 2. open driver architecture
-3. comes with drivers for PDO, PEAR DB, PEAR MDB2, ADOdb and PEAR Net_LDAP
+3. comes with drivers for PDO, PEAR DB, PEAR MDB2, ADOdb, PEAR Net_LDAP and Net_LDAP2
 4. ISO/IEC 9075-14:2005 support: mapping of SQL identifiers to XML names
 5. highly configurable
 6. easy integration of other XML data sources (e.g. raw XML data stored in the DB)
@@ -514,7 +514,7 @@ Major features:
   </required>
   <optional>
    <package>
-    <name>Net_LDAP</name>
+    <name>Net_LDAP2</name>
     <channel>pear.php.net</channel>
    </package>
    <package>
