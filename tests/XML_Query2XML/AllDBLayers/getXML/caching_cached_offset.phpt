@@ -34,9 +34,9 @@ XML_Query2XML::enableDebugLog() with $options['sql_options']['cached'] = true
                     'sql' => array(
                         'data' => array(
                             'artistid',
-                            ':test'
+                            ':2000'
                         ),
-                        'query' => 'SELECT * FROM album WHERE artist_id = ? AND "test" = ?',
+                        'query' => 'SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?',
                         'limit' => 1,
                         'offset' => 2
                     ),
@@ -62,15 +62,15 @@ XML_Query2XML::enableDebugLog() with $options['sql_options']['cached'] = true
 --EXPECT--
 QUERY: SELECT * FROM artist UNION ALL SELECT * FROM artist
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:1,test
-QUERY: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:1,test
+CACHING: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:1,2000
+QUERY: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:1,2000
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:2,test
-QUERY: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:2,test
+CACHING: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:2,2000
+QUERY: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:2,2000
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:3,test
-QUERY: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:3,test
+CACHING: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:3,2000
+QUERY: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:3,2000
 DONE
-CACHED: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:1,test
-CACHED: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:2,test
-CACHED: SELECT * FROM album WHERE artist_id = ? AND "test" = ?; LIMIT:1; OFFSET:2; DATA:3,test
+CACHED: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:1,2000
+CACHED: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:2,2000
+CACHED: SELECT * FROM album WHERE artist_id = ? AND NOT albumid = ?; LIMIT:1; OFFSET:2; DATA:3,2000
