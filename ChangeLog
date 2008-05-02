@@ -1,29 +1,40 @@
+2008-05-02 19:47  lukasfeiler
+
+	* RELEASES (1.21), package.xml (1.32): getting ready for 1.7.0
+
+2008-04-21 15:15  tag RELEASE_1_7_0RC1
+
+2008-04-21 15:15  lukasfeiler
+
+	* ChangeLog (1.16, RELEASE_1_7_0RC1): ChangeLog updated
+
 2008-04-21 15:14  lukasfeiler
 
-	* package.xml (1.31): ready for 1.7.0RC1
+	* package.xml (1.31, RELEASE_1_7_0RC1): ready for 1.7.0RC1
 
 2008-04-21 15:12  lukasfeiler
 
-	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.29): added
-	  references to new Net_LDAP2 driver
+	* tutorials/XML_Query2XML/XML_Query2XML.pkg (1.29,
+	  RELEASE_1_7_0RC1): added references to new Net_LDAP2 driver
 
 2008-04-21 10:11  lukasfeiler
 
-	* INSTALL (1.13), RELEASES (1.20), package.xml (1.30): getting
-	  ready for 1.7.0RC1
+	* INSTALL (1.13, RELEASE_1_7_0RC1), RELEASES (1.20,
+	  RELEASE_1_7_0RC1), package.xml (1.30): getting ready for 1.7.0RC1
 
 2008-04-21 10:08  lukasfeiler
 
 	* tests/XML_Query2XML/AllDBLayers/getXML/caching_cached_offset.phpt
-	  (1.2): adjusted to make unit test work with PostgreSQL
+	  (1.2, RELEASE_1_7_0RC1): adjusted to make unit test work with
+	  PostgreSQL
 
 2008-04-19 20:36  lukasfeiler
 
-	* XML/Query2XML/Driver/DB.php (1.4): CS fix
+	* XML/Query2XML/Driver/DB.php (1.4, RELEASE_1_7_0RC1): CS fix
 
 2008-04-19 13:26  lukasfeiler
 
-	* tests/XML_Query2XML/settings.php (1.6):
+	* tests/XML_Query2XML/settings.php (1.6, RELEASE_1_7_0RC1):
 	  PHP_PEAR_XML_QUERY2XML_TEST_LDAPCONFIG can now be used to set the
 	  LDAP connection information
 
@@ -31,298 +42,364 @@
 
 	* XML/Query2XML/Driver/LDAP2.php (1.2),
 	  tests/XML_Query2XML/LDAP/getXML/throwLDAPException_queryError.phpt
-	  (1.3): exception for Net_LDAP2 driver is
-	  XML_Query2XML_LDAP2Exception
+	  (1.3) (utags: RELEASE_1_7_0RC1): exception for Net_LDAP2 driver
+	  is XML_Query2XML_LDAP2Exception
 
 2008-04-19 11:36  lukasfeiler
 
-	* README (1.13), package.xml (1.29): preparing for 1.7.0RC1
+	* README (1.13, RELEASE_1_7_0RC1), package.xml (1.29): preparing
+	  for 1.7.0RC1
 
 2008-04-19 01:56  lukasfeiler
 
 	* tests/XML_Query2XML/NoDBLayer/factory/throwConfigException.phpt
-	  (1.5): corrected exception message
+	  (1.5, RELEASE_1_7_0RC1): corrected exception message
 
 2008-04-19 01:52  lukasfeiler
 
-	* tests/XML_Query2XML/LDAP/: ldap_init.php (1.2), skipif.php (1.2),
+	* tests/XML_Query2XML/LDAP/: ldap_init.php (1.2, RELEASE_1_7_0RC1),
+	  skipif.php (1.2, RELEASE_1_7_0RC1),
 	  XML_Query2XML_Driver_LDAP-preprocessQuery/regularOperation.phpt
-	  (1.2), getXML/throwLDAPException_queryError.phpt (1.2): the
-	  environment variable PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER can be
-	  use to run these tests with Net_LDAP2 instead of Net_LDAP
+	  (1.2, RELEASE_1_7_0RC1),
+	  getXML/throwLDAPException_queryError.phpt (1.2): the environment
+	  variable PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER can be use to run
+	  these tests with Net_LDAP2 instead of Net_LDAP
 
 2008-04-19 01:50  lukasfeiler
 
-	* tests/XML_Query2XML/AllDBLayers/: ADOdbDefault_db_init.php (1.1),
-	  ADOdbDefault_skipif.php (1.1), ADOdbException_db_init.php (1.1),
-	  ADOdbException_skipif.php (1.1), ADOdbPEAR_db_init.php (1.1),
-	  ADOdbPEAR_skipif.php (1.1), DB_db_init.php (1.1), DB_skipif.php
-	  (1.1), MDB2_db_init.php (1.1), MDB2_skipif.php (1.1),
-	  PDO_db_init.php (1.1), PDO_skipif.php (1.1), db_init.php (1.1),
-	  skipif.php (1.1),
-	  _addDOMChildren/throwXMLException_arrayWithBool.phpt (1.1),
-	  _addDOMChildren/throwXMLException_arrayWithDouble.phpt (1.1),
-	  _addDOMChildren/throwXMLException_arrayWithInt.phpt (1.1),
-	  _addDOMChildren/throwXMLException_arrayWithObject.phpt (1.1),
-	  _addDOMChildren/throwXMLException_arrayWithString.phpt (1.1),
-	  _appendTextChildNode/throwXMLException.phpt (1.1),
-	  _applyColumnStringToRecord/callbacks.phpt (1.1),
+	* tests/XML_Query2XML/AllDBLayers/: ADOdbDefault_db_init.php (1.1,
+	  RELEASE_1_7_0RC1), ADOdbDefault_skipif.php (1.1,
+	  RELEASE_1_7_0RC1), ADOdbException_db_init.php (1.1,
+	  RELEASE_1_7_0RC1), ADOdbException_skipif.php (1.1,
+	  RELEASE_1_7_0RC1), ADOdbPEAR_db_init.php (1.1, RELEASE_1_7_0RC1),
+	  ADOdbPEAR_skipif.php (1.1, RELEASE_1_7_0RC1), DB_db_init.php
+	  (1.1, RELEASE_1_7_0RC1), DB_skipif.php (1.1, RELEASE_1_7_0RC1),
+	  MDB2_db_init.php (1.1, RELEASE_1_7_0RC1), MDB2_skipif.php (1.1,
+	  RELEASE_1_7_0RC1), PDO_db_init.php (1.1, RELEASE_1_7_0RC1),
+	  PDO_skipif.php (1.1, RELEASE_1_7_0RC1), db_init.php (1.1,
+	  RELEASE_1_7_0RC1), skipif.php (1.1, RELEASE_1_7_0RC1),
+	  _addDOMChildren/throwXMLException_arrayWithBool.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _addDOMChildren/throwXMLException_arrayWithDouble.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _addDOMChildren/throwXMLException_arrayWithInt.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _addDOMChildren/throwXMLException_arrayWithObject.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _addDOMChildren/throwXMLException_arrayWithString.phpt (1.1,
+	  RELEASE_1_7_0RC1), _appendTextChildNode/throwXMLException.phpt
+	  (1.1, RELEASE_1_7_0RC1),
+	  _applyColumnStringToRecord/callbacks.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwConfigException_callback_function1.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwConfigException_callback_function2.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwConfigException_callback_method1.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwConfigException_callback_method2.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwConfigException_element1.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwConfigException_element2.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwConfigException_idcolumn.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applyColumnStringToRecord/throwXMLException_unserialize.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt
-	  (1.1), _createDOMElement/throwXMLException_elementInvalid1.phpt
-	  (1.1), _createDOMElement/throwXMLException_elementInvalid2.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  _createDOMElement/throwXMLException_elementInvalid1.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _createDOMElement/throwXMLException_elementInvalid2.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  _createDOMElement/throwXMLException_roottagOptionInvalid1.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _createDOMElement/throwXMLException_roottagOptionInvalid2.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _createDOMElement/throwXMLException_rowtagOptionInvalid.phpt
-	  (1.1), _executeEncoder/basics.phpt (1.1),
-	  _executeEncoder/encoder_default.phpt (1.1),
-	  _executeEncoder/encoder_false.phpt (1.1),
-	  _executeEncoder/encoder_function.phpt (1.1),
-	  _executeEncoder/encoder_nonStaticMethod.phpt (1.1),
-	  _executeEncoder/encoder_null.phpt (1.1),
-	  _executeEncoder/encoder_overwritten_default_false.phpt (1.1),
-	  _executeEncoder/encoder_overwritten_default_false2.phpt (1.1),
+	  (1.1, RELEASE_1_7_0RC1), _executeEncoder/basics.phpt (1.1,
+	  RELEASE_1_7_0RC1), _executeEncoder/encoder_default.phpt (1.1,
+	  RELEASE_1_7_0RC1), _executeEncoder/encoder_false.phpt (1.1,
+	  RELEASE_1_7_0RC1), _executeEncoder/encoder_function.phpt (1.1,
+	  RELEASE_1_7_0RC1), _executeEncoder/encoder_nonStaticMethod.phpt
+	  (1.1, RELEASE_1_7_0RC1), _executeEncoder/encoder_null.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _executeEncoder/encoder_overwritten_default_false.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _executeEncoder/encoder_overwritten_default_false2.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  _executeEncoder/encoder_overwritten_default_false_function.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt
-	  (1.1), _executeEncoder/encoder_staticMethodArray.phpt (1.1),
-	  _executeEncoder/encoder_staticMethodString.phpt (1.1),
-	  _executeEncoder/throwXMLException.phpt (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  _executeEncoder/encoder_staticMethodArray.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _executeEncoder/encoder_staticMethodString.phpt (1.1,
+	  RELEASE_1_7_0RC1), _executeEncoder/throwXMLException.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  _executeEncoder/within_complexAttributeSpecificationValue.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _executeEncoder/within_complexElementSpecificationValue.phpt
-	  (1.1), _executeEncoder/within_simpleAttributeSpecification.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  _executeEncoder/within_simpleAttributeSpecification.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  _getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _getNestedXMLRecord/throwConfigException_idcolumnOptionWrongTypeArray.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _getNestedXMLRecord/throwConfigException_idcolumnOptionWrongTypeObject.phpt
-	  (1.1), _mapSQLIdentifierToXMLName/throwXMLException.phpt (1.1),
-	  _prepareAndExecute/throwDBException_complexQuery.phpt (1.1),
-	  _prepareAndExecute/throwDBException_simpleQuery.phpt (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  _mapSQLIdentifierToXMLName/throwXMLException.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _prepareAndExecute/throwDBException_complexQuery.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  _prepareAndExecute/throwDBException_simpleQuery.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_attributesOptionWrongType.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_complexAttributeSpec.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_complexElementSpec.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_condition.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_data.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_idColumn.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_noArrayKey.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_simpleAttributeSpec.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_callbackInterface_simpleElementSpec.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_dataOptionWrongType.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_driverOptionWrongType.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_elementsOptionWrongType.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_encoderNotCallableFunction.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_encoderNotCallableNonstaticMethod.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_encoderNotCallableStaticMethod1.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_encoderNotCallableStaticMethod2.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_idcolumnOptionMissing.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_mapperNotCallableFunction.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_mapperNotCallableNonstaticMethod.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_mapperNotCallableStaticMethod1.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_mapperNotCallableStaticMethod2.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_mergeselectiveOptionWrongType.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_prefix_noArrayKey.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_queryOptionMissing.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_sqlOptionWrongType.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _preprocessOptions/throwConfigException_valueOptionMissing.phpt
-	  (1.1),
-	  _processComplexElementSpecification/condition_function.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  _processComplexElementSpecification/condition_function.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  _processComplexElementSpecification/condition_staticMethod.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  _processComplexElementSpecification/rethrowConfigException.phpt
-	  (1.1), _setDOMAttribute/throwXMLException.phpt (1.1),
-	  clearProfile/clearProfile.phpt (1.1),
-	  disableDebugLog/disableDebugLog.phpt (1.1),
-	  enableDebugLog/enableDebugLog.phpt (1.1),
-	  enableDebugLog/enableDebugLog_cached.phpt (1.1),
-	  enableDebugLog/enableDebugLog_twoVars.phpt (1.1),
-	  enableDebugLog/enableDebugLog_uncached.phpt (1.1),
-	  getFlatXML/case01.phpt (1.1), getFlatXML/simpleSelect.phpt (1.1),
-	  getFlatXML/throwDBException.phpt (1.1),
-	  getGlobalOption/configException_noSuchOption.phpt (1.1),
-	  getGlobalOption/hidden_container_prefix.phpt (1.1),
-	  getProfile/getProfile.phpt (1.1),
-	  getRawProfile/getRawProfile.phpt (1.1),
-	  getXML/asteriskShortcut_attributes1.phpt (1.1),
-	  getXML/asteriskShortcut_attributes2.phpt (1.1),
-	  getXML/asteriskShortcut_attributes3.phpt (1.1),
-	  getXML/asteriskShortcut_attributes4.phpt (1.1),
-	  getXML/asteriskShortcut_attributes5.phpt (1.1),
-	  getXML/asteriskShortcut_attributes6.phpt (1.1),
-	  getXML/asteriskShortcut_elements1.phpt (1.1),
-	  getXML/asteriskShortcut_elements2.phpt (1.1),
-	  getXML/asteriskShortcut_elements3.phpt (1.1),
-	  getXML/asteriskShortcut_elements4.phpt (1.1),
-	  getXML/asteriskShortcut_elements5.phpt (1.1),
-	  getXML/asteriskShortcut_elements6.phpt (1.1),
-	  getXML/base64Prefix_callback.phpt (1.1),
-	  getXML/base64Prefix_callback_conditionalPrefix.phpt (1.1),
-	  getXML/base64Prefix_columnName.phpt (1.1),
-	  getXML/base64Prefix_columnName_conditionalPrefix.phpt (1.1),
-	  getXML/base64Prefix_staticString.phpt (1.1),
-	  getXML/base64Prefix_staticString_conditionalPrefix.phpt (1.1),
-	  getXML/caching_cached.phpt (1.1),
-	  getXML/caching_cached_different_drivers.phpt (1.1),
-	  getXML/caching_cached_limit.phpt (1.1),
-	  getXML/caching_cached_limits.phpt (1.1),
-	  getXML/caching_cached_multiple_queries.phpt (1.1),
-	  getXML/caching_cached_offset.phpt (1.1),
-	  getXML/caching_uncached.phpt (1.1),
-	  getXML/callbackInterface_complexAttributeSpec.phpt (1.1),
-	  getXML/callbackInterface_complexElementSpec.phpt (1.1),
-	  getXML/callbackInterface_condition.phpt (1.1),
-	  getXML/callbackInterface_data.phpt (1.1),
-	  getXML/callbackInterface_idColumn.phpt (1.1),
-	  getXML/callbackInterface_simpleAttributeSpec.phpt (1.1),
-	  getXML/callbackInterface_simpleElementSpec.phpt (1.1),
-	  getXML/callbackReturnDOMNode.phpt (1.1),
-	  getXML/callbackReturnDOMNodeArray.phpt (1.1),
-	  getXML/callbackReturnDOMNodeArray_parentHidden.phpt (1.1),
-	  getXML/callbackReturnDOMNode_parentHidden.phpt (1.1),
-	  getXML/case02.phpt (1.1), getXML/case03.phpt (1.1),
-	  getXML/case04.phpt (1.1), getXML/case05.phpt (1.1),
-	  getXML/case06.phpt (1.1), getXML/case07.phpt (1.1),
-	  getXML/case08.phpt (1.1), getXML/cdataPrefix_base64Prefix.phpt
-	  (1.1), getXML/cdataPrefix_callback.phpt (1.1),
-	  getXML/cdataPrefix_callback_conditionalPrefix.phpt (1.1),
-	  getXML/cdataPrefix_columnName.phpt (1.1),
-	  getXML/cdataPrefix_columnName_conditionalPrefix.phpt (1.1),
-	  getXML/cdataPrefix_emptyCdata.phpt (1.1),
-	  getXML/cdataPrefix_staticString.phpt (1.1),
-	  getXML/cdataPrefix_staticString_conditionalPrefix.phpt (1.1),
-	  getXML/cdataPrefix_throwException2_invalidForAttribute.phpt
-	  (1.1), getXML/cdataPrefix_throwException_invalidForAttribute.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1), _setDOMAttribute/throwXMLException.phpt
+	  (1.1, RELEASE_1_7_0RC1), clearProfile/clearProfile.phpt (1.1,
+	  RELEASE_1_7_0RC1), disableDebugLog/disableDebugLog.phpt (1.1,
+	  RELEASE_1_7_0RC1), enableDebugLog/enableDebugLog.phpt (1.1,
+	  RELEASE_1_7_0RC1), enableDebugLog/enableDebugLog_cached.phpt
+	  (1.1, RELEASE_1_7_0RC1),
+	  enableDebugLog/enableDebugLog_twoVars.phpt (1.1,
+	  RELEASE_1_7_0RC1), enableDebugLog/enableDebugLog_uncached.phpt
+	  (1.1, RELEASE_1_7_0RC1), getFlatXML/case01.phpt (1.1,
+	  RELEASE_1_7_0RC1), getFlatXML/simpleSelect.phpt (1.1,
+	  RELEASE_1_7_0RC1), getFlatXML/throwDBException.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getGlobalOption/configException_noSuchOption.phpt (1.1,
+	  RELEASE_1_7_0RC1), getGlobalOption/hidden_container_prefix.phpt
+	  (1.1, RELEASE_1_7_0RC1), getProfile/getProfile.phpt (1.1,
+	  RELEASE_1_7_0RC1), getRawProfile/getRawProfile.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_attributes1.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_attributes2.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_attributes3.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_attributes4.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_attributes5.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_attributes6.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_elements1.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_elements2.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_elements3.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_elements4.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_elements5.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/asteriskShortcut_elements6.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/base64Prefix_callback.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/base64Prefix_callback_conditionalPrefix.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/base64Prefix_columnName.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/base64Prefix_columnName_conditionalPrefix.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/base64Prefix_staticString.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/base64Prefix_staticString_conditionalPrefix.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/caching_cached.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/caching_cached_different_drivers.phpt
+	  (1.1, RELEASE_1_7_0RC1), getXML/caching_cached_limit.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/caching_cached_limits.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/caching_cached_multiple_queries.phpt
+	  (1.1, RELEASE_1_7_0RC1), getXML/caching_cached_offset.phpt (1.1),
+	  getXML/caching_uncached.phpt (1.1, RELEASE_1_7_0RC1),
+	  getXML/callbackInterface_complexAttributeSpec.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/callbackInterface_complexElementSpec.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/callbackInterface_condition.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/callbackInterface_data.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/callbackInterface_idColumn.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/callbackInterface_simpleAttributeSpec.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/callbackInterface_simpleElementSpec.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/callbackReturnDOMNode.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/callbackReturnDOMNodeArray.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/callbackReturnDOMNodeArray_parentHidden.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/callbackReturnDOMNode_parentHidden.phpt
+	  (1.1, RELEASE_1_7_0RC1), getXML/case02.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/case03.phpt (1.1, RELEASE_1_7_0RC1),
+	  getXML/case04.phpt (1.1, RELEASE_1_7_0RC1), getXML/case05.phpt
+	  (1.1, RELEASE_1_7_0RC1), getXML/case06.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/case07.phpt (1.1, RELEASE_1_7_0RC1),
+	  getXML/case08.phpt (1.1, RELEASE_1_7_0RC1),
+	  getXML/cdataPrefix_base64Prefix.phpt (1.1, RELEASE_1_7_0RC1),
+	  getXML/cdataPrefix_callback.phpt (1.1, RELEASE_1_7_0RC1),
+	  getXML/cdataPrefix_callback_conditionalPrefix.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/cdataPrefix_columnName.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/cdataPrefix_columnName_conditionalPrefix.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/cdataPrefix_emptyCdata.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/cdataPrefix_staticString.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/cdataPrefix_staticString_conditionalPrefix.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/cdataPrefix_throwException2_invalidForAttribute.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/cdataPrefix_throwException_invalidForAttribute.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/complexAttributeSpecification_complexQuerySpecification.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt
-	  (1.1), getXML/complexAttributeSpecification_conditionOption.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/complexAttributeSpecification_conditionOption.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/complexAttributeSpecification_simpleQuerySpecification.phpt
-	  (1.1), getXML/complexAttributeSpecification_valuePrefixes.phpt
-	  (1.1), getXML/complexElementSpecification_conditionOption1.phpt
-	  (1.1), getXML/complexElementSpecification_conditionOption2.phpt
-	  (1.1), getXML/conditionPrefix_attribute_callback.phpt (1.1),
-	  getXML/conditionPrefix_attribute_columnName.phpt (1.1),
-	  getXML/conditionPrefix_attribute_staticText.phpt (1.1),
-	  getXML/conditionPrefix_element_callback.phpt (1.1),
-	  getXML/conditionPrefix_element_columnName.phpt (1.1),
-	  getXML/conditionPrefix_element_staticText.phpt (1.1),
-	  getXML/conditionPrefix_value_callback.phpt (1.1),
-	  getXML/conditionPrefix_value_columnName.phpt (1.1),
-	  getXML/conditionPrefix_value_staticText.phpt (1.1),
-	  getXML/dynamicRowTag_callback.phpt (1.1),
-	  getXML/dynamicRowTag_columnName.phpt (1.1),
-	  getXML/dynamicRowTag_columnName_ignoreRowTag.phpt (1.1),
-	  getXML/dynamicRowTag_columnName_onRootLevel.phpt (1.1),
-	  getXML/dynamicRowTag_commandObject.phpt (1.1),
-	  getXML/dynamicRowTag_staticString.phpt (1.1),
-	  getXML/idcolumn_false1.phpt (1.1), getXML/idcolumn_false2.phpt
-	  (1.1), getXML/offsetlimit.phpt (1.1),
-	  getXML/offsetlimit_driver.phpt (1.1),
-	  getXML/offsetlimit_limit_zero.phpt (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/complexAttributeSpecification_valuePrefixes.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/complexElementSpecification_conditionOption1.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/complexElementSpecification_conditionOption2.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/conditionPrefix_attribute_callback.phpt
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/conditionPrefix_attribute_columnName.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/conditionPrefix_attribute_staticText.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/conditionPrefix_element_callback.phpt
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/conditionPrefix_element_columnName.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/conditionPrefix_element_staticText.phpt
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/conditionPrefix_value_callback.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/conditionPrefix_value_columnName.phpt
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/conditionPrefix_value_staticText.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/dynamicRowTag_callback.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/dynamicRowTag_columnName.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/dynamicRowTag_columnName_ignoreRowTag.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/dynamicRowTag_columnName_onRootLevel.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/dynamicRowTag_commandObject.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/dynamicRowTag_staticString.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/idcolumn_false1.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/idcolumn_false2.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/offsetlimit.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/offsetlimit_driver.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/offsetlimit_limit_zero.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/offsetlimit_throwConfigException_limit_not_numeric.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/offsetlimit_throwConfigException_offset_not_numeric.phpt
-	  (1.1), getXML/sql_argument_false1.phpt (1.1),
-	  getXML/sql_argument_false2.phpt (1.1),
-	  getXML/sql_options_single_record.phpt (1.1),
-	  getXML/sql_options_single_record_emptyResultSet.phpt (1.1),
+	  (1.1, RELEASE_1_7_0RC1), getXML/sql_argument_false1.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/sql_argument_false2.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/sql_options_single_record.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/sql_options_single_record_emptyResultSet.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/sql_options_single_record_emptyResultSet_uncached.phpt
-	  (1.1), getXML/sql_options_single_record_uncached.phpt (1.1),
-	  getXML/throwDBException.phpt (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/sql_options_single_record_uncached.phpt (1.1,
+	  RELEASE_1_7_0RC1), getXML/throwDBException.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/throwDBException_nullResultSet_complexQuery_multipleRecords.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/throwDBException_nullResultSet_complexQuery_singleRecord.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/throwDBException_nullResultSet_simpleQuery_singleRecord.phpt
-	  (1.1), getXML/unserializationPrefix_complexElement_callback.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/unserializationPrefix_complexElement_callback.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_complexElement_callbackEmpty.phpt
-	  (1.1),
-	  getXML/unserializationPrefix_complexElement_columnName.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/unserializationPrefix_complexElement_columnName.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_complexElement_columnNameEmpty.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_complexElement_staticString.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_complexElement_staticStringEmpty.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_scenariosContainerAlwaysPresent.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt
-	  (1.1), getXML/unserializationPrefix_scenariosNoContainer.phpt
-	  (1.1), getXML/unserializationPrefix_simpleElement_callback.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/unserializationPrefix_scenariosNoContainer.phpt (1.1,
+	  RELEASE_1_7_0RC1),
+	  getXML/unserializationPrefix_simpleElement_callback.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_simpleElement_callbackEmpty.phpt
-	  (1.1), getXML/unserializationPrefix_simpleElement_columnName.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
+	  getXML/unserializationPrefix_simpleElement_columnName.phpt (1.1,
+	  RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_simpleElement_columnNameEmpty.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_simpleElement_staticString.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  getXML/unserializationPrefix_simpleElement_staticStringEmpty.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  setGlobalOption/configException_hidden_container_prefix_wrongTypeEmptyStr.phpt
-	  (1.1),
+	  (1.1, RELEASE_1_7_0RC1),
 	  setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt
-	  (1.1), setGlobalOption/configException_noSuchOption.phpt (1.1),
-	  setGlobalOption/hidden_container_prefix.phpt (1.1),
-	  startProfiling/startProfiling.phpt (1.1),
-	  stopProfiling/stopProfiling.phpt (1.1): consolidated unit tests
-	  for all database abstraction layers
+	  (1.1, RELEASE_1_7_0RC1),
+	  setGlobalOption/configException_noSuchOption.phpt (1.1,
+	  RELEASE_1_7_0RC1), setGlobalOption/hidden_container_prefix.phpt
+	  (1.1, RELEASE_1_7_0RC1), startProfiling/startProfiling.phpt (1.1,
+	  RELEASE_1_7_0RC1), stopProfiling/stopProfiling.phpt (1.1,
+	  RELEASE_1_7_0RC1): consolidated unit tests for all database
+	  abstraction layers
 
 2008-04-18 23:26  lukasfeiler
 
@@ -332,9 +409,9 @@
 	  case05/case05.log (1.3), case05/case05.profile (1.3),
 	  case06/case06.log (1.3), case06/case06.profile (1.3),
 	  case07/case07.log (1.3), case07/case07.profile (1.3),
-	  case08/case08.log (1.3), case08/case08.profile (1.3): improved
-	  logging: now also includes the values with which a prepared
-	  statement gets executed
+	  case08/case08.log (1.3), case08/case08.profile (1.3) (utags:
+	  RELEASE_1_7_0RC1): improved logging: now also includes the values
+	  with which a prepared statement gets executed
 
 2008-04-18 23:23  lukasfeiler
 
@@ -348,13 +425,13 @@
 
 2008-04-18 20:10  lukasfeiler
 
-	* XML/: Query2XML.php (1.32), Query2XML/Driver/LDAP2.php (1.1): new
-	  driver for Net_LDAP2
+	* XML/: Query2XML.php (1.32, RELEASE_1_7_0RC1),
+	  Query2XML/Driver/LDAP2.php (1.1): new driver for Net_LDAP2
 
 2008-04-18 19:48  lukasfeiler
 
-	* XML/Query2XML/Driver/: DB.php (1.3), MDB2.php (1.3): implemented
-	  $sql["offset"] and $sql["limit"]
+	* XML/Query2XML/Driver/: DB.php (1.3), MDB2.php (1.3,
+	  RELEASE_1_7_0RC1): implemented $sql["offset"] and $sql["limit"]
 
 2008-04-18 19:40  lukasfeiler
 
@@ -406,7 +483,8 @@
 
 	*
 	  tests/XML_Query2XML/LDAP/XML_Query2XML_Driver_LDAP-preprocessQuery/throwConfigException_queryNotAnArray.phpt
-	  (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1): more readable test data
+	  (1.2, RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1): more
+	  readable test data
 
 2008-01-02 16:47  lukasfeiler
 
@@ -415,8 +493,9 @@
 
 2008-01-02 16:46  lukasfeiler
 
-	* XML/Query2XML/Driver/LDAP.php (1.3, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1): CS fixes and references to unit tests
+	* XML/Query2XML/Driver/LDAP.php (1.3, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1): CS fixes and references to unit
+	  tests
 
 2008-01-02 16:44  lukasfeiler
 
@@ -450,15 +529,16 @@
 
 	* tests/XML_Query2XML/LDAP/:
 	  getXML/complexElementSpecification_multiValueLDAPAttributes.phpt
-	  (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1), getXML/placeholders.phpt
-	  (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
-	  getXML/placeholders_alternative.phpt (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1), getXML/placeholders_alternative_multichar.phpt
-	  (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
-	  getXML/simpleElementSpecification.phpt (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1),
+	  (1.1, RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
+	  getXML/placeholders.phpt (1.1, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1), getXML/placeholders_alternative.phpt (1.1,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
+	  getXML/placeholders_alternative_multichar.phpt (1.1,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
+	  getXML/simpleElementSpecification.phpt (1.1, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1),
 	  getXML/simpleElementSpecification_optionalLDAPAttributes.phpt
-	  (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
+	  (1.1, RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
 	  XML_Query2XML_Driver_LDAP-preprocessQuery/regularOperation.phpt
 	  (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1),
 	  XML_Query2XML_Driver_LDAP-preprocessQuery/throwConfigException_queryNotAnArray.phpt
@@ -477,9 +557,9 @@
 2007-11-19 04:52  lukasfeiler
 
 	* tests/XML_Query2XML/NoDBLayer/factory/: throwConfigException.phpt
-	  (1.4), throwDBException.phpt (1.4) (utags: RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1): changed exceptions messages due to new
-	  Net_LDAP driver
+	  (1.4), throwDBException.phpt (1.4, RELEASE_1_7_0RC1) (utags:
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1): changed exceptions messages due
+	  to new Net_LDAP driver
 
 2007-11-19 03:24  lukasfeiler
 
@@ -490,18 +570,20 @@
 	* XML/Query2XML/Command/: Base64.php (1.3), CDATA.php (1.3),
 	  Chain.php (1.3), ColumnValue.php (1.3), NonEmpty.php (1.3),
 	  PHPCallback.php (1.3), Static.php (1.3), Unserialize.php (1.3)
-	  (utags: RELEASE_1_6_0, RELEASE_1_6_0RC1): CS fixes
+	  (utags: RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_7_0RC1): CS
+	  fixes
 
 2007-11-19 02:36  lukasfeiler
 
 	* XML/Query2XML/: Callback.php (1.4), ISO9075Mapper.php (1.3)
-	  (utags: RELEASE_1_6_0, RELEASE_1_6_0RC1): CS fixes
+	  (utags: RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_7_0RC1): CS
+	  fixes
 
 2007-11-19 02:33  lukasfeiler
 
-	* XML/Query2XML/Driver/: ADOdb.php (1.2), DB.php (1.2), MDB2.php
-	  (1.2), PDO.php (1.2) (utags: RELEASE_1_6_0, RELEASE_1_6_0RC1): CS
-	  fixes
+	* XML/Query2XML/Driver/: ADOdb.php (1.2, RELEASE_1_7_0RC1), DB.php
+	  (1.2), MDB2.php (1.2), PDO.php (1.2, RELEASE_1_7_0RC1) (utags:
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1): CS fixes
 
 2007-11-19 02:04  lukasfeiler
 
@@ -569,8 +651,8 @@
 	  case06/case06_debug.php (1.7), case07/case07.php (1.5),
 	  case07/case07_debug.php (1.5), case08/case08_debug.php (1.7)
 	  (utags: RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1): caching is now turned off by default; cases
-	  now E_STRICT
+	  RELEASE_1_6_0RC1, RELEASE_1_7_0RC1): caching is now turned off by
+	  default; cases now E_STRICT
 
 2007-09-30 01:26  lukasfeiler
 
@@ -631,16 +713,16 @@
 
 2007-09-03 10:00  lukasfeiler
 
-	* tests/Query2XML_Tests.sq2 (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0): sqlite2 db used
-	  for unit testing by default
+	* tests/Query2XML_Tests.sq2 (1.1, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0): sqlite2 db used for unit testing by default
 
 2007-09-03 09:57  lukasfeiler
 
 	* tests/XML_Query2XML/: diffTests.sh (1.4), diffTests_MDB2Master.sh
 	  (1.2) (utags: RELEASE_1_4_0, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1): taking new PDO tests into
-	  account
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_7_0RC1): taking new
+	  PDO tests into account
 
 2007-09-03 09:57  lukasfeiler
 
@@ -681,14 +763,16 @@
 
 2007-08-26 04:57  lukasfeiler
 
-	* cases/: case05/case05.php (1.7, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1), case05/case05_debug.php (1.6),
-	  case06/case06.php (1.6, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1), case06/case06_debug.php (1.6),
-	  case08/case08.php (1.6, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1), case08/case08_debug.php (1.6)
-	  (utags: RELEASE_1_3_0, RELEASE_1_4_0): results differed when
-	  executed in different timezones (due to usage of date function)
+	* cases/: case05/case05.php (1.7, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1),
+	  case05/case05_debug.php (1.6), case06/case06.php (1.6,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1), case06/case06_debug.php (1.6),
+	  case08/case08.php (1.6, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1),
+	  case08/case08_debug.php (1.6) (utags: RELEASE_1_3_0,
+	  RELEASE_1_4_0): results differed when executed in different
+	  timezones (due to usage of date function)
 
 2007-06-03 16:18  lukasfeiler
 
@@ -709,10 +793,10 @@
 2007-05-26 13:00  lukasfeiler
 
 	* INSTALL (1.8), README (1.7), RELEASES (1.12), package.xml (1.20),
-	  tests/XML_Query2XML/syncTests_MDB2Master.sh (1.2, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0) (utags: RELEASE_1_2_1): getting ready for release
-	  1.2.1
+	  tests/XML_Query2XML/syncTests_MDB2Master.sh (1.2,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0) (utags:
+	  RELEASE_1_2_1): getting ready for release 1.2.1
 
 2007-05-26 12:54  lukasfeiler
 
@@ -803,41 +887,42 @@
 
 2007-02-03 17:01  lukasfeiler
 
-	* cases/: case01/case01.php (1.4, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case02/case02.log (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case02/case02.php (1.4, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case02/case02.profile (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case02/case02_debug.php (1.4, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case03/case03.log (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case03/case03.php (1.4, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case03/case03.profile (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case03/case03_debug.php (1.4, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case04/case04.log (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case04/case04.php (1.6, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case04/case04.profile (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case04/case04_debug.php (1.6, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case05/case05.log (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case05/case05.php (1.6), case05/case05.profile (1.2,
+	* cases/: case01/case01.php (1.4, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0), case02/case02.log (1.2, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0), case02/case02.php (1.4, RELEASE_1_7_0RC1,
 	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0), case05/case05_debug.php (1.5),
-	  case06/case06.log (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
-	  case06/case06.php (1.5), case06/case06.profile (1.2,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case02/case02.profile (1.2,
 	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0), case06/case06.xml (1.3,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case02/case02_debug.php (1.4,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case03/case03.log (1.2,
 	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0), case06/case06_debug.php (1.5),
-	  case07/case07.log (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case03/case03.php (1.4,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case03/case03.profile (1.2,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case03/case03_debug.php (1.4,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case04/case04.log (1.2,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case04/case04.php (1.6,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case04/case04.profile (1.2,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case04/case04_debug.php (1.6,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case05/case05.log (1.2,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case05/case05.php (1.6),
+	  case05/case05.profile (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
 	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
+	  case05/case05_debug.php (1.5), case06/case06.log (1.2,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0), case06/case06.php (1.5),
+	  case06/case06.profile (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
+	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
+	  case06/case06.xml (1.3, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0), case06/case06_debug.php (1.5), case07/case07.log
+	  (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
 	  case07/case07.php (1.4, RELEASE_1_4_0, RELEASE_1_3_0),
 	  case07/case07.profile (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
 	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0),
@@ -914,10 +999,10 @@
 
 2007-02-01 16:49  lukasfeiler
 
-	* tests/Query2XML_Tests.psql (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0): PostgreSQL DDL for
-	  unit tests
+	* tests/Query2XML_Tests.psql (1.1, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0):
+	  PostgreSQL DDL for unit tests
 
 2007-02-01 16:32  lukasfeiler
 
@@ -935,9 +1020,9 @@
 
 2006-12-27 00:35  lukasfeiler
 
-	* tests/Query2XML_Tests.sql (1.3, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
+	* tests/Query2XML_Tests.sql (1.3, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
 	  tutorials/XML_Query2XML/XML_Query2XML.pkg (1.10): fixed typo in
 	  column name that was used in unit tests and docs
 
@@ -960,13 +1045,13 @@
 
 2006-12-25 17:49  lukasfeiler
 
-	* tests/XML_Query2XML/: checkTestNames.sh (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0), diffTests.sh (1.3), syncTests.sh (1.1,
+	* tests/XML_Query2XML/: checkTestNames.sh (1.1, RELEASE_1_7_0RC1,
 	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0) (utags: RELEASE_1_1_0, RELEASE_1_2_0,
-	  RELEASE_1_2_1, RELEASE_1_3_0): unit test management helper
-	  scripts
+	  RELEASE_1_4_0), diffTests.sh (1.3), syncTests.sh (1.1,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0) (utags: RELEASE_1_1_0,
+	  RELEASE_1_2_0, RELEASE_1_2_1, RELEASE_1_3_0): unit test
+	  management helper scripts
 
 2006-12-25 17:40  lukasfeiler
 
@@ -983,13 +1068,14 @@
 
 2006-12-24 13:39  lukasfeiler
 
-	* tests/: Query2XML_Tests.dm2 (1.2, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
-	  Query2XML_Tests.jpg (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0), Query2XML_Tests.sql
-	  (1.2): new building_xmldata column needed for unit tests
+	* tests/: Query2XML_Tests.dm2 (1.2, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
+	  RELEASE_1_1_0), Query2XML_Tests.jpg (1.2, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
+	  RELEASE_1_1_0), Query2XML_Tests.sql (1.2): new building_xmldata
+	  column needed for unit tests
 
 2006-12-24 01:02  lukasfeiler
 
@@ -1010,33 +1096,35 @@
 2006-12-23 18:11  lukasfeiler
 
 	* cases/: case01/case01.php (1.2), case01/case01.xml (1.2,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0), case02/case02.php (1.2), case02/case02.xml (1.2,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0), case02/case02_debug.php (1.2), case03/case03.php
-	  (1.2), case03/case03.xml (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
-	  case03/case03_debug.php (1.2), case04/case04.php (1.4),
-	  case04/case04.xml (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
-	  case04/case04_debug.php (1.4), case05/case05.php (1.4),
-	  case05/case05.xml (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
-	  case05/case05_debug.php (1.3), case06/case06.php (1.3),
-	  case06/case06.xml (1.2), case06/case06_debug.php (1.3),
-	  case07/case07.php (1.2), case07/case07.xml (1.2, RELEASE_1_6_0,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0), case02/case02.php (1.2),
+	  case02/case02.xml (1.2, RELEASE_1_7_0RC1, RELEASE_1_6_0,
 	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
 	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
-	  case07/case07_debug.php (1.2), case08/case08.php (1.3),
-	  case08/case08.xml (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
-	  case08/case08_debug.php (1.3): dropped usage of XML_Beautifier
+	  case02/case02_debug.php (1.2), case03/case03.php (1.2),
+	  case03/case03.xml (1.2, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
+	  case03/case03_debug.php (1.2), case04/case04.php (1.4),
+	  case04/case04.xml (1.2, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
+	  case04/case04_debug.php (1.4), case05/case05.php (1.4),
+	  case05/case05.xml (1.2, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0),
+	  case05/case05_debug.php (1.3), case06/case06.php (1.3),
+	  case06/case06.xml (1.2), case06/case06_debug.php (1.3),
+	  case07/case07.php (1.2), case07/case07.xml (1.2,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0), case07/case07_debug.php (1.2),
+	  case08/case08.php (1.3), case08/case08.xml (1.2,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0), case08/case08_debug.php (1.3):
+	  dropped usage of XML_Beautifier
 
 2006-12-23 09:23  lukasfeiler
 
@@ -1138,11 +1226,11 @@
 2006-11-03 16:53  lukasfeiler
 
 	* tests/: XML_Query2XML/settings.php (1.2),
-	  XML_Query2XML_ISO9075Mapper/skipif.php (1.2, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0)
-	  (utags: RELEASE_0_8_0, RELEASE_1_0_0): added page-level docblock
-	  to all unit test include files
+	  XML_Query2XML_ISO9075Mapper/skipif.php (1.2, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
+	  RELEASE_1_1_0) (utags: RELEASE_0_8_0, RELEASE_1_0_0): added
+	  page-level docblock to all unit test include files
 
 2006-11-03 16:22  lukasfeiler
 
@@ -1164,11 +1252,11 @@
 
 2006-10-29 13:09  lukasfeiler
 
-	* tests/testCases.sh (1.2, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0,
-	  RELEASE_0_8_0): now not included in the package anymore - only to
-	  be used by developers
+	* tests/testCases.sh (1.2, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0): now not included in the package
+	  anymore - only to be used by developers
 
 2006-10-29 13:08  lukasfeiler
 
@@ -1205,110 +1293,110 @@
 	  XML_Query2XML/NoDBLayer/factory/throwDBException.phpt (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/skipif.php (1.1),
-	  XML_Query2XML_ISO9075Mapper/map/_X_UC.phpt (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  XML_Query2XML_ISO9075Mapper/map/_x.phpt (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  XML_Query2XML_ISO9075Mapper/map/at.phpt (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
-	  XML_Query2XML_ISO9075Mapper/map/colon.phpt (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/_X_UC.phpt (1.1,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/_x.phpt (1.1, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/at.phpt (1.1, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/colon.phpt (1.1,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/curlyBraceClose.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/curlyBraceOpen.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/equalSign.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/greaterThan.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/invalidNameStartChars.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/invalidNametChars.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/lessThan.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/poundSign.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/semicolon.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
-	  XML_Query2XML_ISO9075Mapper/map/space.phpt (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
-	  RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  XML_Query2XML_ISO9075Mapper/map/space.phpt (1.1,
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/startWith_XML_UC.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/startWith_xml.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/throwException1.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/throwException2.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/throwException3.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/unmodified1.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/unmodified2.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validNameChars.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validNameStartChars.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validSpecialChars1.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/validSpecialChars2.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML_ISO9075Mapper/map/variousChars.phpt (1.1,
-	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
-	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
-	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
+	  RELEASE_1_7_0RC1, RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0,
+	  RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1,
+	  RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0),
 	  XML_Query2XML/settings.php (1.1), ISO9075MapperTest.php (1.2),
 	  Query2XMLTest.php (1.3), Query2XMLTestADOdb.php (1.2),
 	  Query2XMLTestADOdbException.php (1.2), Query2XMLTestADOdbPEAR.php
@@ -1387,11 +1475,12 @@
 
 2006-09-28 12:05  lukasfeiler
 
-	* ChangeLog-until-v0.6.0 (1.1, RELEASE_1_6_0, RELEASE_1_6_0RC1,
-	  RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0, RELEASE_1_3_0,
-	  RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0, RELEASE_1_0_0,
-	  RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1): ChangeLog entries
-	  prior to v0.6.0 which was developed at sourceforge
+	* ChangeLog-until-v0.6.0 (1.1, RELEASE_1_7_0RC1, RELEASE_1_6_0,
+	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
+	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
+	  RELEASE_1_0_0, RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1):
+	  ChangeLog entries prior to v0.6.0 which was developed at
+	  sourceforge
 
 2006-09-28 11:19  lukasfeiler
 
@@ -1401,11 +1490,11 @@
 
 2006-04-29 09:03  lukasfeiler
 
-	* ChangeLog (1.1), INSTALL (1.1), LICENSE (1.1, RELEASE_1_6_0,
-	  RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1, RELEASE_1_4_0,
-	  RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0, RELEASE_1_1_0,
-	  RELEASE_1_0_0, RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1),
-	  README (1.1), RELEASES (1.1), package.xml (1.1),
+	* ChangeLog (1.1), INSTALL (1.1), LICENSE (1.1, RELEASE_1_7_0RC1,
+	  RELEASE_1_6_0, RELEASE_1_6_0RC1, RELEASE_1_5_0, RELEASE_1_5_0RC1,
+	  RELEASE_1_4_0, RELEASE_1_3_0, RELEASE_1_2_1, RELEASE_1_2_0,
+	  RELEASE_1_1_0, RELEASE_1_0_0, RELEASE_0_8_0, RELEASE_0_7_0,
+	  RELEASE_0_6_1), README (1.1), RELEASES (1.1), package.xml (1.1),
 	  XML/Query2XML.php (1.1), XML/Query2XML/ISO9075Mapper.php (1.1,
 	  RELEASE_0_7_0, RELEASE_0_6_1), cases/case01/case01.php (1.1,
 	  RELEASE_1_0_0, RELEASE_0_8_0, RELEASE_0_7_0, RELEASE_0_6_1),
