@@ -3,6 +3,24 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.7.0
+------
+Release date: 2008-05-02
+Release notes: This feature release brings the following additions:
+- new driver for PEAR Net_LDAP2: XML_Query2XML_Driver_LDAP2
+- options 'limit' and 'offset' now supported by the MDB2 and DB drivers;
+  thanks to Johnny Cheng from openflyers.org for this feature request
+- improved logging: now also logs the variables with which a prepared
+  statement is executed
+- consolidation of unit tests for different database drivers; use
+  the environment variable PHP_PEAR_XML_QUERY2XML_TEST_DBLAYER to
+  set the database driver to be used (MDB2,DB,PDO,ADOdbDefault,
+  ADOdbPEAR or ADOdbException). Also use the environment variable
+  PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
+  to be used (LDAP or LDAP2). Then simply run
+  'pear run-tests -p XML_Query2XML'
+Note: no changes were introduced since 1.7.0RC1.
+
 v1.7.0RC1
 ---------
 Release date: 2008-04-18

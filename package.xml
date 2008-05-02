@@ -29,14 +29,14 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2008-04-21</date>
+ <date>2008-05-02</date>
  <version>
-  <release>1.7.0RC1</release>
-  <api>1.7.0RC1</api>
+  <release>1.7.0</release>
+  <api>1.7.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
  <notes>This feature release brings the following additions:
@@ -52,6 +52,7 @@ Major features:
   PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
   to be used (LDAP or LDAP2). Then simply run
   'pear run-tests -p XML_Query2XML'
+Note: no changes were introduced since 1.7.0RC1.
  </notes>
  <contents>
   <dir name="/">
@@ -1032,6 +1033,33 @@ Note: No changes were introduced since 1.6.0RC1.
   PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
   to be used (LDAP or LDAP2). Then simply run
   'pear run-tests -p XML_Query2XML'
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.7.0</release>
+    <api>1.7.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-05-02</date>
+   <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
+   <notes>This feature release brings the following additions:
+- new driver for PEAR Net_LDAP2: XML_Query2XML_Driver_LDAP2
+- options 'limit' and 'offset' now supported by the MDB2 and DB drivers;
+  thanks to Johnny Cheng from openflyers.org for this feature request
+- improved logging: now also logs the variables with which a prepared
+  statement is executed
+- consolidation of unit tests for different database drivers; use
+  the environment variable PHP_PEAR_XML_QUERY2XML_TEST_DBLAYER to
+  set the database driver to be used (MDB2,DB,PDO,ADOdbDefault,
+  ADOdbPEAR or ADOdbException). Also use the environment variable
+  PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
+  to be used (LDAP or LDAP2). Then simply run
+  'pear run-tests -p XML_Query2XML'
+Note: no changes were introduced since 1.7.0RC1.
    </notes>
   </release>
  </changelog>
