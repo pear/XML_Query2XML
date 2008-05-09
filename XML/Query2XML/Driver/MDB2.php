@@ -11,7 +11,6 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  */
 
 /**
@@ -40,7 +39,6 @@ require_once 'PEAR.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  * @since     Release 1.5.0RC1
  */
 class XML_Query2XML_Driver_MDB2 extends XML_Query2XML_Driver

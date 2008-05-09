@@ -11,7 +11,6 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  */
 
 /**
@@ -61,7 +60,6 @@ require_once 'PEAR.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  * @since     Release 1.7.0RC1
  */
 class XML_Query2XML_Driver_LDAP2 extends XML_Query2XML_Driver
@@ -342,7 +340,6 @@ class XML_Query2XML_Driver_LDAP2 extends XML_Query2XML_Driver
  * @author   Lukas Feiler <lukas.feiler@lukasfeiler.com>
  * @license  http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @link     http://pear.php.net/package/XML_Query2XML
- * @access   private
  */
 class XML_Query2XML_LDAP2Exception extends XML_Query2XML_DriverException
 {
