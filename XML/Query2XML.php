@@ -69,14 +69,6 @@ class XML_Query2XML
     private $_driver;
     
     /**
-     * An associative, multi-dimensional arrray used by {@see _getAllRecordsCached}
-     * to cache retrieved records.
-     * @var array An associative array; the query results are stored using the SQL
-     *            query as the key.
-     */
-    private $_recordCache = array();
-    
-    /**
      * An instance of PEAR Log
      * @var mixed An object that has a method with the signature log(String $msg);
      *            preferably PEAR Log.
@@ -108,8 +100,6 @@ class XML_Query2XML
      * @see stopProfiling()
      * @see _debugStartQuery()
      * @see _debugStopQuery()
-     * @see _debugCachedQuery()
-     * @see _debugCachingQuery()
      * @see _stopDBProfiling()
      */
     private $_profile = array();
@@ -361,7 +351,7 @@ class XML_Query2XML
         if (count($this->_profile) === 0) {
             return '';
         }
-        $ret = 'FROM_DB FROM_CACHE CACHED AVG_DURATION DURATION_SUM SQL' . "\n";
+        $ret = 'COUNT AVG_DURATION DURATION_SUM SQL' . "\n";
         foreach ($this->_profile['queries'] as $sql => $value) {
             $durationSum   = 0.0;
             $durationCount = 0;
@@ -375,25 +365,7 @@ class XML_Query2XML
                 $durationCount = 1;
             }
             $durationAverage = $durationSum / $durationCount;
-            if ($this->_profile['queries'][$sql]['cached']) {
-                $cached = 'true';
-            } else {
-                $cached = 'false';
-            }
-            
-            if (
-                $this->_profile['queries'][$sql]['cached']
-                &&
-                $this->_profile['queries'][$sql]['fromCache'] == 0
-            ) {
-                $cached .= '!';
-            }
-            $cached = str_pad($cached, 6);
-            $ret   .= str_pad($this->_profile['queries'][$sql]['fromDB'], 7)
-                    . ' '
-                    . str_pad($this->_profile['queries'][$sql]['fromCache'], 10)
-                    . ' '
-                    . $cached
+            $ret   .= str_pad($this->_profile['queries'][$sql]['count'], 5)
                     . ' '
                     . substr($durationAverage, 0, 12). ' '
                     . substr($durationSum, 0, 12). ' '
@@ -516,8 +488,7 @@ class XML_Query2XML
         $dom     = self::_createDOMDocument();
         $rootTag = self::_addNewDOMChild($dom, $rootTagName, '[rootTag]');
         
-        $options['sql']         = $sql;
-        $options['sql_options'] = array('cached' => false);
+        $options['sql'] = $sql;
         
         if ($options['sql'] === false) {
             $options['sql'] = '';
@@ -549,7 +520,6 @@ class XML_Query2XML
             }
         }
         
-        $this->_clearRecordCache();
         $this->_stopDBProfiling();
         
         self::_removeContainers(
@@ -808,6 +778,63 @@ class XML_Query2XML
             $options['sql'] = $options['query'];
         }
         if (isset($options['sql'])) {
+            
+            // we will pre-process $options['sql_options'] first
+            if (isset($options['query_options'])) {
+                $options['sql_options'] = $options['query_options'];
+            }
+            if (!isset($options['sql_options'])) {
+                $options['sql_options'] = array();
+            }
+            $sql_options = array(
+                'cached', 'single_record', 'merge', 'merge_master', 'merge_selective'
+            );
+            foreach ($sql_options as $option) {
+                if (!isset($options['sql_options'][$option])) {
+                    $options['sql_options'][$option] = false;
+                }
+            }
+            if (isset($options['sql_options']['uncached'])) {
+                $options['sql_options']['cached'] =
+                    !$options['sql_options']['uncached'];
+            }
+            
+            if ($options['sql_options']['cached']) {
+                if (!is_array($options['sql'])) {
+                    $options['sql'] = array('query' => $options['sql']);
+                }
+                if (isset($options['sql']['driver'])) {
+                    $driver = $options['sql']['driver'];
+                } else {
+                    $driver = $this->_driver;
+                }
+                if (
+                    !class_exists('XML_Query2XML_Driver_Caching') ||
+                    !($driver instanceof XML_Query2XML_Driver_Caching)
+                ) {
+                    include_once 'XML/Query2XML/Driver/Caching.php';
+                    $options['sql']['driver'] = new XML_Query2XML_Driver_Caching(
+                        $driver
+                    );
+                }
+            }
+            
+            if (
+                $options['sql_options']['merge_selective'] !== false &&
+                !is_array($options['sql_options']['merge_selective'])
+            ) {
+                /*
+                * unit test: _preprocessOptions/
+                *  throwConfigException_mergeselectiveOptionWrongType.phpt
+                */
+                throw new XML_Query2XML_ConfigException(
+                    $options['--q2x--path'] . '[sql_options][merge_selective]: '
+                    . 'array expected, '
+                    . gettype($options['sql_options']['merge_selective']) . ' given.'
+                );
+            }
+            // end of pre-processing of $options['sql_options']
+            
             if (
                 is_array($options['sql']) && 
                 isset($options['sql']['driver']) &&
@@ -876,40 +903,6 @@ class XML_Query2XML
                         );
                     }
                 }
-            }
-            
-            if (isset($options['query_options'])) {
-                $options['sql_options'] = $options['query_options'];
-            }
-            if (!isset($options['sql_options'])) {
-                $options['sql_options'] = array();
-            }
-            $sql_options = array(
-                'cached', 'single_record', 'merge', 'merge_master', 'merge_selective'
-            );
-            foreach ($sql_options as $option) {
-                if (!isset($options['sql_options'][$option])) {
-                    $options['sql_options'][$option] = false;
-                }
-            }
-            if (isset($options['sql_options']['uncached'])) {
-                $options['sql_options']['cached'] =
-                    !$options['sql_options']['uncached'];
-            }
-            
-            if (
-                $options['sql_options']['merge_selective'] !== false &&
-                !is_array($options['sql_options']['merge_selective'])
-            ) {
-                /*
-                * unit test: _preprocessOptions/
-                *  throwConfigException_mergeselectiveOptionWrongType.phpt
-                */
-                throw new XML_Query2XML_ConfigException(
-                    $options['--q2x--path'] . '[sql_options][merge_selective]: '
-                    . 'array expected, '
-                    . gettype($options['sql_options']['merge_selective']) . ' given.'
-                );
             }
         } // end of if (isset($options['sql'])
     }
@@ -1533,7 +1526,7 @@ class XML_Query2XML
     /**
      * Private method to apply the givenen sql option to a record.
      *
-     * This method handles the sql options 'uncached', 'single_record',
+     * This method handles the sql options 'single_record',
      * 'merge', 'merge_master' and 'merge_selective'. Please see the
      * {@tutorial XML_Query2XML.pkg tutorial} for details.
      * 
@@ -1551,8 +1544,7 @@ class XML_Query2XML
      *                          in the result set
      *                        - it bubbles up from _applyColumnStringToRecord()
      * @throws XML_Query2XML_DBException This exception will bubble up
-     *                        if it is thrown by _getRecord(), _getAllRecords(),
-     *                        _getRecordCached() or _getAllRecordsCached()
+     *                        if it is thrown by _getAllRecords().
      * @throws XML_Query2XML_XMLException It will bubble up if it is thrown
      *                        by _applyColumnStringToRecord(). This can only
      *                        happen if the '&' operator is (ab)used within an
@@ -1564,7 +1556,6 @@ class XML_Query2XML
             return array($record);
         }
         
-        $cached          = $options['sql_options']['cached'];
         $single_record   = $options['sql_options']['single_record'];
         $merge           = $options['sql_options']['merge'];
         $merge_master    = $options['sql_options']['merge_master'];
@@ -1584,24 +1575,13 @@ class XML_Query2XML
         }
         
         $sqlConfigPath = $options['--q2x--path'] . '[sql]';
-        if ($cached) {
-            $records =& $this->_getAllRecordsCached(
-                $sql,
-                $sqlConfigPath,
-                $options['--q2x--query_statement']
-            );
-            if ($single_record && isset($records[0])) {
-                $records = array($records[0]);
-            }
-        } else {
-            $records =& $this->_getAllRecords(
-                $sql,
-                $sqlConfigPath,
-                $options['--q2x--query_statement']
-            );
-            if ($single_record && isset($records[0])) {
-                $records = array($records[0]);
-            }
+        $records =& $this->_getAllRecords(
+            $sql,
+            $sqlConfigPath,
+            $options['--q2x--query_statement']
+        );
+        if ($single_record && isset($records[0])) {
+            $records = array($records[0]);
         }
         
         if (is_array($merge_selective)) {
@@ -1740,7 +1720,7 @@ class XML_Query2XML
      * @param mixed  $sql            The SQL query as a string or an array.
      * @param string $configPath     The config path; used for exception messages.
      * @param string $queryStatement The query as a string; it will be used for
-     *                               logging, profiling and caching.
+     *                               logging and profiling.
      *
      * @return array An array of records. Each record itself will be an
      *                   associative array.
@@ -1748,61 +1728,23 @@ class XML_Query2XML
     private function &_getAllRecords($sql, $configPath, $queryStatement)
     {
         // $queryStatement will be used for profiling
-        $loggingQuery = $queryStatement;
-        if (is_array($sql) && isset($sql['data']) && is_array($sql['data'])) {
-            $loggingQuery .= '; DATA:' . implode(',', $sql['data']);
+        if ($this->_profiling || $this->_debug) {
+            $loggingQuery = $queryStatement;
+            if (is_array($sql) && isset($sql['data']) && is_array($sql['data'])) {
+                $loggingQuery .= '; DATA:' . implode(',', $sql['data']);
+            }
+            $this->_debugStartQuery($loggingQuery, $queryStatement);
         }
-        $this->_debugStartQuery($loggingQuery, $queryStatement);
+        
         if (is_array($sql) && isset($sql['driver'])) {
-            $records = $sql['driver']->getAllRecords($sql, $configPath);
+            $driver = $sql['driver'];
         } else {
-            $records = $this->_driver->getAllRecords($sql, $configPath);
+            $driver = $this->_driver;
         }
+        $records = $driver->getAllRecords($sql, $configPath);
+        
         $this->_debugStopQuery($queryStatement);
         return $records;
-    }
-    
-    /**
-     * Private method to fetch all records and cache the results.
-     *
-     * @param mixed  $sql            The SQL query as a string or an array.
-     * @param string $configPath     The config path; used for exception messages.
-     * @param string $queryStatement The query as a string; it will be used for
-     *                               logging, profiling and caching.
-     *
-     * @return array An array of records. Each record itself will be an
-     *                   associative array.
-     * @throws XML_Query2XML_DBException  This exception will bubble up
-     *                   if it is thrown by _getAllRecords().
-     */
-    private function &_getAllRecordsCached($sql, $configPath, $queryStatement)
-    {
-        /*
-         * $cacheQueryStatement: used for caching - DATA and driver info
-         * $loggingQueryStatement: used for logging - DATA info
-         * $queryStatement: used for profiling - no DATA, no driver info
-         */
-        $loggingQueryStatement = $cacheQueryStatement = $queryStatement;
-        if (is_array($sql)) {
-            if (isset($sql['data']) && is_array($sql['data'])) {
-                $cacheQueryStatement .= '; DATA:' . implode(',', $sql['data']);
-                $loggingQueryStatement = $cacheQueryStatement;
-            }
-            if (isset($sql['driver'])) {
-                $cacheQueryStatement = $configPath . ': ' . $cacheQueryStatement;
-            }
-        }
-        if (isset($this->_recordCache[$cacheQueryStatement])) {
-            $this->_debugCachedQuery($loggingQueryStatement, $queryStatement);
-            return $this->_recordCache[$cacheQueryStatement];
-        }
-        $this->_debugCachingQuery($loggingQueryStatement, $queryStatement);
-        $this->_recordCache[$cacheQueryStatement] =& $this->_getAllRecords(
-            $sql,
-            $configPath,
-            $queryStatement
-        );
-        return $this->_recordCache[$cacheQueryStatement];
     }
     
     /**
@@ -1817,9 +1759,7 @@ class XML_Query2XML
     {
         if (!isset($this->_profile['queries'][$sql])) {
             $this->_profile['queries'][$sql] = array(
-                'fromDB' => 0,
-                'fromCache' => 0,
-                'cached' => false,
+                'count' => 0,
                 'runTimes' => array()
             );
         }
@@ -1839,7 +1779,7 @@ class XML_Query2XML
         $this->_debug('QUERY: ' . $loggingQuery);
         if ($this->_profiling) {
             $this->_initQueryProfile($profilingQuery);
-            ++$this->_profile['queries'][$profilingQuery]['fromDB'];
+            ++$this->_profile['queries'][$profilingQuery]['count'];
             $this->_profile['queries'][$profilingQuery]['runTimes'][] = array(
                 'start' => microtime(true),
                 'stop' => 0
@@ -1871,44 +1811,6 @@ class XML_Query2XML
     }
     
     /**
-     * Does the debugging and profiling of the query passed as argument which
-     * was cached before.
-     *
-     * @param string $loggingQuery   The query statement as it will be logged.
-     * @param string $profilingQuery The query statement as it will be used for
-     *                               profiling.
-     *
-     * @return void
-     */
-    private function _debugCachedQuery($loggingQuery, $profilingQuery)
-    {
-        $this->_debug('CACHED: ' . $loggingQuery);
-        if ($this->_profiling) {
-            $this->_initQueryProfile($profilingQuery);
-            ++$this->_profile['queries'][$profilingQuery]['fromCache'];
-        }
-    }
-    
-    /**
-     * Does the debugging and profiling of the query passed as argument
-     * which will be cached for the first time
-     *
-     * @param string $loggingQuery   The query statement as it will be logged.
-     * @param string $profilingQuery The query statement as it will be used for
-     *                               profiling.
-     *
-     * @return void
-     */
-    private function _debugCachingQuery($loggingQuery, $profilingQuery)
-    {
-        $this->_debug('CACHING: ' . $loggingQuery);
-        if ($this->_profiling) {
-            $this->_initQueryProfile($profilingQuery);
-            $this->_profile['queries'][$profilingQuery]['cached'] = true;
-        }
-    }
-    
-    /**
      * Stops the DB profiling.
      * This will set $this->_profile['dbDuration'].
      *
@@ -1921,17 +1823,6 @@ class XML_Query2XML
             $this->_profile['dbDuration'] =
                 $this->_profile['dbStop'] - $this->_profile['start'];
         }
-    }
-    
-    /**
-     * Clears the record cache.
-     *
-     * @return void
-     * @see _recordCache
-     */
-    private function _clearRecordCache()
-    {
-        $this->_recordCache = array();
     }
     
     /**
