@@ -114,6 +114,47 @@ class XML_Query2XML
     );
     
     /**
+     * An associative array that will contain an element for each prefix.
+     * The prefix is used as the element key. Each array element consists
+     * of an indexed array containing a file path and a class name.
+     * @var array An associative multidimensional array.
+     * @see registerPrefix()
+     * @see unregisterPrefix()
+     * @see unregisterAllPrefixes()
+     * @see _buildCommandChain()
+     */
+    private $_prefixes = array(
+        '?' => array(
+            'XML/Query2XML/Command/NonEmpty.php',
+            'XML_Query2XML_Command_NonEmpty'
+        ),
+        '&' => array(
+            'XML/Query2XML/Command/Unserialize.php',
+            'XML_Query2XML_Command_Unserialize'
+        ),
+        '=' => array(
+            'XML/Query2XML/Command/CDATA.php',
+            'XML_Query2XML_Command_CDATA'
+        ),
+        '^' => array(
+            'XML/Query2XML/Command/Base64.php',
+            'XML_Query2XML_Command_Base64'
+        ),
+        ':' => array(
+            'XML/Query2XML/Command/Static.php',
+            'XML_Query2XML_Command_Static'
+        ),
+        '#' => array(
+            'XML/Query2XML/Command/PHPCallback.php',
+            'XML_Query2XML_Command_PHPCallback'
+        ),
+        '~' => array(
+            'XML/Query2XML/Command/XPath.php',
+            'XML_Query2XML_Command_XPath'
+        )
+    );
+    
+    /**
      * Constructor
      *
      * @param mixed $backend A subclass of XML_Query2XML_Driver or
@@ -184,6 +225,63 @@ class XML_Query2XML
     public static function factory($backend)
     {
         return new XML_Query2XML($backend);
+    }
+    
+    /**
+     * Register a prefix that can be used in all value specifications.
+     *
+     * @param string $prefix    The prefix name. This must be a single chracter.
+     * @param string $className The name of the Command class. This class has
+     *                          to extend XML_Query2XML_Command_Chain.
+     * @param string $filePath  The path to the file that contains the Command
+     *                          class. This argument is optional.
+     *
+     * @return void
+     * @throws XML_Query2XML_ConfigException Thrown if $prefix is not a string,
+     *                                       has a length other than 1 or if
+     *                                       $className does not reference a
+     *                                       class that extends
+     *                                       XML_Query2XML_Command_Chain.
+     */
+    public function registerPrefix($prefix, $className, $filePath = '')
+    {
+        if (!is_string($prefix) || strlen($prefix) != 1) {
+            throw new XML_Query2XML_ConfigException(
+                'Prefix name has to be a single character'
+            );
+        }
+        if (!in_array('XML_Query2XML_Command_Chain', class_parents($className))) {
+            throw new XML_Query2XML_ConfigException(
+                'Prefix class ' . $className . ' does not extend'
+                . ' XML_Query2XML_Command_Chain.'
+            );
+        }
+        $this->_prefixes[$prefix] = array(
+            $filePath,
+            $className
+        );
+    }
+    
+    /**
+     * Unregister a prefix.
+     *
+     * @param string $prefix The prefix name.
+     *
+     * @return void
+     */
+    public function unregisterPrefix($prefix)
+    {
+        unset($this->_prefixes[$prefix]);
+    }
+    
+    /**
+     * Unregister all prefixes.
+     *
+     * @return void
+     */
+    public function unregisterAllPrefixes()
+    {
+        $this->_prefixes = array();
     }
     
     /**
@@ -365,11 +463,12 @@ class XML_Query2XML
                 $durationCount = 1;
             }
             $durationAverage = $durationSum / $durationCount;
-            $ret   .= str_pad($this->_profile['queries'][$sql]['count'], 5)
-                    . ' '
-                    . substr($durationAverage, 0, 12). ' '
-                    . substr($durationSum, 0, 12). ' '
-                    . $sql . "\n";
+            
+            $ret .= str_pad($this->_profile['queries'][$sql]['count'], 5)
+                  . ' '
+                  . substr($durationAverage, 0, 12). ' '
+                  . substr($durationSum, 0, 12). ' '
+                  . $sql . "\n";
         }
         $ret .= "\n";
         $ret .= 'TOTAL_DURATION: ' . $this->_profile['duration'] . "\n";
@@ -633,16 +732,19 @@ class XML_Query2XML
                                       . '][' . $key . ']';
                         if (is_string($columnStr)) {
                             $options[$option][$key] =
-                                self::_buildCommandChain($columnStr, $configPath);
-                            if (is_numeric($key) && is_object($options[$option][$key])) {
+                                $this->_buildCommandChain($columnStr, $configPath);
+                            if (
+                                is_numeric($key) &&
+                                is_object($options[$option][$key])
+                            ) {
                                 /*
                                  * unit test: _preprocessOptions/
                                  *  throwConfigException_prefix_noArrayKey.phpt
                                  */
                                 throw new XML_Query2XML_ConfigException(
-                                    $configPath . ': the element name has to be specified '
-                                    . 'as the array key when prefixes are used within the '
-                                    . 'value specification'
+                                    $configPath . ': the element name has to be '
+                                    . 'specified as the array key when prefixes '
+                                    . 'are used within the value specification'
                                 );
                             }
                         } elseif (is_array($columnStr)) {
@@ -697,18 +799,20 @@ class XML_Query2XML
                             if (is_numeric($key)) {
                                 /*
                                  * unit test: _preprocessOptions/
-                                 *  throwConfigException_callbackInterface_noArrayKey.phpt
+                                 *  throwConfigException_callbackInterface_
+                                 *  noArrayKey.phpt
                                  */
                                 throw new XML_Query2XML_ConfigException(
-                                    $configPath . ': the element name has to be specified '
-                                    . 'as the array key when the value is specified using '
-                                    . 'an instance of XML_Query2XML_Callback.'
+                                    $configPath . ': the element name has to be '
+                                    . 'specified as the array key when the value '
+                                    . 'is specified using an instance of '
+                                    . 'XML_Query2XML_Callback.'
                                 );
                             }
                         } else {
                             /*
-                             * $columnStr is neither a string, an array or an instance
-                             * of XML_Query2XML_Callback.
+                             * $columnStr is neither a string, an array or an
+                             * instance of XML_Query2XML_Callback.
                              *
                              * unit tests:
                              *  _getNestedXMLRecord/
@@ -748,7 +852,7 @@ class XML_Query2XML
         foreach ($opt as $option) {
             if (isset($options[$option])) {
                 if (is_string($options[$option])) {
-                    $options[$option] = self::_buildCommandChain(
+                    $options[$option] = $this->_buildCommandChain(
                         $options[$option],
                         $options['--q2x--path'] . '[value]'
                     );
@@ -873,7 +977,7 @@ class XML_Query2XML
                         foreach ($options['sql']['data'] as $key => $data) {
                             if (is_string($data)) {
                                 $options['sql']['data'][$key] =
-                                    self::_buildCommandChain(
+                                    $this->_buildCommandChain(
                                         $options['sql']['data'][$key],
                                         $options['--q2x--path']
                                             . '[sql][data][' . $key . ']'
@@ -1573,8 +1677,8 @@ class XML_Query2XML
                 }
             }
         }
-        
         $sqlConfigPath = $options['--q2x--path'] . '[sql]';
+        
         $records =& $this->_getAllRecords(
             $sql,
             $sqlConfigPath,
@@ -1865,88 +1969,64 @@ class XML_Query2XML
      * @param string $columnStr  The original specification.
      * @param string $configPath The config path; used for exception messages.
      *
-     * @return XML_Query2XML_Command_Chain A class extending this abstract class.
+     * @return mixed An instance of XML_Query2XML_Callback or a column
+     *               name as a string.
      * @throws XML_Query2XML_ConfigException Bubbles up through this method if
-     *                          thrown by any of the command class constructors.
+     *                                       thrown by any of the command class
+     *                                       constructors.
      */
-    private static function _buildCommandChain($columnStr, $configPath)
+    private function _buildCommandChain($columnStr, $configPath)
     {
-        if (ltrim($columnStr, '?&=^:#') == $columnStr) {
+        $prefixList = implode('', array_keys($this->_prefixes));
+        if (ltrim($columnStr, $prefixList) == $columnStr) {
             return $columnStr;
         }
         
-        $callback = null;
-        if (substr($columnStr, 0, 1) == '?') {
-            include_once 'XML/Query2XML/Command/NonEmpty.php';
-            $callback  = new XML_Query2XML_Command_NonEmpty();
-            $columnStr = substr($columnStr, 1);
-        }
-        if (substr($columnStr, 0, 1) == '&') {
-            include_once 'XML/Query2XML/Command/Unserialize.php';
-            if (is_null($callback)) {
-                $callback = new XML_Query2XML_Command_Unserialize();
+        $firstCallback = null;
+        for ($i = 0; $i < strlen($columnStr); $i++) {
+            $prefix = substr($columnStr, $i, 1);
+            if (isset($this->_prefixes[$prefix])) {
+                $columnSubStr = substr($columnStr, $i + 1);
+                $filePath     = $this->_prefixes[$prefix][0];
+                $className    = $this->_prefixes[$prefix][1];
+                
+                if ($filePath) {
+                    include_once $filePath;
+                }
+                if (ltrim($columnSubStr, $prefixList) == $columnSubStr) {
+                    if (
+                        in_array(
+                            'XML_Query2XML_Command_DataSource',
+                            class_implements($className)
+                        )
+                    ) {
+                        $callback = new $className($columnSubStr, $configPath);
+                    } else {
+                        include_once 'XML/Query2XML/Command/ColumnValue.php';
+                        $callback = new $className(
+                            new XML_Query2XML_Command_ColumnValue(
+                                $columnSubStr,
+                                $configPath
+                            )
+                        );
+                    }
+                } else {
+                    $callback = new $className();
+                }
+                if (is_null($firstCallback)) {
+                    $firstCallback = $callback;
+                } else {
+                    $firstCallback->getFirstPreProcessor()->setPreProcessor($callback);
+                }
             } else {
-                $callback->getFirstPreProcessor()->setPreProcessor(
-                    new XML_Query2XML_Command_Unserialize()
-                );
+                break;
             }
-            $columnStr = substr($columnStr, 1);
+        }
+        if (is_null($firstCallback)) {
+            return $columnStr;
         } else {
-            if (substr($columnStr, 0, 1) == '=') {
-                include_once 'XML/Query2XML/Command/CDATA.php';
-                if (is_null($callback)) {
-                    $callback = new XML_Query2XML_Command_CDATA();
-                } else {
-                    $callback->getFirstPreProcessor()->setPreProcessor(
-                        new XML_Query2XML_Command_CDATA()
-                    );
-                }
-                $columnStr = substr($columnStr, 1);
-            }
-            
-            if (substr($columnStr, 0, 1) == '^') {
-                include_once 'XML/Query2XML/Command/Base64.php';
-                if (is_null($callback)) {
-                    $callback = new XML_Query2XML_Command_Base64();
-                } else {
-                    $callback->getFirstPreProcessor()->setPreProcessor(
-                        new XML_Query2XML_Command_Base64()
-                    );
-                }
-                $columnStr = substr($columnStr, 1);
-            }
+            return $firstCallback;
         }
-        
-        switch (substr($columnStr, 0, 1)) {
-        case ':':
-            include_once 'XML/Query2XML/Command/Static.php';
-            $dataSource = new XML_Query2XML_Command_Static(
-                substr($columnStr, 1)
-            );
-            break;
-        case '#':
-            include_once 'XML/Query2XML/Command/PHPCallback.php';
-            $dataSource = new XML_Query2XML_Command_PHPCallback(
-                substr($columnStr, 1),
-                $configPath
-            );
-            break;
-        default:
-            include_once 'XML/Query2XML/Command/ColumnValue.php';
-            $dataSource = new XML_Query2XML_Command_ColumnValue(
-                $columnStr,
-                $configPath
-            );
-            break;
-        }
-        if (is_null($callback)) {
-            $callback = $dataSource;
-        } else {
-            $callback->getFirstPreProcessor()->setPreProcessor(
-                $dataSource
-            );
-        }
-        return $callback;
     }
     
     /**
