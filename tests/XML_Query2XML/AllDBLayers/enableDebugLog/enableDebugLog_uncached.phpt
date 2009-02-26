@@ -65,12 +65,9 @@ QUERY: SELECT
          FROM
             artist
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ?; DATA:1
-QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:1
+QUERY: SELECT * FROM album WHERE artist_id = ? (USING CACHING); DATA:1
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ?; DATA:2
-QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:2
+QUERY: SELECT * FROM album WHERE artist_id = ? (USING CACHING); DATA:2
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ?; DATA:3
-QUERY: SELECT * FROM album WHERE artist_id = ?; DATA:3
+QUERY: SELECT * FROM album WHERE artist_id = ? (USING CACHING); DATA:3
 DONE

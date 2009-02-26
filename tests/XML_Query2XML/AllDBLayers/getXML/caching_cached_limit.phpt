@@ -4,6 +4,9 @@ XML_Query2XML::enableDebugLog() with $options['sql_options']['cached'] = true
 <?php $db_layers = array('MDB2', 'DB'); require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
 <?php
+    require_once 'XML/Query2XML.php';
+    require_once dirname(dirname(__FILE__)) . '/db_init.php';
+    
     class MyLogger
     {
         public $data = '';
@@ -12,11 +15,38 @@ XML_Query2XML::enableDebugLog() with $options['sql_options']['cached'] = true
             $this->data .= $str . "\n";
         }
     }
+    
+    class MyDriver extends XML_Query2XML_Driver
+    {
+        public function __construct($driver, $logger)
+        {
+            $this->_driver = $driver;
+            $this->_logger = $logger;
+        }
+        
+        public function getAllRecords($sql, $configPath)
+        {
+            // this allows us to notice when the results are fetched from the DB
+            if (strpos($sql['query'], '?') !== false) {
+                $query = substr($sql['query'], 0, strpos($sql['query'], '?')+1);
+            } else {
+                $query = $sql['query'];
+            }
+            $this->_logger->log(
+                'FROM DB: ' . $query
+            );
+            return $this->_driver->getAllRecords($sql, $configPath);
+        }
+        
+        public function preprocessQuery(&$query, $configPath)
+        {
+            return $this->_driver->preprocessQuery($query, $configPath);
+        }
+    }
 
-    require_once 'XML/Query2XML.php';
-    require_once dirname(dirname(__FILE__)) . '/db_init.php';
-    $query2xml =& XML_Query2XML::factory($db);
+    $driver = XML_Query2XML_Driver::factory($db);
     $debugLogger = new MyLogger();
+    $query2xml = XML_Query2XML::factory(new MyDriver($driver, $debugLogger));
     $query2xml->enableDebugLog($debugLogger);
     $dom =& $query2xml->getXML(
         'SELECT * FROM artist UNION ALL SELECT * FROM artist',
@@ -59,16 +89,20 @@ XML_Query2XML::enableDebugLog() with $options['sql_options']['cached'] = true
 ?>
 --EXPECT--
 QUERY: SELECT * FROM artist UNION ALL SELECT * FROM artist
+FROM DB: SELECT * FROM artist UNION ALL SELECT * FROM artist
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:1
-QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:1
+QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0 (USING CACHING); DATA:1
+FROM DB: SELECT * FROM album WHERE artist_id = ?
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:2
-QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:2
+QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0 (USING CACHING); DATA:2
+FROM DB: SELECT * FROM album WHERE artist_id = ?
 DONE
-CACHING: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:3
-QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:3
+QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0 (USING CACHING); DATA:3
+FROM DB: SELECT * FROM album WHERE artist_id = ?
 DONE
-CACHED: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:1
-CACHED: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:2
-CACHED: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0; DATA:3
+QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0 (USING CACHING); DATA:1
+DONE
+QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0 (USING CACHING); DATA:2
+DONE
+QUERY: SELECT * FROM album WHERE artist_id = ?; LIMIT:1; OFFSET:0 (USING CACHING); DATA:3
+DONE
