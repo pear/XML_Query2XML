@@ -33,4 +33,4 @@ XML_Query2XML::_applyColumnStringToRecord(): check for XML_Query2XML_XMLExceptio
     }
 ?>
 --EXPECT--
-XML_Query2XML_XMLException: XML_Query2XML_Command_Unserialize: Could not unserialize the following XML data: "<no_closing_tag>"
+XML_Query2XML_XMLException: [elements][xml]: XML_Query2XML_Data_Processor_Unserialize: Could not unserialize the following XML data: "<no_closing_tag>"
