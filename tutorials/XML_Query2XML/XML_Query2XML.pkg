@@ -4951,6 +4951,63 @@ print $beautifier->formatString($dom->saveXML());
   </para>
  </refsect1>
  
+ <refsect1 id="{@id output_caching}">
+  <title>Output Caching</title>
+  <para>
+   If your XML data is rather static in nature, i.e. exactely the same XML
+   data is created over and over again you might want to use some kind of output caching.
+   I will demonstrate the usage of {@link http://pear.php.net/package/Cache_Lite PEAR Cache_Lite} here:
+  </para>
+  <para>
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once('Cache/Lite.php');
+/*
+* Set a id for this cache; if you generate the XML data based
+* on values passed via POST/GET/COOKIE, include these values
+* in $id. This does not need to be an integer; it's md5sum
+* will be used.
+*/
+$id = '123';
+
+//set a few options
+$options = array(
+    'cacheDir' => "/tmp/",
+    'lifeTime' => 3600
+);
+
+//create a Cache_Lite object
+$cache = new Cache_Lite($options);
+
+// content type for xml data
+header('Content-Type: application/xml');
+
+//test if there is a valide cache for this id
+if ($data = $cache->get($id)) {
+    print $data;
+} else {
+    //no valid cache found
+    require_once 'XML/Query2XML.php';
+    require_once 'MDB2.php';
+    $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+    $dom = $query2xml->getXML(...);
+    $dom->formatOutput = true;
+    
+    //cache the XML data
+    $data = $dom->saveXML();
+    $cache->save($data, $id);
+    
+    print $data;
+}
+?>
+   ]]>
+   </programlisting>
+   For more information on PEAR Cache_Lite, please see the
+   {@link http://pear.php.net/manual/en/package.caching.cache-lite.php Cache_Lite manual}.
+  </para>
+ </refsect1>
+ 
  <refsect1 id="{@id encoding}">
   <title>XML encoding</title>
   <para>
@@ -5934,63 +5991,6 @@ array('start' => microtime(true), 'stop' => 0);
     Please see the API docs at {@link XML_Query2XML::clearProfile()}.
    </para>
   </refsect2> 
- </refsect1>
- 
- <refsect1 id="{@id output_caching}">
-  <title>Output Caching</title>
-  <para>
-   If your XML data is rather static in nature, i.e. exactely the same XML
-   data is created over and over again you might want to use some kind of output caching.
-   I will demonstrate the usage of {@link http://pear.php.net/package/Cache_Lite PEAR Cache_Lite} here:
-  </para>
-  <para>
-   <programlisting role="php">
-   <![CDATA[
-<?php
-require_once('Cache/Lite.php');
-/*
-* Set a id for this cache; if you generate the XML data based
-* on values passed via POST/GET/COOKIE, include these values
-* in $id. This does not need to be an integer; it's md5sum
-* will be used.
-*/
-$id = '123';
-
-//set a few options
-$options = array(
-    'cacheDir' => "/tmp/",
-    'lifeTime' => 3600
-);
-
-//create a Cache_Lite object
-$cache = new Cache_Lite($options);
-
-// content type for xml data
-header('Content-Type: application/xml');
-
-//test if there is a valide cache for this id
-if ($data = $cache->get($id)) {
-    print $data;
-} else {
-    //no valid cache found
-    require_once 'XML/Query2XML.php';
-    require_once 'MDB2.php';
-    $query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
-    $dom = $query2xml->getXML(...);
-    $dom->formatOutput = true;
-    
-    //cache the XML data
-    $data = $dom->saveXML();
-    $cache->save($data, $id);
-    
-    print $data;
-}
-?>
-   ]]>
-   </programlisting>
-   For more information on PEAR Cache_Lite, please see the
-   {@link http://pear.php.net/manual/en/package.caching.cache-lite.php Cache_Lite manual}.
-  </para>
  </refsect1>
  
  <refsect1 id="{@id ldap}">
