@@ -1,56 +1,47 @@
 <?php
 /**
- * This file contains the class XML_Query2XML_Command_XPath.
+ * This file contains the class XML_Query2XML_Data_Source_XPath.
  *
  * PHP version 5
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2008 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
  */
 
 /**
- * XML_Query2XML_Command_XPath extends the class XML_Query2XML_Command_Chain.
+ * XML_Query2XML_Data_Source_ColumnValue extends the class
+ * XML_Query2XML_Data_Source.
  */
-require_once 'XML/Query2XML/Command/Chain.php';
+require_once 'XML/Query2XML/Data/Source.php';
 
 /**
- * Command class that allows for easy integration of DOMXPath.
+ * Data Source Class that allows the results of an XPath query to be used
+ * as a data source.
  *
  * usage:
  * <code>
- * $commandObject = new XML_Query2XML_Command_XPath(
- *   new DOMXPath(...),
+ * $commandObject = new XML_Query2XML_Data_Source_XPath(
+ *   new DOMXPath(DOMDocument::load('albums.xml')),
  *   '/music_store/album[artist_id="?"]',
  *   array('artistid')
- * );
- * </code>
- * alternatively the first argument can also be a string that specifies
- * - the path to an XML file
- * - an XPath query
- * - a comma-separated list of column names (optional)
- * - the placeholder string to use (optional)
- * Each of the elements is separated by two colons ('::').
- * <code>
- * $commandObject = new XML_Query2XML_Command_XPath(
- *   './albums.xml::/music_store/album[artist_id="?"]::artistid'
  * );
  * </code>
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2008 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
  * @since     Release 1.8.0RC1
  */
-class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements XML_Query2XML_Command_DataSource
+class XML_Query2XML_Data_Source_XPath extends XML_Query2XML_Data_Source
 {
     /**
      * THe DOMXPath instance used.
@@ -73,60 +64,19 @@ class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements
     /**
      * Constructor function.
      *
-     * @param mixed  $xpath       On instance of DOMXPath or a string with the
-     *                            following format:
-     *                            'FILE_NAME::XPATH_QUERY::COLUMN_NAMES::PLACEHOLDER'
-     *                            Note: the last of the two doubl-column separated
-     *                            fields are optional. If $xpath is specified using
-     *                            a string, it overwrites the other arguments if
-     *                            present.
-     * @param string $query       The XPath query.
-     * @param mixed  $data        A string or an array of strings. Each string will
-     *                            replace an occurance of $placeholder within $query.
-     *                            This argument is optional.
-     * @param string $placeholder The string to use as a placeholder. The default
-     *                            is '?'. This argument is optional.
+     * @param DOMXPath $xpath       An instance of DOMXPath.
+     * @param string   $query       The XPath query.
+     * @param mixed    $data        A string or an array of strings. Each string
+     *                              will replace an occurance of $placeholder
+     *                              within $query. This argument is optional.
+     * @param string   $placeholder The string to use as a placeholder. The default
+     *                              is '?'. This argument is optional.
      */
-    public function __construct($xpath,
-                                $query = '',
+    public function __construct(DOMXPath $xpath,
+                                $query,
                                 $data = null,
                                 $placeholder = '?')
     {
-        
-        if (is_string($xpath)) {
-            // e.g. 'albums.xml::/music_store/album[artist_id="?"]::artistid::?'
-            $parts = split('::', $xpath);
-            if (count($parts) < 2) {
-                //throw exception
-            }
-            $fileName = $parts[0];
-            $query    = $parts[1];
-            if (count($parts) > 2) {
-                $parts[2] = str_replace(' ', '', $parts[2]);
-                $data     = split(',', $parts[2]);
-            } else {
-                $data = array();
-            }
-            if (count($parts) > 3) {
-                $placeholder = $parts[3];
-            }
-            $domDocument = new DOMDocument();
-            $domDocument->preserveWhiteSpace = false;
-            $success = $domDocument->load($fileName);
-            if (!$success) {
-                throw new XML_Query2XML_Exception(
-                    'XML_Query2XML_Command_XPath::__construct(): '
-                    . 'Could not load XML file "' . $fileName . '".'
-                );
-            }
-            $xpath = new DOMXPath($domDocument);
-        } elseif (!($xpath instanceof DOMXPath)) {
-            // unit test: MISSING
-            throw new XML_Query2XML_Exception(
-                'XML_Query2XML_Command_XPath::__construct(): '
-                . 'DOMDocument, DOMXPath or string expected as first argument.'
-            );
-        }
         $this->_xpath = $xpath;
         $this->_query = $query;
         if (is_string($data)) {
@@ -135,12 +85,27 @@ class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements
             $this->_data = $data;
         } else {
             // unit test: MISSING
-            throw new XML_Query2XML_Exception(
-                'XML_Query2XML_Command_XPath::__construct(): '
+            throw new XML_Query2XML_ConfigException(
+                'XML_Query2XML_Data_Source_XPath::__construct(): '
                 . 'array or string expected as third argument.'
             );
         }
         $this->_placeholder = $placeholder;
+    }
+    
+    /**
+     * Creates a new instance of this class.
+     * This method is called by XML_Query2XML.
+     *
+     * @param string $stringDef  String definition.
+     * @param string $configPath The configuration path within the $options array.
+     *                           This argument is optional.
+     */
+    public function create($column, $configPath)
+    {
+        throw new XML_Query2XML_ConfigException(
+            'XML_Query2XML_Data_Source_XPath::create() is not yet fully implemented'
+        );
     }
     
     /**
@@ -150,7 +115,7 @@ class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements
      *
      * @return array An array of DOMNode instances.
      * @throws XML_Query2XML_ConfigException If any of the columns specified
-     *                                       using the constructor arguments
+     *                                       using the third constructor argument
      *                                       does not exist.
      */
     public function execute(array $record)
@@ -162,8 +127,8 @@ class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements
             } else {
                 // UNIT TEST: MISSING
                 throw new XML_Query2XML_ConfigException(
-                    $this->configPath . 'The column "' . $columnName
-                    . '" was not found in the result set.'
+                    'XML_Query2XML_Data_Source_XPath::execute(): The column "'
+                    . $columnName . '" was not found in the result set.'
                 );
             }
         }
@@ -174,7 +139,14 @@ class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements
         );
         
         $elements = array();
-        $result   = $this->_xpath->query($query);
+        $result   = @$this->_xpath->query($query);
+        if ($result === false) {
+            // UNIT TEST: MISSING
+            throw new XML_Query2XML_XMLException(
+                'XML_Query2XML_Data_Source_XPath::execute(): could not execute '
+                . 'XPath query "' . $query . '"'
+            );
+        }
         foreach ($result as $element) {
             $elements[] = $element;
         }
@@ -210,12 +182,13 @@ class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements
     /**
      * This method is called by XML_Query2XML in case the asterisk shortcut was used.
      *
-     * The interface XML_Query2XML_Command_DataSource requires an implementation of
+     * The interface XML_Query2XML_Data_Source requires an implementation of
      * this method.
      *
      * @param string $columnName The column name that is to replace every occurance
-     *                           of the asterisk character '*' in the static value,
-     *                           in case it is a string.
+     *                           of the asterisk character ('*') in the second and
+     *                           third argument passed to the constructor ($query
+     *                           and $data).
      *
      * @return void
      */
@@ -225,6 +198,17 @@ class XML_Query2XML_Command_XPath extends XML_Query2XML_Command_Chain implements
         foreach ($this->_data as $key => $value) {
             $this->_data[$key] = str_replace('*', $columnName, $value);
         }
+    }
+    
+    /**
+     * Returns a textual representation of this instance.
+     * This might be useful for debugging.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return get_class($this) . '(' . $this->_query . ')';
     }
 }
 ?>

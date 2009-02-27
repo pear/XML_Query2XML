@@ -1,51 +1,50 @@
 <?php
 /**
- * This file contains the class XML_Query2XML_Command_Static.
+ * This file contains the class XML_Query2XML_Data_Source_Static.
  *
  * PHP version 5
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2006 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  */
 
 /**
- * XML_Query2XML_Command_Static extends the class XML_Query2XML_Command_Chain.
+ * XML_Query2XML_Data_Source_Static extends the class
+ * XML_Query2XML_Data_Source.
  */
-require_once 'XML/Query2XML/Command/Chain.php';
+require_once 'XML/Query2XML/Data/Source.php';
 
 /**
- * Command class that allows a static value to be used as the data source.
+ * Data Source Class that allows a static value to be used as the data source.
  *
  * This command class does not accept a pre-processor.
  *
  * usage:
  * <code>
- * $commandObject = new XML_Query2XML_Command_Static('my static value');
+ * $commandObject = new XML_Query2XML_Data_Source_Static('my static value');
  * </code>
  *
  * The static value can also be an instance of DOMNode or an array of DOMNode
  * instances:
  * <code>
- * $commandObject = new XML_Query2XML_Command_Static(new DOMElement('test'));
+ * $commandObject = new XML_Query2XML_Data_Source_Static(new DOMElement('test'));
  * </code>
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2006 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
- * @since     Release 1.5.0RC1
+ * @since     Release 1.8.0RC1
  */
-class XML_Query2XML_Command_Static extends XML_Query2XML_Command_Chain implements XML_Query2XML_Command_DataSource
+class XML_Query2XML_Data_Source_Static extends XML_Query2XML_Data_Source
 {
     /**
      * The static data.
@@ -67,6 +66,18 @@ class XML_Query2XML_Command_Static extends XML_Query2XML_Command_Chain implement
     }
     
     /**
+     * Creates a new instance of this class.
+     * This method is called by XML_Query2XML.
+     *
+     * @param string $data       The static data.
+     * @param string $configPath The configuration path within the $options array.
+     */
+    public function create($column, $configPath)
+    {
+       return new XML_Query2XML_Data_Source_Static($column);
+    }
+    
+    /**
      * Called by XML_Query2XML for every record in the result set.
      *
      * @param array $record An associative array.
@@ -81,7 +92,7 @@ class XML_Query2XML_Command_Static extends XML_Query2XML_Command_Chain implement
     /**
      * This method is called by XML_Query2XML in case the asterisk shortcut was used.
      *
-     * The interface XML_Query2XML_Command_DataSource requires an implementation of
+     * The interface XML_Query2XML_Data_Source requires an implementation of
      * this method.
      *
      * @param string $columnName The column name that is to replace every occurance
@@ -95,6 +106,22 @@ class XML_Query2XML_Command_Static extends XML_Query2XML_Command_Chain implement
         if (is_string($this->_data)) {
             $this->_data = str_replace('*', $columnName, $this->_data);
         }
+    }
+    
+    /**
+     * Returns a textual representation of this instance.
+     * This might be useful for debugging.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        if (is_string($this->_data)) {
+            $data = $this->_data;
+        } else {
+            $data = gettype($this->_data);
+        }
+        return get_class($this) . '(' . $data . ')';
     }
 }
 ?>

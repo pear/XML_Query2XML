@@ -125,32 +125,32 @@ class XML_Query2XML
      */
     private $_prefixes = array(
         '?' => array(
-            'XML/Query2XML/Command/NonEmpty.php',
-            'XML_Query2XML_Command_NonEmpty'
+            'XML/Query2XML/Data/Condition/NonEmpty.php',
+            'XML_Query2XML_Data_Condition_NonEmpty'
         ),
         '&' => array(
-            'XML/Query2XML/Command/Unserialize.php',
-            'XML_Query2XML_Command_Unserialize'
+            'XML/Query2XML/Data/Processor/Unserialize.php',
+            'XML_Query2XML_Data_Processor_Unserialize'
         ),
         '=' => array(
-            'XML/Query2XML/Command/CDATA.php',
-            'XML_Query2XML_Command_CDATA'
+            'XML/Query2XML/Data/Processor/CDATA.php',
+            'XML_Query2XML_Data_Processor_CDATA'
         ),
         '^' => array(
-            'XML/Query2XML/Command/Base64.php',
-            'XML_Query2XML_Command_Base64'
+            'XML/Query2XML/Data/Processor/Base64.php',
+            'XML_Query2XML_Data_Processor_Base64'
         ),
         ':' => array(
-            'XML/Query2XML/Command/Static.php',
-            'XML_Query2XML_Command_Static'
+            'XML/Query2XML/Data/Source/Static.php',
+            'XML_Query2XML_Data_Source_Static'
         ),
         '#' => array(
-            'XML/Query2XML/Command/PHPCallback.php',
-            'XML_Query2XML_Command_PHPCallback'
+            'XML/Query2XML/Data/Source/PHPCallback.php',
+            'XML_Query2XML_Data_Source_PHPCallback'
         ),
         '~' => array(
-            'XML/Query2XML/Command/XPath.php',
-            'XML_Query2XML_Command_XPath'
+            'XML/Query2XML/Data/Source/XPath.php',
+            'XML_Query2XML_Data_Source_XPath'
         )
     );
     
@@ -231,8 +231,8 @@ class XML_Query2XML
      * Register a prefix that can be used in all value specifications.
      *
      * @param string $prefix    The prefix name. This must be a single chracter.
-     * @param string $className The name of the Command class. This class has
-     *                          to extend XML_Query2XML_Command_Chain.
+     * @param string $className The name of the Data Class. This class has
+     *                          to extend XML_Query2XML_Data.
      * @param string $filePath  The path to the file that contains the Command
      *                          class. This argument is optional.
      *
@@ -241,7 +241,7 @@ class XML_Query2XML
      *                                       has a length other than 1 or if
      *                                       $className does not reference a
      *                                       class that extends
-     *                                       XML_Query2XML_Command_Chain.
+     *                                       XML_Query2XML_Data.
      */
     public function registerPrefix($prefix, $className, $filePath = '')
     {
@@ -250,10 +250,10 @@ class XML_Query2XML
                 'Prefix name has to be a single character'
             );
         }
-        if (!in_array('XML_Query2XML_Command_Chain', class_parents($className))) {
+        if (!in_array('XML_Query2XML_Data', class_parents($className))) {
             throw new XML_Query2XML_ConfigException(
                 'Prefix class ' . $className . ' does not extend'
-                . ' XML_Query2XML_Command_Chain.'
+                . ' XML_Query2XML_Data.'
             );
         }
         $this->_prefixes[$prefix] = array(
@@ -1396,14 +1396,14 @@ class XML_Query2XML
                     if (is_string($column)) {
                         $newColumn = str_replace('*', $columnName, $column);
                     } elseif (
-                        class_exists('XML_Query2XML_Command_Chain') &&
-                        $column instanceof XML_Query2XML_Command_Chain
+                        class_exists('XML_Query2XML_Data') &&
+                        $column instanceof XML_Query2XML_Data
                     ) {
                         $newColumn = clone $column;
                         $callback  = $newColumn->getFirstPreProcessor();
                         if (
-                            interface_exists('XML_Query2XML_Command_DataSource') &&
-                            $callback instanceof XML_Query2XML_Command_DataSource
+                            class_exists('XML_Query2XML_Data_Source') &&
+                            $callback instanceof XML_Query2XML_Data_Source
                         ) {
                             $callback->replaceAsterisks($columnName);
                         }
@@ -1640,19 +1640,13 @@ class XML_Query2XML
      * @return array          An indexed array of records that are themselves
      *                        represented as associative arrays.
      * @throws XML_Query2XML_ConfigException This exception is thrown if
-     *                        - merge_selective is set but not an array
-     *                        - sql is set but not an array or a string
-     *                        - sql is an array but $sql['query'] is missing
-     *                        - $sql['data'] is set but not an array
      *                        - a column specified in merge_selective does not exist
      *                          in the result set
      *                        - it bubbles up from _applyColumnStringToRecord()
      * @throws XML_Query2XML_DBException This exception will bubble up
      *                        if it is thrown by _getAllRecords().
      * @throws XML_Query2XML_XMLException It will bubble up if it is thrown
-     *                        by _applyColumnStringToRecord(). This can only
-     *                        happen if the '&' operator is (ab)used within an
-     *                        element of the array $options['sql']['data']
+     *                        by _applyColumnStringToRecord().
      */
     private function _applySqlOptionsToRecord(&$options, &$record)
     {
@@ -1813,8 +1807,8 @@ class XML_Query2XML
      */
     private function _evaluateCondition($value, $spec)
     {
-        return !interface_exists('XML_Query2XML_Command_Conditional') ||
-               !$spec instanceof XML_Query2XML_Command_Conditional ||
+        return !class_exists('XML_Query2XML_Data_Condition') ||
+               !$spec instanceof XML_Query2XML_Data_Condition ||
                $spec->evaluateCondition($value);
     }
             
@@ -1963,8 +1957,8 @@ class XML_Query2XML
     /**
      * Parse specifications that use the prifixes ?, &, =, ^, :,  or #.
      *
-     * This method will produce a number of chained command object all of which
-     * be an instance of the abstract class XML_Query2XML_Command_Chain.
+     * This method will produce a number of chained Data Class objects all of
+     * which be an instance of the abstract class XML_Query2XML_Data.
      *
      * @param string $columnStr  The original specification.
      * @param string $configPath The config path; used for exception messages.
@@ -1989,34 +1983,74 @@ class XML_Query2XML
                 $columnSubStr = substr($columnStr, $i + 1);
                 $filePath     = $this->_prefixes[$prefix][0];
                 $className    = $this->_prefixes[$prefix][1];
+                if ($columnSubStr === false) {
+                    $columnSubStr = '';
+                }
                 
                 if ($filePath) {
                     include_once $filePath;
                 }
-                if (ltrim($columnSubStr, $prefixList) == $columnSubStr) {
-                    if (
-                        in_array(
-                            'XML_Query2XML_Command_DataSource',
-                            class_implements($className)
-                        )
-                    ) {
-                        $callback = new $className($columnSubStr, $configPath);
-                    } else {
-                        include_once 'XML/Query2XML/Command/ColumnValue.php';
-                        $callback = new $className(
-                            new XML_Query2XML_Command_ColumnValue(
+                
+                if (!in_array(
+                        'XML_Query2XML_Data',
+                        class_parents($className)
+                    )
+                ) {
+                    throw new XML_Query2XML_ConfigException(
+                        $configPath . ': Prefix class ' . $className . ' does ' .
+                        'not extend XML_Query2XML_Data.'
+                    );
+                }
+                
+                if (in_array(
+                        'XML_Query2XML_Data_Source',
+                        class_parents($className)
+                    )
+                ) {
+                    // data source prefix
+                    $callback = call_user_func_array(
+                        array($className, 'create'),
+                        array($columnSubStr, $configPath)
+                    );
+                } else {
+                    // data processing prefix
+                    $callback = call_user_func_array(
+                        array($className, 'create'),
+                        array(null, $configPath)
+                    );
+                    
+                    if (ltrim($columnSubStr, $prefixList) == $columnSubStr) {
+                        // no more prefixes: ColumnValue is the default data source
+                        include_once 'XML/Query2XML/Data/Source/ColumnValue.php';
+                        $callback->setPreProcessor(
+                            new XML_Query2XML_Data_Source_ColumnValue(
                                 $columnSubStr,
                                 $configPath
                             )
                         );
                     }
-                } else {
-                    $callback = new $className();
                 }
+                
                 if (is_null($firstCallback)) {
                     $firstCallback = $callback;
                 } else {
+                    if (
+                        $callback instanceof XML_Query2XML_Data_Condition &&
+                        !($firstCallback instanceof XML_Query2XML_Data_Condition)
+                    ) {
+                        throw new XML_Query2XML_ConfigException(
+                            $configPath . ': conditional prefixes always have to '
+                            . 'go first.'
+                        );
+                    }
                     $firstCallback->getFirstPreProcessor()->setPreProcessor($callback);
+                }
+                if (
+                    $firstCallback->getFirstPreProcessor()
+                    instanceof XML_Query2XML_Data_Source
+                ) {
+                    // there can only be one data source
+                    break;
                 }
             } else {
                 break;

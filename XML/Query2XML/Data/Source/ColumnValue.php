@@ -1,45 +1,44 @@
 <?php
 /**
- * This file contains the class XML_Query2XML_Command_ColumnValue.
+ * This file contains the class XML_Query2XML_Data_Source_ColumnValue.
  *
  * PHP version 5
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2006 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  */
 
 /**
- * XML_Query2XML_Command_ColumnValue extends the class XML_Query2XML_Command_Chain.
+ * XML_Query2XML_Data_Source_ColumnValue extends the class
+ * XML_Query2XML_Data_Source.
  */
-require_once 'XML/Query2XML/Command/Chain.php';
+require_once 'XML/Query2XML/Data/Source.php';
 
 /**
- * Command class that allows the column value to be used as the data source.
+ * Data Source Class that allows the column value to be used as the data source.
  *
  * This command class does not accept a pre-processor.
  *
  * usage:
  * <code>
- * $commandObject = new XML_Query2XML_Command_ColumnValue('name');
+ * $commandObject = new XML_Query2XML_Data_Source_ColumnValue('name');
  * </code>
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2006 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
- * @since     Release 1.5.0RC1
+ * @since     Release 1.8.0RC1
  */
-class XML_Query2XML_Command_ColumnValue extends XML_Query2XML_Command_Chain implements XML_Query2XML_Command_DataSource
+class XML_Query2XML_Data_Source_ColumnValue extends XML_Query2XML_Data_Source
 {
     /**
      * The column name.
@@ -48,18 +47,38 @@ class XML_Query2XML_Command_ColumnValue extends XML_Query2XML_Command_Chain impl
     private $_column = '';
     
     /**
+     * The configuration path within $options.
+     * @var string
+     */
+    private $_configPath = '';
+    
+    /**
      * Constructor
      *
      * @param string $column     The name of the column.
      * @param string $configPath The configuration path within the $options array.
+     *                           This argument is optional.
      */
-    public function __construct($column, $configPath)
+    public function __construct($column, $configPath = '')
     {
         $this->_column    = $column;
-        $this->configPath = $configPath;
-        if ($this->configPath) {
-            $this->configPath .= ': ';
+        $this->_configPath = $configPath;
+        if ($this->_configPath) {
+            $this->_configPath .= ': ';
         }
+    }
+    
+    /**
+     * Creates a new instance of this class.
+     * This method is called by XML_Query2XML.
+     *
+     * @param string $column     The name of the column.
+     * @param string $configPath The configuration path within the $options array.
+     *                           This argument is optional.
+     */
+    public function create($column, $configPath)
+    {
+       return new XML_Query2XML_Data_Source_ColumnValue($column, $configPath);
     }
     
     /**
@@ -78,7 +97,7 @@ class XML_Query2XML_Command_ColumnValue extends XML_Query2XML_Command_Chain impl
             return $record[$this->_column];
         }
         throw new XML_Query2XML_ConfigException(
-            $this->configPath . 'The column "' . $this->_column
+            $this->_configPath . 'The column "' . $this->_column
             . '" was not found in the result set'
         );
     }
@@ -86,7 +105,7 @@ class XML_Query2XML_Command_ColumnValue extends XML_Query2XML_Command_Chain impl
     /**
      * This method is called by XML_Query2XML in case the asterisk shortcut was used.
      *
-     * The interface XML_Query2XML_Command_DataSource requires an implementation of
+     * The interface XML_Query2XML_Data_Source requires an implementation of
      * this method.
      *
      * @param string $columnName The column name that is to replace every occurance
@@ -98,6 +117,17 @@ class XML_Query2XML_Command_ColumnValue extends XML_Query2XML_Command_Chain impl
     public function replaceAsterisks($columnName)
     {
         $this->_column = str_replace('*', $columnName, $this->_column);
+    }
+    
+    /**
+     * Returns a textual representation of this instance.
+     * This might be useful for debugging.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return get_class($this) . '(' . $this->_column . ')';
     }
 }
 ?>

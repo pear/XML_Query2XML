@@ -1,50 +1,72 @@
 <?php
 /**
- * This file contains the class XML_Query2XML_Command_Unserialize.
+ * This file contains the class XML_Query2XML_Data_Processor_Unserialize.
  *
  * PHP version 5
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2006 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  */
 
 /**
- * XML_Query2XML_Command_Unserialize extends the class XML_Query2XML_Command_Chain.
+ * XML_Query2XML_Data_Processor_Unserialize extends the class
+ * XML_Query2XML_Data_Processor.
  */
-require_once 'XML/Query2XML/Command/Chain.php';
+require_once 'XML/Query2XML/Data/Processor.php';
 
 /**
- * Command object that allows unserialization of XML data returned by a pre-processor
- * as a string.
+ * Data Processor Class that allows unserialization of XML data returned by
+ * a pre-processor as a string.
  *
- * XML_Query2XML_Command_Unserialize only works with a pre-processor
+ * XML_Query2XML_Data_Processor_Unserialize only works with a pre-processor
  * that returns a string.
  *
  * usage:
  * <code>
- * $commandObject = new XML_Query2XML_Command_Unserialize(
- *   new XML_Query2XML_Command_ColumnValue('xml_data')  //pre-processor
+ * $commandObject = new XML_Query2XML_Data_Processor_Unserialize(
+ *   new XML_Query2XML_Data_Source_ColumnValue('xml_data')  //pre-processor
  * );
  * </code>
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2006 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
- * @since     Release 1.5.0RC1
+ * @since     Release 1.8.0RC1
  */
-class XML_Query2XML_Command_Unserialize extends XML_Query2XML_Command_Chain
+class XML_Query2XML_Data_Processor_Unserialize extends XML_Query2XML_Data_Processor
 {
+    /**
+     * Create a new instance of this class.
+     *
+     * @param XML_Query2XML_Data $preProcessor The pre-processor to be used.
+     *                                         This argument is optional.
+     * @param string             $configPath   The configuration path within
+     *                                         the $options array. This argument
+     *                                         is optional.
+     *
+     * @return XML_Query2XML_Data_Processor_Unserialize
+     */
+    public function create(XML_Query2XML_Data $preProcessor = null,
+                                $configPath = '')
+    {
+        $commandObject = new XML_Query2XML_Data_Processor_Unserialize();
+        $commandObject->preProcessor = $preProcessor;
+        $commandObject->configPath   = $configPath;
+        if ($commandObject->configPath) {
+            $commandObject->configPath .= ': ';
+        }
+        return $commandObject;
+    }
+    
     /**
      * Called by XML_Query2XML for every record in the result set.
      * This method will return an instance of DOMElement or null
@@ -64,14 +86,14 @@ class XML_Query2XML_Command_Unserialize extends XML_Query2XML_Command_Chain
         $xml = $this->runPreProcessor($record);
         if (is_array($xml) || is_object($xml)) {
             throw new XML_Query2XML_XMLException(
-                $this->configPath . 'XML_Query2XML_Command_Unserialize: string '
+                $this->configPath . 'XML_Query2XML_Data_Processor_Unserialize: string '
                 . 'expected from pre-processor, but ' . gettype($xml) . ' returned.'
             );
         } else {
             if (strlen($xml)) {
                 if (!@$doc->loadXML($xml)) {
                     throw new XML_Query2XML_XMLException(
-                        $this->configPath . 'XML_Query2XML_Command_Unserialize: '
+                        $this->configPath . 'XML_Query2XML_Data_Processor_Unserialize: '
                         . 'Could not unserialize the following XML data: "'
                         . $xml . '"'
                     );

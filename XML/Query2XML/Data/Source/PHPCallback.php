@@ -1,26 +1,27 @@
 <?php
 /**
- * This file contains the class XML_Query2XML_Command_PHPCallback.
+ * This file contains the class XML_Query2XML_Data_Source_PHPCallback.
  *
  * PHP version 5
  *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>
- * @copyright 2006 Lukas Feiler
+ * @copyright 2009 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  */
 
 /**
- * XML_Query2XML_Command_PHPCallback extends the class XML_Query2XML_Command_Chain.
+ * XML_Query2XML_Data_Source_PHPCallback extends the class
+ * XML_Query2XML_Data_Source.
  */
-require_once 'XML/Query2XML/Command/Chain.php';
+require_once 'XML/Query2XML/Data/Source.php';
+
 
 /**
- * Command class that invokes a callback function, using the return value as the
+ * Data Source Class that invokes a callback function, using the return value as the
  * data source.
  *
  * This command class does not accept a pre-processor.
@@ -28,7 +29,7 @@ require_once 'XML/Query2XML/Command/Chain.php';
  * usage:
  * <code>
  * function myFunction($record) { ... }
- * $commandObject = new XML_Query2XML_Command_PHPCallback('myFunction');
+ * $commandObject = new XML_Query2XML_Data_Source_PHPCallback('myFunction');
  * </code>
  *
  * @category  XML
@@ -38,16 +39,23 @@ require_once 'XML/Query2XML/Command/Chain.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
- * @since     Release 1.5.0RC1
+ * @since     Release 1.8.0RC1
  */
-class XML_Query2XML_Command_PHPCallback extends XML_Query2XML_Command_Chain implements XML_Query2XML_Command_DataSource
+class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
 {
     /**
      * A pseudo-type callback.
      * @var mixed A string or an array.
      */
     private $_callback = null;
+    
+    /**
+     * The string definition of the callback
+     * as it was passed to the constructor.
+     * This will be returned by toString().
+     * @var string
+     */
+    private $_callbackString = '';
     
     /**
      * The arguments to be bassed to the callback function.
@@ -76,12 +84,13 @@ class XML_Query2XML_Command_PHPCallback extends XML_Query2XML_Command_Chain impl
      *
      * @throws XML_Query2XML_ConfigException If $callback is not callable.
      */
-    public function __construct($callback, $configPath)
+    public function __construct($callback, $configPath = '')
     {
         $this->configPath = $configPath;
         if ($this->configPath) {
             $this->configPath .= ': ';
         }
+        $this->_callbackString = $callback;
         
         $braceOpen = strpos($callback, '(');
         if ($braceOpen !== false) {
@@ -116,6 +125,18 @@ class XML_Query2XML_Command_PHPCallback extends XML_Query2XML_Command_Chain impl
     }
     
     /**
+     * Creates a new instance of this class.
+     * This method is called by XML_Query2XML.
+     *
+     * @param string $callback   The callback as a string.
+     * @param string $configPath The configuration path within the $options array.
+     */
+    public function create($callback, $configPath)
+    {
+        return new XML_Query2XML_Data_Source_PHPCallback($callback, $configPath);
+    }
+    
+    /**
      * Called by XML_Query2XML for every record in the result set.
      *
      * @param array $record An associative array.
@@ -133,7 +154,7 @@ class XML_Query2XML_Command_PHPCallback extends XML_Query2XML_Command_Chain impl
     /**
      * This method is called by XML_Query2XML in case the asterisk shortcut was used.
      *
-     * The interface XML_Query2XML_Command_DataSource requires an implementation of
+     * The interface XML_Query2XML_Data_Source requires an implementation of
      * this method.
      *
      * @param string $columnName The column name that is to replace every occurance
@@ -149,6 +170,16 @@ class XML_Query2XML_Command_PHPCallback extends XML_Query2XML_Command_Chain impl
         foreach ($this->_args as $key => $arg) {
             $this->_args[$key] = str_replace('*', $columnName, $this->_args[$key]);
         }
+    }
+    
+    /**
+     * Returns a string representation of this class.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return get_class($this) . '(' . $this->_callbackString . ')';
     }
 }
 ?>
