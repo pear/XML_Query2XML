@@ -29,30 +29,20 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2008-05-02</date>
+ <date>2009-02-27</date>
  <version>
-  <release>1.7.0</release>
-  <api>1.7.0</api>
+  <release>1.8.0RC1</release>
+  <api>1.8.0RC1</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
- <notes>This feature release brings the following additions:
-- new driver for PEAR Net_LDAP2: XML_Query2XML_Driver_LDAP2
-- options 'limit' and 'offset' now supported by the MDB2 and DB drivers;
-  thanks to Johnny Cheng from openflyers.org for this feature request
-- improved logging: now also logs the variables with which a prepared
-  statement is executed
-- consolidation of unit tests for different database drivers; use
-  the environment variable PHP_PEAR_XML_QUERY2XML_TEST_DBLAYER to
-  set the database driver to be used (MDB2,DB,PDO,ADOdbDefault,
-  ADOdbPEAR or ADOdbException). Also use the environment variable
-  PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
-  to be used (LDAP or LDAP2). Then simply run
-  'pear run-tests -p XML_Query2XML'
-Note: no changes were introduced since 1.7.0RC1.
+ <notes>This release implements the following new features
+- Caching is now implemented as a saparate driver that is automatically
+  wrapped around any other driver. This reduces the codebase of Query2XML.php
+- Refactoring of internal classes
  </notes>
  <contents>
   <dir name="/">
@@ -445,38 +435,56 @@ Note: no changes were introduced since 1.7.0RC1.
      <file baseinstalldir="/" name="ISO9075Mapper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <dir name="Command">
-      <file baseinstalldir="/" name="Base64.php" role="php">
+     <file baseinstalldir="/" name="Data.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <dir name="Data">
+      <file baseinstalldir="/" name="Source.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="CDATA.php" role="php">
+      <file baseinstalldir="/" name="Processor.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="Chain.php" role="php">
+      <file baseinstalldir="/" name="Condition.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="ColumnValue.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="NonEmpty.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="PHPCallback.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Static.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Unserialize.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir> <!-- /XML/Query2XML/Command -->
+      <dir name="Source">
+       <file baseinstalldir="/" name="ColumnValue.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="PHPCallback.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Static.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /XML/Query2XML/Data/Source -->
+      <dir name="Processor">
+       <file baseinstalldir="/" name="Base64.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="CDATA.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Unserialize.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /XML/Query2XML/Data/Processor -->
+      <dir name="Condition">
+       <file baseinstalldir="/" name="NonEmpty.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir> <!-- /XML/Query2XML/Data/Condition -->
+     </dir> <!-- /XML/Query2XML/Data -->
      <dir name="Driver">
       <file baseinstalldir="/" name="ADOdb.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DB.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Caching.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="MDB2.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -1060,6 +1068,23 @@ Note: No changes were introduced since 1.6.0RC1.
   to be used (LDAP or LDAP2). Then simply run
   'pear run-tests -p XML_Query2XML'
 Note: no changes were introduced since 1.7.0RC1.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.8.0RC1</release>
+    <api>1.8.0RC1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2009-02-27</date>
+   <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
+   <notes>This release implements the following new features
+- Caching is now implemented as a saparate driver that is automatically
+  wrapped around any other driver. This reduces the codebase of Query2XML.php
+- Refactoring of internal classes
    </notes>
   </release>
  </changelog>
