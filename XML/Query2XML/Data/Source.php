@@ -35,18 +35,6 @@ require_once 'XML/Query2XML/Data.php';
 abstract class XML_Query2XML_Data_Source extends XML_Query2XML_Data
 {
     /**
-     * This method will be called by XML_Query2XML to create a new instance
-     * of a class extending this class.
-     *
-     * @param string $dataSourceString A string specifying the data source.
-     * @param string $configPath       The configuration path used for exception
-     *                                 messsages.
-     *
-     * @return XML_Query2XML_Data_Source
-     */
-    public abstract function create($dataSourceString, $configPath);
-    
-    /**
      * Returns the first pre-processor.
      *
      * As this is a Data Source Class, it has no pre-processors.

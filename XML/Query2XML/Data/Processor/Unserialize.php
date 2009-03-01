@@ -49,16 +49,14 @@ class XML_Query2XML_Data_Processor_Unserialize extends XML_Query2XML_Data_Proces
     /**
      * Create a new instance of this class.
      *
-     * @param XML_Query2XML_Data $preProcessor The pre-processor to be used.
-     *                                         This argument is optional.
-     * @param string             $configPath   The configuration path within
-     *                                         the $options array. This argument
-     *                                         is optional.
+     * @param mixed  $preProcessor The pre-processor to be used. An instance of
+     *                             XML_Query2XML_Data or null.
+     * @param string $configPath   The configuration path within the $options
+     *                             array.
      *
      * @return XML_Query2XML_Data_Processor_Unserialize
      */
-    public function create(XML_Query2XML_Data $preProcessor = null,
-                                $configPath = '')
+    public function create($preProcessor, $configPath)
     {
         $processor = new XML_Query2XML_Data_Processor_Unserialize($preProcessor);
         $processor->setConfigPath($configPath);
@@ -84,14 +82,16 @@ class XML_Query2XML_Data_Processor_Unserialize extends XML_Query2XML_Data_Proces
         $xml = $this->runPreProcessor($record);
         if (is_array($xml) || is_object($xml)) {
             throw new XML_Query2XML_XMLException(
-                $this->configPath . 'XML_Query2XML_Data_Processor_Unserialize: string '
+                $this->configPath()
+                . 'XML_Query2XML_Data_Processor_Unserialize: string '
                 . 'expected from pre-processor, but ' . gettype($xml) . ' returned.'
             );
         } else {
             if (strlen($xml)) {
                 if (!@$doc->loadXML($xml)) {
                     throw new XML_Query2XML_XMLException(
-                        $this->configPath . 'XML_Query2XML_Data_Processor_Unserialize: '
+                        $this->getConfigPath()
+                        . 'XML_Query2XML_Data_Processor_Unserialize: '
                         . 'Could not unserialize the following XML data: "'
                         . $xml . '"'
                     );

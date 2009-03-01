@@ -55,28 +55,15 @@ abstract class XML_Query2XML_Data_Processor extends XML_Query2XML_Data
     }
     
     /**
-     * This method will be called by XML_Query2XML to create a new instance
-     * of a class extending this class.
+     * Allows the pre-processor to be set (or changed) after an instance was
+     * created.
      *
-     * @param XML_Query2XML_Data $preProcessor The pre-processor to be used.
-     *                                         This argument is optional.
-     * @param string             $configPath   The configuration path within
-     *                                         the $options array. This argument
-     *                                         is optional.
-     *
-     * @return XML_Query2XML_Data_Processor
-     */
-    public abstract function create(XML_Query2XML_Data $preProcessor = null,
-                                    $configPath = '');
-    
-    /**
-     * Allows the pre-processor to be set (or changed) after an instance was created.
-     *
-     * @param XML_Query2XML_Data $preProcessor The pre-processor to be used.
+     * @param mixed $preProcessor The pre-processor to be used. An instance
+     *                            of XML_Query2XML_Data or null.
      *
      * @return void
      */
-    public function setPreProcessor(XML_Query2XML_Data $preProcessor)
+    public function setPreProcessor($preProcessor)
     {
         $this->_preProcessor = $preProcessor;
     }
@@ -84,7 +71,7 @@ abstract class XML_Query2XML_Data_Processor extends XML_Query2XML_Data
     /**
      * Returns the pre-processor.
      *
-     * @return XML_Query2XML_Data
+     * @return mixed XML_Query2XML_Data or null
      */
     public function getPreProcessor()
     {

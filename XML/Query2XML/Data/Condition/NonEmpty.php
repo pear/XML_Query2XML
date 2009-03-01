@@ -48,16 +48,14 @@ class XML_Query2XML_Data_Condition_NonEmpty extends XML_Query2XML_Data_Condition
     /**
      * Create a new instance of this class.
      *
-     * @param XML_Query2XML_Data $preProcessor The pre-processor to be used.
-     *                                         This argument is optional.
-     * @param string             $configPath   The configuration path within
-     *                                         the $options array. This argument
-     *                                         is optional.
+     * @param mixed  $preProcessor The pre-processor to be used. An instance of
+     *                             XML_Query2XML_Data or null.
+     * @param string $configPath   The configuration path within the $options
+     *                             array.
      *
      * @return XML_Query2XML_Data_Condition_NonEmpty
      */
-    public function create(XML_Query2XML_Data $preProcessor = null,
-                           $configPath = '')
+    public function create($preProcessor, $configPath)
     {
         $condition = new XML_Query2XML_Data_Condition_NonEmpty($preProcessor);
         $condition->setConfigPath($configPath);
