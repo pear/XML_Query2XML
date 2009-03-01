@@ -28,4 +28,4 @@ XML_Query2XML::_applyColumnStringToRecord(): check for XML_Query2XML_ConfigExcep
     }
 ?>
 --EXPECT--
-XML_Query2XML_ConfigException: [elements][name]: The method/function "uppercaseName" is not callable.
+XML_Query2XML_ConfigException: The method/function "uppercaseName" is not callable.
