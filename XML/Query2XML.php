@@ -118,9 +118,6 @@ class XML_Query2XML
      * The prefix is used as the element key. Each array element consists
      * of an indexed array containing a file path and a class name.
      * @var array An associative multidimensional array.
-     * @see registerPrefix()
-     * @see unregisterPrefix()
-     * @see unregisterAllPrefixes()
      * @see _buildCommandChain()
      */
     private $_prefixes = array(
@@ -225,63 +222,6 @@ class XML_Query2XML
     public static function factory($backend)
     {
         return new XML_Query2XML($backend);
-    }
-    
-    /**
-     * Register a prefix that can be used in all value specifications.
-     *
-     * @param string $prefix    The prefix name. This must be a single chracter.
-     * @param string $className The name of the Data Class. This class has
-     *                          to extend XML_Query2XML_Data.
-     * @param string $filePath  The path to the file that contains the Command
-     *                          class. This argument is optional.
-     *
-     * @return void
-     * @throws XML_Query2XML_ConfigException Thrown if $prefix is not a string,
-     *                                       has a length other than 1 or if
-     *                                       $className does not reference a
-     *                                       class that extends
-     *                                       XML_Query2XML_Data.
-     */
-    public function registerPrefix($prefix, $className, $filePath = '')
-    {
-        if (!is_string($prefix) || strlen($prefix) != 1) {
-            throw new XML_Query2XML_ConfigException(
-                'Prefix name has to be a single character'
-            );
-        }
-        if (!in_array('XML_Query2XML_Data', class_parents($className))) {
-            throw new XML_Query2XML_ConfigException(
-                'Prefix class ' . $className . ' does not extend'
-                . ' XML_Query2XML_Data.'
-            );
-        }
-        $this->_prefixes[$prefix] = array(
-            $filePath,
-            $className
-        );
-    }
-    
-    /**
-     * Unregister a prefix.
-     *
-     * @param string $prefix The prefix name.
-     *
-     * @return void
-     */
-    public function unregisterPrefix($prefix)
-    {
-        unset($this->_prefixes[$prefix]);
-    }
-    
-    /**
-     * Unregister all prefixes.
-     *
-     * @return void
-     */
-    public function unregisterAllPrefixes()
-    {
-        $this->_prefixes = array();
     }
     
     /**
