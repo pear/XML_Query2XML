@@ -82,7 +82,7 @@ class XML_Query2XML_Data_Processor_Unserialize extends XML_Query2XML_Data_Proces
         $xml = $this->runPreProcessor($record);
         if (is_array($xml) || is_object($xml)) {
             throw new XML_Query2XML_XMLException(
-                $this->configPath()
+                $this->getConfigPath()
                 . 'XML_Query2XML_Data_Processor_Unserialize: string '
                 . 'expected from pre-processor, but ' . gettype($xml) . ' returned.'
             );

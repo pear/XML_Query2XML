@@ -1983,7 +1983,9 @@ class XML_Query2XML
                             . 'go first.'
                         );
                     }
-                    $firstCallback->getFirstPreProcessor()->setPreProcessor($callback);
+                    $firstCallback->getFirstPreProcessor()->setPreProcessor(
+                        $callback
+                    );
                 }
                 if (
                     $firstCallback->getFirstPreProcessor()

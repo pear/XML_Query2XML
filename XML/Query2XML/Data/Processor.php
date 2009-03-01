@@ -45,9 +45,6 @@ abstract class XML_Query2XML_Data_Processor extends XML_Query2XML_Data
      *
      * @param XML_Query2XML_Data $preProcessor The pre-processor to be used.
      *                                         This argument is optional.
-     * @param string             $configPath   The configuration path within
-     *                                         the $options array. This argument
-     *                                         is optional.
      */
     public function __construct(XML_Query2XML_Data $preProcessor = null)
     {
@@ -107,7 +104,8 @@ abstract class XML_Query2XML_Data_Processor extends XML_Query2XML_Data
             include_once 'XML/Query2XML.php';
             // UNIT TEST: MISSING
             throw new XML_Query2XML_ConfigException(
-                $this->configPath . get_class($this) . ' requires a pre-processor.'
+                $this->getConfigPath()
+                . get_class($this) . ' requires a pre-processor.'
             );
         }
     }

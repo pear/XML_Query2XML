@@ -41,7 +41,7 @@ class XML_Query2XML_Driver_ADOdb extends XML_Query2XML_Driver
      * In instance of a class that extends ADOConnection.
      * @var ADOConnection
      */
-    private $db = null;
+    private $_db = null;
     
     /**
      * Constructor

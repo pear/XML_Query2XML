@@ -25,7 +25,6 @@ require_once 'XML/Query2XML/Data/Processor.php';
  * Such classes allow the implementation of a condition as to
  * whether the return value of execute() is to be used.
  *
- *
  * @category  XML
  * @package   XML_Query2XML
  * @author    Lukas Feiler <lukas.feiler@lukasfeiler.com>

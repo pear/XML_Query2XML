@@ -73,12 +73,14 @@ class XML_Query2XML_Data_Source_Static extends XML_Query2XML_Data_Source
      *
      * @param string $data       The static data.
      * @param string $configPath The configuration path within the $options array.
+     *
+     * @return XML_Query2XML_Data_Source_Static
      */
     public function create($data, $configPath)
     {
-       $source = new XML_Query2XML_Data_Source_Static($data);
-       $source->setConfigPath($configPath);
-       return $source;
+        $source = new XML_Query2XML_Data_Source_Static($data);
+        $source->setConfigPath($configPath);
+        return $source;
     }
     
     /**

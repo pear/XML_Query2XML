@@ -80,7 +80,7 @@ class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
      * If you do not want to pass additional arguments to the callback function,
      * the opening and closing brace are optional.
      *
-     * @param string $callback   The callback as a string.
+     * @param string $callback The callback as a string.
      *
      * @throws XML_Query2XML_ConfigException If $callback is not callable.
      */
@@ -126,6 +126,8 @@ class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
      *
      * @param string $callback   The callback as a string.
      * @param string $configPath The configuration path within the $options array.
+     *
+     * @return XML_Query2XML_Data_Source_PHPCallback
      */
     public function create($callback, $configPath)
     {

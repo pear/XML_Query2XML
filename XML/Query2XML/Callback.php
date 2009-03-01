@@ -78,8 +78,8 @@
  * @copyright 2006 Lukas Feiler
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
- * @since     Release 1.1.0
  * @link      http://pear.php.net/package/XML_Query2XML
+ * @since     Release 1.1.0
  */
 interface XML_Query2XML_Callback
 {

@@ -51,7 +51,7 @@ class XML_Query2XML_Data_Source_ColumnValue extends XML_Query2XML_Data_Source
     /**
      * Constructor
      *
-     * @param string $column     The name of the column.
+     * @param string $column The name of the column.
      */
     public function __construct($column)
     {
@@ -65,12 +65,14 @@ class XML_Query2XML_Data_Source_ColumnValue extends XML_Query2XML_Data_Source
      * @param string $column     The name of the column.
      * @param string $configPath The configuration path within the $options array.
      *                           This argument is optional.
+     *
+     * @return XML_Query2XML_Data_Source_ColumnValue
      */
     public function create($column, $configPath)
     {
-       $source = new XML_Query2XML_Data_Source_ColumnValue($column);
-       $source->setConfigPath($configPath);
-       return $source;
+        $source = new XML_Query2XML_Data_Source_ColumnValue($column);
+        $source->setConfigPath($configPath);
+        return $source;
     }
     
     /**

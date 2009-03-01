@@ -47,7 +47,7 @@ class XML_Query2XML_Driver_DB extends XML_Query2XML_Driver
      * In instance of a class that extends DB_common.
      * @var DB_common
      */
-    private $db = null;
+    private $_db = null;
     
     /**
      * Constructor

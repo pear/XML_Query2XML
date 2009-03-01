@@ -80,7 +80,8 @@ class XML_Query2XML_Data_Processor_CDATA extends XML_Query2XML_Data_Processor
         $data = $this->runPreProcessor($record);
         if (is_array($data) || is_object($data)) {
             throw new XML_Query2XML_ConfigException(
-                $this->configPath . 'XML_Query2XML_Data_Processor_CDATA: string expected '
+                $this->getConfigPath()
+                . 'XML_Query2XML_Data_Processor_CDATA: string expected '
                 . 'from pre-processor, but ' . gettype($data) . ' returned.'
             );
         }

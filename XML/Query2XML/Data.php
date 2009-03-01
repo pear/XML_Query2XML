@@ -66,7 +66,8 @@ abstract class XML_Query2XML_Data implements XML_Query2XML_Callback
     /**
      * Set the configuration path to be used for exception messages.
      *
-     * @param string $configPath The configuration path
+     * @param string $configPath The configuration path.
+     *
      * @return void
      */
     protected function setConfigPath($configPath)

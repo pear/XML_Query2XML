@@ -102,8 +102,10 @@ class XML_Query2XML_Data_Source_XPath extends XML_Query2XML_Data_Source
      * @param string $stringDef  String definition.
      * @param string $configPath The configuration path within the $options array.
      *                           This argument is optional.
+     *
+     * @return void
      */
-    public function create($column, $configPath)
+    public function create($stringDef, $configPath)
     {
         throw new XML_Query2XML_ConfigException(
             'XML_Query2XML_Data_Source_XPath::create() is not yet fully implemented'

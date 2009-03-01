@@ -15,7 +15,8 @@
  */
 
 /**
- * XML_Query2XML_Data_Processor_Base64 extends the class XML_Query2XML_Data_Processor.
+ * XML_Query2XML_Data_Processor_Base64 extends the class
+ * XML_Query2XML_Data_Processor.
  */
 require_once 'XML/Query2XML/Data/Processor.php';
 
@@ -78,7 +79,8 @@ class XML_Query2XML_Data_Processor_Base64 extends XML_Query2XML_Data_Processor
         $data = $this->runPreProcessor($record);
         if (is_array($data) || is_object($data)) {
             throw new XML_Query2XML_ConfigException(
-                $this->configPath . ': XML_Query2XML_Data_Processor_Base64: string '
+                $this->getConfigPath()
+                . ': XML_Query2XML_Data_Processor_Base64: string '
                 . 'expected from pre-processor, but ' . gettype($data) . ' returned.'
             );
         }

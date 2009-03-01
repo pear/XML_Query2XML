@@ -41,7 +41,7 @@ class XML_Query2XML_Driver_PDO extends XML_Query2XML_Driver
      * In instance of PDO
      * @var PDO
      */
-    private $db = null;
+    private $_db = null;
     
     /**
      * Constructor
