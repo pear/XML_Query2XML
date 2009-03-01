@@ -4249,7 +4249,7 @@ print $doc->saveXML();
    </para>
   </refsect2>
  </refsect1>
-
+ 
  <refsect1 id="{@id other_xml_data_sources}">
   <title>Integrating other XML data sources</title>
   <refsect2 id="{@id intro}">
@@ -5109,7 +5109,7 @@ print $dom->saveXML();
    If you want to include binary data (e.g. JPEG data) in XML data you should encode your binary data
    to make sure that it does not include a sequence of bytes that represent the characters "&lt;/"
    or a null byte (which usually denotes the end of a string). The most common binary data
-   encoding for XML is base64. The most straight foreward way to do base64 encoding for
+   encoding for XML is base64. The most straightforward way to do base64 encoding for
    an element or attribute value is to use the BASE64 ENCODING shortcut '^'.
   </para>
   <para>
