@@ -11,6 +11,7 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
+ * @access    private
  */
 
 /**
@@ -39,7 +40,8 @@ require_once 'XML/Query2XML/Data/Condition.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @since     Release 1.8.0RC1
+ * @access    private
+ * @since     Release 1.7.1RC1
  */
 class XML_Query2XML_Data_Condition_NonEmpty extends XML_Query2XML_Data_Condition
 {
@@ -57,26 +59,9 @@ class XML_Query2XML_Data_Condition_NonEmpty extends XML_Query2XML_Data_Condition
     public function create(XML_Query2XML_Data $preProcessor = null,
                            $configPath = '')
     {
-        $commandObject = new XML_Query2XML_Data_Condition_NonEmpty();
-        $commandObject->preProcessor = $preProcessor;
-        $commandObject->configPath   = $configPath;
-        if ($commandObject->configPath) {
-            $commandObject->configPath .= ': ';
-        }
-        return $commandObject;
-    }
-    
-    /**
-     * Called by XML_Query2XML for every record in the result set.
-     *
-     * @param array $record An associative array.
-     *
-     * @return mixed whatever is returned by the pre-processor
-     * @throws XML_Query2XML_ConfigException If no pre-processor was set.
-     */
-    public function execute(array $record)
-    {
-        return $this->runPreProcessor($record);
+        $condition = new XML_Query2XML_Data_Condition_NonEmpty($preProcessor);
+        $condition->setConfigPath($configPath);
+        return $condition;
     }
     
     /**

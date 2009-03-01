@@ -11,6 +11,7 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML 
+ * @access    private
  */
 
 /**
@@ -28,13 +29,14 @@ require_once 'XML/Query2XML/Data.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @since     Release 1.8.0RC1
+ * @access    private
+ * @since     Release 1.7.1RC1
  */
 abstract class XML_Query2XML_Data_Source extends XML_Query2XML_Data
 {
     /**
      * This method will be called by XML_Query2XML to create a new instance
-     * of a class implementing this class.
+     * of a class extending this class.
      *
      * @param string $dataSourceString A string specifying the data source.
      * @param string $configPath       The configuration path used for exception

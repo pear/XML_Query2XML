@@ -11,6 +11,7 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
+ * @access    private
  */
 
 /**
@@ -36,7 +37,8 @@ require_once 'XML/Query2XML/Data/Source.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @since     Release 1.8.0RC1
+ * @access    private
+ * @since     Release 1.7.1RC1
  */
 class XML_Query2XML_Data_Source_ColumnValue extends XML_Query2XML_Data_Source
 {
@@ -47,25 +49,13 @@ class XML_Query2XML_Data_Source_ColumnValue extends XML_Query2XML_Data_Source
     private $_column = '';
     
     /**
-     * The configuration path within $options.
-     * @var string
-     */
-    private $_configPath = '';
-    
-    /**
      * Constructor
      *
      * @param string $column     The name of the column.
-     * @param string $configPath The configuration path within the $options array.
-     *                           This argument is optional.
      */
-    public function __construct($column, $configPath = '')
+    public function __construct($column)
     {
-        $this->_column    = $column;
-        $this->_configPath = $configPath;
-        if ($this->_configPath) {
-            $this->_configPath .= ': ';
-        }
+        $this->_column = $column;
     }
     
     /**
@@ -78,7 +68,9 @@ class XML_Query2XML_Data_Source_ColumnValue extends XML_Query2XML_Data_Source
      */
     public function create($column, $configPath)
     {
-       return new XML_Query2XML_Data_Source_ColumnValue($column, $configPath);
+       $source = new XML_Query2XML_Data_Source_ColumnValue($column);
+       $source->setConfigPath($configPath);
+       return $source;
     }
     
     /**
@@ -97,7 +89,7 @@ class XML_Query2XML_Data_Source_ColumnValue extends XML_Query2XML_Data_Source
             return $record[$this->_column];
         }
         throw new XML_Query2XML_ConfigException(
-            $this->_configPath . 'The column "' . $this->_column
+            $this->getConfigPath() . 'The column "' . $this->_column
             . '" was not found in the result set'
         );
     }

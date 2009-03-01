@@ -11,6 +11,7 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
+ * @access    private
  */
 
 /**
@@ -39,7 +40,8 @@ require_once 'XML/Query2XML/Data/Processor.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @since     Release 1.8.0RC1
+ * @access    private
+ * @since     Release 1.7.1RC1
  */
 class XML_Query2XML_Data_Processor_Base64 extends XML_Query2XML_Data_Processor
 {
@@ -57,13 +59,9 @@ class XML_Query2XML_Data_Processor_Base64 extends XML_Query2XML_Data_Processor
     public function create(XML_Query2XML_Data $preProcessor = null,
                            $configPath = '')
     {
-        $commandObject = new XML_Query2XML_Data_Processor_Base64();
-        $commandObject->preProcessor = $preProcessor;
-        $commandObject->configPath   = $configPath;
-        if ($commandObject->configPath) {
-            $commandObject->configPath .= ': ';
-        }
-        return $commandObject;
+        $processor = new XML_Query2XML_Data_Processor_Base64($preProcessor);
+        $processor->setConfigPath($configPath);
+        return $processor;
     }
     
     /**

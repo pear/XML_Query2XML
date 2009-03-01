@@ -11,6 +11,7 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
+ * @access    private
  */
 
 /**
@@ -39,7 +40,8 @@ require_once 'XML/Query2XML/Data/Source.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @since     Release 1.8.0RC1
+ * @access    private
+ * @since     Release 1.7.1RC1
  */
 class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
 {
@@ -79,17 +81,11 @@ class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
      * the opening and closing brace are optional.
      *
      * @param string $callback   The callback as a string.
-     * @param string $configPath The configuration path within the $options array.
-     *                           This argument is optional.
      *
      * @throws XML_Query2XML_ConfigException If $callback is not callable.
      */
-    public function __construct($callback, $configPath = '')
+    public function __construct($callback)
     {
-        $this->configPath = $configPath;
-        if ($this->configPath) {
-            $this->configPath .= ': ';
-        }
         $this->_callbackString = $callback;
         
         $braceOpen = strpos($callback, '(');
@@ -117,8 +113,8 @@ class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
             *  throwConfigException_callback_method2.phpt
             */
             throw new XML_Query2XML_ConfigException(
-                $this->configPath . 'The method/function "' . $callableName
-                . '" is not callable.'
+                $this->getConfigPath() . 'The method/function "'
+                . $callableName . '" is not callable.'
             );
         }
         $this->_callback = $callback;
@@ -133,7 +129,9 @@ class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
      */
     public function create($callback, $configPath)
     {
-        return new XML_Query2XML_Data_Source_PHPCallback($callback, $configPath);
+        $source = new XML_Query2XML_Data_Source_PHPCallback($callback);
+        $source->setConfigPath($configPath);
+        return $source;
     }
     
     /**

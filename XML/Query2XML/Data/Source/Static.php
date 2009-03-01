@@ -11,6 +11,7 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML
+ * @access    private
  */
 
 /**
@@ -42,7 +43,8 @@ require_once 'XML/Query2XML/Data/Source.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @since     Release 1.8.0RC1
+ * @access    private
+ * @since     Release 1.7.1RC1
  */
 class XML_Query2XML_Data_Source_Static extends XML_Query2XML_Data_Source
 {
@@ -74,7 +76,9 @@ class XML_Query2XML_Data_Source_Static extends XML_Query2XML_Data_Source
      */
     public function create($column, $configPath)
     {
-       return new XML_Query2XML_Data_Source_Static($column);
+       $source = new XML_Query2XML_Data_Source_Static($column);
+       $source->setConfigPath($configPath);
+       return $source;
     }
     
     /**
