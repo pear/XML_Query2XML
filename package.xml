@@ -29,20 +29,21 @@ Major features:
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2009-02-27</date>
+ <date>2009-03-01</date>
  <version>
-  <release>1.8.0RC1</release>
-  <api>1.8.0RC1</api>
+  <release>1.7.1RC1</release>
+  <api>1.7.1RC1</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
- <notes>This release implements the following new features
+ <notes>This release implements the following additions:
 - Caching is now implemented as a saparate driver that is automatically
-  wrapped around any other driver. This reduces the codebase of Query2XML.php
-- Refactoring of internal classes
+  wrapped around any other driver if caching is activated.
+  This reduces the codebase of Query2XML.php.
+- Refactoring of internal classes.
  </notes>
  <contents>
   <dir name="/">
@@ -1072,19 +1073,20 @@ Note: no changes were introduced since 1.7.0RC1.
   </release>
   <release>
    <version>
-    <release>1.8.0RC1</release>
-    <api>1.8.0RC1</api>
+    <release>1.7.1RC1</release>
+    <api>1.7.1RC1</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2009-02-27</date>
+   <date>2009-03-01</date>
    <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
-   <notes>This release implements the following new features
+   <notes>This release implements the following additions:
 - Caching is now implemented as a saparate driver that is automatically
-  wrapped around any other driver. This reduces the codebase of Query2XML.php
-- Refactoring of internal classes
+  wrapped around any other driver if caching is activated.
+  This reduces the codebase of Query2XML.php.
+- Refactoring of internal classes.
    </notes>
   </release>
  </changelog>
