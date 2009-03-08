@@ -3,6 +3,16 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.7.1
+------
+Release date: 2009-03-08
+Release notes: This release implements the following additions:
+- Caching is now implemented as a saparate driver that is automatically
+  wrapped around any other driver if caching is activated.
+  This reduces the codebase of Query2XML.php.
+- Refactoring of internal classes.
+Note: No changes were introduced since 1.7.1RC1.
+
 v1.7.1RC1
 ---------
 Release date: 2009-03-01
