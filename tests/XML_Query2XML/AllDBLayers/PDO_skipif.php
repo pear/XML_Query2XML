@@ -24,7 +24,7 @@ if (!class_exists('PDO')) {
 } else {
     require_once dirname(dirname(__FILE__)) . '/settings.php';
     
-    list($protocol, $address) = split('://', DSN);
+    list($protocol, $address) = explode('://', DSN);
     if (strpos($address, '@') === false) {
         if ($protocol == 'sqlite') {
             $protocol .= '2';
@@ -39,14 +39,14 @@ if (!class_exists('PDO')) {
             exit;
         }
     } else {
-        list($credentials, $address) = split('@', $address);
+        list($credentials, $address) = explode('@', $address);
             if (strpos($credentials, ':') === false) {
             $username = $credentials;
             $password = '';
         } else {
-            list($username, $password) = split(':', $credentials);
+            list($username, $password) = explode(':', $credentials);
         }
-        list($host,$database) = split('/', $address);
+        list($host,$database) = explode('/', $address);
         try {
             $db = new PDO($protocol . ':host=' . $host . ';dbname=' . $database, $username, $password);
         } catch (PDOException $e) {

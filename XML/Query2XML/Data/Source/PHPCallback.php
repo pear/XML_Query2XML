@@ -102,7 +102,7 @@ class XML_Query2XML_Data_Source_PHPCallback extends XML_Query2XML_Data_Source
             }
         }
         if (strpos($callback, '::') !== false) {
-            $callback = split('::', $callback);
+            $callback = explode('::', $callback);
         }
         if (!is_callable($callback, false, $callableName)) {
             /*

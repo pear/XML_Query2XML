@@ -609,7 +609,7 @@ class XML_Query2XML
                     is_string($options[$option]) &&
                     strpos($options[$option], '::') !== false
                 ) {
-                    $options[$option] = split('::', $options[$option]);
+                    $options[$option] = explode('::', $options[$option]);
                 }
                 if (
                     $options[$option] !== false
