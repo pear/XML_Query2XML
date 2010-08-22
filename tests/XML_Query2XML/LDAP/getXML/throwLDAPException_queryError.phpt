@@ -1,5 +1,5 @@
 --TEST--
-XML_Query2XML_Driver_LDAP::preprocessQuery(): check for XML_Query2XML_ConfigException - $query: array expected, string given
+XML_Query2XML_Driver_LDAP::getXML(): check for XML_Query2XML_LDAPException
 --SKIPIF--
 <?php require_once dirname(dirname(__FILE__)) . '/skipif.php'; ?>
 --FILE--
@@ -28,10 +28,10 @@ XML_Query2XML_Driver_LDAP::preprocessQuery(): check for XML_Query2XML_ConfigExce
         $dom->formatOutput = true;
         print $dom->saveXML();
     } catch (XML_Query2XML_LDAPException $e) {
-        echo get_class($e) . ': ' . $e->getMessage();
+        echo get_class($e);
     } catch (XML_Query2XML_LDAP2Exception $e) {
-        echo str_replace('LDAP2', 'LDAP', get_class($e)) . ': ' . str_replace('net_ldap2_error', 'net_ldap_error', $e->getMessage());
+        echo str_replace('LDAP2', 'LDAP', get_class($e));
     }
 ?>
 --EXPECT--
-XML_Query2XML_LDAPException: [sql]: Could not run LDAP search query: [net_ldap_error: message="LDAP_FILTER_ERROR((object class=inetOrgPerson)): LDAP_FILTER_ERROR" code=87 mode=return level=notice prefix="" info=""]
+XML_Query2XML_LDAPException
