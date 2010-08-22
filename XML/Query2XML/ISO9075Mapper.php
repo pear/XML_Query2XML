@@ -274,7 +274,7 @@ class XML_Query2XML_ISO9075Mapper
     private static function _utf8ToUnicode($string)
     {
         $string = I18N_UnicodeString::utf8ToUnicode($string);
-        if (strtolower(get_class($string)) == 'pear_error') {
+        if (is_object($string) && strtolower(get_class($string)) == 'pear_error') {
             /*
              * unit tests:
              *  testMapException1()
