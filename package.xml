@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.4.11" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-http://pear.php.net/dtd/tasks-1.0.xsd
-http://pear.php.net/dtd/package-2.0
-http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>XML_Query2XML</name>
  <channel>pear.php.net</channel>
  <summary>Creates XML data from SQL queries</summary>
@@ -20,16 +17,15 @@ Major features:
 7. debugging, logging and profiling features
 8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 238 phpt unit tests
- 
- </description>
+10. 238 phpt unit tests</description>
  <lead>
   <name>Lukas Feiler</name>
   <user>lukasfeiler</user>
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2009-03-08</date>
+ <date>2010-10-25</date>
+ <time>22:52:38</time>
  <version>
   <release>1.7.1</release>
   <api>1.7.1</api>
@@ -39,7 +35,8 @@ Major features:
   <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
- <notes>This release implements the following additions:
+ <notes>
+This release implements the following additions:
 - Caching is now implemented as a saparate driver that is automatically
   wrapped around any other driver if caching is activated.
   This reduces the codebase of Query2XML.php.
@@ -47,472 +44,385 @@ Major features:
 Note: No changes were introduced since 1.7.1RC1.
  </notes>
  <contents>
-  <dir name="/">
-   <dir name="cases">
-    <dir name="case01">
-     <file baseinstalldir="/" name="case01.php" role="doc" />
-     <file baseinstalldir="/" name="case01.xml" role="doc" />
-    </dir> <!-- /cases/case01 -->
-    <dir name="case02">
-     <file baseinstalldir="/" name="case02.log" role="doc" />
-     <file baseinstalldir="/" name="case02.php" role="doc" />
-     <file baseinstalldir="/" name="case02.profile" role="doc" />
-     <file baseinstalldir="/" name="case02.xml" role="doc" />
-     <file baseinstalldir="/" name="case02_debug.php" role="doc" />
-    </dir> <!-- /cases/case02 -->
-    <dir name="case03">
-     <file baseinstalldir="/" name="case03.log" role="doc" />
-     <file baseinstalldir="/" name="case03.php" role="doc" />
-     <file baseinstalldir="/" name="case03.profile" role="doc" />
-     <file baseinstalldir="/" name="case03.xml" role="doc" />
-     <file baseinstalldir="/" name="case03_debug.php" role="doc" />
-    </dir> <!-- /cases/case03 -->
-    <dir name="case04">
-     <file baseinstalldir="/" name="case04.log" role="doc" />
-     <file baseinstalldir="/" name="case04.php" role="doc" />
-     <file baseinstalldir="/" name="case04.profile" role="doc" />
-     <file baseinstalldir="/" name="case04.xml" role="doc" />
-     <file baseinstalldir="/" name="case04_debug.php" role="doc" />
-    </dir> <!-- /cases/case04 -->
-    <dir name="case05">
-     <file baseinstalldir="/" name="case05.log" role="doc" />
-     <file baseinstalldir="/" name="case05.php" role="doc" />
-     <file baseinstalldir="/" name="case05.profile" role="doc" />
-     <file baseinstalldir="/" name="case05.xml" role="doc" />
-     <file baseinstalldir="/" name="case05_debug.php" role="doc" />
-    </dir> <!-- /cases/case05 -->
-    <dir name="case06">
-     <file baseinstalldir="/" name="case06.log" role="doc" />
-     <file baseinstalldir="/" name="case06.php" role="doc" />
-     <file baseinstalldir="/" name="case06.profile" role="doc" />
-     <file baseinstalldir="/" name="case06.xml" role="doc" />
-     <file baseinstalldir="/" name="case06_debug.php" role="doc" />
-    </dir> <!-- /cases/case06 -->
-    <dir name="case07">
-     <file baseinstalldir="/" name="case07.log" role="doc" />
-     <file baseinstalldir="/" name="case07.php" role="doc" />
-     <file baseinstalldir="/" name="case07.profile" role="doc" />
-     <file baseinstalldir="/" name="case07.xml" role="doc" />
-     <file baseinstalldir="/" name="case07_debug.php" role="doc" />
-    </dir> <!-- /cases/case07 -->
-    <dir name="case08">
-     <file baseinstalldir="/" name="case08.log" role="doc" />
-     <file baseinstalldir="/" name="case08.php" role="doc" />
-     <file baseinstalldir="/" name="case08.profile" role="doc" />
-     <file baseinstalldir="/" name="case08.xml" role="doc" />
-     <file baseinstalldir="/" name="case08_debug.php" role="doc" />
-    </dir> <!-- /cases/case08 -->
-   </dir> <!-- /cases -->
-   <dir name="tests">
-    <dir name="XML_Query2XML">
-     <dir name="AllDBLayers">
-      <dir name="clearProfile">
-       <file baseinstalldir="/" name="clearProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/clearProfile -->
-      <dir name="disableDebugLog">
-       <file baseinstalldir="/" name="disableDebugLog.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/disableDebugLog -->
-      <dir name="enableDebugLog">
-       <file baseinstalldir="/" name="enableDebugLog.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_cached.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_twoVars.phpt" role="test" />
-       <file baseinstalldir="/" name="enableDebugLog_uncached.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/enableDebugLog -->
-      <dir name="getFlatXML">
-       <file baseinstalldir="/" name="case01.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleSelect.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getFlatXML -->
-      <dir name="getGlobalOption">
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getGlobalOption -->
-      <dir name="getProfile">
-       <file baseinstalldir="/" name="getProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getProfile -->
-      <dir name="getRawProfile">
-       <file baseinstalldir="/" name="getRawProfile.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getRawProfile -->
-      <dir name="getXML">
-       <file baseinstalldir="/" name="asteriskShortcut_attributes1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_attributes6.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements1.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements2.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements3.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements4.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements5.phpt" role="test" />
-       <file baseinstalldir="/" name="asteriskShortcut_elements6.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="caching_cached.phpt" role="test" />
-       <file baseinstalldir="/" name="caching_cached_different_drivers.phpt" role="test" />
-       <file baseinstalldir="/" name="caching_cached_limit.phpt" role="test" />
-       <file baseinstalldir="/" name="caching_cached_limits.phpt" role="test" />
-       <file baseinstalldir="/" name="caching_cached_multiple_queries.phpt" role="test" />
-       <file baseinstalldir="/" name="caching_cached_offset.phpt" role="test" />
-       <file baseinstalldir="/" name="caching_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="callbackReturnDOMNode_parentHidden.phpt" role="test" />
-       <file baseinstalldir="/" name="case02.phpt" role="test" />
-       <file baseinstalldir="/" name="case03.phpt" role="test" />
-       <file baseinstalldir="/" name="case04.phpt" role="test" />
-       <file baseinstalldir="/" name="case05.phpt" role="test" />
-       <file baseinstalldir="/" name="case06.phpt" role="test" />
-       <file baseinstalldir="/" name="case07.phpt" role="test" />
-       <file baseinstalldir="/" name="case08.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_base64Prefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_columnName_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_emptyCdata.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_conditionOption.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="complexAttributeSpecification_valuePrefixes.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption1.phpt" role="test" />
-       <file baseinstalldir="/" name="complexElementSpecification_conditionOption2.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_attribute_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_element_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="conditionPrefix_value_staticText.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_ignoreRowTag.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_columnName_onRootLevel.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_commandObject.phpt" role="test" />
-       <file baseinstalldir="/" name="dynamicRowTag_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="idcolumn_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="offsetlimit.phpt" role="test" />
-       <file baseinstalldir="/" name="offsetlimit_driver.phpt" role="test" />
-       <file baseinstalldir="/" name="offsetlimit_limit_zero.phpt" role="test" />
-       <file baseinstalldir="/" name="offsetlimit_throwConfigException_limit_not_numeric.phpt" role="test" />
-       <file baseinstalldir="/" name="offsetlimit_throwConfigException_offset_not_numeric.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false1.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_argument_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="sql_options_single_record_uncached.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_nullResultSet_simpleQuery_singleRecord.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_scenariosNoContainer.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callback.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnName.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticString.phpt" role="test" />
-       <file baseinstalldir="/" name="unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/getXML -->
-      <dir name="setGlobalOption">
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
-       <file baseinstalldir="/" name="configException_noSuchOption.phpt" role="test" />
-       <file baseinstalldir="/" name="hidden_container_prefix.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/setGlobalOption -->
-      <dir name="startProfiling">
-       <file baseinstalldir="/" name="startProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/startProfiling -->
-      <dir name="stopProfiling">
-       <file baseinstalldir="/" name="stopProfiling.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/stopProfiling -->
-      <dir name="_addDOMChildren">
-       <file baseinstalldir="/" name="throwXMLException_arrayWithBool.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithDouble.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithInt.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithObject.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_arrayWithString.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_addDOMChildren -->
-      <dir name="_appendTextChildNode">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_appendTextChildNode -->
-      <dir name="_applyColumnStringToRecord">
-       <file baseinstalldir="/" name="callbacks.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_function2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callback_method2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_element2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_unserialize.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord -->
-      <dir name="_applySqlOptionsToRecord">
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterFalse.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeMasterTrue.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_applySqlOptionsToRecord -->
-      <dir name="_createDOMElement">
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_elementInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_roottagOptionInvalid2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException_rowtagOptionInvalid.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_createDOMElement -->
-      <dir name="_executeEncoder">
-       <file baseinstalldir="/" name="basics.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_default.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_false.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_function.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_nonStaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_null.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_overwritten_default_false.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_overwritten_default_false2.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_overwritten_default_false_function.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_overwritten_null_false_staticMethodString.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_staticMethodArray.phpt" role="test" />
-       <file baseinstalldir="/" name="encoder_staticMethodString.phpt" role="test" />
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-       <file baseinstalldir="/" name="within_complexAttributeSpecificationValue.phpt" role="test" />
-       <file baseinstalldir="/" name="within_complexElementSpecificationValue.phpt" role="test" />
-       <file baseinstalldir="/" name="within_simpleAttributeSpecification.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_executeEncoder -->
-      <dir name="_getNestedXMLRecord">
-       <file baseinstalldir="/" name="throwConfigException_attributeSpecWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_getNestedXMLRecord -->
-      <dir name="_mapSQLIdentifierToXMLName">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_mapSQLIdentifierToXMLName -->
-      <dir name="_prepareAndExecute">
-       <file baseinstalldir="/" name="throwDBException_complexQuery.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException_simpleQuery.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_prepareAndExecute -->
-      <dir name="_preprocessOptions">
-       <file baseinstalldir="/" name="throwConfigException_attributesOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_condition.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_data.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_idColumn.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_noArrayKey.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_dataOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_driverOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_elementsOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_idcolumnOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableFunction.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_prefix_noArrayKey.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_queryOptionMissing.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_sqlOptionWrongType.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_valueOptionMissing.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_preprocessOptions -->
-      <dir name="_processComplexElementSpecification">
-       <file baseinstalldir="/" name="condition_function.phpt" role="test" />
-       <file baseinstalldir="/" name="condition_staticMethod.phpt" role="test" />
-       <file baseinstalldir="/" name="rethrowConfigException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_processComplexElementSpecification -->
-      <dir name="_setDOMAttribute">
-       <file baseinstalldir="/" name="throwXMLException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/AllDBLayers/_setDOMAttribute -->
-      <file baseinstalldir="/" name="ADOdbDefault_db_init.php" role="test" />
-      <file baseinstalldir="/" name="ADOdbDefault_skipif.php" role="test" />
-      <file baseinstalldir="/" name="ADOdbException_db_init.php" role="test" />
-      <file baseinstalldir="/" name="ADOdbException_skipif.php" role="test" />
-      <file baseinstalldir="/" name="ADOdbPEAR_db_init.php" role="test" />
-      <file baseinstalldir="/" name="ADOdbPEAR_skipif.php" role="test" />
-      <file baseinstalldir="/" name="DB_db_init.php" role="test" />
-      <file baseinstalldir="/" name="db_init.php" role="test" />
-      <file baseinstalldir="/" name="DB_skipif.php" role="test" />
-      <file baseinstalldir="/" name="MDB2_db_init.php" role="test" />
-      <file baseinstalldir="/" name="MDB2_skipif.php" role="test" />
-      <file baseinstalldir="/" name="PDO_db_init.php" role="test" />
-      <file baseinstalldir="/" name="PDO_skipif.php" role="test" />
-      <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/AllDBLayers -->
-     <dir name="LDAP">
-      <dir name="getXML">
-       <file baseinstalldir="/" name="complexElementSpecification_multiValueLDAPAttributes.phpt" role="test" />
-       <file baseinstalldir="/" name="placeholders.phpt" role="test" />
-       <file baseinstalldir="/" name="placeholders_alternative.phpt" role="test" />
-       <file baseinstalldir="/" name="placeholders_alternative_multichar.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleElementSpecification.phpt" role="test" />
-       <file baseinstalldir="/" name="simpleElementSpecification_optionalLDAPAttributes.phpt" role="test" />
-       <file baseinstalldir="/" name="throwLDAPException_queryError.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/LDAP/getXML -->
-      <dir name="XML_Query2XML_Driver_LDAP-preprocessQuery">
-       <file baseinstalldir="/" name="regularOperation.phpt" role="test" />
-       <file baseinstalldir="/" name="throwConfigException_queryNotAnArray.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/LDAP/XML_Query2XML_Driver_LDAP-preprocessQuery -->
-      <file baseinstalldir="/" name="ldap_init.php" role="test" />
-      <file baseinstalldir="/" name="skipif.php" role="test" />
-     </dir> <!-- /tests/XML_Query2XML/LDAP -->
-     <dir name="NoDBLayer">
-      <dir name="factory">
-       <file baseinstalldir="/" name="throwConfigException.phpt" role="test" />
-       <file baseinstalldir="/" name="throwDBException.phpt" role="test" />
-      </dir> <!-- /tests/XML_Query2XML/NoDBLayer/factory -->
-     </dir> <!-- /tests/XML_Query2XML/NoDBLayer -->
-     <file baseinstalldir="/" name="settings.php" role="test" />
-    </dir> <!-- /tests/XML_Query2XML -->
-    <dir name="XML_Query2XML_ISO9075Mapper">
-     <dir name="map">
-      <file baseinstalldir="/" name="at.phpt" role="test" />
-      <file baseinstalldir="/" name="colon.phpt" role="test" />
-      <file baseinstalldir="/" name="curlyBraceClose.phpt" role="test" />
-      <file baseinstalldir="/" name="curlyBraceOpen.phpt" role="test" />
-      <file baseinstalldir="/" name="equalSign.phpt" role="test" />
-      <file baseinstalldir="/" name="greaterThan.phpt" role="test" />
-      <file baseinstalldir="/" name="invalidNameStartChars.phpt" role="test" />
-      <file baseinstalldir="/" name="invalidNametChars.phpt" role="test" />
-      <file baseinstalldir="/" name="lessThan.phpt" role="test" />
-      <file baseinstalldir="/" name="poundSign.phpt" role="test" />
-      <file baseinstalldir="/" name="semicolon.phpt" role="test" />
-      <file baseinstalldir="/" name="space.phpt" role="test" />
-      <file baseinstalldir="/" name="startWith_xml.phpt" role="test" />
-      <file baseinstalldir="/" name="startWith_XML_UC.phpt" role="test" />
-      <file baseinstalldir="/" name="throwException1.phpt" role="test" />
-      <file baseinstalldir="/" name="throwException2.phpt" role="test" />
-      <file baseinstalldir="/" name="throwException3.phpt" role="test" />
-      <file baseinstalldir="/" name="unmodified1.phpt" role="test" />
-      <file baseinstalldir="/" name="unmodified2.phpt" role="test" />
-      <file baseinstalldir="/" name="validNameChars.phpt" role="test" />
-      <file baseinstalldir="/" name="validNameStartChars.phpt" role="test" />
-      <file baseinstalldir="/" name="validSpecialChars1.phpt" role="test" />
-      <file baseinstalldir="/" name="validSpecialChars2.phpt" role="test" />
-      <file baseinstalldir="/" name="variousChars.phpt" role="test" />
-      <file baseinstalldir="/" name="_x.phpt" role="test" />
-      <file baseinstalldir="/" name="_X_UC.phpt" role="test" />
-     </dir> <!-- /tests/XML_Query2XML_ISO9075Mapper/map -->
-     <file baseinstalldir="/" name="skipif.php" role="test" />
-    </dir> <!-- /tests/XML_Query2XML_ISO9075Mapper -->
-    <file baseinstalldir="/" name="Query2XML_Tests.sql" role="test" />
-    <file baseinstalldir="/" name="Query2XML_Tests.psql" role="test" />
-    <file baseinstalldir="/" name="Query2XML_Tests.sq2" role="test" />
-   </dir> <!-- /tests -->
-   <dir name="XML">
-    <dir name="Query2XML">
-     <file baseinstalldir="/" name="Callback.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="ISO9075Mapper.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Data.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <dir name="Data">
-      <file baseinstalldir="/" name="Source.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Processor.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Condition.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <dir name="Source">
-       <file baseinstalldir="/" name="ColumnValue.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="PHPCallback.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="Static.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir> <!-- /XML/Query2XML/Data/Source -->
-      <dir name="Processor">
-       <file baseinstalldir="/" name="Base64.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="CDATA.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="Unserialize.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir> <!-- /XML/Query2XML/Data/Processor -->
-      <dir name="Condition">
-       <file baseinstalldir="/" name="NonEmpty.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir> <!-- /XML/Query2XML/Data/Condition -->
-     </dir> <!-- /XML/Query2XML/Data -->
-     <dir name="Driver">
-      <file baseinstalldir="/" name="ADOdb.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="DB.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Caching.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="MDB2.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="PDO.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="LDAP.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="LDAP2.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir> <!-- /XML/Query2XML/Driver -->
-    </dir> <!-- /XML/Query2XML -->
-    <file baseinstalldir="/" name="Query2XML.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
-   </dir> <!-- /XML -->
-   <file baseinstalldir="/" name="ChangeLog" role="doc" />
-   <file baseinstalldir="/" name="ChangeLog-until-v0.6.0" role="doc" />
-   <file baseinstalldir="/" name="INSTALL" role="doc" />
-   <file baseinstalldir="/" name="LICENSE" role="doc" />
-   <file baseinstalldir="/" name="README" role="doc" />
-   <file baseinstalldir="/" name="RELEASES" role="doc" />
-  </dir> <!-- / -->
+  <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" md5sum="a8e29b6e9a79bf05c7d9b6c5c52b843a" name="cases/case01/case01.php" role="doc" />
+   <file baseinstalldir="/" md5sum="243da01e0db85dff67b746e41669e7c2" name="cases/case01/case01.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="48916c7f977e64fa8303290b142edd14" name="cases/case02/case02.log" role="doc" />
+   <file baseinstalldir="/" md5sum="c6d96b53526de103bf008ce245376409" name="cases/case02/case02.php" role="doc" />
+   <file baseinstalldir="/" md5sum="40b52a7629b99c9536547932e7e95fdd" name="cases/case02/case02.profile" role="doc" />
+   <file baseinstalldir="/" md5sum="0e012e37fb54b89b73612fbb3900ad2f" name="cases/case02/case02.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="912651f00eccc21089473961243c053b" name="cases/case02/case02_debug.php" role="doc" />
+   <file baseinstalldir="/" md5sum="dae9126dc437bfee7fae54a348e2363f" name="cases/case03/case03.log" role="doc" />
+   <file baseinstalldir="/" md5sum="f2d52ee82b4d1a48d4c4f42ed236e6ef" name="cases/case03/case03.php" role="doc" />
+   <file baseinstalldir="/" md5sum="02dcaaf46ad49f6f1693d8d921074f58" name="cases/case03/case03.profile" role="doc" />
+   <file baseinstalldir="/" md5sum="0e012e37fb54b89b73612fbb3900ad2f" name="cases/case03/case03.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="2878177e1d86e1d6d9366f93f4a6ebae" name="cases/case03/case03_debug.php" role="doc" />
+   <file baseinstalldir="/" md5sum="5f471994fc70ac0fe749c71108824842" name="cases/case04/case04.log" role="doc" />
+   <file baseinstalldir="/" md5sum="90266c5b6c53950edf0e38dce9d3372c" name="cases/case04/case04.php" role="doc" />
+   <file baseinstalldir="/" md5sum="68996571635abeb4eb3eca978fd89a5e" name="cases/case04/case04.profile" role="doc" />
+   <file baseinstalldir="/" md5sum="1d82fb424190479ff9bff345820e67f5" name="cases/case04/case04.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="ef063bb45b6239db06c1ac49c2a3d45a" name="cases/case04/case04_debug.php" role="doc" />
+   <file baseinstalldir="/" md5sum="5dc48438eff4d1ba6a5c40ae783221e8" name="cases/case05/case05.log" role="doc" />
+   <file baseinstalldir="/" md5sum="73dd2f7ceb1ed4f7f0752e6572c1da12" name="cases/case05/case05.php" role="doc" />
+   <file baseinstalldir="/" md5sum="f6861b5610bbb3533fa3442d0261e408" name="cases/case05/case05.profile" role="doc" />
+   <file baseinstalldir="/" md5sum="4a3f8c45f501af96ecde1410ab1ed735" name="cases/case05/case05.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="0ee8b52ae8cc8a7579f9a3750e5accad" name="cases/case05/case05_debug.php" role="doc" />
+   <file baseinstalldir="/" md5sum="4977821d96dd70045b83ec1cd664cb2e" name="cases/case06/case06.log" role="doc" />
+   <file baseinstalldir="/" md5sum="3043559a71926d116e2a7229108563c0" name="cases/case06/case06.php" role="doc" />
+   <file baseinstalldir="/" md5sum="22ed1ec8d92a2df8fef806e89ae11c9b" name="cases/case06/case06.profile" role="doc" />
+   <file baseinstalldir="/" md5sum="f8e00fab3847fa782bae70784ca320f1" name="cases/case06/case06.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="bbbc04f4de95490dbaca7daaad34c862" name="cases/case06/case06_debug.php" role="doc" />
+   <file baseinstalldir="/" md5sum="56470f9ae619a869f93ef3183e748610" name="cases/case07/case07.log" role="doc" />
+   <file baseinstalldir="/" md5sum="c04f1c8d2a781c6b84055be91057d98b" name="cases/case07/case07.php" role="doc" />
+   <file baseinstalldir="/" md5sum="1d25ad3515422d6532cdce6820125003" name="cases/case07/case07.profile" role="doc" />
+   <file baseinstalldir="/" md5sum="0e012e37fb54b89b73612fbb3900ad2f" name="cases/case07/case07.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="e7446dd99027128544c742ac061fe265" name="cases/case07/case07_debug.php" role="doc" />
+   <file baseinstalldir="/" md5sum="4f9d7ae61f9b74e3bcdb08824ddf9181" name="cases/case08/case08.log" role="doc" />
+   <file baseinstalldir="/" md5sum="db86d5091278ba78ebb3b2e8f8f540fa" name="cases/case08/case08.php" role="doc" />
+   <file baseinstalldir="/" md5sum="3910a63e16a5bd9d037d5c408e4d2931" name="cases/case08/case08.profile" role="doc" />
+   <file baseinstalldir="/" md5sum="f4f0614a12f89b2def4db34cdc2e1ccb" name="cases/case08/case08.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="666e93fdcacf7f4074487e4057dd950e" name="cases/case08/case08_debug.php" role="doc" />
+   <file baseinstalldir="/" md5sum="87750c8d53e8dcaa0d379dbb2fa5b7ef" name="tests/Query2XML_Tests.dm2" role="test" />
+   <file baseinstalldir="/" md5sum="19a3b6effbd7a9b0f43c2ef1c5ac4c92" name="tests/Query2XML_Tests.jpg" role="test" />
+   <file baseinstalldir="/" md5sum="66522f590937d353412341bbf4a294e6" name="tests/Query2XML_Tests.psql" role="test" />
+   <file baseinstalldir="/" md5sum="7570a2cabb43fafa179c832af5846205" name="tests/Query2XML_Tests.sq2" role="test" />
+   <file baseinstalldir="/" md5sum="826208bdf5f5cd0476bb4a4339ee5e42" name="tests/Query2XML_Tests.sql" role="test" />
+   <file baseinstalldir="/" md5sum="4ecd3a746ef2512a6679c270df048ce5" name="tests/testCases.sh" role="test" />
+   <file baseinstalldir="/" md5sum="271a46a07dfbc253ce6654b049504a3c" name="tests/XML_Query2XML/checkTestNames.sh" role="test" />
+   <file baseinstalldir="/" md5sum="d870f62852f034e6375f8c584fb92271" name="tests/XML_Query2XML/diffTests.sh" role="test" />
+   <file baseinstalldir="/" md5sum="15df800f940276f68c7cb5f48541e1bd" name="tests/XML_Query2XML/diffTests_MDB2Master.sh" role="test" />
+   <file baseinstalldir="/" md5sum="91b0a36fa0cc8f3e8cd5014995bbaedc" name="tests/XML_Query2XML/settings.php" role="test" />
+   <file baseinstalldir="/" md5sum="51f83ed14b46a78258ffe9447dd6b7d8" name="tests/XML_Query2XML/syncTests.sh" role="test" />
+   <file baseinstalldir="/" md5sum="6b9a4c9023d0bdb819c6aec6dc5888a7" name="tests/XML_Query2XML/syncTests_MDB2Master.sh" role="test" />
+   <file baseinstalldir="/" md5sum="1830086298237f4d2d351623684a1fc7" name="tests/XML_Query2XML/AllDBLayers/ADOdbDefault_db_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="e5954a76d5f022005453ab6c1778a8eb" name="tests/XML_Query2XML/AllDBLayers/ADOdbDefault_skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="6317bb7fd5bd2c01a5772d0804566548" name="tests/XML_Query2XML/AllDBLayers/ADOdbException_db_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="6805105f6f9dff92b3e4531752f21be9" name="tests/XML_Query2XML/AllDBLayers/ADOdbException_skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="1c0896f23e39408f214bb63aa5ed2404" name="tests/XML_Query2XML/AllDBLayers/ADOdbPEAR_db_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="857479974cfdb71c5108d6572b3d4966" name="tests/XML_Query2XML/AllDBLayers/ADOdbPEAR_skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="ecebadd3a093d7bbd1c5f7d1cf721edf" name="tests/XML_Query2XML/AllDBLayers/DB_db_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="9a2150631377a08aa3980a5a037d8af0" name="tests/XML_Query2XML/AllDBLayers/db_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="8c34883cc0957603ac954b6e7e174088" name="tests/XML_Query2XML/AllDBLayers/DB_skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="523dd900831ac97150e3317b86e52568" name="tests/XML_Query2XML/AllDBLayers/MDB2_db_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="a4b7edeb6202079b2b18b58d28459bee" name="tests/XML_Query2XML/AllDBLayers/MDB2_skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="4c9fd6bb91822519cdabad84e5f5d6c2" name="tests/XML_Query2XML/AllDBLayers/PDO_db_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="31f47bbb7d3d3979d4789a2e71ae1ca1" name="tests/XML_Query2XML/AllDBLayers/PDO_skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="24a0a4f365712a92019bf3eadb2b6114" name="tests/XML_Query2XML/AllDBLayers/skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="4ca1973ccba356cdd391235d8c2a2ba4" name="tests/XML_Query2XML/AllDBLayers/clearProfile/clearProfile.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="dbb69615e4c93e69e524f494de4d8289" name="tests/XML_Query2XML/AllDBLayers/disableDebugLog/disableDebugLog.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="3bf03508faf06f0014034aa3829f7471" name="tests/XML_Query2XML/AllDBLayers/enableDebugLog/enableDebugLog.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="8840d98d99f55730004ca205e31c9521" name="tests/XML_Query2XML/AllDBLayers/enableDebugLog/enableDebugLog_cached.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="ed37f71d8e87a8a2878bcdb41530b09a" name="tests/XML_Query2XML/AllDBLayers/enableDebugLog/enableDebugLog_twoVars.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9a4ceb2507cf188eeb99ffcc333c38e7" name="tests/XML_Query2XML/AllDBLayers/enableDebugLog/enableDebugLog_uncached.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="55594529f2fa34ceb4e37582434ed1b8" name="tests/XML_Query2XML/AllDBLayers/getFlatXML/case01.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f18aafc7cfe5ac359e486cf772fd85bf" name="tests/XML_Query2XML/AllDBLayers/getFlatXML/simpleSelect.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="4da9b44eaef720473a8416367be4a15d" name="tests/XML_Query2XML/AllDBLayers/getFlatXML/throwDBException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c484b45b54093a492d6759b65d3bb8af" name="tests/XML_Query2XML/AllDBLayers/getGlobalOption/configException_noSuchOption.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0b7e027e572488389f8dc244fe541755" name="tests/XML_Query2XML/AllDBLayers/getGlobalOption/hidden_container_prefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="cedb940367accc798ae4b945faa8213f" name="tests/XML_Query2XML/AllDBLayers/getProfile/getProfile.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="146bdc6543efe0443b6e6bf4ddbeb84a" name="tests/XML_Query2XML/AllDBLayers/getRawProfile/getRawProfile.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5fc9573c9e7f24a3930f3499e6d7482a" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_attributes1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="2a76051e8f1d18b956f2912d1e893c2a" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_attributes2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="618026ba2c923e7bc55fa5f15cf14fe0" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_attributes3.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="57917d9862b86a21f6ea7014a57a0fd5" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_attributes4.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d92b11876f0d8cd4e6c118dd9ac89aef" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_attributes5.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="240f94cffa415a6a4c9f691caf83abed" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_attributes6.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="46f1f527a8a735ea155ea951b9cbb318" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_elements1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="30e39e523e84f150f5bec00e84249345" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_elements2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c61708b9033833061fabe62d8a99cdf3" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_elements3.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="a3cf71782df3945465785e640cabf911" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_elements4.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="cb0db1afbac452d3e551bf354d29f842" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_elements5.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="bdd053eb3397cf7f8d4744d80edfb409" name="tests/XML_Query2XML/AllDBLayers/getXML/asteriskShortcut_elements6.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1974bb31875f6129a1770886450d308c" name="tests/XML_Query2XML/AllDBLayers/getXML/base64Prefix_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c4e6a5b77f6e43dd0baed7f84ab431ca" name="tests/XML_Query2XML/AllDBLayers/getXML/base64Prefix_callback_conditionalPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="26ea609f135c865c20e3d263953de4b5" name="tests/XML_Query2XML/AllDBLayers/getXML/base64Prefix_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c6cf36860c29a9e2b0594cd9684b5e93" name="tests/XML_Query2XML/AllDBLayers/getXML/base64Prefix_columnName_conditionalPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c71bee1112f0fe800249ef91f37afd4e" name="tests/XML_Query2XML/AllDBLayers/getXML/base64Prefix_staticString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="78a8d0de7a2308548da3805cc1135c23" name="tests/XML_Query2XML/AllDBLayers/getXML/base64Prefix_staticString_conditionalPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1c151c4222f00dac2c9272c46111302b" name="tests/XML_Query2XML/AllDBLayers/getXML/caching_cached.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9e0ddf5eaec2689c53916040278650ae" name="tests/XML_Query2XML/AllDBLayers/getXML/caching_cached_different_drivers.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9ccfe54bb584c3fae5639cb1c8711771" name="tests/XML_Query2XML/AllDBLayers/getXML/caching_cached_limit.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="27f8648e248feb583863e59327c08e69" name="tests/XML_Query2XML/AllDBLayers/getXML/caching_cached_limits.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f563c5a03d26adf82e348ce0314ad50e" name="tests/XML_Query2XML/AllDBLayers/getXML/caching_cached_multiple_queries.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9cda3664196c09e73007168d4091e499" name="tests/XML_Query2XML/AllDBLayers/getXML/caching_cached_offset.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c65abb1d612e1987ebe17c4519d44960" name="tests/XML_Query2XML/AllDBLayers/getXML/caching_uncached.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="57992a3b726111f2390068671477aaa2" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackInterface_complexAttributeSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="40f2951991d917142ac7dd2f178651e8" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackInterface_complexElementSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7874aefe699f845a02059cf8a07cc3df" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackInterface_condition.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="db4ecd2bee7767f3b5759fbc99d4c32e" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackInterface_data.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0e3c5cb7eda74beede05561872c0f0b0" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackInterface_idColumn.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e1ea68436995dfc9b4fc5b14611518e1" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackInterface_simpleAttributeSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e587d8da3fd3994aef2e4913c00db029" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackInterface_simpleElementSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="17f9aa1fcbfc89ffe58161721f6bbb15" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackReturnDOMNode.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="b5ab3dda3d0ff42ba5c128001e4a0c02" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackReturnDOMNodeArray.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f582c0de4993b38b03ece1337e7c6048" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackReturnDOMNodeArray_parentHidden.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0a9dce4b5618be3986948bcacc32632f" name="tests/XML_Query2XML/AllDBLayers/getXML/callbackReturnDOMNode_parentHidden.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="8dc55c7de7bd460e67391b3c349796c7" name="tests/XML_Query2XML/AllDBLayers/getXML/case02.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0b7adb37a6496ebb31dd1e3b5ac3c654" name="tests/XML_Query2XML/AllDBLayers/getXML/case03.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="8bed8f4b663d868e35ea3e769cfeb78d" name="tests/XML_Query2XML/AllDBLayers/getXML/case04.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="43965d936b792888e21fa68c0350b0d2" name="tests/XML_Query2XML/AllDBLayers/getXML/case05.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="061d9ed8f2be1929b48ca0a348cca8c5" name="tests/XML_Query2XML/AllDBLayers/getXML/case06.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e3888f4667397cae7403b3bd1338a1f6" name="tests/XML_Query2XML/AllDBLayers/getXML/case07.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0ce602619ad92cc62e8f6c06673a68b6" name="tests/XML_Query2XML/AllDBLayers/getXML/case08.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="524ce7d34ff909eb1ff176bc78785df8" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_base64Prefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5b0036120e5dbfe3651b5cedcd1a7348" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9b9279b5c5fc6bc9c9888ed10a26c632" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_callback_conditionalPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="ad6cc925a913f8e16b08bc68cdac6a17" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="b616769c5bcc857e686dcad4cb716135" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_columnName_conditionalPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1a1e6eb214b2f84e48e271359b9d3f6d" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_emptyCdata.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e4c93323d743c601a8d0c31ce9b2dc83" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_staticString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f94bec9d8c45aa2594098c135048e439" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_staticString_conditionalPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="01773e0f8190257387650502eab5c9b3" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_throwException2_invalidForAttribute.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="612827bb896752a4525b145185384804" name="tests/XML_Query2XML/AllDBLayers/getXML/cdataPrefix_throwException_invalidForAttribute.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="681a981811363e5f24d8b0f0511ef146" name="tests/XML_Query2XML/AllDBLayers/getXML/complexAttributeSpecification_complexQuerySpecification.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="44db358e0b066a2ba6e968db6c35fc9a" name="tests/XML_Query2XML/AllDBLayers/getXML/complexAttributeSpecification_complexQuerySpecification_valueCallback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0344d8453f0e2b0ed41b2d8dff28bda1" name="tests/XML_Query2XML/AllDBLayers/getXML/complexAttributeSpecification_conditionOption.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="65baa87a07911fb39f25d252a3a35d6f" name="tests/XML_Query2XML/AllDBLayers/getXML/complexAttributeSpecification_simpleQuerySpecification.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="da5ae76c934e2c3f5b5a5924ea554c5a" name="tests/XML_Query2XML/AllDBLayers/getXML/complexAttributeSpecification_valuePrefixes.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d70975e444c43ff0c3095b3c478562c8" name="tests/XML_Query2XML/AllDBLayers/getXML/complexElementSpecification_conditionOption1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="63c02b1bffaa5340f27a6fba73ce9847" name="tests/XML_Query2XML/AllDBLayers/getXML/complexElementSpecification_conditionOption2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="db1ff1b96e9d56ed42d2e33070c0ef8f" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_attribute_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d7d68f3d43ff141bba7625f7b5eb500a" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_attribute_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7599c7d6dba6d8d3149292c0a7232e1c" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_attribute_staticText.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0c159857de65d5ae73ae98987beae811" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_element_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="ce32a0f3078a041e2593fd12ccc828a7" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_element_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="b00ba9b819e58cec1d9f7e5c045eaf1a" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_element_staticText.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6f5d2067c678bcfb15da5d01ab6cace9" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_value_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="503766c785d09201a6da2367c0a8b4da" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_value_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="13fe3ff9b0a99050bc78350d07895e5a" name="tests/XML_Query2XML/AllDBLayers/getXML/conditionPrefix_value_staticText.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="794de3e72fd1cd3934dd35bcf11aed23" name="tests/XML_Query2XML/AllDBLayers/getXML/dynamicRowTag_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0f4debaca593095423ef4b998fd9213b" name="tests/XML_Query2XML/AllDBLayers/getXML/dynamicRowTag_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="3c9c8c086648c74b5d86565e6a2cb337" name="tests/XML_Query2XML/AllDBLayers/getXML/dynamicRowTag_columnName_ignoreRowTag.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e8c37c85da839ec11e74255b0abc867d" name="tests/XML_Query2XML/AllDBLayers/getXML/dynamicRowTag_columnName_onRootLevel.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="853bc929865b8884bed7f24d9684111b" name="tests/XML_Query2XML/AllDBLayers/getXML/dynamicRowTag_commandObject.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="944d1c635974b9625b01799f4d3f183d" name="tests/XML_Query2XML/AllDBLayers/getXML/dynamicRowTag_staticString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="cf05612cd9bbe681adbda062561a4bd2" name="tests/XML_Query2XML/AllDBLayers/getXML/idcolumn_false1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5045ca3e1686506007af2485e2d8fbfd" name="tests/XML_Query2XML/AllDBLayers/getXML/idcolumn_false2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9d8a7b0075212824d6ac41468a49e4fc" name="tests/XML_Query2XML/AllDBLayers/getXML/offsetlimit.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="164f044bad347c75f4a5b35b62fccb19" name="tests/XML_Query2XML/AllDBLayers/getXML/offsetlimit_driver.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c9d1f18d6e90e52948e7baef431c050c" name="tests/XML_Query2XML/AllDBLayers/getXML/offsetlimit_limit_zero.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="08892255429e0833028c507f92972fef" name="tests/XML_Query2XML/AllDBLayers/getXML/offsetlimit_throwConfigException_limit_not_numeric.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6ef921dfe0f1c708d477b13a193bbe16" name="tests/XML_Query2XML/AllDBLayers/getXML/offsetlimit_throwConfigException_offset_not_numeric.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="824d9c838c5003d66a9f932d9ffd931e" name="tests/XML_Query2XML/AllDBLayers/getXML/sql_argument_false1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="8ec7136892a0851ac6d411c0d31e02e2" name="tests/XML_Query2XML/AllDBLayers/getXML/sql_argument_false2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="23ad4fd632a4077d36fbfe0c85f07aaa" name="tests/XML_Query2XML/AllDBLayers/getXML/sql_options_single_record.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7dc81699c40c93e23a1dd812b89a6b3d" name="tests/XML_Query2XML/AllDBLayers/getXML/sql_options_single_record_emptyResultSet.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="064afce66e33ebc765b4feaa27df3a67" name="tests/XML_Query2XML/AllDBLayers/getXML/sql_options_single_record_emptyResultSet_uncached.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d8978043818cc1a22f2b268b82169209" name="tests/XML_Query2XML/AllDBLayers/getXML/sql_options_single_record_uncached.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="986444a309c9a75f8123ba5652f377da" name="tests/XML_Query2XML/AllDBLayers/getXML/throwDBException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7ccfe4ff7a56e5d8216055334cc486dd" name="tests/XML_Query2XML/AllDBLayers/getXML/throwDBException_nullResultSet_complexQuery_multipleRecords.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e24869562f22ff7e6e4cf136e4a0fb01" name="tests/XML_Query2XML/AllDBLayers/getXML/throwDBException_nullResultSet_complexQuery_singleRecord.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="cb2b6081d5c79627aadc185f2405af45" name="tests/XML_Query2XML/AllDBLayers/getXML/throwDBException_nullResultSet_simpleQuery_multipleRecords.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e5509917e67bf23e21bd4f3ef9f6e78f" name="tests/XML_Query2XML/AllDBLayers/getXML/throwDBException_nullResultSet_simpleQuery_singleRecord.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="12df7e95dd81f2507fff53c3ff322295" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_complexElement_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="490d74b5deedf2959e552d2d8afbc8f5" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_complexElement_callbackEmpty.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c44c00bd3516fd8901347ecfb8768c2f" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_complexElement_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="417b0c9c559455003d29fda888c468a9" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_complexElement_columnNameEmpty.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="02cb75224f37bdfd2a37e82d9a7808df" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_complexElement_staticString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e9d08ed8d8be933634bfbc47b85476f6" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_complexElement_staticStringEmpty.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="de3e0a4ad43a4a43d9ae984de3608c28" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_scenariosContainerAlwaysPresent.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="465b4176417ecf60e144248e0c65b71b" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_scenariosContainerOnlyPresentIfChildren.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="28a8940e6288a50a31a2512e33a8c457" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_scenariosNoContainer.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="861d3745cb4aa76c5fb736a8b7ab1d46" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_simpleElement_callback.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="833415fc03011384f2c4a660c54a53b5" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_simpleElement_callbackEmpty.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="519068316d8ee5f5855f4317432ab51e" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_simpleElement_columnName.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="66e2c1da51a2c4a6ade0c1d0f6be5d94" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_simpleElement_columnNameEmpty.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="92f3004aa5d319d32b955ae6567d5d35" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_simpleElement_staticString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="31491443e780abdbc9e79e219616df57" name="tests/XML_Query2XML/AllDBLayers/getXML/unserializationPrefix_simpleElement_staticStringEmpty.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="42c5fc9a454ea3bebe772260fa63469d" name="tests/XML_Query2XML/AllDBLayers/setGlobalOption/configException_hidden_container_prefix_wrongTypeEmptyStr.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="2d73b01cd73cd8e4af3585ec34eb8e56" name="tests/XML_Query2XML/AllDBLayers/setGlobalOption/configException_hidden_container_prefix_wrongTypeObject.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0ddd49f049479111dae4a63917bbb97f" name="tests/XML_Query2XML/AllDBLayers/setGlobalOption/configException_noSuchOption.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0cc6597a74e99308de600d357dd3c36f" name="tests/XML_Query2XML/AllDBLayers/setGlobalOption/hidden_container_prefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="fc7bb0a810cc947698aa566fd595e115" name="tests/XML_Query2XML/AllDBLayers/startProfiling/startProfiling.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d6e0f493bf4ed7144d85fbc5a645c053" name="tests/XML_Query2XML/AllDBLayers/stopProfiling/stopProfiling.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="03d619b6e944e047e9f446af90d0b111" name="tests/XML_Query2XML/AllDBLayers/_addDOMChildren/throwXMLException_arrayWithBool.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7224c98b4cf834915069eb962281a3fc" name="tests/XML_Query2XML/AllDBLayers/_addDOMChildren/throwXMLException_arrayWithDouble.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="75003f415b3560a8fcc5bd69a33c9612" name="tests/XML_Query2XML/AllDBLayers/_addDOMChildren/throwXMLException_arrayWithInt.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="382a2f47dbc16d769963c0a54b3f3db3" name="tests/XML_Query2XML/AllDBLayers/_addDOMChildren/throwXMLException_arrayWithObject.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c7435b98a47ff5423cbb191ef134c5ef" name="tests/XML_Query2XML/AllDBLayers/_addDOMChildren/throwXMLException_arrayWithString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c41a04c92d50a1722740268b1c58743b" name="tests/XML_Query2XML/AllDBLayers/_appendTextChildNode/throwXMLException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="76ad68d04702263372ca7abbb2597775" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/callbacks.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6b0000b16a890f9b4507606d77fe4aca" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwConfigException_callback_function1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e7c081abd15f6309efaf7ffa912459fa" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwConfigException_callback_function2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="ee7d167ccae0a7ba1981b80d7f7b0a20" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwConfigException_callback_method1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="41e1a3ce4e4ccf2290035a6137d4861b" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwConfigException_callback_method2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1cd7c60caea9a6642f589b852d51568e" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwConfigException_element1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="4b7a02a62ccae3670517f19fa08001f5" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwConfigException_element2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e204729bb29684d6be016482c3c7fd87" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwConfigException_idcolumn.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="60dbd27640b0a89bccee72041dd12244" name="tests/XML_Query2XML/AllDBLayers/_applyColumnStringToRecord/throwXMLException_unserialize.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="95a7ae9e83871d63610911e62cbf3e2d" name="tests/XML_Query2XML/AllDBLayers/_applySqlOptionsToRecord/throwConfigException_mergeMasterFalse.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7c2ab1b9a219fb096601d12687474363" name="tests/XML_Query2XML/AllDBLayers/_applySqlOptionsToRecord/throwConfigException_mergeMasterTrue.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7c9ac7240ed79b9af402c9cca5c692ff" name="tests/XML_Query2XML/AllDBLayers/_createDOMElement/throwXMLException_elementInvalid1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9f04b5ec2ba04db0173a3a6369dfe999" name="tests/XML_Query2XML/AllDBLayers/_createDOMElement/throwXMLException_elementInvalid2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5e34eac2851e0ba1623def95eb4cf7f5" name="tests/XML_Query2XML/AllDBLayers/_createDOMElement/throwXMLException_roottagOptionInvalid1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="808f6af7b9c067d76976906860b01343" name="tests/XML_Query2XML/AllDBLayers/_createDOMElement/throwXMLException_roottagOptionInvalid2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="4e5b4661f7e6e42a31c4f058e86068e9" name="tests/XML_Query2XML/AllDBLayers/_createDOMElement/throwXMLException_rowtagOptionInvalid.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7e6bcb20d67b30ea6a1b425d316cd175" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/basics.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="fd2e4bb1bc147cbb6873e33410fb4fc0" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_default.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6979f577de86523aea2c294c271438bb" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_false.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="02c4e8346a13a857509dcc1ab0f615f2" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_function.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0cd7ca7dab33eb3716b052bdabee43f3" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_nonStaticMethod.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="11d34717c88e7ac4403897956f791948" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_null.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="ef4355fe8e41b71fce270873e36f7873" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_overwritten_default_false.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="2f87ea504d45443edee7e8bb8a7e4125" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_overwritten_default_false2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="fa8fc62bbca032ea6131f60717ec3e40" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_overwritten_default_false_function.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5300614e16b7493975a8bdbf9bf8657c" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_overwritten_null_false_nonStaticMethodString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="247d559fe30982c868c7d92fccfc6317" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_overwritten_null_false_staticMethodString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="91e32764dfb64e86595ff6a00c0485a1" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_staticMethodArray.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="ac4c62eed7a2f1a52b7270dadf99a4f0" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/encoder_staticMethodString.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7fe6c28879f6b51e8dfb4c529f2eea64" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/throwXMLException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="81592891cb42d7d98096fb1fcccd81fa" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/within_complexAttributeSpecificationValue.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6d147901456b537bc2ce9277fadf4cfd" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/within_complexElementSpecificationValue.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="bf2941c17b30e826c685962a3cf91eb7" name="tests/XML_Query2XML/AllDBLayers/_executeEncoder/within_simpleAttributeSpecification.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="40bf11ddb4fd7d6ce0d4efeb5f172525" name="tests/XML_Query2XML/AllDBLayers/_getNestedXMLRecord/throwConfigException_attributeSpecWrongType.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d58bde39ffb552e14923bae9a5e0fede" name="tests/XML_Query2XML/AllDBLayers/_getNestedXMLRecord/throwConfigException_idcolumnOptionWrongTypeArray.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d5dadd1160fc6f21a5e973361a616aed" name="tests/XML_Query2XML/AllDBLayers/_getNestedXMLRecord/throwConfigException_idcolumnOptionWrongTypeObject.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e870a025d1572da20bd9cd7301b11180" name="tests/XML_Query2XML/AllDBLayers/_mapSQLIdentifierToXMLName/throwXMLException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="75eabe0da7c3f5abbaa9d05cfc45e26b" name="tests/XML_Query2XML/AllDBLayers/_prepareAndExecute/throwDBException_complexQuery.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f8fcae258fd60b8685812622b70ff244" name="tests/XML_Query2XML/AllDBLayers/_prepareAndExecute/throwDBException_simpleQuery.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="60f97a8ed58946b7007ddb76f4431328" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_attributesOptionWrongType.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="a8ab1bd9fe569a521e374c0073253823" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_complexAttributeSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="2fecde39bd9ec250a84cad23f1048d8e" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_complexElementSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="118185b186ab9301d505a081572b2959" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_condition.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="481d635a58ede5e90ddaa536ce914ce4" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_data.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5312b7df74961241d4cb97a306eb1c5f" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_idColumn.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="81f281c17960ff0782e1ebc50374dd59" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_noArrayKey.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c409e991408a78ad3abe09a1933678c6" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_simpleAttributeSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5be6db1f79e98ba32ae7d79f5138feb2" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_callbackInterface_simpleElementSpec.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="2b099139dedf35fe4e65f0449dac3963" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_dataOptionWrongType.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="412c39f86b44015105f3e95b019a3bcb" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_driverOptionWrongType.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="8b7c5635ed597879f2bca633697e26a1" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_elementsOptionWrongType.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="632ed585969afd93064fe24db44f9c52" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_encoderNotCallableFunction.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="61f90b14d81c8335b8814ab4e8e36a43" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_encoderNotCallableNonstaticMethod.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f6cf80ed3406868b9a041a317f668987" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_encoderNotCallableStaticMethod1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e28afc6b0a7ee04a43f3b6cf40e1bcd7" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_encoderNotCallableStaticMethod2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="221e8a143268346446969a0cc9df09e6" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_idcolumnOptionMissing.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9ee4738c8a5c983c5d334679fcded63a" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_mapperNotCallableFunction.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="64bdda6b6c8c9422ffb9fe937dcaada9" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_mapperNotCallableNonstaticMethod.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6ad67a3ba98446e0ee193a5c8fee2754" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_mapperNotCallableStaticMethod1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1e73a748fe444c215cc910a5aae11b06" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_mapperNotCallableStaticMethod2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e36e66dc761efda80302ae2a98e730c2" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_mergeselectiveOptionWrongType.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="bc5d1fb3ed083ee98fdf7f3cf0df1631" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_prefix_noArrayKey.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1e89bd103a5464100f27563a877e8f6a" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_queryOptionMissing.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1a02db72bcd140f2d32afd66f4705341" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_sqlOptionWrongType.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="575f77fcfcb4df07ecb58f35ff0a0cb6" name="tests/XML_Query2XML/AllDBLayers/_preprocessOptions/throwConfigException_valueOptionMissing.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="b096af55c5150d2ee8f937111cd992cf" name="tests/XML_Query2XML/AllDBLayers/_processComplexElementSpecification/condition_function.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0eac1d38130e521f936e060df89dae85" name="tests/XML_Query2XML/AllDBLayers/_processComplexElementSpecification/condition_staticMethod.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="cc06eb556060a66611999fc6890e65cc" name="tests/XML_Query2XML/AllDBLayers/_processComplexElementSpecification/rethrowConfigException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="bb62725236cb6062fe640d4f29b0a496" name="tests/XML_Query2XML/AllDBLayers/_setDOMAttribute/throwXMLException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="570eacfc81df203e0113a82defc56398" name="tests/XML_Query2XML/LDAP/ldap_init.php" role="test" />
+   <file baseinstalldir="/" md5sum="107ed67f98a41d20f304eff84854c487" name="tests/XML_Query2XML/LDAP/skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="a2d32b0c7a0c5d4a9db63f7fcbc3f943" name="tests/XML_Query2XML/LDAP/getXML/complexElementSpecification_multiValueLDAPAttributes.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7abc8ebc746fc14aa5a491b45d77912c" name="tests/XML_Query2XML/LDAP/getXML/placeholders.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="032b1f3e74aed85913f69dcc966f9818" name="tests/XML_Query2XML/LDAP/getXML/placeholders_alternative.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="87d66ac101dac64ffc117801f9e7f092" name="tests/XML_Query2XML/LDAP/getXML/placeholders_alternative_multichar.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c3777cc55fba0ff58ff7c3ad46755e95" name="tests/XML_Query2XML/LDAP/getXML/simpleElementSpecification.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="3fa8da96683db46520f6ac0f42d6d148" name="tests/XML_Query2XML/LDAP/getXML/simpleElementSpecification_optionalLDAPAttributes.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="22cebf30b7d8fc55cd30bb3324d74fe6" name="tests/XML_Query2XML/LDAP/getXML/throwLDAPException_queryError.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1268e21bbe86f083d48d6421eb7a8054" name="tests/XML_Query2XML/LDAP/XML_Query2XML_Driver_LDAP-preprocessQuery/regularOperation.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c07850171cef733979c688325eda494e" name="tests/XML_Query2XML/LDAP/XML_Query2XML_Driver_LDAP-preprocessQuery/throwConfigException_queryNotAnArray.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="38dcbc92bd354f488e0a513b89e88c6b" name="tests/XML_Query2XML/NoDBLayer/factory/throwConfigException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="4363122c72fd4d07abb7708725a02f94" name="tests/XML_Query2XML/NoDBLayer/factory/throwDBException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="17902297af56db744db0957a4690ff5b" name="tests/XML_Query2XML_ISO9075Mapper/skipif.php" role="test" />
+   <file baseinstalldir="/" md5sum="5c707863f6c784e90086d59c2e287265" name="tests/XML_Query2XML_ISO9075Mapper/map/at.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="1d3911a89ab5a4c998c576e64c61bce3" name="tests/XML_Query2XML_ISO9075Mapper/map/colon.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="46cde320679e4a54162d2eef118b0da0" name="tests/XML_Query2XML_ISO9075Mapper/map/curlyBraceClose.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5e78071e3cc9eb87f45911a5f14ab160" name="tests/XML_Query2XML_ISO9075Mapper/map/curlyBraceOpen.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="62cd074e19ee9d9f110fd7a1414ba3c8" name="tests/XML_Query2XML_ISO9075Mapper/map/equalSign.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f2a34138ce642e40d5f5f761978351fa" name="tests/XML_Query2XML_ISO9075Mapper/map/greaterThan.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="7ced5954706c4480a51f886b2f455bac" name="tests/XML_Query2XML_ISO9075Mapper/map/invalidNameStartChars.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e682979cfc72531fd70f71a40120b417" name="tests/XML_Query2XML_ISO9075Mapper/map/invalidNametChars.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="665b13bebd975e8640d4e0ea91d1990c" name="tests/XML_Query2XML_ISO9075Mapper/map/lessThan.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="185b2a4846ce09a015aa10bae0bf3e97" name="tests/XML_Query2XML_ISO9075Mapper/map/poundSign.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="b49072e404d3dbfd794c2a8bf7157d3c" name="tests/XML_Query2XML_ISO9075Mapper/map/semicolon.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="8e7eb3a8036a58ea016c75f5b2d76e79" name="tests/XML_Query2XML_ISO9075Mapper/map/space.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d25476a09be6c1d8f35f763afe256179" name="tests/XML_Query2XML_ISO9075Mapper/map/startWith_xml.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="3da2229123363b85632f87907c1190d8" name="tests/XML_Query2XML_ISO9075Mapper/map/startWith_XML_UC.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="f8edbffcf83d85ba76fd2989b1a6f617" name="tests/XML_Query2XML_ISO9075Mapper/map/throwException1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="75363ba66f71abc5b86927683d6122df" name="tests/XML_Query2XML_ISO9075Mapper/map/throwException2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="4c4a9b41fddd178e2f7bfc19ed2db3c5" name="tests/XML_Query2XML_ISO9075Mapper/map/throwException3.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c8e3808d0e5c84fdbcc81c96f36de34b" name="tests/XML_Query2XML_ISO9075Mapper/map/unmodified1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="c42a998440a908fa789706b03f3d099a" name="tests/XML_Query2XML_ISO9075Mapper/map/unmodified2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="e968a60519d743a2b5b5040c9fcbb00c" name="tests/XML_Query2XML_ISO9075Mapper/map/validNameChars.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="a55d39285c8f8dc7fea4d2aefab880ad" name="tests/XML_Query2XML_ISO9075Mapper/map/validNameStartChars.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="55204296a79942621f4ca6d1b3d6a199" name="tests/XML_Query2XML_ISO9075Mapper/map/validSpecialChars1.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6e39958959e24841abb53511bdf9e9cf" name="tests/XML_Query2XML_ISO9075Mapper/map/validSpecialChars2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="fffc7bb03571de938d3ce0bf0a856563" name="tests/XML_Query2XML_ISO9075Mapper/map/variousChars.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5eefaf437e64ae493d717603b1189778" name="tests/XML_Query2XML_ISO9075Mapper/map/_x.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9817c59c85ad8ea20bde5372725d0ac1" name="tests/XML_Query2XML_ISO9075Mapper/map/_X_UC.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="6a28a26a46c06beaf64d7cfa8ead1c9c" name="tutorials/XML_Query2XML/XML_Query2XML.pkg" role="data" />
+   <file baseinstalldir="/" md5sum="6263cdb9f1db5747d775081ed218893a" name="XML/Query2XML.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="426aa88b4d18b024218c2bbc741cd875" name="XML/Query2XML/Callback.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="5a51f564a037784780f273fb6baf4061" name="XML/Query2XML/Data.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="29f2b7df2bbbca8c84e6a8ee47cbd8ff" name="XML/Query2XML/ISO9075Mapper.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="86d6985ee4b026fb5e1a92166ad475ae" name="XML/Query2XML/Data/Condition.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="5730561dad254f141a6a7834d77744c0" name="XML/Query2XML/Data/Processor.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="7dbcd877ecdec800cff79c22ee7d4484" name="XML/Query2XML/Data/Source.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="f143d567f0dd519267da520ed7303136" name="XML/Query2XML/Data/Condition/NonEmpty.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="011276e6d8e89ec59c7c22e142a1f0bf" name="XML/Query2XML/Data/Processor/Base64.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="c6a3c34fe56da18858cd137ad0dbd8c8" name="XML/Query2XML/Data/Processor/CDATA.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="ad87ae5f3cdda3f20929005cbebb3028" name="XML/Query2XML/Data/Processor/Unserialize.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="93faefa7c6f98c6be860fde38781a56a" name="XML/Query2XML/Data/Source/ColumnValue.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="b8a5f6f0f27d66e5d7377bdc6e872443" name="XML/Query2XML/Data/Source/PHPCallback.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="ed3ca77817d5069dc08367bd3e32db75" name="XML/Query2XML/Data/Source/Static.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="92cf2103d64715926689b26c9b187c8d" name="XML/Query2XML/Data/Source/XPath.php" role="php" />
+   <file baseinstalldir="/" md5sum="21e526354a54bde9c250b575ca679697" name="XML/Query2XML/Driver/ADOdb.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="e6c042eb62fdad5f1f8d7601fd027470" name="XML/Query2XML/Driver/Array.php" role="php" />
+   <file baseinstalldir="/" md5sum="1057ce2c9b576eabb3b737824e95c6f8" name="XML/Query2XML/Driver/Caching.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="856e40e111ca569b3107353894c901c2" name="XML/Query2XML/Driver/DB.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="3e15e886813eb209a6b0f667613543e4" name="XML/Query2XML/Driver/LDAP.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="573953bdbf6371fbb5dc879480cd0db0" name="XML/Query2XML/Driver/LDAP2.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="38b9e94d895bb98ceda777ba3c007638" name="XML/Query2XML/Driver/MDB2.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="49cd6a1cb0a6c47025057a5c8b665474" name="XML/Query2XML/Driver/PDO.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" md5sum="66c6de75ef3e4d6f91ca2d8b12592ff1" name="ChangeLog" role="doc" />
+   <file baseinstalldir="/" md5sum="486d2ec2625e43d0491e0a33da6fd9cf" name="ChangeLog-until-v0.6.0" role="doc" />
+   <file baseinstalldir="/" md5sum="130435d3e404998780339d13a2a92068" name="INSTALL" role="doc" />
+   <file baseinstalldir="/" md5sum="7fbc338309ac38fefcd64b04bb903e34" name="LICENSE" role="doc" />
+   <file baseinstalldir="/" md5sum="aab32c9c1126eef177f886e3c85686e6" name="README" role="doc" />
+   <file baseinstalldir="/" md5sum="96e40f53c958c0ce9f970c62a087fe17" name="RELEASES" role="doc" />
+  </dir>
  </contents>
  <dependencies>
   <required>
@@ -551,8 +461,8 @@ Note: No changes were introduced since 1.7.1RC1.
    </stability>
    <date>2005-09-19</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>first release
-    
+   <notes>
+first release
    </notes>
   </release>
   <release>
@@ -566,8 +476,8 @@ Note: No changes were introduced since 1.7.1RC1.
    </stability>
    <date>2005-09-23</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>elements are now always ordered the way they are supposed to; concept of hidden elements introduced
-    
+   <notes>
+elements are now always ordered the way they are supposed to; concept of hidden elements introduced
    </notes>
   </release>
   <release>
@@ -581,9 +491,9 @@ Note: No changes were introduced since 1.7.1RC1.
    </stability>
    <date>2006-02-08</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This is the first public release!
+   <notes>
+This is the first public release!
     Changes: minor updates of the tutorial and bug fixes.
-    
    </notes>
   </release>
   <release>
@@ -597,7 +507,8 @@ Note: No changes were introduced since 1.7.1RC1.
    </stability>
    <date>2006-02-25</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release includes two major changes:
+   <notes>
+This release includes two major changes:
 - XML_Query2XML now uses PHP5&apos;s DOM XML extension. Therefore
   DomDocument, DomNode, etc are now used in favor of XML_Query2XML_XMLElement.
   XML_Query2XML does not come with XML_Query2XML_XMLElement anymore!
@@ -609,7 +520,6 @@ Minor changes:
 - complete review of the tutorial and the API documentation
 - changes of testCases.sh: schema validation is not supported
   anymore
-    
    </notes>
   </release>
   <release>
@@ -623,12 +533,12 @@ Minor changes:
    </stability>
    <date>2006-02-28</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release includes one major change:
+   <notes>
+This release includes one major change:
 Public methods will now only throw exceptions that extend PEAR_Exception.
 No PEAR errors or special XML will be returned anymore.
 Therefore the public method XML_Query2XML::factory() now
 only knows one argument.
-    
    </notes>
   </release>
   <release>
@@ -642,7 +552,8 @@ only knows one argument.
    </stability>
    <date>2006-03-13</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release includes a couple of major changes:
+   <notes>
+This release includes a couple of major changes:
 - full MDB2 support
 - all new exception handling: just three different
   exceptions that all extend XML_Query2XML_Exception.
@@ -658,7 +569,6 @@ Minor changes include:
 - as PHP5 uses references for objects by default &amp; (such as
   in =&amp;) is now only used where necessary.
 - the tutorial now renders just fine in all common browsers
-    
    </notes>
   </release>
   <release>
@@ -672,7 +582,8 @@ Minor changes include:
    </stability>
    <date>2006-03-17</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release includes a couple of minor changes:
+   <notes>
+This release includes a couple of minor changes:
 - all lines now have a maximum length of 85 characters
 - no () with require_once
 - always using {} with code blocks
@@ -680,7 +591,6 @@ Minor changes include:
 - using /* ... */ for all multi-line comments
 - enhanced documentation for private methods
 - code enhancements inside XML_Query2XML::getXML()
-    
    </notes>
   </release>
   <release>
@@ -694,7 +604,8 @@ Minor changes include:
    </stability>
    <date>2006-04-23</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release includes all changes recommeded during the PEPr voting process.
+   <notes>
+This release includes all changes recommeded during the PEPr voting process.
 Major changes:
 - asterisk shortcut that expands to all columns in the result set;
   the tutorial was updated to document this feature and a new
@@ -710,7 +621,6 @@ Minor changes:
 - using foreach($array as $key =&gt; $value) instead of
   while(list($key, $value) = each($array))
 - now comes with 168 unit tests
-    
    </notes>
   </release>
   <release>
@@ -724,7 +634,8 @@ Minor changes:
    </stability>
    <date>2006-09-28</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release fixes a minor bug with PHP5 prior to 5.1.0.
+   <notes>
+This release fixes a minor bug with PHP5 prior to 5.1.0.
 Thanks a lot to Christophe Laratte &lt;christophe dot laratte at openflyers dot org&gt;
 for reporting this!
 
@@ -733,7 +644,6 @@ Bug fixes:
   PHP5 &lt; 5.1.0: added class_exists() calls before using instanceof
   operator in XML_Query2XML constructor;
   see also: http://bugs.php.net/bug.php?id=29736
-    
    </notes>
   </release>
   <release>
@@ -747,7 +657,8 @@ Bug fixes:
    </stability>
    <date>2006-10-14</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release adds support for ADOdb (adodb.sf.net).
+   <notes>
+This release adds support for ADOdb (adodb.sf.net).
 ADOdb can be used with different error handling mechanisms:
 - default: methods return false on failure; these errors
   will be caught by XML_Query2XML and an XML_Query2XML_DBException
@@ -763,7 +674,6 @@ ADOdb can be used with different error handling mechanisms:
 This means that no matter which error handling mechanism is used within
 ADOdb, XML_Query2XML will behave the same. It will throw an
 XML_Query2XML_DBException in case of a database error.
-    
    </notes>
   </release>
   <release>
@@ -777,12 +687,13 @@ XML_Query2XML_DBException in case of a database error.
    </stability>
    <date>2006-11-04</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release is *NOT BACKWARD COMPATIBLE*.
-I'm sorry for the BC break, but due to security considerations XML_Query2XML
+   <notes>
+This release is *NOT BACKWARD COMPATIBLE*.
+I&apos;m sorry for the BC break, but due to security considerations XML_Query2XML
 does not use the native function eval() anymore. Therefore
-- the "!" prefix is not supported anymore
-- the behaviour of the "condition" option was changed
-- the new callback prefix "#" was added (use it instead of the "!" prefix)
+- the &quot;!&quot; prefix is not supported anymore
+- the behaviour of the &quot;condition&quot; option was changed
+- the new callback prefix &quot;#&quot; was added (use it instead of the &quot;!&quot; prefix)
 
 A migration strategy is documented at
 http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#migration
@@ -791,7 +702,6 @@ Also:
 - unit tests were migrated from PHPUnit2 to phpt
 - XML_Query2XML now comes with 433 unit tests
 - migrated from package.xml version 1.0 to version 2.0
-
    </notes>
   </release>
   <release>
@@ -805,10 +715,11 @@ Also:
    </stability>
    <date>2006-12-04</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>I am very proud to announce the first stable release of XML_Query2XML.
-This release introduces only one minor change. It's not
+   <notes>
+I am very proud to announce the first stable release of XML_Query2XML.
+This release introduces only one minor change. It&apos;s not
 a bug fix but just a matter of clean code. The patch
-was anonymously submitted via the project's sourceforge site
+was anonymously submitted via the project&apos;s sourceforge site
 (Note: pear.php.net should be used instead).
 
 If you are upgrading from v0.6.x or v0.7.x, please read
@@ -826,8 +737,9 @@ http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#
    </stability>
    <date>2007-02-03</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This second stable release contains a couple of great new features:
-- it's now possible to integrate other XML data sources (e.g. XML stored in the DB)
+   <notes>
+This second stable release contains a couple of great new features:
+- it&apos;s now possible to integrate other XML data sources (e.g. XML stored in the DB)
   - XML unserialization support: see the ampersand prefix
   - you can now return DOMNode instances from callback functions
 - non-static methods can now be used as callbacks by
@@ -853,9 +765,10 @@ The smaller changes include:
    </stability>
    <date>2007-04-15</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This third stable release contains a new feature and some minor coding-style related changes
+   <notes>
+This third stable release contains a new feature and some minor coding-style related changes
 - it is now possible to handle data sources that use another character encoding
-  than ISO-8859-1; see the 'encoder' option:
+  than ISO-8859-1; see the &apos;encoder&apos; option:
   http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#query2xml_getxml.options_encoder
   Thanks to Mickael Guerin for making me implement this feature that has been sitting on my
   todo list for quite some time now.
@@ -876,12 +789,13 @@ The smaller changes include:
    </stability>
    <date>2007-05-26</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This fourth stable release contains only some small enhancements:
+   <notes>
+This fourth stable release contains only some small enhancements:
 - dumping the data of all the tables in your database is now easier;
   there is also a new section in the tutorial that describes how to do this:
   http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#dumpdatabase
   Thanks to vikram dot melonfire at gmail dot com for raising the issue of database dumps
-- $sql and $options['idColumn'] now also accept a value of false
+- $sql and $options[&apos;idColumn&apos;] now also accept a value of false
 - XML_Query2XML now comes with 803 phpt unit tests
    </notes>
   </release>
@@ -896,7 +810,8 @@ The smaller changes include:
    </stability>
    <date>2007-08-26</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This fith stable release contains a couple of new features:
+   <notes>
+This fith stable release contains a couple of new features:
 - enhanced support for CDATA sections
   (see the CDATA SECTION prefix)
 - enhanced support for binary data via base64 encoding
@@ -919,7 +834,8 @@ The smaller changes include:
    </stability>
    <date>2007-09-03</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This sixth stable release contains a couple of new features:
+   <notes>
+This sixth stable release contains a couple of new features:
 - PDO support - this also adds support for SQLite 3 (thanks to
   John P. McCaskey for pointing out the lack of SQLite 3 support)
 - all unit tests now run with SQLite 2 by default; unit tests
@@ -938,13 +854,14 @@ The smaller changes include:
    </stability>
    <date>2007-09-30</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This release candidate comes after extensive re-factoring:
+   <notes>
+This release candidate comes after extensive re-factoring:
 - XML_Query2XML now does a lot of internal pre-processing
 - this improves performance by at least 30%
 - all exceptions now contain information that relates to the
   configuration option that caused the exception to be thrown
 - caching is now deactivated by default as is not needed in
-  most cases; see $options['sql_options']['cached']
+  most cases; see $options[&apos;sql_options&apos;][&apos;cached&apos;]
 - XML_Query2XML now comes with 1144 phpt unit tests
 Note: if 1.5.0RC1 does not cause any problems for early adopters
 (which I consider very unlikely) 1.5.0 will be released next weekend.
@@ -961,13 +878,14 @@ Note: if 1.5.0RC1 does not cause any problems for early adopters
    </stability>
    <date>2007-10-07</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>This seventh stable release comes after extensive re-factoring:
+   <notes>
+This seventh stable release comes after extensive re-factoring:
 - XML_Query2XML now does a lot of internal pre-processing
 - this improves performance by at least 30%
 - all exceptions now contain information that relates to the
   configuration option that caused the exception to be thrown
 - caching is now deactivated by default as is not needed in
-  most cases; see $options['sql_options']['cached']
+  most cases; see $options[&apos;sql_options&apos;][&apos;cached&apos;]
 - XML_Query2XML now comes with 1144 phpt unit tests
 Note: No changes were introduced since 1.5.0RC1.
    </notes>
@@ -983,12 +901,13 @@ Note: No changes were introduced since 1.5.0RC1.
    </stability>
    <date>2008-01-02</date>
    <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
-   <notes>This release candidate contains the following new features:
+   <notes>
+This release candidate contains the following new features:
 - LDAP support: the new LDAP driver uses PEAR Net_LDAP
   see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
 - new open driver architecture allows you to implement your own drivers
   see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#yourdriver
-- $options['sql']['driver'] now allows you to use different drivers for each query
+- $options[&apos;sql&apos;][&apos;driver&apos;] now allows you to use different drivers for each query
 - fixed documentation bug #12568
 - PEAR Coding Standard fixes
 - correction of copyright notice
@@ -1006,12 +925,13 @@ Note: No changes were introduced since 1.5.0RC1.
    </stability>
    <date>2008-01-06</date>
    <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
-   <notes>This stable release implements the following new features:
+   <notes>
+This stable release implements the following new features:
 - LDAP support: the new LDAP driver uses PEAR Net_LDAP
   see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#ldap
 - new open driver architecture allows you to implement your own drivers
   see http://query2xml.sf.net/docs/html/XML_Query2XML/tutorial_XML_Query2XML.pkg.html#yourdriver
-- $options['sql']['driver'] now allows you to use different drivers for each query
+- $options[&apos;sql&apos;][&apos;driver&apos;] now allows you to use different drivers for each query
 - fixed documentation bug #12568
 - PEAR Coding Standard fixes
 - correction of copyright notice
@@ -1030,9 +950,10 @@ Note: No changes were introduced since 1.6.0RC1.
    </stability>
    <date>2008-04-21</date>
    <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
-   <notes>This feature release brings the following additions:
+   <notes>
+This feature release brings the following additions:
 - new driver for PEAR Net_LDAP2: XML_Query2XML_Driver_LDAP2
-- options 'limit' and 'offset' now supported by the MDB2 and DB drivers;
+- options &apos;limit&apos; and &apos;offset&apos; now supported by the MDB2 and DB drivers;
   thanks to Johnny Cheng from openflyers.org for this feature request
 - improved logging: now also logs the variables with which a prepared
   statement is executed
@@ -1042,7 +963,7 @@ Note: No changes were introduced since 1.6.0RC1.
   ADOdbPEAR or ADOdbException). Also use the environment variable
   PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
   to be used (LDAP or LDAP2). Then simply run
-  'pear run-tests -p XML_Query2XML'
+  &apos;pear run-tests -p XML_Query2XML&apos;
    </notes>
   </release>
   <release>
@@ -1056,9 +977,10 @@ Note: No changes were introduced since 1.6.0RC1.
    </stability>
    <date>2008-05-02</date>
    <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
-   <notes>This feature release brings the following additions:
+   <notes>
+This feature release brings the following additions:
 - new driver for PEAR Net_LDAP2: XML_Query2XML_Driver_LDAP2
-- options 'limit' and 'offset' now supported by the MDB2 and DB drivers;
+- options &apos;limit&apos; and &apos;offset&apos; now supported by the MDB2 and DB drivers;
   thanks to Johnny Cheng from openflyers.org for this feature request
 - improved logging: now also logs the variables with which a prepared
   statement is executed
@@ -1068,7 +990,7 @@ Note: No changes were introduced since 1.6.0RC1.
   ADOdbPEAR or ADOdbException). Also use the environment variable
   PHP_PEAR_XML_QUERY2XML_TEST_LDAPLAYER to set the LDAP driver
   to be used (LDAP or LDAP2). Then simply run
-  'pear run-tests -p XML_Query2XML'
+  &apos;pear run-tests -p XML_Query2XML&apos;
 Note: no changes were introduced since 1.7.0RC1.
    </notes>
   </release>
@@ -1083,7 +1005,8 @@ Note: no changes were introduced since 1.7.0RC1.
    </stability>
    <date>2009-03-01</date>
    <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
-   <notes>This release implements the following additions:
+   <notes>
+This release implements the following additions:
 - Caching is now implemented as a saparate driver that is automatically
   wrapped around any other driver if caching is activated.
   This reduces the codebase of Query2XML.php.
@@ -1099,9 +1022,10 @@ Note: no changes were introduced since 1.7.0RC1.
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2009-03-08</date>
-   <license uri="http://www.gnu.org/lilicenses/lgpl-2.1.html">LGPLv2.1</license>
-   <notes>This release implements the following additions:
+   <date>2010-10-25</date>
+   <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
+   <notes>
+This release implements the following additions:
 - Caching is now implemented as a saparate driver that is automatically
   wrapped around any other driver if caching is activated.
   This reduces the codebase of Query2XML.php.
