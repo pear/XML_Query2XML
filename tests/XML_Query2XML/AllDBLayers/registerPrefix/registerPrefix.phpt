@@ -54,7 +54,7 @@ class Year2UnixTime extends XML_Query2XML_Data_Processor
 
 $query2xml = XML_Query2XML::factory($db);
 
-$query2xml->registerPrefix('§', 'Year2UnixTime');
+$query2xml->registerPrefix('-', 'Year2UnixTime');
 
 $dom = $query2xml->getXML(
   "SELECT * FROM artist",
@@ -65,7 +65,7 @@ $dom = $query2xml->getXML(
     'elements' => array(
         'name',
         'birth_year',
-        'birth_year_in_unix_time' => '§birth_year'
+        'birth_year_in_unix_time' => '-birth_year'
     )
   )
 );
