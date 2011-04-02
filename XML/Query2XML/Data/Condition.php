@@ -11,7 +11,6 @@
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Query2XML 
- * @access    private
  */
 
 /**
@@ -32,7 +31,6 @@ require_once 'XML/Query2XML/Data/Processor.php';
  * @license   http://www.gnu.org/copyleft/lesser.html  LGPL Version 2.1
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/XML_Query2XML
- * @access    private
  * @since     Release 1.7.1RC1
  */
 abstract class XML_Query2XML_Data_Condition extends XML_Query2XML_Data_Processor
