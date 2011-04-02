@@ -5495,6 +5495,153 @@ print $xml->saveXML();
     ]]>
     </programlisting>
   </para>
+  <para>
+   Finally, note that you may also explecitely unregister a specific prefix using {@link XML_Query2XML::unregisterPrefix()}
+   are unregister all previously defined prefixes using {@link XML_Query2XML::unregisterAllPrefixes()}.
+  </para>
+ </refsect1>
+ 
+ <refsect1 id="{@id your_own_prefixes}">
+  <title>Defining your own Prefixes</title>
+  <para>
+   You may want to define your own prefixes in order to have a simple and quick way to invoke complex functionality you need often.
+   The registration of the prefix is very much straight forward:
+  </para>
+  <para>
+   {@link XML_Query2XML::registerPrefix() XML_Query2XML::registerPrefix}($prefix, $className, $filePath = '')
+  </para>
+  <para>
+   Note that you may also register a prefix that has been registered before (or is registered by default).
+   In that case, the new registration will simply overwrite the old one.
+  </para>
+  <para>
+   More difficult than simply registering the prefix, is writing the class that will implement its functionality.
+   All such classes will have to implement the interface {@link XML_Query2XML_Data}. However, in practice you will
+   want to extend one of the following abstract classes, depending on the type of functionality you need:
+   <itemizedlist>
+    <listitem>
+     <emphasis>{@link XML_Query2XML_Data_Processor}</emphasis>: extend this class if you want to use any data
+      as input other than the string specified right after the prefix. For example, if you want to use a column
+      value as input data, extend this class and let the built-in code handle the rest. (Note: the
+      BASE64 ENCODING prefix ^, CDATA SECTION prefix =, and the XML UNSERIALIZATION prefix &amp; are built using
+      this class.)
+    </listitem>
+    <listitem>
+     <emphasis>{@link XML_Query2XML_Data_Source}</emphasis>: extend this class if you only want to use the string
+     specified right after the prefix as your data source. (Note: the STATIC TEXT prefix : and the CALLBACK FUNCTION
+     prefix # are built using this class.)
+    </listitem>
+    <listitem>
+     <emphasis>{@link XML_Query2XML_Data_Condition}</emphasis>: extend this class if you want to implement some
+     kind of condition that will determine whether the XML element for which the value was to be used will be
+     included in the resulting output. (Note: the CONDITIONAL prefix ? is built using this class.)
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>
+   Now, let's suppose you want to use the prefix "§" for your command class Year2UnixTime which calculates
+   the Unix time (seconds since the Unix Epoch, January 1 1970 00:00:00 GMT) from a given year. In such a
+   case you clearly want to extend {@link XML_Query2XML_Data_Processor}:
+   <programlisting role="php">
+   <![CDATA[
+<?php
+require_once 'XML/Query2XML.php';
+require_once 'XML/Query2XML/Data/Processor.php';
+require_once 'MDB2.php';
+
+class Year2UnixTime extends XML_Query2XML_Data_Processor
+{
+    /**
+     * Create a new instance of this class.
+     *
+     * @param mixed  $preProcessor The pre-processor to be used. An instance of
+     *                             XML_Query2XML_Data or null.
+     * @param string $configPath   The configuration path within the $options
+     *                             array.
+     *
+     * @return XML_Query2XML_Data_Processor_Base64
+     */
+    public function create($preProcessor, $configPath)
+    {
+        $processor = new Year2UnixTime($preProcessor);
+        // The create() method of every class extending
+        // XML_Query2XML_Data_Processor has to call
+        // setConfigPath() manually!
+        $processor->setConfigPath($configPath);
+        return $processor;
+    }
+    
+    /**
+     * Called by XML_Query2XML for every record in the result set.
+     *
+     * @param array $record An associative array.
+     *
+     * @return string The base64-encoded version the string returned
+     *                by the pre-processor.
+     * @throws XML_Query2XML_ConfigException If the pre-processor returns
+     *                something that cannot be converted to a string
+     *                (i.e. an object or an array).
+     */
+    public function execute(array $record)
+    {
+        $data = $this->runPreProcessor($record);
+        if (is_array($data) || is_object($data)) {
+            throw new XML_Query2XML_ConfigException(
+                $this->getConfigPath()
+                . ': XML_Query2XML_Data_Processor_Base64: string '
+                . 'expected from pre-processor, but ' . gettype($data) . ' returned.'
+            );
+        }
+        return DateTime::createFromFormat('Y-m-d H:i:s', $data . '-01-01 00:00:00', new DateTimeZone('Etc/GMT+0'))->format('U');
+    }
+}
+
+$query2xml = XML_Query2XML::factory(MDB2::factory('mysql://root@localhost/Query2XML_Tests'));
+$query2xml->registerPrefix('§', 'Year2UnixTime');
+$dom = $query2xml->getXML(
+  "SELECT * FROM artist",
+  array(
+    'rootTag' => 'artists',
+    'idColumn' => 'artistid',
+    'rowTag' => 'artist',
+    'elements' => array(
+        'name',
+        'birth_year',
+        'birth_year_in_unix_time' => '§birth_year'
+    )
+  )
+);
+
+header('Content-Type: application/xml');
+$dom->formatOutput = true;
+print $dom->saveXML();
+?>
+    ]]>
+    </programlisting>
+    The resulting XML data looks like this:
+    <programlisting role="tutorial">
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<artists>
+  <artist>
+    <name>Curtis Mayfield</name>
+    <birth_year>1920</birth_year>
+    <birth_year_in_unix_time>-1577923200</birth_year_in_unix_time>
+  </artist>
+  <artist>
+    <name>Isaac Hayes</name>
+    <birth_year>1942</birth_year>
+    <birth_year_in_unix_time>-883612800</birth_year_in_unix_time>
+  </artist>
+  <artist>
+    <name>Ray Charles</name>
+    <birth_year>1930</birth_year>
+    <birth_year_in_unix_time>-1262304000</birth_year_in_unix_time>
+  </artist>
+</artists>
+   ]]>
+   </programlisting>
+  </para>
  </refsect1>
  
  <refsect1 id="{@id global_options}">
