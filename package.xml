@@ -17,18 +17,18 @@ Major features:
 7. debugging, logging and profiling features
 8. XML encoding: support for UTF-8, ISO-8859-1 and others
 9. in-depth documentation and case studies: tutorials and API documentation
-10. 238 phpt unit tests</description>
+10. 244 phpt unit tests</description>
  <lead>
   <name>Lukas Feiler</name>
   <user>lukasfeiler</user>
   <email>lukas.feiler@lukasfeiler.com</email>
   <active>yes</active>
  </lead>
- <date>2010-10-25</date>
- <time>22:52:38</time>
+ <date>2011-04-03</date>
+ <time>12:40:00</time>
  <version>
-  <release>1.7.1</release>
-  <api>1.7.1</api>
+  <release>1.7.2</release>
+  <api>1.7.2</api>
  </version>
  <stability>
   <release>stable</release>
@@ -36,12 +36,13 @@ Major features:
  </stability>
  <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
  <notes>
-This release implements the following additions:
-- Caching is now implemented as a saparate driver that is automatically
-  wrapped around any other driver if caching is activated.
-  This reduces the codebase of Query2XML.php.
-- Refactoring of internal classes.
-Note: No changes were introduced since 1.7.1RC1.
+This is a minor release:
+- Bug #17724 fixed: avoiding split, using explode.
+- XML_Query2XML::registerPrefix(): new method that allows you to register
+  your own prefixes that can be used in all value specifications.
+  unregisterPrefix() and unregisterAllPrefixes() allow you to unregister
+  a particular or all prefixes (including default prefixes).
+- Now comes with 244 unit tests.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -310,6 +311,12 @@ Note: No changes were introduced since 1.7.1RC1.
    <file baseinstalldir="/" md5sum="0eac1d38130e521f936e060df89dae85" name="tests/XML_Query2XML/AllDBLayers/_processComplexElementSpecification/condition_staticMethod.phpt" role="test" />
    <file baseinstalldir="/" md5sum="cc06eb556060a66611999fc6890e65cc" name="tests/XML_Query2XML/AllDBLayers/_processComplexElementSpecification/rethrowConfigException.phpt" role="test" />
    <file baseinstalldir="/" md5sum="bb62725236cb6062fe640d4f29b0a496" name="tests/XML_Query2XML/AllDBLayers/_setDOMAttribute/throwXMLException.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="85373207b02094b0006c20ffcbf72d54" name="tests/XML_Query2XML/AllDBLayers/registerPrefix/registerPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="63c0ddc238f2e0c4060c351d748f39c7" name="tests/XML_Query2XML/AllDBLayers/registerPrefix/registerPrefix2.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="fd725a19e3deebcdff223792825ee9ef" name="tests/XML_Query2XML/AllDBLayers/registerPrefix/Year2UnixTime.php" role="test" />
+   <file baseinstalldir="/" md5sum="e40bf08d4b1e96a3e047a1ac58015eb4" name="tests/XML_Query2XML/AllDBLayers/unregisterPrefix/unregisterPrefix.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="9ea72ae3f133f1f3762df0b1d235b71e" name="tests/XML_Query2XML/AllDBLayers/unregisterAllPrefixes/unregisterAllPrefixes.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="5b7f037686fff0ba8b48a94694dda68c" name="tests/XML_Query2XML/AllDBLayers/unregisterAllPrefixes/unregisterAllPrefixes2.phpt" role="test" />
    <file baseinstalldir="/" md5sum="570eacfc81df203e0113a82defc56398" name="tests/XML_Query2XML/LDAP/ldap_init.php" role="test" />
    <file baseinstalldir="/" md5sum="107ed67f98a41d20f304eff84854c487" name="tests/XML_Query2XML/LDAP/skipif.php" role="test" />
    <file baseinstalldir="/" md5sum="a2d32b0c7a0c5d4a9db63f7fcbc3f943" name="tests/XML_Query2XML/LDAP/getXML/complexElementSpecification_multiValueLDAPAttributes.phpt" role="test" />
@@ -1022,7 +1029,7 @@ This release implements the following additions:
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2010-10-25</date>
+   <date>2009-03-08</date>
    <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
    <notes>
 This release implements the following additions:
@@ -1031,6 +1038,27 @@ This release implements the following additions:
   This reduces the codebase of Query2XML.php.
 - Refactoring of internal classes.
 Note: No changes were introduced since 1.7.1RC1.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.7.2</release>
+    <api>1.7.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-04-03</date>
+   <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPLv2.1</license>
+   <notes>
+This is a minor release:
+- Bug #17724 fixed: avoiding split, using explode.
+- XML_Query2XML::registerPrefix(): new method that allows you to register
+  your own prefixes that can be used in all value specifications.
+  unregisterPrefix() and unregisterAllPrefixes() allow you to unregister
+  a particular or all prefixes (including default prefixes).
+- Now comes with 244 unit tests.
    </notes>
   </release>
  </changelog>
