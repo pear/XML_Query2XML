@@ -3,6 +3,17 @@ Public Releases of XML_Query2XML
 Version: $Id$
 
 
+v1.7.2
+------
+Release date: 2011-03-04
+Release notes: This is a minor release:
+- Bug #17724 fixed: avoiding split, using explode.
+- XML_Query2XML::registerPrefix(): new method that allows you to register
+  your own prefixes that can be used in all value specifications.
+  unregisterPrefix() and unregisterAllPrefixes() allow you to unregister
+  a particular or all prefixes (including default prefixes).
+- Now comes with 244 unit tests.
+
 v1.7.1
 ------
 Release date: 2009-03-08
