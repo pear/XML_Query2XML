@@ -8,7 +8,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "XML_Query2XML": "./"
+            "XML": "./"
         }
     },
     "description": "More info available on: http://pear.php.net/package/XML_Query2XML",
@@ -27,5 +27,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*"
+    },
+    "suggest": {
+        "pear/net_ldap2": "Install optionally via your project's composer.json"
     }
 }
