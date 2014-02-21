@@ -1,0 +1,34 @@
+{
+    "authors": [
+        {
+            "email": "lukas.feiler@lukasfeiler.com",
+            "name": "Lukas Feiler",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "XML": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/XML_Query2XML",
+    "include-path": [
+        "./"
+    ],
+    "license": "LGPLv2.1",
+    "name": "pear/xml_query2xml",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=XML_Query2XML",
+        "source": "https://github.com/pear/XML_Query2XML"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "suggest": {
+        "pear/net_ldap2": "Install optionally via your project's composer.json"
+    }
+}
